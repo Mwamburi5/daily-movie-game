@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+html,
+body {
+  overscroll-behavior: none;
+  overflow: hidden;
+}
+
+body {
+  background: #f4efe6;
+  color: #23211c;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  user-select: none;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+#root {
+  height: 100vh;
+  height: 100dvh;
+}

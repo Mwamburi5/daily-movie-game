@@ -1,0 +1,1298 @@
+[
+  {
+    "id": "the-french-connection",
+    "title": "The French Connection",
+    "year": 1971,
+    "releaseDate": "1971-10-09",
+    "decade": 1970,
+    "popularity": 0
+  },
+  {
+    "id": "a-clockwork-orange",
+    "title": "A Clockwork Orange",
+    "year": 1971,
+    "releaseDate": "1971-12-19",
+    "decade": 1970,
+    "popularity": 0
+  },
+  {
+    "id": "dirty-harry",
+    "title": "Dirty Harry",
+    "year": 1971,
+    "releaseDate": "1971-12-23",
+    "decade": 1970,
+    "popularity": 0
+  },
+  {
+    "id": "the-godfather",
+    "title": "The Godfather",
+    "year": 1972,
+    "releaseDate": "1972-03-24",
+    "decade": 1970,
+    "popularity": 0
+  },
+  {
+    "id": "the-exorcist",
+    "title": "The Exorcist",
+    "year": 1973,
+    "releaseDate": "1973-12-26",
+    "decade": 1970,
+    "popularity": 0
+  },
+  {
+    "id": "blazing-saddles",
+    "title": "Blazing Saddles",
+    "year": 1974,
+    "releaseDate": "1974-02-07",
+    "decade": 1970,
+    "popularity": 0
+  },
+  {
+    "id": "chinatown",
+    "title": "Chinatown",
+    "year": 1974,
+    "releaseDate": "1974-06-20",
+    "decade": 1970,
+    "popularity": 0
+  },
+  {
+    "id": "young-frankenstein",
+    "title": "Young Frankenstein",
+    "year": 1974,
+    "releaseDate": "1974-12-15",
+    "decade": 1970,
+    "popularity": 0
+  },
+  {
+    "id": "the-godfather-part-ii",
+    "title": "The Godfather Part II",
+    "year": 1974,
+    "releaseDate": "1974-12-20",
+    "decade": 1970,
+    "popularity": 0
+  },
+  {
+    "id": "jaws",
+    "title": "Jaws",
+    "year": 1975,
+    "releaseDate": "1975-06-20",
+    "decade": 1970,
+    "popularity": 0
+  },
+  {
+    "id": "one-flew-over-the-cuckoos-nest",
+    "title": "One Flew Over the Cuckoo's Nest",
+    "year": 1975,
+    "releaseDate": "1975-11-19",
+    "decade": 1970,
+    "popularity": 0
+  },
+  {
+    "id": "taxi-driver",
+    "title": "Taxi Driver",
+    "year": 1976,
+    "releaseDate": "1976-02-09",
+    "decade": 1970,
+    "popularity": 0
+  },
+  {
+    "id": "all-the-presidents-men",
+    "title": "All the President's Men",
+    "year": 1976,
+    "releaseDate": "1976-04-09",
+    "decade": 1970,
+    "popularity": 0
+  },
+  {
+    "id": "carrie",
+    "title": "Carrie",
+    "year": 1976,
+    "releaseDate": "1976-11-03",
+    "decade": 1970,
+    "popularity": 0
+  },
+  {
+    "id": "rocky",
+    "title": "Rocky",
+    "year": 1976,
+    "releaseDate": "1976-11-21",
+    "decade": 1970,
+    "popularity": 0
+  },
+  {
+    "id": "network",
+    "title": "Network",
+    "year": 1976,
+    "releaseDate": "1976-11-27",
+    "decade": 1970,
+    "popularity": 0
+  },
+  {
+    "id": "annie-hall",
+    "title": "Annie Hall",
+    "year": 1977,
+    "releaseDate": "1977-04-20",
+    "decade": 1970,
+    "popularity": 0
+  },
+  {
+    "id": "star-wars",
+    "title": "Star Wars",
+    "year": 1977,
+    "releaseDate": "1977-05-25",
+    "decade": 1970,
+    "popularity": 0
+  },
+  {
+    "id": "close-encounters-of-the-third-kind",
+    "title": "Close Encounters of the Third Kind",
+    "year": 1977,
+    "releaseDate": "1977-11-16",
+    "decade": 1970,
+    "popularity": 0
+  },
+  {
+    "id": "saturday-night-fever",
+    "title": "Saturday Night Fever",
+    "year": 1977,
+    "releaseDate": "1977-12-16",
+    "decade": 1970,
+    "popularity": 0
+  },
+  {
+    "id": "grease",
+    "title": "Grease",
+    "year": 1978,
+    "releaseDate": "1978-06-16",
+    "decade": 1970,
+    "popularity": 0
+  },
+  {
+    "id": "halloween",
+    "title": "Halloween",
+    "year": 1978,
+    "releaseDate": "1978-10-25",
+    "decade": 1970,
+    "popularity": 0
+  },
+  {
+    "id": "the-deer-hunter",
+    "title": "The Deer Hunter",
+    "year": 1978,
+    "releaseDate": "1978-12-08",
+    "decade": 1970,
+    "popularity": 0
+  },
+  {
+    "id": "superman",
+    "title": "Superman",
+    "year": 1978,
+    "releaseDate": "1978-12-15",
+    "decade": 1970,
+    "popularity": 0
+  },
+  {
+    "id": "alien",
+    "title": "Alien",
+    "year": 1979,
+    "releaseDate": "1979-05-25",
+    "decade": 1970,
+    "popularity": 0
+  },
+  {
+    "id": "apocalypse-now",
+    "title": "Apocalypse Now",
+    "year": 1979,
+    "releaseDate": "1979-08-15",
+    "decade": 1970,
+    "popularity": 0
+  },
+  {
+    "id": "kramer-vs-kramer",
+    "title": "Kramer vs. Kramer",
+    "year": 1979,
+    "releaseDate": "1979-12-19",
+    "decade": 1970,
+    "popularity": 0
+  },
+  {
+    "id": "the-empire-strikes-back",
+    "title": "The Empire Strikes Back",
+    "year": 1980,
+    "releaseDate": "1980-05-21",
+    "decade": 1980,
+    "popularity": 0
+  },
+  {
+    "id": "the-shining",
+    "title": "The Shining",
+    "year": 1980,
+    "releaseDate": "1980-05-23",
+    "decade": 1980,
+    "popularity": 0
+  },
+  {
+    "id": "raging-bull",
+    "title": "Raging Bull",
+    "year": 1980,
+    "releaseDate": "1980-12-19",
+    "decade": 1980,
+    "popularity": 0
+  },
+  {
+    "id": "raiders-of-the-lost-ark",
+    "title": "Raiders of the Lost Ark",
+    "year": 1981,
+    "releaseDate": "1981-06-12",
+    "decade": 1980,
+    "popularity": 0
+  },
+  {
+    "id": "e-t-the-extra-terrestrial",
+    "title": "E.T. the Extra-Terrestrial",
+    "year": 1982,
+    "releaseDate": "1982-06-11",
+    "decade": 1980,
+    "popularity": 0
+  },
+  {
+    "id": "blade-runner",
+    "title": "Blade Runner",
+    "year": 1982,
+    "releaseDate": "1982-06-25",
+    "decade": 1980,
+    "popularity": 0
+  },
+  {
+    "id": "the-thing",
+    "title": "The Thing",
+    "year": 1982,
+    "releaseDate": "1982-06-25",
+    "decade": 1980,
+    "popularity": 0
+  },
+  {
+    "id": "return-of-the-jedi",
+    "title": "Return of the Jedi",
+    "year": 1983,
+    "releaseDate": "1983-05-25",
+    "decade": 1980,
+    "popularity": 0
+  },
+  {
+    "id": "scarface",
+    "title": "Scarface",
+    "year": 1983,
+    "releaseDate": "1983-12-09",
+    "decade": 1980,
+    "popularity": 0
+  },
+  {
+    "id": "ghostbusters",
+    "title": "Ghostbusters",
+    "year": 1984,
+    "releaseDate": "1984-06-08",
+    "decade": 1980,
+    "popularity": 0
+  },
+  {
+    "id": "gremlins",
+    "title": "Gremlins",
+    "year": 1984,
+    "releaseDate": "1984-06-08",
+    "decade": 1980,
+    "popularity": 0
+  },
+  {
+    "id": "the-terminator",
+    "title": "The Terminator",
+    "year": 1984,
+    "releaseDate": "1984-10-26",
+    "decade": 1980,
+    "popularity": 0
+  },
+  {
+    "id": "the-breakfast-club",
+    "title": "The Breakfast Club",
+    "year": 1985,
+    "releaseDate": "1985-02-15",
+    "decade": 1980,
+    "popularity": 0
+  },
+  {
+    "id": "back-to-the-future",
+    "title": "Back to the Future",
+    "year": 1985,
+    "releaseDate": "1985-07-03",
+    "decade": 1980,
+    "popularity": 0
+  },
+  {
+    "id": "top-gun",
+    "title": "Top Gun",
+    "year": 1986,
+    "releaseDate": "1986-05-16",
+    "decade": 1980,
+    "popularity": 0
+  },
+  {
+    "id": "ferris-buellers-day-off",
+    "title": "Ferris Bueller's Day Off",
+    "year": 1986,
+    "releaseDate": "1986-06-11",
+    "decade": 1980,
+    "popularity": 0
+  },
+  {
+    "id": "aliens",
+    "title": "Aliens",
+    "year": 1986,
+    "releaseDate": "1986-07-18",
+    "decade": 1980,
+    "popularity": 0
+  },
+  {
+    "id": "platoon",
+    "title": "Platoon",
+    "year": 1986,
+    "releaseDate": "1986-12-19",
+    "decade": 1980,
+    "popularity": 0
+  },
+  {
+    "id": "the-untouchables",
+    "title": "The Untouchables",
+    "year": 1987,
+    "releaseDate": "1987-06-03",
+    "decade": 1980,
+    "popularity": 0
+  },
+  {
+    "id": "predator",
+    "title": "Predator",
+    "year": 1987,
+    "releaseDate": "1987-06-12",
+    "decade": 1980,
+    "popularity": 0
+  },
+  {
+    "id": "full-metal-jacket",
+    "title": "Full Metal Jacket",
+    "year": 1987,
+    "releaseDate": "1987-06-26",
+    "decade": 1980,
+    "popularity": 0
+  },
+  {
+    "id": "beetlejuice",
+    "title": "Beetlejuice",
+    "year": 1988,
+    "releaseDate": "1988-03-30",
+    "decade": 1980,
+    "popularity": 0
+  },
+  {
+    "id": "die-hard",
+    "title": "Die Hard",
+    "year": 1988,
+    "releaseDate": "1988-07-15",
+    "decade": 1980,
+    "popularity": 0
+  },
+  {
+    "id": "rain-man",
+    "title": "Rain Man",
+    "year": 1988,
+    "releaseDate": "1988-12-16",
+    "decade": 1980,
+    "popularity": 0
+  },
+  {
+    "id": "indiana-jones-and-the-last-crusade",
+    "title": "Indiana Jones and the Last Crusade",
+    "year": 1989,
+    "releaseDate": "1989-05-24",
+    "decade": 1980,
+    "popularity": 0
+  },
+  {
+    "id": "dead-poets-society",
+    "title": "Dead Poets Society",
+    "year": 1989,
+    "releaseDate": "1989-06-09",
+    "decade": 1980,
+    "popularity": 0
+  },
+  {
+    "id": "batman",
+    "title": "Batman",
+    "year": 1989,
+    "releaseDate": "1989-06-23",
+    "decade": 1980,
+    "popularity": 0
+  },
+  {
+    "id": "when-harry-met-sally",
+    "title": "When Harry Met Sally...",
+    "year": 1989,
+    "releaseDate": "1989-07-21",
+    "decade": 1980,
+    "popularity": 0
+  },
+  {
+    "id": "goodfellas",
+    "title": "Goodfellas",
+    "year": 1990,
+    "releaseDate": "1990-09-19",
+    "decade": 1990,
+    "popularity": 0
+  },
+  {
+    "id": "the-godfather-part-iii",
+    "title": "The Godfather Part III",
+    "year": 1990,
+    "releaseDate": "1990-12-25",
+    "decade": 1990,
+    "popularity": 0
+  },
+  {
+    "id": "the-silence-of-the-lambs",
+    "title": "The Silence of the Lambs",
+    "year": 1991,
+    "releaseDate": "1991-02-14",
+    "decade": 1990,
+    "popularity": 0
+  },
+  {
+    "id": "unforgiven",
+    "title": "Unforgiven",
+    "year": 1992,
+    "releaseDate": "1992-08-07",
+    "decade": 1990,
+    "popularity": 0
+  },
+  {
+    "id": "reservoir-dogs",
+    "title": "Reservoir Dogs",
+    "year": 1992,
+    "releaseDate": "1992-10-23",
+    "decade": 1990,
+    "popularity": 0
+  },
+  {
+    "id": "a-few-good-men",
+    "title": "A Few Good Men",
+    "year": 1992,
+    "releaseDate": "1992-12-11",
+    "decade": 1990,
+    "popularity": 0
+  },
+  {
+    "id": "jurassic-park",
+    "title": "Jurassic Park",
+    "year": 1993,
+    "releaseDate": "1993-06-11",
+    "decade": 1990,
+    "popularity": 0
+  },
+  {
+    "id": "schindlers-list",
+    "title": "Schindler's List",
+    "year": 1993,
+    "releaseDate": "1993-12-15",
+    "decade": 1990,
+    "popularity": 0
+  },
+  {
+    "id": "philadelphia",
+    "title": "Philadelphia",
+    "year": 1993,
+    "releaseDate": "1993-12-22",
+    "decade": 1990,
+    "popularity": 0
+  },
+  {
+    "id": "forrest-gump",
+    "title": "Forrest Gump",
+    "year": 1994,
+    "releaseDate": "1994-07-06",
+    "decade": 1990,
+    "popularity": 0
+  },
+  {
+    "id": "the-shawshank-redemption",
+    "title": "The Shawshank Redemption",
+    "year": 1994,
+    "releaseDate": "1994-09-23",
+    "decade": 1990,
+    "popularity": 0
+  },
+  {
+    "id": "pulp-fiction",
+    "title": "Pulp Fiction",
+    "year": 1994,
+    "releaseDate": "1994-10-14",
+    "decade": 1990,
+    "popularity": 0
+  },
+  {
+    "id": "apollo-13",
+    "title": "Apollo 13",
+    "year": 1995,
+    "releaseDate": "1995-06-30",
+    "decade": 1990,
+    "popularity": 0
+  },
+  {
+    "id": "se7en",
+    "title": "Se7en",
+    "year": 1995,
+    "releaseDate": "1995-09-22",
+    "decade": 1990,
+    "popularity": 0
+  },
+  {
+    "id": "casino",
+    "title": "Casino",
+    "year": 1995,
+    "releaseDate": "1995-11-22",
+    "decade": 1990,
+    "popularity": 0
+  },
+  {
+    "id": "toy-story",
+    "title": "Toy Story",
+    "year": 1995,
+    "releaseDate": "1995-11-22",
+    "decade": 1990,
+    "popularity": 0
+  },
+  {
+    "id": "heat",
+    "title": "Heat",
+    "year": 1995,
+    "releaseDate": "1995-12-15",
+    "decade": 1990,
+    "popularity": 0
+  },
+  {
+    "id": "fargo",
+    "title": "Fargo",
+    "year": 1996,
+    "releaseDate": "1996-03-08",
+    "decade": 1990,
+    "popularity": 0
+  },
+  {
+    "id": "mission-impossible",
+    "title": "Mission: Impossible",
+    "year": 1996,
+    "releaseDate": "1996-05-22",
+    "decade": 1990,
+    "popularity": 0
+  },
+  {
+    "id": "good-will-hunting",
+    "title": "Good Will Hunting",
+    "year": 1997,
+    "releaseDate": "1997-12-05",
+    "decade": 1990,
+    "popularity": 0
+  },
+  {
+    "id": "titanic",
+    "title": "Titanic",
+    "year": 1997,
+    "releaseDate": "1997-12-19",
+    "decade": 1990,
+    "popularity": 0
+  },
+  {
+    "id": "jackie-brown",
+    "title": "Jackie Brown",
+    "year": 1997,
+    "releaseDate": "1997-12-25",
+    "decade": 1990,
+    "popularity": 0
+  },
+  {
+    "id": "the-big-lebowski",
+    "title": "The Big Lebowski",
+    "year": 1998,
+    "releaseDate": "1998-03-06",
+    "decade": 1990,
+    "popularity": 0
+  },
+  {
+    "id": "the-truman-show",
+    "title": "The Truman Show",
+    "year": 1998,
+    "releaseDate": "1998-06-05",
+    "decade": 1990,
+    "popularity": 0
+  },
+  {
+    "id": "saving-private-ryan",
+    "title": "Saving Private Ryan",
+    "year": 1998,
+    "releaseDate": "1998-07-24",
+    "decade": 1990,
+    "popularity": 0
+  },
+  {
+    "id": "the-matrix",
+    "title": "The Matrix",
+    "year": 1999,
+    "releaseDate": "1999-03-31",
+    "decade": 1990,
+    "popularity": 0
+  },
+  {
+    "id": "the-sixth-sense",
+    "title": "The Sixth Sense",
+    "year": 1999,
+    "releaseDate": "1999-08-06",
+    "decade": 1990,
+    "popularity": 0
+  },
+  {
+    "id": "fight-club",
+    "title": "Fight Club",
+    "year": 1999,
+    "releaseDate": "1999-10-15",
+    "decade": 1990,
+    "popularity": 0
+  },
+  {
+    "id": "toy-story-2",
+    "title": "Toy Story 2",
+    "year": 1999,
+    "releaseDate": "1999-11-24",
+    "decade": 1990,
+    "popularity": 0
+  },
+  {
+    "id": "the-green-mile",
+    "title": "The Green Mile",
+    "year": 1999,
+    "releaseDate": "1999-12-10",
+    "decade": 1990,
+    "popularity": 0
+  },
+  {
+    "id": "gladiator",
+    "title": "Gladiator",
+    "year": 2000,
+    "releaseDate": "2000-05-05",
+    "decade": 2000,
+    "popularity": 0
+  },
+  {
+    "id": "mission-impossible-2",
+    "title": "Mission: Impossible 2",
+    "year": 2000,
+    "releaseDate": "2000-05-24",
+    "decade": 2000,
+    "popularity": 0
+  },
+  {
+    "id": "memento",
+    "title": "Memento",
+    "year": 2001,
+    "releaseDate": "2001-03-16",
+    "decade": 2000,
+    "popularity": 0
+  },
+  {
+    "id": "training-day",
+    "title": "Training Day",
+    "year": 2001,
+    "releaseDate": "2001-10-05",
+    "decade": 2000,
+    "popularity": 0
+  },
+  {
+    "id": "monsters-inc",
+    "title": "Monsters, Inc.",
+    "year": 2001,
+    "releaseDate": "2001-11-02",
+    "decade": 2000,
+    "popularity": 0
+  },
+  {
+    "id": "oceans-eleven",
+    "title": "Ocean's Eleven",
+    "year": 2001,
+    "releaseDate": "2001-12-07",
+    "decade": 2000,
+    "popularity": 0
+  },
+  {
+    "id": "the-fellowship-of-the-ring",
+    "title": "The Lord of the Rings: The Fellowship of the Ring",
+    "year": 2001,
+    "releaseDate": "2001-12-19",
+    "decade": 2000,
+    "popularity": 0
+  },
+  {
+    "id": "the-two-towers",
+    "title": "The Lord of the Rings: The Two Towers",
+    "year": 2002,
+    "releaseDate": "2002-12-18",
+    "decade": 2000,
+    "popularity": 0
+  },
+  {
+    "id": "gangs-of-new-york",
+    "title": "Gangs of New York",
+    "year": 2002,
+    "releaseDate": "2002-12-20",
+    "decade": 2000,
+    "popularity": 0
+  },
+  {
+    "id": "catch-me-if-you-can",
+    "title": "Catch Me If You Can",
+    "year": 2002,
+    "releaseDate": "2002-12-25",
+    "decade": 2000,
+    "popularity": 0
+  },
+  {
+    "id": "the-matrix-reloaded",
+    "title": "The Matrix Reloaded",
+    "year": 2003,
+    "releaseDate": "2003-05-15",
+    "decade": 2000,
+    "popularity": 0
+  },
+  {
+    "id": "the-matrix-revolutions",
+    "title": "The Matrix Revolutions",
+    "year": 2003,
+    "releaseDate": "2003-11-05",
+    "decade": 2000,
+    "popularity": 0
+  },
+  {
+    "id": "the-return-of-the-king",
+    "title": "The Lord of the Rings: The Return of the King",
+    "year": 2003,
+    "releaseDate": "2003-12-17",
+    "decade": 2000,
+    "popularity": 0
+  },
+  {
+    "id": "eternal-sunshine-of-the-spotless-mind",
+    "title": "Eternal Sunshine of the Spotless Mind",
+    "year": 2004,
+    "releaseDate": "2004-03-19",
+    "decade": 2000,
+    "popularity": 0
+  },
+  {
+    "id": "collateral",
+    "title": "Collateral",
+    "year": 2004,
+    "releaseDate": "2004-08-06",
+    "decade": 2000,
+    "popularity": 0
+  },
+  {
+    "id": "the-aviator",
+    "title": "The Aviator",
+    "year": 2004,
+    "releaseDate": "2004-12-25",
+    "decade": 2000,
+    "popularity": 0
+  },
+  {
+    "id": "batman-begins",
+    "title": "Batman Begins",
+    "year": 2005,
+    "releaseDate": "2005-06-15",
+    "decade": 2000,
+    "popularity": 0
+  },
+  {
+    "id": "inside-man",
+    "title": "Inside Man",
+    "year": 2006,
+    "releaseDate": "2006-03-24",
+    "decade": 2000,
+    "popularity": 0
+  },
+  {
+    "id": "the-departed",
+    "title": "The Departed",
+    "year": 2006,
+    "releaseDate": "2006-10-06",
+    "decade": 2000,
+    "popularity": 0
+  },
+  {
+    "id": "the-prestige",
+    "title": "The Prestige",
+    "year": 2006,
+    "releaseDate": "2006-10-20",
+    "decade": 2000,
+    "popularity": 0
+  },
+  {
+    "id": "zodiac",
+    "title": "Zodiac",
+    "year": 2007,
+    "releaseDate": "2007-03-02",
+    "decade": 2000,
+    "popularity": 0
+  },
+  {
+    "id": "american-gangster",
+    "title": "American Gangster",
+    "year": 2007,
+    "releaseDate": "2007-11-02",
+    "decade": 2000,
+    "popularity": 0
+  },
+  {
+    "id": "no-country-for-old-men",
+    "title": "No Country for Old Men",
+    "year": 2007,
+    "releaseDate": "2007-11-09",
+    "decade": 2000,
+    "popularity": 0
+  },
+  {
+    "id": "there-will-be-blood",
+    "title": "There Will Be Blood",
+    "year": 2007,
+    "releaseDate": "2007-12-26",
+    "decade": 2000,
+    "popularity": 0
+  },
+  {
+    "id": "iron-man",
+    "title": "Iron Man",
+    "year": 2008,
+    "releaseDate": "2008-05-02",
+    "decade": 2000,
+    "popularity": 0
+  },
+  {
+    "id": "the-dark-knight",
+    "title": "The Dark Knight",
+    "year": 2008,
+    "releaseDate": "2008-07-18",
+    "decade": 2000,
+    "popularity": 0
+  },
+  {
+    "id": "inglourious-basterds",
+    "title": "Inglourious Basterds",
+    "year": 2009,
+    "releaseDate": "2009-08-21",
+    "decade": 2000,
+    "popularity": 0
+  },
+  {
+    "id": "shutter-island",
+    "title": "Shutter Island",
+    "year": 2010,
+    "releaseDate": "2010-02-19",
+    "decade": 2010,
+    "popularity": 0
+  },
+  {
+    "id": "toy-story-3",
+    "title": "Toy Story 3",
+    "year": 2010,
+    "releaseDate": "2010-06-18",
+    "decade": 2010,
+    "popularity": 0
+  },
+  {
+    "id": "inception",
+    "title": "Inception",
+    "year": 2010,
+    "releaseDate": "2010-07-16",
+    "decade": 2010,
+    "popularity": 0
+  },
+  {
+    "id": "the-social-network",
+    "title": "The Social Network",
+    "year": 2010,
+    "releaseDate": "2010-10-01",
+    "decade": 2010,
+    "popularity": 0
+  },
+  {
+    "id": "the-fighter",
+    "title": "The Fighter",
+    "year": 2010,
+    "releaseDate": "2010-12-10",
+    "decade": 2010,
+    "popularity": 0
+  },
+  {
+    "id": "moneyball",
+    "title": "Moneyball",
+    "year": 2011,
+    "releaseDate": "2011-09-23",
+    "decade": 2010,
+    "popularity": 0
+  },
+  {
+    "id": "the-dark-knight-rises",
+    "title": "The Dark Knight Rises",
+    "year": 2012,
+    "releaseDate": "2012-07-20",
+    "decade": 2010,
+    "popularity": 0
+  },
+  {
+    "id": "lincoln",
+    "title": "Lincoln",
+    "year": 2012,
+    "releaseDate": "2012-11-09",
+    "decade": 2010,
+    "popularity": 0
+  },
+  {
+    "id": "django-unchained",
+    "title": "Django Unchained",
+    "year": 2012,
+    "releaseDate": "2012-12-25",
+    "decade": 2010,
+    "popularity": 0
+  },
+  {
+    "id": "prisoners",
+    "title": "Prisoners",
+    "year": 2013,
+    "releaseDate": "2013-09-20",
+    "decade": 2010,
+    "popularity": 0
+  },
+  {
+    "id": "american-hustle",
+    "title": "American Hustle",
+    "year": 2013,
+    "releaseDate": "2013-12-13",
+    "decade": 2010,
+    "popularity": 0
+  },
+  {
+    "id": "the-wolf-of-wall-street",
+    "title": "The Wolf of Wall Street",
+    "year": 2013,
+    "releaseDate": "2013-12-25",
+    "decade": 2010,
+    "popularity": 0
+  },
+  {
+    "id": "interstellar",
+    "title": "Interstellar",
+    "year": 2014,
+    "releaseDate": "2014-11-05",
+    "decade": 2010,
+    "popularity": 0
+  },
+  {
+    "id": "sicario",
+    "title": "Sicario",
+    "year": 2015,
+    "releaseDate": "2015-10-02",
+    "decade": 2010,
+    "popularity": 0
+  },
+  {
+    "id": "the-martian",
+    "title": "The Martian",
+    "year": 2015,
+    "releaseDate": "2015-10-02",
+    "decade": 2010,
+    "popularity": 0
+  },
+  {
+    "id": "the-big-short",
+    "title": "The Big Short",
+    "year": 2015,
+    "releaseDate": "2015-12-11",
+    "decade": 2010,
+    "popularity": 0
+  },
+  {
+    "id": "arrival",
+    "title": "Arrival",
+    "year": 2016,
+    "releaseDate": "2016-11-11",
+    "decade": 2010,
+    "popularity": 0
+  },
+  {
+    "id": "dunkirk",
+    "title": "Dunkirk",
+    "year": 2017,
+    "releaseDate": "2017-07-21",
+    "decade": 2010,
+    "popularity": 0
+  },
+  {
+    "id": "blade-runner-2049",
+    "title": "Blade Runner 2049",
+    "year": 2017,
+    "releaseDate": "2017-10-06",
+    "decade": 2010,
+    "popularity": 0
+  },
+  {
+    "id": "mission-impossible-fallout",
+    "title": "Mission: Impossible - Fallout",
+    "year": 2018,
+    "releaseDate": "2018-07-27",
+    "decade": 2010,
+    "popularity": 0
+  },
+  {
+    "id": "once-upon-a-time-in-hollywood",
+    "title": "Once Upon a Time in Hollywood",
+    "year": 2019,
+    "releaseDate": "2019-07-26",
+    "decade": 2010,
+    "popularity": 0
+  },
+  {
+    "id": "joker",
+    "title": "Joker",
+    "year": 2019,
+    "releaseDate": "2019-10-04",
+    "decade": 2010,
+    "popularity": 0
+  },
+  {
+    "id": "parasite",
+    "title": "Parasite",
+    "year": 2019,
+    "releaseDate": "2019-10-11",
+    "decade": 2010,
+    "popularity": 0
+  },
+  {
+    "id": "the-irishman",
+    "title": "The Irishman",
+    "year": 2019,
+    "releaseDate": "2019-11-01",
+    "decade": 2010,
+    "popularity": 0
+  },
+  {
+    "id": "ford-v-ferrari",
+    "title": "Ford v Ferrari",
+    "year": 2019,
+    "releaseDate": "2019-11-15",
+    "decade": 2010,
+    "popularity": 0
+  },
+  {
+    "id": "tenet",
+    "title": "Tenet",
+    "year": 2020,
+    "releaseDate": "2020-09-03",
+    "decade": 2020,
+    "popularity": 0
+  },
+  {
+    "id": "a-quiet-place-part-ii",
+    "title": "A Quiet Place Part II",
+    "year": 2021,
+    "releaseDate": "2021-05-28",
+    "decade": 2020,
+    "popularity": 0
+  },
+  {
+    "id": "no-time-to-die",
+    "title": "No Time to Die",
+    "year": 2021,
+    "releaseDate": "2021-10-08",
+    "decade": 2020,
+    "popularity": 0
+  },
+  {
+    "id": "dune",
+    "title": "Dune",
+    "year": 2021,
+    "releaseDate": "2021-10-22",
+    "decade": 2020,
+    "popularity": 0
+  },
+  {
+    "id": "encanto",
+    "title": "Encanto",
+    "year": 2021,
+    "releaseDate": "2021-11-24",
+    "decade": 2020,
+    "popularity": 0
+  },
+  {
+    "id": "west-side-story",
+    "title": "West Side Story",
+    "year": 2021,
+    "releaseDate": "2021-12-10",
+    "decade": 2020,
+    "popularity": 0
+  },
+  {
+    "id": "spider-man-no-way-home",
+    "title": "Spider-Man: No Way Home",
+    "year": 2021,
+    "releaseDate": "2021-12-17",
+    "decade": 2020,
+    "popularity": 0
+  },
+  {
+    "id": "the-batman",
+    "title": "The Batman",
+    "year": 2022,
+    "releaseDate": "2022-03-04",
+    "decade": 2020,
+    "popularity": 0
+  },
+  {
+    "id": "everything-everywhere-all-at-once",
+    "title": "Everything Everywhere All at Once",
+    "year": 2022,
+    "releaseDate": "2022-03-25",
+    "decade": 2020,
+    "popularity": 0
+  },
+  {
+    "id": "top-gun-maverick",
+    "title": "Top Gun: Maverick",
+    "year": 2022,
+    "releaseDate": "2022-05-27",
+    "decade": 2020,
+    "popularity": 0
+  },
+  {
+    "id": "elvis",
+    "title": "Elvis",
+    "year": 2022,
+    "releaseDate": "2022-06-24",
+    "decade": 2020,
+    "popularity": 0
+  },
+  {
+    "id": "nope",
+    "title": "Nope",
+    "year": 2022,
+    "releaseDate": "2022-07-22",
+    "decade": 2020,
+    "popularity": 0
+  },
+  {
+    "id": "avatar-the-way-of-water",
+    "title": "Avatar: The Way of Water",
+    "year": 2022,
+    "releaseDate": "2022-12-16",
+    "decade": 2020,
+    "popularity": 0
+  },
+  {
+    "id": "john-wick-chapter-4",
+    "title": "John Wick: Chapter 4",
+    "year": 2023,
+    "releaseDate": "2023-03-24",
+    "decade": 2020,
+    "popularity": 0
+  },
+  {
+    "id": "the-super-mario-bros-movie",
+    "title": "The Super Mario Bros. Movie",
+    "year": 2023,
+    "releaseDate": "2023-04-05",
+    "decade": 2020,
+    "popularity": 0
+  },
+  {
+    "id": "barbie",
+    "title": "Barbie",
+    "year": 2023,
+    "releaseDate": "2023-07-21",
+    "decade": 2020,
+    "popularity": 0
+  },
+  {
+    "id": "oppenheimer",
+    "title": "Oppenheimer",
+    "year": 2023,
+    "releaseDate": "2023-07-21",
+    "decade": 2020,
+    "popularity": 0
+  },
+  {
+    "id": "killers-of-the-flower-moon",
+    "title": "Killers of the Flower Moon",
+    "year": 2023,
+    "releaseDate": "2023-10-20",
+    "decade": 2020,
+    "popularity": 0
+  },
+  {
+    "id": "wonka",
+    "title": "Wonka",
+    "year": 2023,
+    "releaseDate": "2023-12-15",
+    "decade": 2020,
+    "popularity": 0
+  },
+  {
+    "id": "dune-part-two",
+    "title": "Dune: Part Two",
+    "year": 2024,
+    "releaseDate": "2024-03-01",
+    "decade": 2020,
+    "popularity": 0
+  },
+  {
+    "id": "inside-out-2",
+    "title": "Inside Out 2",
+    "year": 2024,
+    "releaseDate": "2024-06-14",
+    "decade": 2020,
+    "popularity": 0
+  },
+  {
+    "id": "deadpool-and-wolverine",
+    "title": "Deadpool & Wolverine",
+    "year": 2024,
+    "releaseDate": "2024-07-26",
+    "decade": 2020,
+    "popularity": 0
+  },
+  {
+    "id": "gladiator-ii",
+    "title": "Gladiator II",
+    "year": 2024,
+    "releaseDate": "2024-11-22",
+    "decade": 2020,
+    "popularity": 0
+  },
+  {
+    "id": "wicked",
+    "title": "Wicked",
+    "year": 2024,
+    "releaseDate": "2024-11-22",
+    "decade": 2020,
+    "popularity": 0
+  },
+  {
+    "id": "a-minecraft-movie",
+    "title": "A Minecraft Movie",
+    "year": 2025,
+    "releaseDate": "2025-04-04",
+    "decade": 2020,
+    "popularity": 0
+  }
+]
