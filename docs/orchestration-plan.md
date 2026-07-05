@@ -1,138 +1,182 @@
-# Orchestration Plan — Multi-Agent Execution for the UI Redesign
+# Orchestration Plan v2 — the Structured Orchestrated Path
 
-> **What this is:** a blueprint for running the remaining build plan (the UI
-> redesign waves from `design/UI-PRD.md`) with a Fable orchestrator delegating
-> to Opus/Sonnet subagents, written for the NEXT session to execute. It does not
-> change any game code. It exists because the container is ephemeral and the
-> live wave/task list currently exists only in a running session's context —
-> see "Handoff requirement" at the bottom.
+> **Directive: moving forward, all remaining build-plan work runs through this
+> protocol.** Point the executing session at this file. It reconciles against
+> the in-flight wave plan (Step 0), then executes the remaining work as
+> orchestrated waves: a Fable main loop dispatching Fable/Opus/Sonnet
+> subagents, cut for maximum parallelism under the repo's one hard constraint.
+>
+> This doc is self-contained: copy it into any working copy of the repo and
+> execute from it. It changes no game code by itself.
 
-## The honest assessment first
+---
 
-Multi-agent orchestration helps this repo in two ways, and one of them is not
-the one people expect:
+## Step 0 — Reconcile (the executing session does this FIRST)
 
-1. **Wall-clock parallelism** — real, but capped by file topology, not by how
-   many agents you can spawn. Roughly half the redesign surface (Duel board,
-   Duel overlays, end recap — UI-PRD §S2/S3/S4, the "spend the effort here"
-   screens) lives in **one file**, `src/DuelGame.tsx` (~1,960 lines, 31
-   `useState`). Two agents editing it concurrently is merge hell in exactly the
-   file CLAUDE.md flags as highest blast radius. That work is inherently
-   serial. Expect maybe a 25–40% wall-clock win overall, not 4×.
-2. **Context hygiene** — the bigger, quieter win. A long single session
-   executing a many-wave plan degrades: the executor's context fills with old
-   file reads and stale diffs. A fresh subagent per task starts with a full
-   context budget and a tight brief, and the orchestrator never has to hold
-   the 2,000-line file in its own head. This improves *quality and
-   consistency* late in the plan, which matters more here than speed.
+The live wave plan was authored in-session and never committed, so this doc
+cannot know task-level status. Known checkpoint from the user (2026-07-05):
 
-So: **Fable orchestrating + Opus/Sonnet workers is the right shape**, as long
-as the plan is re-cut by *file ownership* (lanes) rather than by feature, and
-as long as `DuelGame.tsx` has exactly one owner at a time.
+- **Wave 1: DONE.**
+- **Wave 2: IN PROGRESS — currently at task A3.**
 
-## Lane map (what can actually run in parallel)
+Before dispatching anything, the orchestrator must:
 
-Lanes are disjoint file sets. Tasks in different lanes can run concurrently;
-tasks in the same lane are serial. Line counts as of this writing.
+1. **Snapshot the in-flight plan into the repo.** Write the full wave/task
+   list — done, in-progress, and remaining — to `docs/ui-tasks.md`, checkbox
+   format like `docs/chronology-tasks.md`, one acceptance line per task.
+   Commit it. (If this session no longer has the plan in context, rebuild the
+   remaining list from the task catalog in §5 below — it covers the full
+   UI-PRD scope; check off whatever the working tree already shows as done.)
+2. **Finish the task in flight (A3) to its gate before switching modes.**
+   Never hand a half-edited `DuelGame.tsx` to a subagent.
+3. **Re-bucket every remaining task** into the lanes (§2) and tiers (§3),
+   then pack waves per §4. From that point on, the orchestrator implements
+   nothing by hand — it briefs, dispatches, reviews, merges, and runs gates.
 
-| Lane | Files | Size | UI-PRD screens | Parallel-safe? |
-| --- | --- | --- | --- | --- |
-| **HERO** | `src/DuelGame.tsx` | 1,957 | S2 Duel board, S3 overlays, S4 recap | **No — one owner, always. This lane is the critical path; keep it busy every wave.** |
-| MENU | `src/App.tsx` | 155 | S1 Menu | Yes |
-| SOLO | `src/SoloGame.tsx`, `src/components/Results.tsx` | 441 | S5 Solo board | Yes |
-| CHRONO | `src/ChronologyGame.tsx`, `src/components/ChronoCard.tsx` | 737 | S6 Chronology board | Yes |
-| SHELL | `src/components/Hand.tsx`, `MeldZone.tsx`, `HowToPlay.tsx`, `ShareCopy.tsx` | 682 | shared chrome | Yes, but Hand/MeldZone interface changes ripple into HERO — land those *before* or *between* HERO tasks, not during |
-| TOKENS | `src/index.css`, design-token values | 21 | §3 token system | Yes, but land in **wave 1 alone** — everything downstream reads it |
-| CARDS | `src/components/Card.tsx` | 189 | explicitly OUT of UI-PRD scope (separate workstream, `design/card-*.md`) | separate track entirely |
-| DOCS | `RULEBOOK.md`, `README.md` | — | — | Yes |
+---
 
-Rules the lane map encodes:
+## 1. The one hard constraint (unchanged, non-negotiable)
 
-- `src/lib/` and `sim/` are **frozen** for this workstream. The redesign is
-  chrome-only; UI-PRD §8 freezes rules and copy. If any task wants to touch
-  them, that's a scope escalation → stop and ask the user (a rule/scoring
-  change is never trivial — CLAUDE.md).
-- `Card.tsx` renders inside every mode. If a HERO task and a SOLO task both
-  "just quickly" restyle it, they collide. Card work is its own workstream;
-  placeholder sizes in UI-PRD §2 are the contract.
-- Avoid worktree isolation as the fix for overlap. Merging parallel diffs to
-  `DuelGame.tsx` costs more than serializing the tasks. Re-slice instead.
+`src/DuelGame.tsx` (~1,960 lines, 31 `useState`) holds the hero screens (Duel
+board, overlays, end recap — UI-PRD §S2/S3/S4). It is the repo's highest
+blast radius and CLAUDE.md forbids refactoring it. Therefore:
 
-## Model tiering
+- **Exactly one agent owns `DuelGame.tsx` at any moment.** Its edits are the
+  serial critical path; every wave is paced by it.
+- Nobody "quickly" touches it from a side lane. Ever.
+- The way to parallelize hero-screen work anyway is §4's **build-then-wire**
+  pattern — that is the main upgrade in this v2.
 
-| Tier | Role | Assign |
+`src/lib/` and `sim/` are **frozen** for the redesign (chrome-only work;
+UI-PRD §8 freezes rules and copy). Any task that wants in is a scope
+escalation → stop and ask the user. Deploys are always held for user OK.
+
+## 2. Lane map (disjoint file sets = the parallelism budget)
+
+| Lane | Files | UI-PRD | Concurrency |
+| --- | --- | --- | --- |
+| **HERO** | `src/DuelGame.tsx` | S2, S3, S4 | serial, one owner |
+| **FORGE** | NEW files in `src/components/` (see §4) | S2–S4 chrome parts | fully parallel — each new component is its own lane |
+| MENU | `src/App.tsx` | S1 | parallel |
+| SOLO | `src/SoloGame.tsx`, `src/components/Results.tsx` | S5 | parallel |
+| CHRONO | `src/ChronologyGame.tsx`, `src/components/ChronoCard.tsx` | S6 | parallel |
+| SHELL | `src/components/Hand.tsx`, `MeldZone.tsx`, `HowToPlay.tsx`, `ShareCopy.tsx` | shared chrome | parallel, but Hand/MeldZone interface changes land BETWEEN hero tasks, not during |
+| TOKENS | `src/index.css` + token values | §3 tokens | parallel; land before dependents |
+| CONTENT | `scripts/chronology-seed.ts` + emitted pool JSON | — | fully parallel to everything |
+| DOCS | `RULEBOOK.md`, `README.md` | — | parallel; last |
+| CARDS | `src/components/Card.tsx` | out of scope (separate workstream, `design/card-*.md`) | do not touch from this plan |
+
+## 3. Model tiering — Fable on the heavy UI
+
+| Tier | Use for | Concretely |
 | --- | --- | --- |
-| **Fable** (main loop) | Orchestrator only: holds the plan, writes briefs, reviews diffs, merges, runs gates, resolves anything ambiguous, talks to the user. Does not implement — its context stays clean for judgment. | — |
-| **Opus** (subagent) | Anything touching HERO, and any task requiring layout judgment against the PRD (desktop 1440×900 re-architecture, z-layer system, race-to-20 visualization, meld-shelf growth strategy, Recast overlay drama). | HERO lane, hard SHELL tasks |
-| **Sonnet** (subagent) | Contained, well-specified tasks where the brief fully determines the outcome: applying the token palette, MENU restyle, SOLO/CHRONO passes that mirror an already-landed Duel pattern, HowToPlay/ShareCopy restyle, RULEBOOK/README updates, stress-test screenshot runs. | TOKENS, MENU, DOCS, follow-the-pattern SOLO/CHRONO |
+| **Fable — orchestrator** | The main loop. Briefs, dispatch, diff review, merges, full gate runs, user decisions. Implements nothing. | — |
+| **Fable — heavy-UI subagents** | The judgment-dense UI work where a larger model visibly pays: anything that must hold the whole PRD layout system in its head at once. | • Every **HERO** integration/wiring pass on `DuelGame.tsx` • the **desktop 1440×900 table re-architecture** (kill the 420px letterbox — the PRD's core ask) • the **z-layer system** + flex-zone layout (no fixed pixel stacking; the 667px stress test) • final **motion/feel pass** across the board (§7 of the PRD) |
+| **Opus — subagents** | Complex bounded components and screens: real design judgment, but scoped to one file the brief fully names. | • race-to-20 visualization • Taz presence corner • meld-shelf growth strategy • Recast offer overlay (the drama moment) • end-of-game recap reel • draw-choice overlay • SOLO and CHRONO redesign passes |
+| **Sonnet — subagents** | Fully-specified mechanical tasks; the brief determines the outcome. | • TOKENS application • MENU (S1) restyle • announcement banner + token chips + idle-cue components • HowToPlay/ShareCopy restyle • RULEBOOK/README updates • CONTENT Stage B pool growth (162 → 300–500) • stress-test screenshot runs |
 
-Heuristic: **if the brief can fully specify the outcome, Sonnet; if the agent
-must make design judgment calls against the PRD, Opus.** Don't put Sonnet on
-`DuelGame.tsx` — the file itself is the hazard, regardless of task size.
-(Haiku isn't worth wiring in; the small tasks here are Sonnet-cheap already.)
+Heuristic: brief fully determines the outcome → Sonnet; judgment within one
+named file → Opus; must reason about the whole layout system or edit
+`DuelGame.tsx` → Fable. Never Sonnet on `DuelGame.tsx`.
 
-## Wave protocol
+## 4. Build-then-wire — how hero work goes parallel anyway
 
-Each wave = one HERO task (serial critical path) + up to ~3 side-lane tasks
-running concurrently beside it. HERO paces the wave; side lanes are "free"
-work that rides along.
+The v1 plan treated S2/S3/S4 as inherently serial because they live in
+`DuelGame.tsx`. Half of that work doesn't have to happen *inside* the file:
 
-1. **Brief** — orchestrator writes each subagent a self-contained brief:
-   - exact files it may touch (its lane — nothing else, name them);
-   - the task's acceptance criteria from the plan, plus relevant UI-PRD
-     sections pasted in (subagents shouldn't re-derive scope);
-   - house rules: surgical changes only, match existing style, lowercase
-     `say()` voice, React 18 / Tailwind 4 / Framer Motion only, **no new
-     deps**, no localStorage, frozen copy;
-   - the gates it must run before returning: `npm run build` clean, the
-     relevant `npm run verify*` green, and the **B-guard** — actually run the
-     app (Chromium + Playwright are preinstalled) and confirm the screen plays;
-   - "report what you verified and anything you noticed but did not touch."
-2. **Dispatch** — HERO task to Opus; side-lane tasks to Sonnet/Opus per the
-   tiering table. All in one parallel batch.
-3. **Integrate** — orchestrator reviews each diff against the brief (files
-   touched = files allowed?), merges, then runs the full gate suite once:
-   `npm run verify` (**60/60**), `npm run verify:solo`, `npm run
-   verify:chronology`, `npm run build`. Gates are cheap — run all of them
-   every wave even for chrome-only changes; they're the tripwire for scope
-   creep into the engine.
-4. **Checkpoint** — commit per wave with the wave label in the message; update
-   the task list doc (checkboxes) in the same commit so a dead session loses
-   at most one wave.
-5. **Review pass** (end of wave, parallel): a reviewer subagent on the wave's
-   full diff + a browser smoke of the three modes. Findings feed the next
-   wave's briefs rather than triggering in-wave churn, unless a gate broke.
+**FORGE (parallel):** each major piece of new duel chrome is built as a NEW
+standalone component file in `src/components/`, by a separate agent, against
+a props contract the orchestrator fixes in the brief (inputs, callbacks,
+placeholder card sizes from UI-PRD §2, token names). New files touch nothing
+existing → any number can be forged concurrently, each verified in isolation
+(build clean + a scratch harness render). Candidates:
 
-What the orchestrator does NOT delegate: merging, gate runs, anything
-requiring a user decision (deploys are outward-facing — always held for user
-OK), and re-litigating locked decisions in the PRD or PLAN.md.
+- `ScoreRace.tsx` — the race-to-20 track (Opus)
+- `TazCorner.tsx` — opponent nameplate/avatar, fan, count, tokens (Opus)
+- `MeldShelf.tsx` — growth-strategy shelf, replaces inline shelf (Opus)
+- `RecastOffer.tsx` — the suspense overlay (Opus)
+- `RecapReel.tsx` — end-screen highlight reel (Opus)
+- `DrawChoice.tsx` — keep-one overlay (Opus)
+- `PlayBanner.tsx`, `TokenChips.tsx`, `IdleCue.tsx` — (Sonnet)
 
-## Cutting the existing wave plan over
+**WIRE (serial, Fable):** one HERO pass per wave swaps a forged component in
+for the inline zone it replaces — delete the old lines, mount the new
+component, thread existing state through the agreed props. Each wire pass is
+small and surgical (the component boundary contains the blast radius), ends
+with the full gate suite plus an in-browser play, and is a single commit.
 
-The live wave/task list (the "A3, wave 2" plan) lives in the executing
-session's context, not in the repo. To adopt this blueprint:
+This converts most of the hero screen from "serial edits in a 2,000-line
+file" into "parallel component builds + short serial wire steps." The state
+soup stays where it is — components receive props; no reducer refactor.
 
-1. **Handoff requirement:** before the current session ends, have it commit
-   its remaining task list to `docs/ui-tasks.md` — same checkbox format as
-   `docs/chronology-tasks.md`, one acceptance line per task. Without this
-   file, the next session is re-planning from scratch.
-2. The next session's orchestrator then re-buckets each remaining task by
-   lane (table above), tiers it (Opus/Sonnet), and packs waves as: one HERO
-   task + whatever side-lane tasks are ready. Dependency rule of thumb:
-   TOKENS first, SHELL interface changes before the HERO tasks that consume
-   them, DOCS last.
+## 5. Task catalog & wave packing (max-parallel cut)
 
-## Known open threads to fold into the wave plan
+Full remaining scope per UI-PRD, pre-bucketed. At Step 0 the orchestrator
+checks off whatever the in-flight plan already landed, then packs waves:
+**every wave = one HERO/WIRE step (Fable) + as many FORGE/side-lane tasks as
+are ready.** Suggested shape — resequence freely to keep all lanes saturated,
+respecting only the arrows:
 
-Standing items already flagged in PLAN.md / chronology-tasks.md that slot
-naturally into lanes:
+**Wave A — foundation + first forge batch**
+- TOKENS: design-token system into `index.css` (palette, radii, shadows,
+  named z-layers, timing) — Sonnet. *(→ blocks all restyle tasks)*
+- HERO (Fable): flex-zone layout skeleton + z-layer adoption inside the duel
+  board — the no-fixed-pixel-stacking pass; 667px stress test.
+- FORGE in parallel: `ScoreRace` (Opus) · `TazCorner` (Opus) · `PlayBanner`
+  + `TokenChips` + `IdleCue` (Sonnet).
+- CONTENT: Stage B pool growth kickoff (Sonnet, rides along every wave).
 
-- **HERO:** double-tap "Allow it" re-entry guard (pre-existing bug, spawned as
-  a task); two-pile layout flagged for the feel pass; ending-stalemate feel.
-- **D1** (draw-3 discard visibility) — revisit after the draw-3 feel pass;
-  it's a *rules-adjacent* visibility decision, so it's an orchestrator/user
-  call, not a subagent call.
-- **DOCS/content:** Chronology Stage B pool growth (162 → 300–500) + human
-  date-verification pass — content-only, Sonnet-friendly, fully parallel to
-  everything (touches only `scripts/chronology-seed.ts` + emitted JSON).
-- **Deploy** — always held for explicit user OK.
+**Wave B — wire batch 1 + second forge batch**
+- HERO/WIRE (Fable): mount `ScoreRace` + `TazCorner` + `PlayBanner`/chips.
+- FORGE in parallel: `MeldShelf` (Opus) · `RecastOffer` (Opus) ·
+  `DrawChoice` (Opus).
+- MENU (S1) restyle on the new tokens — Sonnet.
+- SHELL: `Hand.tsx` fan/raise restyle (Opus — interface ripples into HERO,
+  so it lands this wave, wired next wave).
+
+**Wave C — wire batch 2 + desktop**
+- HERO/WIRE (Fable): mount `MeldShelf` + overlays + restyled Hand; retire
+  `MeldZone.tsx` inline usage.
+- HERO (Fable): desktop 1440×900 real-table re-architecture (side-rail
+  shelf, top race, ambient backdrop). *(→ needs wired components)*
+- FORGE: `RecapReel` (Opus). SOLO pass (Opus) · CHRONO pass (Opus) in
+  parallel — mirror the landed duel language.
+
+**Wave D — finish**
+- HERO/WIRE (Fable): end-of-game recap with `RecapReel`; motion/feel pass
+  (§7) across the board; the double-tap "Allow it" re-entry guard (standing
+  bug, same file, same owner).
+- SHELL: HowToPlay + ShareCopy restyle (Sonnet).
+- DOCS: RULEBOOK/README sweep (Sonnet). Stress-test screenshots (Sonnet).
+- Orchestrator: D1 (draw-3 discard visibility) is a rules-adjacent decision —
+  surface to the user, don't delegate. Deploy: held for user OK.
+
+## 6. Wave protocol (unchanged mechanics, tightened)
+
+1. **Brief** every subagent self-contained: exact files allowed (named);
+   acceptance criteria + the relevant UI-PRD sections pasted in; props
+   contract for FORGE tasks; house rules (surgical, match style, lowercase
+   `say()`, React 18 / Tailwind 4 / Framer Motion only, no new deps, no
+   localStorage, frozen copy); required gates (`npm run build`, relevant
+   `verify*`, and for screen work the B-guard: run the app — Chromium +
+   Playwright preinstalled — and confirm it plays); report anything noticed
+   but not touched.
+2. **Dispatch** the wave's tasks in one parallel batch; HERO/WIRE runs
+   alongside.
+3. **Integrate** (orchestrator): diff review per brief — files touched ⊆
+   files allowed — then merge and run the full suite once per wave:
+   `npm run verify` (**60/60**) · `verify:solo` · `verify:chronology` ·
+   `npm run build`. All of them every wave; they're the tripwire for scope
+   creep into the frozen engine.
+4. **Checkpoint**: one commit per wave, wave label in the message, checkbox
+   updates to `docs/ui-tasks.md` in the same commit. A dead session loses at
+   most one wave.
+5. **Review pass** in parallel at wave end: reviewer subagent on the wave
+   diff + browser smoke of all three modes. Findings feed the next wave's
+   briefs; only a broken gate interrupts the current one.
+
+## 7. What stays with the orchestrator, always
+
+Merging · gate runs · props-contract decisions · anything touching locked
+decisions in PLAN.md / the PRD · rules-adjacent calls (D1) · deploy timing ·
+and talking to the user.
