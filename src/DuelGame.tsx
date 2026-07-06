@@ -1243,7 +1243,12 @@ export default function DuelGame({
 
   return (
     <div className="h-full overflow-hidden">
-      <div className="relative mx-auto h-full w-full max-w-[420px]">
+      {/* Flex-zone board (Stub Wave A): the top stack flows, a flex-1 band
+          absorbs height differences (banner/cue anchor inside it), and the
+          shelf rides above the fan reservation — no fixed-pixel tops, so
+          667px-class phones compress the band instead of colliding zones.
+          pb reserves the hand fan's overlay height (Hand is h-[225px]). */}
+      <div className="relative mx-auto flex h-full w-full max-w-[420px] flex-col pb-[225px]">
         <header className="flex items-start justify-between px-3 pt-3">
           <div className="flex items-center">
             <button
@@ -1304,7 +1309,7 @@ export default function DuelGame({
         </header>
 
         {/* CPU hand: face-down, with its remaining tokens */}
-        <div className="absolute inset-x-0 top-[64px] z-10 flex flex-col items-center">
+        <div className="relative z-[var(--z-resting)] mt-1 flex flex-col items-center">
           <div className="flex items-center pl-4">
             {cpuHand.map((id) => (
               <motion.div
@@ -1341,7 +1346,7 @@ export default function DuelGame({
         </div>
 
         {/* Draw deck + the two Double Feature marquees */}
-        <section className="absolute inset-x-0 top-[160px] z-10 flex items-start justify-center gap-4">
+        <section className="relative z-[var(--z-resting)] mt-3 flex items-start justify-center gap-4">
           <button
             type="button"
             aria-label={deck.length > 0 ? 'Draw a card' : 'Pass turn'}
@@ -1464,7 +1469,7 @@ export default function DuelGame({
                             e.stopPropagation()
                             doTakePile(idx)
                           }}
-                          className="absolute -bottom-8 inset-x-0 z-30 mx-auto w-max rounded-full bg-[#d8b24a] px-3 py-1.5 text-[11px] font-black uppercase tracking-wider text-[#23211c] shadow-lg ring-2 ring-white/70 active:scale-95"
+                          className="absolute -bottom-8 inset-x-0 z-[var(--z-traveling)] mx-auto w-max rounded-full bg-[#d8b24a] px-3 py-1.5 text-[11px] font-black uppercase tracking-wider text-[#23211c] shadow-lg ring-2 ring-white/70 active:scale-95"
                         >
                           ↑ Take to finish meld
                         </button>
@@ -1477,7 +1482,7 @@ export default function DuelGame({
                           e.stopPropagation()
                           doTakePile(idx)
                         }}
-                        className="absolute -bottom-7 inset-x-0 z-30 mx-auto w-max rounded-full bg-[#2c5240] px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wider text-white shadow-md ring-2 ring-[#2c5240]/30 active:scale-95"
+                        className="absolute -bottom-7 inset-x-0 z-[var(--z-traveling)] mx-auto w-max rounded-full bg-[#2c5240] px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wider text-white shadow-md ring-2 ring-[#2c5240]/30 active:scale-95"
                       >
                         ↑ Take for meld
                       </button>
@@ -1488,8 +1493,12 @@ export default function DuelGame({
           </div>
         </section>
 
+        {/* Mid band: the flex-1 breathing zone between the piles and the shelf.
+            Banner and idle cue anchor to it instead of fixed pixel tops, so
+            they stay mid-board on any viewport height. */}
+        <div className="relative min-h-0 flex-1" data-mid-band>
         {/* Turn banner */}
-        <div className="pointer-events-none absolute inset-x-0 top-[398px] z-40 flex justify-center px-4">
+        <div className="pointer-events-none absolute inset-0 z-[var(--z-hud)] flex translate-y-3 items-center justify-center px-4">
           <AnimatePresence>
             {banner && (
               <motion.div
@@ -1545,12 +1554,13 @@ export default function DuelGame({
           !meldSelect &&
           raisedId === null &&
           !gameOver && (
-            <div className="pointer-events-none absolute inset-x-0 top-[372px] z-10 flex justify-center px-6">
+            <div className="pointer-events-none absolute inset-0 z-[var(--z-resting)] flex -translate-y-3 items-center justify-center px-6">
               <span className="rounded-full bg-[#23211c]/10 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-[#9a917c]">
                 one move — play a card or draw
               </span>
             </div>
           )}
+        </div>
 
         {/* Banked melds — open to lay-offs from both sides */}
         <MeldZone
@@ -1566,7 +1576,7 @@ export default function DuelGame({
         {superKey > 0 && !reduce && (
           <motion.div
             key={superKey}
-            className="pointer-events-none absolute inset-0 z-[60]"
+            className="pointer-events-none absolute inset-0 z-[var(--z-overlay)]"
             initial={{ opacity: 0 }}
             animate={{ opacity: [0, 0.5, 0] }}
             transition={{ duration: 0.7, times: [0, 0.25, 1] }}
@@ -1587,7 +1597,7 @@ export default function DuelGame({
 
         {/* Keep / toss choice for the drawn card */}
         {pendingDraw !== null && status === 'playerTurn' && (
-          <div className="absolute inset-x-0 bottom-[96px] z-[55] flex flex-col items-center gap-2">
+          <div className="absolute inset-x-0 bottom-[96px] z-[var(--z-contextual)] flex flex-col items-center gap-2">
             {drawnConnects && (
               <span className="rounded-full bg-[#2c5240] px-3 py-1 text-[11px] font-bold text-white shadow-sm">
                 It connects — drag it onto the pile to play it
@@ -1616,7 +1626,7 @@ export default function DuelGame({
 
         {/* Run continuation: keep chaining or end the turn */}
         {runState !== null && status === 'playerTurn' && (
-          <div className="absolute inset-x-0 bottom-[96px] z-[55] flex flex-col items-center gap-2">
+          <div className="absolute inset-x-0 bottom-[96px] z-[var(--z-contextual)] flex flex-col items-center gap-2">
             <span className="rounded-full bg-[#7a5a10] px-3 py-1 text-[11px] font-bold text-white shadow-sm">
               Run ×{runState.count + 1}? Play another via {runState.people[0]}
               {runState.people.length > 1 ? '…' : ''}
@@ -1634,7 +1644,7 @@ export default function DuelGame({
 
         {/* Meld selection bar */}
         {meldSelect && (
-          <div className="absolute inset-x-0 bottom-[96px] z-[55] flex flex-col items-center gap-2">
+          <div className="absolute inset-x-0 bottom-[96px] z-[var(--z-contextual)] flex flex-col items-center gap-2">
             <span className="rounded-full bg-[#23211c] px-3 py-1 text-[11px] font-bold text-white shadow-sm">
               {selected.size < 3
                 ? `Pick ${3 - selected.size} more — a person, series, or ${GENRE_FLOOR}+ of a genre`
@@ -1665,7 +1675,7 @@ export default function DuelGame({
         )}
 
         {/* Player tokens + meld entry */}
-        <div className="absolute left-3 bottom-[240px] z-40 flex flex-col items-start gap-1.5">
+        <div className="absolute left-3 bottom-[240px] z-[var(--z-hud)] flex flex-col items-start gap-1.5">
           <button
             type="button"
             data-token="finalCut"
@@ -1721,7 +1731,7 @@ export default function DuelGame({
 
         {/* Auto-sort (Matinee only): group the hand so links & melds line up */}
         {autoSortEnabled && (
-          <div className="absolute right-3 bottom-[284px] z-40 flex flex-col items-end">
+          <div className="absolute right-3 bottom-[284px] z-[var(--z-hud)] flex flex-col items-end">
             <button
               type="button"
               data-sort
@@ -1742,7 +1752,7 @@ export default function DuelGame({
 
         {/* Hint (Matinee/Feature only): pulse a playable card */}
         {hintEnabled && (
-          <div className="absolute right-3 bottom-[240px] z-40 flex flex-col items-end">
+          <div className="absolute right-3 bottom-[240px] z-[var(--z-hud)] flex flex-col items-end">
             <button
               type="button"
               data-hint

@@ -66,16 +66,45 @@
       prod bundle byte-identical (439.94 kB), sample renders, unknown name
       lists available previews.
 
-## Wave A — hero skeleton + first forge batch
+## Wave A — hero skeleton + first forge batch (IN PROGRESS @ 2026-07-05 wind-down)
 
-- [ ] HERO: flex-zone layout + z-layer adoption in the duel board; 667px
-      stress test passes (Fable).
-- [ ] FORGE `ScoreRace.tsx` (Opus) — race-to-20 track per contract + preview.
-- [ ] FORGE `TazCorner.tsx` (Opus) — opponent nameplate/fan/count/tokens.
-- [ ] FORGE `PlayBanner.tsx` + `TokenChips.tsx` + `IdleCue.tsx` (Sonnet).
-- [ ] CONTENT: Stage B kickoff (docs/stage-b-plan.md) — ⚠ sequence note:
-      A4 pool unification (design signed off, docs/pool-unification.md)
-      lands FIRST; it owns scripts/ + src/data and Stage B builds on it.
+- [~] HERO: flex-zone pass LANDED (DuelGame.tsx: container → flex column
+      w/ pb-[225px] fan reservation; CPU hand + piles in flow; NEW
+      data-mid-band flex-1 zone anchors banner/idle-cue; magic tops
+      64/160/372/398 GONE; MeldZone.tsx shelf in flow — top-[440px] gone,
+      the 667px collision cause; z-vars adopted: resting/traveling/hud/
+      contextual(55→50)/overlay; z-20 backdrop + z-[85]/[90]/[100] modals
+      deliberately left above-scale until the overlay wave). Verified:
+      build clean · verify 64/64 · solo 8/8 · chronology 42/42 · 390×844
+      browser screenshot correct (all zones placed, take-glow live).
+      ⛔ REMAINING: 375×667 stress-test screenshot + a played-through game
+      at both sizes (wind-down interrupted exactly here). Do this FIRST
+      next session before calling the task done.
+- [x] FORGE `ScoreRace.tsx` (254 ln) + preview — tsc clean; agent verified
+      compile/JIT-level only (no rendered screenshot) — eyeball
+      ?preview=ScoreRace at wire time. RULING: turn caption stays INSIDE
+      ScoreRace (contract over brief prose).
+- [x] FORGE `TazCorner.tsx` (189 ln) + preview — browser-verified by agent;
+      pip layoutId={id} namespace preserved. WIRE NOTE: needs a `quote`
+      prop fed from the say() message state (old zone had no quote).
+- [x] FORGE `PlayBanner.tsx` (119 ln, + LastPlayLine/TurnPill exports),
+      `TokenChips.tsx` (92 ln, side prop, Meld button excluded),
+      `IdleCue.tsx` (30 ln, visible-boolean boundary) + previews — tsc
+      clean, HTTP/transform-verified; eyeball previews at wire time.
+      WIRE NOTE: player Final Cut say() side-effect stays in parent
+      (onToggleFinalCut is pure).
+- [ ] Wave A close-out: 667px verify (above) → full-suite re-run →
+      screenshot set to scratchpad → wave commit finalized. FORGE
+      components are UNWIRED (inert) until Wave B.
+- [ ] CONTENT: A4 pool unification implementation (design signed off,
+      docs/pool-unification.md, byte-identical JSON = go/no-go) — did NOT
+      run this wave; ride it along Wave B, BEFORE Stage B.
+
+### Carried type-lift suggestion (orchestrator queue, not urgent)
+Tokens / DuelStatus / RunState are declared inside DuelGame.tsx; ScoreRace
+and TazCorner redeclare them structurally per contract. At a natural wire
+pass, lift to src/lib/ so components share one source — do NOT do it as a
+standalone DuelGame edit.
 
 ## Wave B — wire batch 1 + second forge batch
 

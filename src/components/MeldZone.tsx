@@ -21,7 +21,10 @@ export default function MeldZone({
 }) {
   if (melds.length === 0) return null
   return (
-    <div className="absolute inset-x-0 top-[440px] z-10 flex flex-col items-center gap-1.5 px-3">
+    // In-flow since the Wave A flex-zone pass: DuelGame's column places the
+    // shelf between the mid band and the fan reservation — the old fixed
+    // top-[440px] collided with the hand zone on 667px-class screens.
+    <div className="relative z-[var(--z-resting)] flex w-full flex-col items-center gap-1.5 px-3">
       {melds.map((meld) => (
         <div
           key={meld.id}
