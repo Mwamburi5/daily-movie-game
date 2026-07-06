@@ -513,3 +513,40 @@ enumerate all seven in the brief so the forge agent doesn't infer a subset.
   `setRowRef`). This is the single most shared piece of state across forge
   candidates — `MeldShelf` and any future lay-off-drop-zone logic are
   coupled through the `meldRowRefs` ref map, not just through props.
+
+---
+
+## Appendix A — Orchestrator amendments (W0d, 2026-07-06)
+
+The sections above are the frozen 2026-07-05 extraction; this appendix
+records post-freeze rulings. On conflict, the appendix wins.
+
+1. **Positioning doctrine — self-pins stripped.** PlayBanner
+   (`top-[398px]`) and IdleCue (`top-[372px]`) no longer self-position; both
+   render in flow and the parent owns the pin (`absolute inset-x-0 top-*
+   z-*`), matching TazCorner's existing doctrine. The zone sections above
+   describe the OLD in-DuelGame pins; W1 wire passes re-pin at the parent and
+   those hardcoded values are superseded (the old values regress the 667px
+   small-phone fix).
+2. **Tier-accent palette exception.** `#a3411a` (super) / `#7a5a10`
+   (strong) — in PlayBanner and in DuelGame inline zones (:1514/:1516/:1630/
+   :1661/:1694 as of the 1,999-line file) — are pre-Stub tier accents carried
+   through the forge. Remapping onto stub tokens would change pixels
+   (README: amber is the ONLY action/highlight color; stub-red is
+   semantically negative-only), so they stay raw hexes pending the W1
+   checkpoint on real pixels. Tokenize only if kept.
+3. **TokenChips CPU-side dormancy (ruling).** CPU token pills render inside
+   TazCorner (the 7a booth owns them); TokenChips is player-side only — its
+   `side='cpu'` path stays dormant, kept but never mounted in W1–W3.
+4. **ScoreRace data-attr semantics change.** The old inline header used
+   `data-score="player"` / `data-score="cpu"` as element markers plus a bare
+   `data-turn` (DuelGame.tsx:1276/:1284/:1294). The forged ScoreRace root
+   carries values instead: `data-score="{playerScore}-{cpuScore}"`,
+   `data-turn="{status}"`. No repo consumers; browser eyeball scripts must
+   query the new shape once the W1 ScoreRace wire lands.
+5. **Genre spine/pip palette (StubCard, W2).** Taxi comp purple → minted
+   `--color-stub-genre-pip: #58486C` (no palette neighbor). Batman comp
+   spine `#546473` sits in the stub-slate family; Godfather `#8A2422` in the
+   stub-red family. Full genre→spine mapping is a W2 StubCard forge
+   decision: snap to the nearest existing token where a family neighbor
+   exists; only purple earned a mint.

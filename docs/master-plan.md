@@ -319,9 +319,10 @@ what's ready-to-review per sitting.
 - [x] W0b banners + CLAUDE.md fixes (committed with this doc)
 - [x] W0c reference PNGs adopted + committed (`design_handoff_screenshots/`,
       verified vs README/HTML)
-- [ ] W0d component pre-fixes (pins · TazCorner/TokenChips ruling ·
-      stub-genre-pip token)
-- [ ] W0e stale worktree removed
+- [x] W0d component pre-fixes (pins · TazCorner/TokenChips ruling ·
+      stub-genre-pip token) (2026-07-06: pins stripped, `#58486C` minted,
+      ui-contracts Appendix A records all five rulings)
+- [x] W0e stale worktree removed (2026-07-06)
 - [ ] W1 wire ×5 + 7a language live · side-by-sides · played game @ both sizes — **Buri approved: ___**
 - [ ] P1 A4 unification (byte-identical JSON) — auto
 - [ ] M4a dealer lock encoded + verify:connections green — auto

@@ -76,6 +76,7 @@ body {
   --color-stub-paper-layer-1: #E7E1CC; /* diorama stack, layer 1 (inset 5px/offset 4px) */
   --color-stub-paper-layer-2: #D9D2BC; /* diorama stack, layer 2 (inset 10px/offset 8px) */
   --color-stub-scrim: rgba(31, 58, 82, .64); /* overlay scrim; README gives .62-.66, 7f midpoint */
+  --color-stub-genre-pip: #58486C; /* derived (W0d): sampled from the 7a taxi comp's spine+pip — muted plum, no palette neighbor; the ONE sanctioned off-README mint. StubCard's purple genre variant (W2). */
 
   /* Radii */
   /* header uses bottom corners ONLY (rounded-b-*, never the top) — apply as

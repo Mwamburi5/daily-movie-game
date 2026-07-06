@@ -17,6 +17,10 @@ export interface PlayBannerData {
 // GODFATHER → PACINO" mono/slate, delta in stub-red). Presentational only —
 // the parent still owns the banner state and the 2400ms auto-dismiss timer
 // (contract: "Callbacks out: none").
+// POSITIONING: this component renders IN FLOW. The parent owns the pin
+// (`absolute inset-x-0 top-* z-*` per docs/ui-contracts.md PlayBanner) — a
+// self-pin here regresses the small-phone (667px) layout fix (master-plan
+// W0d).
 export default function PlayBanner({
   banner,
   reduce,
@@ -25,7 +29,7 @@ export default function PlayBanner({
   reduce: boolean
 }) {
   return (
-    <div className="pointer-events-none absolute inset-x-0 top-[398px] z-[var(--z-hud)] flex justify-center px-4">
+    <div className="pointer-events-none flex justify-center px-4">
       <AnimatePresence>
         {banner && (
           <motion.div
@@ -38,6 +42,10 @@ export default function PlayBanner({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
             transition={reduce ? { duration: 0.15 } : { type: 'spring', stiffness: 320, damping: 24 }}
+            // The two raw hexes below (#a3411a super / #7a5a10 strong) are a
+            // documented palette exception — see docs/ui-contracts.md
+            // Appendix A (pre-Stub app tier accents; W1 checkpoint judges
+            // them on real pixels).
             className={`flex items-center gap-2 rounded-stub-pill border-2 border-stub-navy py-1.5 pl-1.5 pr-2.5 font-stub-label shadow-stub-card-resting ${
               banner.tier === 'super'
                 ? 'bg-[#a3411a]'

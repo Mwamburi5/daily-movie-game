@@ -8,6 +8,11 @@
 // Stub pills (7a items 1/2): solid navy pill = available "FINAL CUT"; spent =
 // #9AA5AD/stub-disabled border+text with a line-through. Always visible,
 // never hidden (README "Interactions & Behavior").
+//
+// W0d ruling (orchestrator, 2026-07-06): CPU-side token pills render inside
+// TazCorner — the 7a booth owns them. TokenChips is player-side only in
+// W1–W3 wiring; the side='cpu' path stays dormant (kept, not wired — do not
+// mount it anywhere).
 export interface TokenChipsProps {
   side: 'cpu' | 'player'
   finalCut: boolean

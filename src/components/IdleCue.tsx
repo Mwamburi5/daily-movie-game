@@ -6,6 +6,10 @@ import { motion } from 'framer-motion'
 // !gameOver) stays in the PARENT per docs/ui-contracts.md IdleCue "Props
 // in" — this component only renders the cue visual given a precomputed
 // `visible` boolean, so the six/seven-condition guard isn't duplicated here.
+// POSITIONING: this component renders IN FLOW. The parent owns the pin
+// (`absolute inset-x-0 top-* z-*` per docs/ui-contracts.md IdleCue) — a
+// self-pin here regresses the small-phone (667px) layout fix (master-plan
+// W0d).
 export default function IdleCue({
   visible,
   reduce,
@@ -15,7 +19,7 @@ export default function IdleCue({
 }) {
   if (!visible) return null
   return (
-    <div className="pointer-events-none absolute inset-x-0 top-[372px] z-[var(--z-resting)] flex justify-center px-6">
+    <div className="pointer-events-none flex justify-center px-6">
       <motion.span
         // Subtle pulse (Stub: amber accent, JetBrains Mono caps micro-label,
         // <=400ms per README "Motion") — static under prefers-reduced-motion.
