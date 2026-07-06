@@ -323,7 +323,11 @@ what's ready-to-review per sitting.
       stub-genre-pip token) (2026-07-06: pins stripped, `#58486C` minted,
       ui-contracts Appendix A records all five rulings)
 - [x] W0e stale worktree removed (2026-07-06)
-- [ ] W1 wire ×5 + 7a language live · side-by-sides · played game @ both sizes — **Buri approved: ___**
+- [x] W1 wire ×5 + 7a language live · side-by-sides · played game @ both sizes
+      (2026-07-06: five wires + navy header/cream canvas/fonts live; 7e compact
+      header+booth pulled forward from W2 — the 667 gate was unmeetable without
+      it; short-viewport band de-collision; two full games played at both sizes;
+      checkpoint evidence in session) — **Buri approved: ___**
 - [x] P1 A4 unification (byte-identical JSON) — auto (2026-07-06: byte-identical
       ✓ · 116 dates + 46 stubs · CHRONO_TITLE_OVERRIDES for 4 title-convention
       splits · seed retired INCLUDING the sim migration the design's consumer
@@ -349,6 +353,11 @@ what's ready-to-review per sitting.
    the duplicate `Marquee Game UI Redesign.zip`.
 2. Stage B title picks (decade slates arrive from P2; strike/keep at your pace).
 3. UI checkpoint approvals (W1/W2/W3/W4).
+3b. Ratify a P1 deviation (low stakes, already live): 4 films (LotR ×3,
+   M:I Fallout) keep different Duel card-face vs Chronology titles via a
+   self-checked `CHRONO_TITLE_OVERRIDES` map in the pool build. Alternative
+   was a `chronoTitle` field on `Movie`. Say the word to switch; silence =
+   map stands.
 4. W5 calls: tilt · pool cutover date.
 5. W6: the deploy button.
 
