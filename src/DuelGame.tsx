@@ -79,6 +79,7 @@ import IdleCue from './components/IdleCue.tsx'
 import MeldZone, { meldLabel } from './components/MeldZone.tsx'
 import PlayBanner from './components/PlayBanner.tsx'
 import ShareCopy from './components/ShareCopy.tsx'
+import TokenChips from './components/TokenChips.tsx'
 import { matchCutShare } from './lib/share.ts'
 
 type DuelStatus = 'playerTurn' | 'cpuTurn' | 'recastOffer' | 'over'
@@ -1639,39 +1640,23 @@ export default function DuelGame({
           </div>
         )}
 
-        {/* Player tokens + meld entry */}
+        {/* Player tokens + meld entry. Wrapper owns the pin; TokenChips is
+            player-side only (cpu side stays dormant — W0d ruling, TazCorner
+            owns the booth pills). Final Cut's say() stays here, parent-side,
+            per the TokenChips contract boundary. */}
         <div className="absolute left-3 bottom-[240px] z-[var(--z-hud)] flex flex-col items-start gap-1.5">
-          <button
-            type="button"
-            data-token="finalCut"
-            disabled={
-              !playerTokens.finalCut || status !== 'playerTurn' || meldSelect || runState !== null
-            }
-            onClick={() => {
+          <TokenChips
+            side="player"
+            finalCut={playerTokens.finalCut}
+            recast={playerTokens.recast}
+            fcArmed={fcArmed}
+            finalCutDisabled={status !== 'playerTurn' || meldSelect || runState !== null}
+            onToggleFinalCut={() => {
               const arming = !fcArmed
               setFcArmed(arming)
               if (arming) say('You', 'Final Cut armed — play any card')
             }}
-            className={`rounded-full px-2.5 py-1 text-[9px] font-extrabold uppercase tracking-wider shadow-sm transition-transform active:scale-95 ${
-              !playerTokens.finalCut
-                ? 'bg-transparent text-[#9a917c] ring-1 ring-[#c5bca6] line-through'
-                : fcArmed
-                  ? 'scale-105 bg-[#a3411a] text-white ring-2 ring-[#a3411a]/40'
-                  : 'bg-[#23211c] text-[#f4efe6] disabled:opacity-50'
-            }`}
-          >
-            Final Cut
-          </button>
-          <span
-            data-token="recast"
-            className={`rounded-full px-2.5 py-1 text-[9px] font-extrabold uppercase tracking-wider shadow-sm ${
-              playerTokens.recast
-                ? 'bg-[#23211c] text-[#f4efe6]'
-                : 'bg-transparent text-[#9a917c] ring-1 ring-[#c5bca6] line-through'
-            }`}
-          >
-            Recast
-          </span>
+          />
           {!meldSelect && (
             <button
               type="button"
