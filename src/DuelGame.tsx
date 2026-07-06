@@ -78,6 +78,7 @@ import HowToPlay from './components/HowToPlay.tsx'
 import IdleCue from './components/IdleCue.tsx'
 import MeldZone, { meldLabel } from './components/MeldZone.tsx'
 import PlayBanner from './components/PlayBanner.tsx'
+import ScoreRace from './components/ScoreRace.tsx'
 import ShareCopy from './components/ShareCopy.tsx'
 import TokenChips from './components/TokenChips.tsx'
 import { matchCutShare } from './lib/share.ts'
@@ -1247,70 +1248,49 @@ export default function DuelGame({
   )
 
   return (
-    <div className="h-full overflow-hidden">
+    <div className="h-full overflow-hidden bg-stub-cream">
       {/* Flex-zone board (Stub Wave A): the top stack flows, a flex-1 band
           absorbs height differences (banner/cue anchor inside it), and the
           shelf rides above the fan reservation — no fixed-pixel tops, so
           667px-class phones compress the band instead of colliding zones.
           pb reserves the hand fan's overlay height (Hand is h-[225px]). */}
       <div className="relative mx-auto flex h-full w-full max-w-[420px] flex-col pb-[225px]">
-        <header className="flex items-start justify-between px-3 pt-3">
+        {/* 7a navy header: nav row + the race-to-20 block. Bottom corners
+            only per the token sheet (rounded-b, never the top). ScoreRace owns
+            scores/caption/bar/target-hint — and the data-score/data-turn
+            attrs, in their NEW value-carrying shape (ui-contracts Appendix
+            A4). */}
+        <header className="rounded-b-stub-header bg-stub-navy px-4 pb-3.5 pt-3">
           <div className="flex items-center">
             <button
               type="button"
               aria-label="Back to menu"
               onClick={onExit}
-              className="flex h-11 w-9 items-center justify-center text-2xl text-[#7d7563] active:scale-90"
+              className="flex h-11 w-9 items-center justify-center text-2xl text-stub-cream/80 active:scale-90"
             >
               ‹
             </button>
-            <span className="font-serif text-lg font-black italic tracking-tight">Duel</span>
+            <span className="font-stub-display text-lg font-bold tracking-tight text-stub-cream">
+              Duel
+            </span>
             <button
               type="button"
               aria-label="How to play"
               data-rules-open
               onClick={() => setShowRules(true)}
-              className="ml-2 flex h-7 w-7 items-center justify-center rounded-full text-[12px] font-extrabold text-[#7d7563] ring-1 ring-inset ring-[#c5bca6] active:scale-90"
+              className="ml-2 flex h-7 w-7 items-center justify-center rounded-stub-pill text-[12px] font-extrabold text-stub-cream/80 ring-1 ring-inset ring-stub-slate-light/50 active:scale-90"
             >
               ?
             </button>
           </div>
-          <div className="flex flex-col items-end gap-1 pr-2 pt-1">
-            <div className="flex items-center gap-1.5">
-              <span
-                data-score="player"
-                className={`rounded-full bg-[#2c5240] px-2 py-0.5 text-[11px] font-extrabold tabular-nums text-white transition-opacity ${
-                  status === 'playerTurn' ? 'ring-2 ring-[#2c5240]/30' : 'opacity-60'
-                }`}
-              >
-                You {playerScore}
-              </span>
-              <span
-                data-score="cpu"
-                className={`rounded-full bg-[#b3541e] px-2 py-0.5 text-[11px] font-extrabold tabular-nums text-white transition-opacity ${
-                  status === 'cpuTurn' || status === 'recastOffer'
-                    ? 'ring-2 ring-[#b3541e]/30'
-                    : 'opacity-60'
-                }`}
-              >
-                CPU {cpuScore}
-              </span>
-            </div>
-            <div className="text-[11px] font-semibold text-[#7d7563]" data-turn>
-              {status === 'playerTurn' && (runState ? `Run ×${runState.count + 1}?` : 'Your turn')}
-              {status === 'cpuTurn' && 'CPU is thinking…'}
-              {status === 'recastOffer' && 'CPU is playing…'}
-              {gameOver && 'Game over'}
-            </div>
-            {!gameOver && (
-              <div
-                data-target-hint
-                className="text-[9px] font-bold uppercase tracking-wider text-[#b4ab97]"
-              >
-                show ends at {TARGET_SCORE}
-              </div>
-            )}
-          </div>
+          <ScoreRace
+            playerScore={playerScore}
+            cpuScore={cpuScore}
+            status={status}
+            runState={runState}
+            gameOver={gameOver}
+            TARGET_SCORE={TARGET_SCORE}
+          />
         </header>
 
         {/* CPU hand: face-down, with its remaining tokens */}
