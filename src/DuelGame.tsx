@@ -80,6 +80,7 @@ import MeldZone, { meldLabel } from './components/MeldZone.tsx'
 import PlayBanner from './components/PlayBanner.tsx'
 import ScoreRace from './components/ScoreRace.tsx'
 import ShareCopy from './components/ShareCopy.tsx'
+import TazCorner from './components/TazCorner.tsx'
 import TokenChips from './components/TokenChips.tsx'
 import { matchCutShare } from './lib/share.ts'
 
@@ -229,6 +230,9 @@ export default function DuelGame({
   const [hintsLeft, setHintsLeft] = useState(hintBudget)
   const [invalidNonce, setInvalidNonce] = useState(0)
   const [banner, setBanner] = useState<DuelBanner | null>(null)
+  // Taz's last say() line, persisted for the booth nameplate — the banner
+  // auto-nulls at 2400ms but the quote stays readable until his next line.
+  const [lastCpuQuote, setLastCpuQuote] = useState('')
   const [superKey, setSuperKey] = useState(0) // drives the super-link flash + pile pulse
   const [deepKey, setDeepKey] = useState(0) // drives the deep-cut glow on the pile
   const [fxPile, setFxPile] = useState(0) // which Double Feature pile the super/deep fx plays on
@@ -316,7 +320,12 @@ export default function DuelGame({
     tier: LinkTier | null = null,
     points: number | null = null,
     deep = false,
-  ) => setBanner({ who, text, tier, points, deep, seq: ++seq.current })
+  ) => {
+    setBanner({ who, text, tier, points, deep, seq: ++seq.current })
+    // say() is the single chokepoint for all ~20 banner call sites, so the
+    // booth quote rides along here rather than at each CPU call site.
+    if (who === 'CPU') setLastCpuQuote(text)
+  }
 
   // Record a highlight for the end-of-game recap reel.
   const logRecap = (e: RecapEvent) => setRecap((r) => [...r, e])
@@ -1293,41 +1302,14 @@ export default function DuelGame({
           />
         </header>
 
-        {/* CPU hand: face-down, with its remaining tokens */}
-        <div className="relative z-[var(--z-resting)] mt-1 flex flex-col items-center">
-          <div className="flex items-center pl-4">
-            {cpuHand.map((id) => (
-              <motion.div
-                key={id}
-                layoutId={id}
-                initial={false}
-                className="-ml-4 flex h-[64px] w-[42px] items-center justify-center rounded-md bg-[#23211c] shadow-sm ring-1 ring-inset ring-white/15 first:ml-0"
-              >
-                <span className="font-serif text-sm font-black italic text-[#f4efe6]/40">M</span>
-              </motion.div>
-            ))}
-          </div>
-          <div className="mt-1.5 flex items-center gap-1.5">
-            <span className="text-[11px] font-medium text-[#9a917c]" data-cpu-count>
-              CPU · {cpuHand.length} {cpuHand.length === 1 ? 'card' : 'cards'}
-            </span>
-            <span
-              data-cpu-token="finalCut"
-              className={`rounded px-1 py-px text-[8px] font-extrabold uppercase tracking-wider ${
-                cpuTokens.finalCut ? 'bg-[#23211c] text-[#f4efe6]' : 'text-[#c5bca6] line-through'
-              }`}
-            >
-              Final Cut
-            </span>
-            <span
-              data-cpu-token="recast"
-              className={`rounded px-1 py-px text-[8px] font-extrabold uppercase tracking-wider ${
-                cpuTokens.recast ? 'bg-[#23211c] text-[#f4efe6]' : 'text-[#c5bca6] line-through'
-              }`}
-            >
-              Recast
-            </span>
-          </div>
+        {/* Taz's booth (7a paper diorama). The old card-back pip row is fully
+            retired HERE — TazCorner re-renders the pips under the same
+            layoutId={id} namespace, so the collapse FLIP carries over
+            (keeping both blocks would duplicate layoutIds and silently break
+            Framer's cross-zone card animations). Booth owns the CPU token
+            pills (W0d ruling). */}
+        <div className="relative z-[var(--z-resting)] mx-3 mt-3">
+          <TazCorner cpuHand={cpuHand} cpuTokens={cpuTokens} quote={lastCpuQuote} />
         </div>
 
         {/* Draw deck + the two Double Feature marquees */}
