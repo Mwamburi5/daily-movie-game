@@ -1504,15 +1504,28 @@ export default function DuelGame({
         <div className="relative min-h-0 flex-1" data-mid-band>
         {/* Turn banner — the say() narration channel. Wrapper owns the band
             pin (PlayBanner renders in flow, W0d); the 2400ms auto-dismiss
-            effect stays the parent's, per contract. */}
-        <div className="pointer-events-none absolute inset-0 z-[var(--z-hud)] flex translate-y-3 flex-col justify-center">
+            effect stays the parent's, per contract. On short viewports the
+            band compresses to ~0, so the banner rides the band TOP instead of
+            its center — centered it would sink into the bottom-pinned token
+            chips, which paint over it (same z, later in DOM). */}
+        <div
+          className={`pointer-events-none absolute inset-0 z-[var(--z-hud)] flex flex-col ${
+            shortViewport ? 'justify-start pt-9' : 'translate-y-3 justify-center'
+          }`}
+        >
           <PlayBanner banner={banner} reduce={reduce} />
         </div>
 
         {/* One-move-per-turn cue: sits in the empty mid-board band, idle turns
             only. The wrapper owns the pin (IdleCue renders in flow, W0d); the
-            seven-condition guard stays here per the IdleCue contract. */}
-        <div className="pointer-events-none absolute inset-0 z-[var(--z-resting)] flex -translate-y-3 flex-col justify-center">
+            seven-condition guard stays here per the IdleCue contract. Short
+            viewports: tucks under the banner slot at the band top (pt-10 vs
+            the banner's pt-1) so the rare both-visible frame can't overlap. */}
+        <div
+          className={`pointer-events-none absolute inset-0 z-[var(--z-resting)] flex flex-col ${
+            shortViewport ? 'justify-start pt-1' : '-translate-y-3 justify-center'
+          }`}
+        >
           <IdleCue
             visible={
               status === 'playerTurn' &&
@@ -1644,7 +1657,11 @@ export default function DuelGame({
             player-side only (cpu side stays dormant — W0d ruling, TazCorner
             owns the booth pills). Final Cut's say() stays here, parent-side,
             per the TokenChips contract boundary. */}
-        <div className="absolute left-3 bottom-[240px] z-[var(--z-hud)] flex flex-col items-start gap-1.5">
+        <div
+          className={`absolute left-3 z-[var(--z-hud)] flex flex-col items-start gap-1.5 ${
+            shortViewport ? 'bottom-[200px]' : 'bottom-[240px]'
+          }`}
+        >
           <TokenChips
             side="player"
             finalCut={playerTokens.finalCut}
