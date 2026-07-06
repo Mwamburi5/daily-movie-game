@@ -95,7 +95,7 @@ ROLE_A = {"actor": "blue circle", "director": "amber square"}
 ROLE_C = {"actor": "slate circle", "director": "brown square"}
 COUNT_WORD = {2: "TWO", 3: "THREE", 4: "FOUR"}
 
-TEMPLATE_A = """Design ONE mobile game card FRONT for the movie-connection card game "Marquee."
+TEMPLATE_A = """Design ONE mobile game card FRONT for the movie-connection card game "Match Cut."
 This is one card of a large matched set: the LAYOUT below is a fixed template and
 must be followed exactly; only the movie content changes between cards. Portrait
 3:4 card at high resolution on a dark walnut table. Output the single card only —
@@ -149,7 +149,7 @@ Texture is the headline requirement: the silkscreen halftone grain and flat spot
 inks must be unmistakable even at thumbnail size. Professional collectible card
 game finish."""
 
-TEMPLATE_C = """Design ONE mobile game card FRONT for the movie-connection card game "Marquee."
+TEMPLATE_C = """Design ONE mobile game card FRONT for the movie-connection card game "Match Cut."
 This is one card of a large matched set: the LAYOUT below is a fixed template and
 must be followed exactly; only the movie content changes between cards. Portrait
 3:4 card at high resolution on a dark walnut table. Output the single card only —
@@ -241,7 +241,7 @@ def movie_block(m):
     }, indent=2)
 
 
-HEADER = """# Marquee · Pilot Batch 01 — {name} prompts
+HEADER = """# Match Cut · Pilot Batch 01 — {name} prompts
 
 > **12 paste-ready generation prompts**, one per movie, for style **{style_long}**.
 > Movie facts pulled from `src/data/movies.ts` (credits = top-2 billed cast +1 each,

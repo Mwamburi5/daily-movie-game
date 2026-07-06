@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
-import { marqueeShare } from '../lib/share.ts'
+import { matchCutShare } from '../lib/share.ts'
+import type { DailyFinish } from '../lib/progress.ts'
 import ShareCopy from './ShareCopy.tsx'
 
 interface SolutionStep {
@@ -18,6 +19,7 @@ interface ResultsProps {
   cardsLeft: number
   emoji: string
   solution: SolutionStep[]
+  daily: DailyFinish | null // streak readout — null on practice rounds
   onReset: () => void
 }
 
@@ -31,6 +33,7 @@ export default function Results({
   cardsLeft,
   emoji,
   solution,
+  daily,
   onReset,
 }: ResultsProps) {
   const reduce = useReducedMotion()
@@ -45,7 +48,7 @@ export default function Results({
     status === 'won'
       ? `score ${score}, par ${par} (${golf})`
       : `stuck — ${cardsLeft} left in hand, par ${par}`
-  const text = marqueeShare('Daily Puzzle', shareLine, emoji)
+  const text = matchCutShare('Daily Puzzle', shareLine, emoji)
 
   return (
     <motion.div
@@ -83,6 +86,14 @@ export default function Results({
           {invalids === 1 ? 'play' : 'plays'}
           {comboBonus > 0 && ` · combo −${comboBonus}`}
         </p>
+
+        {daily && (
+          <p className="mt-1 text-[13px] font-semibold text-[#9a917c] tabular-nums" data-daily-meta>
+            day {daily.day} · streak {daily.streak}
+            {daily.best !== null && ` · best ${daily.best}`}
+            {daily.repeat && ' · already played today'}
+          </p>
+        )}
 
         <div className="mt-5 rounded-xl bg-white/70 px-5 py-3 text-xl tracking-wider shadow-sm">
           {emoji}

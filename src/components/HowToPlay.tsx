@@ -287,6 +287,19 @@ export default function HowToPlay({ onClose }: { onClose: () => void }) {
           </p>
         </Section>
 
+        {/* TMDB free-tier attribution — required alongside any TMDB-derived
+            data in the pool (docs/tmdb-plan.md "Obligations"). */}
+        <section className="mb-7 border-t border-[#d8d0bd] pt-5" data-tmdb-attribution>
+          <h3 className="mb-2 text-[11px] font-extrabold uppercase tracking-wider text-[#9a917c]">
+            About the data
+          </h3>
+          <img src="/tmdb-logo.svg" alt="TMDB" className="mb-2 h-3 w-auto" />
+          <p className="text-[11px] leading-relaxed text-[#9a917c]">
+            This product uses TMDB and the TMDB APIs but is not endorsed, certified, or otherwise
+            approved by TMDB.
+          </p>
+        </section>
+
         <button
           type="button"
           onClick={onClose}

@@ -1,5 +1,31 @@
 @import "tailwindcss";
 
+/* Stub UI type stack (WS1 crispness prep): self-hosted latin subsets, variable
+   weight ranges, one file per family. Nothing references these families yet —
+   the browser downloads a font only when a rule USES it, so these are free
+   until the Stub port lands (preload tags land with that port, not before). */
+@font-face {
+  font-family: "Domine";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/fonts/domine-700-latin.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url("/fonts/inter-400-800-latin.woff2") format("woff2");
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-weight: 600 700;
+  font-display: swap;
+  src: url("/fonts/jetbrains-mono-600-700-latin.woff2") format("woff2");
+}
+
 html,
 body {
   overscroll-behavior: none;
@@ -18,4 +44,8 @@ body {
 #root {
   height: 100vh;
   height: 100dvh;
+  /* Lift ALL bottom-anchored UI (hand fans, end-screen buttons) clear of the
+     iPhone home indicator — the viewport meta already sets viewport-fit=cover,
+     so the inset is real on notched phones and 0 elsewhere. */
+  padding-bottom: env(safe-area-inset-bottom);
 }

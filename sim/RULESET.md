@@ -1,4 +1,4 @@
-# Marquee Duel — Canonical Ruleset (sim ↔ React parity contract)
+# Match Cut Duel — Canonical Ruleset (sim ↔ React parity contract)
 
 This is the **single source of truth** the React port must match the sim on. It
 was derived by reading both implementations side by side:

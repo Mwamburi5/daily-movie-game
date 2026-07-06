@@ -1,5 +1,5 @@
 {
-  "name": "marquee",
+  "name": "matchcut",
   "private": true,
   "version": "0.1.0",
   "type": "module",
@@ -11,7 +11,12 @@
     "verify:chronology": "node sim/chronology-verify.ts",
     "verify:solo": "node sim/solo-verify.ts",
     "eval:chronology": "node sim/chronology-eval.ts",
+    "gen:connections": "node --max-old-space-size=12288 sim/connections-gen.ts",
     "build:chronology-pool": "node scripts/build-chronology-pool.ts",
+    "tmdb:probe": "node scripts/tmdb-probe.ts",
+    "tmdb:audit": "node scripts/tmdb-audit.ts",
+    "tmdb:dates": "node scripts/tmdb-date-audit.ts",
+    "audit:names": "node scripts/name-audit.ts",
     "sim": "node sim/duel-sim.ts",
     "eval": "node sim/eval.ts"
   },

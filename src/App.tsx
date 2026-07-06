@@ -1,10 +1,12 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { AnimatePresence } from 'framer-motion'
 import SoloGame, { type SoloStart } from './SoloGame.tsx'
 import DuelGame from './DuelGame.tsx'
 import ChronologyGame, { type ChronoStart } from './ChronologyGame.tsx'
 import HowToPlay from './components/HowToPlay.tsx'
 import { type Difficulty, DIFFICULTIES, DIFFICULTY_META } from './lib/difficulty.ts'
+import { localDateSeed } from './lib/daily.ts'
+import { dailyStatus, duelRecord, type DailyStatus } from './lib/progress.ts'
 
 type Mode = 'menu' | 'solo' | 'duel' | 'chronology'
 
@@ -34,6 +36,14 @@ export default function App() {
     setMode('solo')
   }
 
+  // Meta-state for the menu chips, re-read whenever we land back on the menu
+  // (mode flips) so a just-finished run shows up without a reload. Display
+  // only — deals never touch it (persistence guardrail).
+  const todaySeed = localDateSeed()
+  const soloChip = useMemo(() => dailyStatus('solo', todaySeed), [mode, todaySeed])
+  const chronoChip = useMemo(() => dailyStatus('chronology', todaySeed), [mode, todaySeed])
+  const duelChip = useMemo(() => duelRecord(difficulty), [mode, difficulty])
+
   if (mode === 'solo') return <SoloGame onExit={() => setMode('menu')} start={soloStart} />
   if (mode === 'duel') return <DuelGame onExit={() => setMode('menu')} difficulty={difficulty} />
   if (mode === 'chronology') return <ChronologyGame onExit={() => setMode('menu')} start={chronoStart} />
@@ -42,7 +52,7 @@ export default function App() {
     <div className="relative mx-auto h-full w-full max-w-[420px]">
       <div className="flex h-full w-full flex-col items-center justify-center gap-10 px-8">
         <div className="text-center">
-          <h1 className="font-serif text-5xl font-black italic tracking-tight">Marquee</h1>
+          <h1 className="font-serif text-5xl font-black italic tracking-tight">Match Cut</h1>
           <p className="mt-2 text-sm text-[#7d7563]">Connect movies by the people who made them.</p>
         </div>
         <div className="flex w-full max-w-[300px] flex-col gap-3">
@@ -53,7 +63,17 @@ export default function App() {
               onClick={() => setMode('duel')}
               className="block w-full text-left active:scale-[0.98]"
             >
-              <span className="block text-[16px] font-bold text-[#f4efe6]">Duel vs Computer</span>
+              <span className="flex items-baseline justify-between">
+                <span className="text-[16px] font-bold text-[#f4efe6]">Duel vs Computer</span>
+                {duelChip.plays > 0 && (
+                  <span
+                    data-record-chip="duel"
+                    className="rounded-full bg-[#f4efe6]/10 px-2 py-0.5 text-[10px] font-extrabold tabular-nums text-[#f4efe6]/70"
+                  >
+                    {duelChip.wins}/{duelChip.plays} won
+                  </span>
+                )}
+              </span>
               <span className="mt-0.5 block text-[12px] text-[#f4efe6]/60">
                 Take turns scoring links. Race to 20 — high score wins.
               </span>
@@ -87,7 +107,10 @@ export default function App() {
               onClick={() => startSolo({ kind: 'daily' })}
               className="block w-full text-left active:scale-[0.98]"
             >
-              <span className="block text-[16px] font-bold text-[#23211c]">Daily Puzzle</span>
+              <span className="flex items-baseline justify-between">
+                <span className="text-[16px] font-bold text-[#23211c]">Daily Puzzle</span>
+                <StreakChip mode="solo" status={soloChip} />
+              </span>
               <span className="mt-0.5 block text-[12px] text-[#7d7563]">
                 Today's hand — same for everyone. Fewest flips wins. Golf — low score wins.
               </span>
@@ -113,7 +136,10 @@ export default function App() {
               onClick={() => startChronology({ kind: 'daily' })}
               className="block w-full text-left active:scale-[0.98]"
             >
-              <span className="block text-[16px] font-bold text-[#23211c]">Chronology</span>
+              <span className="flex items-baseline justify-between">
+                <span className="text-[16px] font-bold text-[#23211c]">Chronology</span>
+                <StreakChip mode="chronology" status={chronoChip} />
+              </span>
               <span className="mt-0.5 block text-[12px] text-[#7d7563]">
                 Today's lineup. Place the movies in release order. Golf — low score wins.
               </span>
@@ -151,5 +177,19 @@ export default function App() {
         {showRules && <HowToPlay onClose={() => setShowRules(false)} />}
       </AnimatePresence>
     </div>
+  )
+}
+
+// Daily streak chip for a menu mode card. Hidden until there's something to
+// show; the ✓ marks today's daily as done (tapping in again just replays it).
+function StreakChip({ mode, status }: { mode: string; status: DailyStatus }) {
+  if (!status.playedToday && status.streak === 0) return null
+  return (
+    <span
+      data-streak-chip={mode}
+      className="rounded-full bg-[#b3541e]/10 px-2 py-0.5 text-[10px] font-extrabold tabular-nums text-[#b3541e]"
+    >
+      {status.playedToday && '✓ '}streak {status.streak}
+    </span>
   )
 }

@@ -28,10 +28,12 @@ import {
 } from './lib/chronology.ts'
 import { CHRONOLOGY_POOL } from './data/chronologyPool.ts'
 import { ChronoCardView } from './components/ChronoCard.tsx'
-import { marqueeShare } from './lib/share.ts'
+import { matchCutShare } from './lib/share.ts'
 // localDateSeed debuted here; it now lives in lib/daily.ts so Solo's daily
 // shares the exact local-midnight rollover rule (no drift between modes).
 import { localDateSeed } from './lib/daily.ts'
+import { recordDailyFinish, type DailyFinish } from './lib/progress.ts'
+import { track } from './lib/analytics.ts'
 import ShareCopy from './components/ShareCopy.tsx'
 
 // How a round was started (chosen at the menu, App.tsx). The DAILY rides the
@@ -65,7 +67,7 @@ interface LogEntry {
 function shareText(score: number, strokes: number, credits: number, emoji: string): string {
   const tally =
     `${strokes} ${strokes === 1 ? 'stroke' : 'strokes'}` + (credits > 0 ? `, ${credits} back` : '')
-  return marqueeShare('Chronology', `score ${score} (${tally})`, emoji)
+  return matchCutShare('Chronology', `score ${score} (${tally})`, emoji)
 }
 
 export default function ChronologyGame({ onExit, start }: { onExit: () => void; start: ChronoStart }) {
@@ -97,6 +99,9 @@ export default function ChronologyGame({ onExit, start }: { onExit: () => void; 
   const [status, setStatus] = useState<Status>('playing')
 
   const [placing, setPlacing] = useState<Placing | null>(null) // misfire flip in flight
+  // Streak/best readout for the cleared screen — set by the finish effect
+  // below. Meta-state only; no rule reads it (persistence guardrail).
+  const [finishMeta, setFinishMeta] = useState<DailyFinish | null>(null)
   const [invalidNonce, setInvalidNonce] = useState(0) // shake the raised card
   const [badgeNonce, setBadgeNonce] = useState(0) // pop the Streak ×3 badge
   const [toast, setToast] = useState<{ key: number; text: string } | null>(null)
@@ -122,6 +127,22 @@ export default function ChronologyGame({ onExit, start }: { onExit: () => void; 
   }, [toast])
 
   const say = (text: string) => setToast({ key: performance.now(), text })
+
+  useEffect(() => {
+    track('mode_start', { mode: 'chronology', kind: start.kind })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  // Clearing the board completes the daily. recordDailyFinish is once-per-seed,
+  // so a same-day "Play again" reads back the existing entry (repeat: true);
+  // practice rounds never record — they'd let streaks be farmed off-seed.
+  useEffect(() => {
+    if (status !== 'cleared') return
+    track('mode_finish', { mode: 'chronology', kind: start.kind })
+    if (start.kind !== 'daily') return
+    setFinishMeta(recordDailyFinish('chronology', dailySeed, score))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [status])
 
   // ── commit a placement (shared by clean and the delayed misfire path) ────────
   const applyPlacement = (card: ChronologyCard, placement: Placement, tight: number) => {
@@ -386,6 +407,7 @@ export default function ChronologyGame({ onExit, start }: { onExit: () => void; 
               strokes={strokes}
               credits={credits}
               log={playLog}
+              daily={start.kind === 'daily' ? finishMeta : null}
               onReset={resetGame}
             />
           )}
@@ -529,12 +551,14 @@ function ChronoResults({
   strokes,
   credits,
   log,
+  daily,
   onReset,
 }: {
   score: number
   strokes: number
   credits: number
   log: LogEntry[]
+  daily: DailyFinish | null // streak readout — null on practice rounds
   onReset: () => void
 }) {
   const reduce = useReducedMotion()
@@ -567,6 +591,14 @@ function ChronoResults({
           {strokes} {strokes === 1 ? 'stroke' : 'strokes'}
           {credits > 0 && ` · ${credits} streak credit${credits === 1 ? '' : 's'}`}
         </p>
+
+        {daily && (
+          <p className="mt-1 text-[13px] font-semibold text-[#9a917c] tabular-nums" data-daily-meta>
+            day {daily.day} · streak {daily.streak}
+            {daily.best !== null && ` · best ${daily.best}`}
+            {daily.repeat && ' · already played today'}
+          </p>
+        )}
         <div className="mt-5 rounded-xl bg-white/70 px-5 py-3 text-xl tracking-wider shadow-sm">
           {emoji}
         </div>

@@ -1,4 +1,4 @@
-# CLAUDE.md — Marquee (Daily Movie Game)
+# CLAUDE.md — Match Cut (Daily Movie Game)
 
 Working guidelines for this repo. Two behavioral rules (adapted from the
 [Karpathy guidelines](andrej-karpathy-skills/skills/karpathy-guidelines/SKILL.md)),
@@ -36,7 +36,9 @@ Touch only what you must. Match existing style. Clean up only your own mess.
   the **same** functions in `src/lib/` — parity by construction, not by discipline.
 - **Deps are locked:** React 18 / Vite / Tailwind 4 / Framer Motion only. No new
   deps or features without asking.
-- **No persistence** (localStorage is out of scope) unless explicitly revisited.
+- **Persistence: revisited 2026-07-04.** localStorage is now IN scope, but only for
+  meta-state — per-mode streaks, played-today, personal bests. Game rules and deals
+  stay stateless and seed-derived; never persist anything a rule depends on.
 - **`RULEBOOK.md` is the living plain-English guide** (the two modes, for a 12-year-old).
   When a mechanic, mode, or scoring rule changes, update RULEBOOK.md in the same pass so
   it never drifts from the actual game.

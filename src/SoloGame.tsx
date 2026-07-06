@@ -1,9 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
-import { MOVIES, movieById } from './data/movies.ts'
+import { movieById } from './data/movies.ts'
+import { DUEL_POOL } from './data/duelPool.ts'
 import { PUZZLE } from './data/puzzle.ts'
 import { dailySoloPuzzle, localDateSeed } from './lib/daily.ts'
 import { hasAnyPlay, isSolvable, sharedPeople, type Role } from './lib/solver.ts'
+import { recordDailyFinish, type DailyFinish } from './lib/progress.ts'
+import { track } from './lib/analytics.ts'
 import { CardView } from './components/Card.tsx'
 import Hand from './components/Hand.tsx'
 import HowToPlay from './components/HowToPlay.tsx'
@@ -33,11 +36,15 @@ interface Connection {
 
 export default function SoloGame({ onExit, start }: { onExit: () => void; start: SoloStart }) {
   const reduce = useReducedMotion()
+  // Today's seed, fixed at mount (same pattern as Chronology's dailySeed ref) —
+  // the deal and the streak record must key off the SAME seed even if midnight
+  // passes mid-game.
+  const dailySeed = useRef(localDateSeed()).current
   // The puzzle is fixed for the life of the mount: today's generated daily, or
   // the designed practice hand. Restart replays the same board.
   const puzzle = useMemo(
-    () => (start.kind === 'daily' ? dailySoloPuzzle(localDateSeed(), MOVIES) : PUZZLE),
-    [start.kind],
+    () => (start.kind === 'daily' ? dailySoloPuzzle(dailySeed, DUEL_POOL) : PUZZLE),
+    [start.kind, dailySeed],
   )
   const [hand, setHand] = useState<string[]>(puzzle.handMovieIds)
   const [pile, setPile] = useState<string[]>([puzzle.starterMovieId])
@@ -52,6 +59,9 @@ export default function SoloGame({ onExit, start }: { onExit: () => void; start:
   const [invalidNonce, setInvalidNonce] = useState(0)
   const [status, setStatus] = useState<Status>('playing')
   const [showRules, setShowRules] = useState(false)
+  // Streak/best readout for the end screen — set by the finish effect below.
+  // Meta-state only; nothing gameplay-side reads it (persistence guardrail).
+  const [finishMeta, setFinishMeta] = useState<DailyFinish | null>(null)
   const pileZoneRef = useRef<HTMLDivElement>(null)
   const lowerTimer = useRef<number | undefined>(undefined)
 
@@ -63,7 +73,7 @@ export default function SoloGame({ onExit, start }: { onExit: () => void; start:
   const underlays = pile.slice(0, -1).slice(-2)
 
   // One winning order from the starter, for the stuck screen reveal.
-  const solution = useMemo(() => isSolvable(puzzle, MOVIES) ?? [], [puzzle])
+  const solution = useMemo(() => isSolvable(puzzle, DUEL_POOL) ?? [], [puzzle])
   const solutionSteps = useMemo(
     () =>
       solution.map((id, i) => {
@@ -174,6 +184,23 @@ export default function SoloGame({ onExit, start }: { onExit: () => void; start:
     const t = window.setTimeout(() => setConnection(null), 2600)
     return () => window.clearTimeout(t)
   }, [connection])
+
+  useEffect(() => {
+    track('mode_start', { mode: 'solo', kind: start.kind })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  // Reaching the end screen (won OR stuck) completes the daily. The streak
+  // record is once-per-seed inside recordDailyFinish, so a same-day replay via
+  // "Play again" just reads back the existing entry (repeat: true). Practice
+  // never records — the daily streak is the daily's.
+  useEffect(() => {
+    if (status === 'playing') return
+    track('mode_finish', { mode: 'solo', kind: start.kind })
+    if (start.kind !== 'daily') return
+    setFinishMeta(recordDailyFinish('solo', dailySeed, status === 'won' ? score : null))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [status])
 
   return (
     <div className="h-full overflow-hidden">
@@ -298,6 +325,7 @@ export default function SoloGame({ onExit, start }: { onExit: () => void; start:
               cardsLeft={hand.length}
               emoji={emoji}
               solution={solutionSteps}
+              daily={start.kind === 'daily' ? finishMeta : null}
               onReset={resetGame}
             />
           )}

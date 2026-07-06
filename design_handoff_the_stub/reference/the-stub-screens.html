@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Marquee — "The Stub" design reference (turn 7)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Domine:wght@500;600;700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<style>body{margin:0;background:#f0eee9;font-family:system-ui,sans-serif}.dv-turn{padding:40px 44px 32px}.dv-thd{display:flex;align-items:baseline;gap:10px;margin:0 0 20px}.dv-tid{font:600 10px ui-monospace,Menlo,monospace;padding:3px 7px;background:#1a1a1a;color:#fff;border-radius:4px;text-decoration:none}.dv-tname{font:600 13px/1.2 system-ui,sans-serif;color:#1a1a1a}.dv-opts{display:flex;flex-wrap:wrap;gap:28px;align-items:flex-start}.dv-opt{flex:none;display:flex;flex-direction:column;gap:9px}.dv-oid{font:600 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:rgba(0,0,0,.08);color:#1a1a1a;border-radius:5px;text-decoration:none}.dv-olabel{display:flex;align-items:baseline;gap:8px;font:400 11px/1.3 system-ui,sans-serif;color:rgba(0,0,0,.55)}.dv-card{max-width:100%;background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,.06);overflow:hidden}.dv-next{display:none}</style>
+</head>
+<body>
+<section class="dv-turn" id="t7">
+<div class="dv-thd"><a class="dv-tid" href="#t7">7</a><span class="dv-tname">Locked: <a class="dv-oid" href="#6a">6a</a> “The Stub”. Full set in the new language — <a class="dv-oid" href="#3c">3c</a> paper-diorama booth reskinned to cream/navy/amber, <a class="dv-oid" href="#2a">2a</a> fanned-hand board, identical card treatment everywhere (cream paper, 2px navy border, 12px radius).</span></div>
+<div class="dv-opts">
+
+<!-- ============ 7a DUEL BOARD — THE STUB, FULL ============ -->
+<div class="dv-opt" id="7a"><div class="dv-olabel"><a class="dv-oid" href="#7a">7a</a>Duel 390×844 — <a class="dv-oid" href="#6a">6a</a> chrome + <a class="dv-oid" href="#3c">3c</a> diorama booth + <a class="dv-oid" href="#2a">2a</a> fanned hand</div>
+<div class="dv-card" style="width:390px">
+<div style="width:390px;height:844px;position:relative;overflow:hidden;display:flex;flex-direction:column;background:#F0EBD8;font-family:Inter,system-ui,sans-serif">
+<div style="position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(rgba(31,58,82,.06) 1px,transparent 1.2px);background-size:7px 7px"></div>
+<!-- navy header block, rounded bottom -->
+<div style="position:relative;z-index:8;background:#1F3A52;color:#F0EBD8;padding:14px 18px 18px;border-radius:0 0 24px 24px">
+  <div style="position:absolute;inset:0;pointer-events:none;border-radius:0 0 24px 24px;background-image:radial-gradient(rgba(240,235,216,.06) 1px,transparent 1.2px);background-size:6px 6px"></div>
+  <div style="position:relative;display:flex;align-items:center;justify-content:space-between">
+    <div style="display:flex;align-items:center;gap:10px"><span style="font:600 16px Inter,sans-serif;color:#CF952A">←</span><span style="font:700 21px Domine,serif;letter-spacing:.03em">DUEL</span></div>
+    <span style="font:600 9px 'JetBrains Mono',monospace;letter-spacing:.14em;color:#CF952A">SHOW ENDS AT 20</span>
+  </div>
+  <div style="position:relative;margin-top:12px;display:flex;align-items:flex-end;justify-content:space-between">
+    <div style="display:flex;align-items:baseline;gap:8px"><span style="font:700 40px Domine,serif;line-height:.9;font-variant-numeric:tabular-nums;color:#F0EBD8">7</span><span style="font:600 9px 'JetBrains Mono',monospace;letter-spacing:.16em;color:#CF952A">YOU</span></div>
+    <span style="font:700 8.5px 'JetBrains Mono',monospace;letter-spacing:.12em;background:#CF952A;color:#1F3A52;padding:6px 14px;margin-bottom:4px;border-radius:999px">YOUR TURN</span>
+    <div style="display:flex;align-items:baseline;gap:8px"><span style="font:600 9px 'JetBrains Mono',monospace;letter-spacing:.16em;color:#8FA6BC">TAZ</span><span style="font:700 40px Domine,serif;line-height:.9;font-variant-numeric:tabular-nums;color:#B9C8D6">5</span></div>
+  </div>
+  <div style="position:relative;margin-top:12px;height:10px;display:flex;border:1px solid rgba(240,235,216,.45);border-radius:999px;overflow:hidden">
+    <div style="width:58%;background:#CF952A"></div>
+    <div style="flex:1;background:#41586E"></div>
+  </div>
+</div>
+<!-- taz booth: 3c paper diorama, reskinned -->
+<div style="position:relative;z-index:5;margin:18px 16px 0">
+  <div style="position:absolute;inset-inline:10px;top:8px;bottom:-8px;background:#D9D2BC;border:2px solid #1F3A52;border-radius:14px"></div>
+  <div style="position:absolute;inset-inline:5px;top:4px;bottom:-4px;background:#E7E1CC;border:2px solid #1F3A52;border-radius:14px"></div>
+  <div style="position:relative;background:#FCF9F8;border:2px solid #1F3A52;border-radius:14px;padding:10px 14px">
+    <div style="position:absolute;inset-inline:-2px;top:-8px;height:8px;background:repeating-linear-gradient(90deg,#CF952A 0 14px,#F0EBD8 14px 28px);border:2px solid #1F3A52;border-bottom:none;border-radius:10px 10px 0 0"></div>
+    <div style="display:flex;align-items:center;gap:11px">
+      <div style="width:38px;height:38px;border-radius:50%;background:#1F3A52;display:flex;align-items:center;justify-content:center;font:700 18px Domine,serif;color:#CF952A">T</div>
+      <div style="flex:1;min-width:0">
+        <div style="font:600 10px 'JetBrains Mono',monospace;letter-spacing:.1em;color:#1F3A52">TAZ · CPU · 6 CARDS</div>
+        <div style="margin-top:2px;font:italic 400 11px Inter,sans-serif;color:#5B6B7A">“take it if you dare”</div>
+      </div>
+      <div style="display:flex;gap:3px">
+        <div style="width:11px;height:16px;background:#1F3A52;border-radius:3px"></div><div style="width:11px;height:16px;background:#1F3A52;border-radius:3px"></div><div style="width:11px;height:16px;background:#1F3A52;border-radius:3px"></div><div style="width:11px;height:16px;background:#1F3A52;border-radius:3px"></div><div style="width:11px;height:16px;background:#1F3A52;border-radius:3px"></div><div style="width:11px;height:16px;background:#1F3A52;border-radius:3px"></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:3px;align-items:flex-end">
+        <span style="font:700 7.5px 'JetBrains Mono',monospace;letter-spacing:.08em;padding:3px 8px;background:#1F3A52;color:#F0EBD8;border-radius:999px">FINAL CUT</span>
+        <span style="font:700 7.5px 'JetBrains Mono',monospace;letter-spacing:.08em;padding:3px 8px;border:1px solid #9AA5AD;color:#9AA5AD;border-radius:999px;text-decoration:line-through">RECAST</span>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- board: deck + two marquees -->
+<div style="position:relative;z-index:4;margin:20px 16px 0;display:grid;grid-template-columns:64px 1fr 1fr;gap:12px;align-items:end">
+  <div style="display:flex;flex-direction:column;gap:5px">
+    <span style="font:600 8px 'JetBrains Mono',monospace;letter-spacing:.12em;color:#5B6B7A">DECK 23</span>
+    <div style="height:146px;background:#1F3A52;border-radius:12px;padding:5px;display:flex">
+      <div style="flex:1;border:1px dashed rgba(240,235,216,.55);border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px">
+        <span style="font:700 13px Domine,serif;color:#F0EBD8;writing-mode:vertical-rl;letter-spacing:.2em">MARQUEE</span>
+        <span style="font:600 8px 'JetBrains Mono',monospace;color:#CF952A;letter-spacing:.06em">3→1</span>
+      </div>
+    </div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:5px">
+    <div style="display:flex;justify-content:space-between;align-items:center"><span style="font:600 8px 'JetBrains Mono',monospace;letter-spacing:.12em;color:#5B6B7A">MARQUEE A</span></div>
+    <div style="border:2px solid #1F3A52;border-radius:12px;background:#FCF9F8;overflow:hidden"><img src="uploads/card-godfather-cut.png" alt="" style="width:100%;aspect-ratio:3/4;object-fit:contain;display:block"></div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:5px">
+    <div style="display:flex;justify-content:space-between;align-items:center"><span style="font:600 8px 'JetBrains Mono',monospace;letter-spacing:.12em;color:#5B6B7A">MARQUEE B</span><span style="font:700 8px 'JetBrains Mono',monospace;letter-spacing:.08em;background:#CF952A;color:#1F3A52;padding:3px 9px;border-radius:999px">↑ TAKE</span></div>
+    <div style="border:2px solid #CF952A;border-radius:12px;background:#FCF9F8;overflow:hidden;box-shadow:0 0 18px rgba(207,149,42,.4)"><img src="uploads/card-batman-cut.png" alt="" style="width:100%;aspect-ratio:3/4;object-fit:contain;display:block"></div>
+  </div>
+</div>
+<div style="position:relative;z-index:4;margin:10px 16px 0;display:flex;justify-content:space-between;font:600 8.5px 'JetBrains Mono',monospace;letter-spacing:.08em;color:#5B6B7A">
+  <span>LAST · TAZ PLAYED THE GODFATHER → PACINO</span><span style="color:#A02C2C">TAZ +1</span>
+</div>
+<!-- meld shelf: film strip in the new language -->
+<div style="position:relative;z-index:4;margin:12px 0 0">
+  <div style="display:flex;gap:8px;overflow:hidden;padding:0 16px">
+    <div style="flex:none;background:#FCF9F8;border:2px solid #CF952A;border-radius:12px;padding:5px 8px">
+      <div style="font:600 7.5px 'JetBrains Mono',monospace;letter-spacing:.08em;color:#1F3A52;margin-bottom:4px">PACINO ×3 · +2</div>
+      <div style="display:flex;gap:4px">
+        <div style="width:30px;border:1.5px solid #1F3A52;border-radius:6px;background:#FCF9F8;overflow:hidden"><img src="uploads/card-godfather-cut.png" alt="" style="width:100%;aspect-ratio:3/4;object-fit:contain;display:block"></div>
+        <div style="width:30px;border:1.5px solid #1F3A52;border-radius:6px;background:#FCF9F8;overflow:hidden"><img src="uploads/card-taxi-cut.png" alt="" style="width:100%;aspect-ratio:3/4;object-fit:contain;display:block"></div>
+        <div style="width:30px;border:1.5px solid #1F3A52;border-radius:6px;background:#FCF9F8;overflow:hidden"><img src="uploads/card-batman-cut.png" alt="" style="width:100%;aspect-ratio:3/4;object-fit:contain;display:block"></div>
+      </div>
+    </div>
+    <div style="flex:none;background:#FCF9F8;border:2px solid #1F3A52;border-radius:12px;padding:5px 8px">
+      <div style="font:600 7.5px 'JetBrains Mono',monospace;letter-spacing:.08em;color:#5B6B7A;margin-bottom:4px">DE NIRO ×3</div>
+      <div style="display:flex;gap:4px">
+        <div style="width:30px;border:1.5px solid #1F3A52;border-radius:6px;background:#FCF9F8;overflow:hidden"><img src="uploads/card-taxi-cut.png" alt="" style="width:100%;aspect-ratio:3/4;object-fit:contain;display:block"></div>
+        <div style="width:30px;border:1.5px solid #1F3A52;border-radius:6px;background:#FCF9F8;overflow:hidden"><img src="uploads/card-godfather-cut.png" alt="" style="width:100%;aspect-ratio:3/4;object-fit:contain;display:block"></div>
+      </div>
+    </div>
+    <div style="flex:none;background:#FCF9F8;border:2px solid #1F3A52;border-radius:12px;padding:5px 8px">
+      <div style="font:600 7.5px 'JetBrains Mono',monospace;letter-spacing:.08em;color:#5B6B7A;margin-bottom:4px">NOLAN ×4</div>
+      <div style="display:flex;gap:4px">
+        <div style="width:30px;border:1.5px solid #1F3A52;border-radius:6px;background:#FCF9F8;overflow:hidden"><img src="uploads/card-batman-cut.png" alt="" style="width:100%;aspect-ratio:3/4;object-fit:contain;display:block"></div>
+        <div style="width:30px;border:1.5px solid #1F3A52;border-radius:6px;background:#FCF9F8;overflow:hidden"><img src="uploads/card-taxi-cut.png" alt="" style="width:100%;aspect-ratio:3/4;object-fit:contain;display:block"></div>
+      </div>
+    </div>
+  </div>
+  <div style="position:absolute;right:0;top:0;bottom:0;width:40px;background:linear-gradient(90deg,rgba(240,235,216,0),rgba(240,235,216,.95));pointer-events:none"></div>
+  <div style="margin-top:6px;text-align:center;font:600 7.5px 'JetBrains Mono',monospace;letter-spacing:.12em;color:#5B6B7A">10 MELDS · SWIPE · AMBER ROWS ACCEPT A LAY-OFF</div>
+</div>
+<!-- rails + fanned hand -->
+<div style="position:relative;flex:1;min-height:0">
+  <div style="position:absolute;left:14px;bottom:150px;z-index:9;display:flex;flex-direction:column;gap:6px;align-items:flex-start">
+    <span style="background:#CF952A;color:#1F3A52;font:800 10px Inter,sans-serif;letter-spacing:.1em;padding:9px 16px;border-radius:999px">MELD</span>
+    <span style="border:2px solid #1F3A52;color:#1F3A52;font:700 8px 'JetBrains Mono',monospace;letter-spacing:.08em;padding:7px 11px;border-radius:999px;background:#FCF9F8">FINAL CUT</span>
+    <span style="border:2px solid #9AA5AD;color:#9AA5AD;font:700 8px 'JetBrains Mono',monospace;letter-spacing:.08em;padding:7px 11px;border-radius:999px;background:#FCF9F8;text-decoration:line-through">RECAST</span>
+  </div>
+  <div style="position:absolute;right:14px;bottom:150px;z-index:9;display:flex;flex-direction:column;gap:6px;align-items:flex-end">
+    <span style="background:#1F3A52;color:#F0EBD8;font:700 8px 'JetBrains Mono',monospace;letter-spacing:.08em;padding:8px 12px;border-radius:999px">⇲ SORT</span>
+    <span style="background:#1F3A52;color:#F0EBD8;font:700 8px 'JetBrains Mono',monospace;letter-spacing:.08em;padding:8px 12px;border-radius:999px;border:2px solid #2C89A1">◎ HINT · 3</span>
+  </div>
+  <div style="position:absolute;inset-inline:0;bottom:-44px;height:200px;z-index:6">
+    <div style="position:absolute;left:24px;bottom:36px;transform:rotate(-18deg);transform-origin:bottom center"><div style="width:98px;aspect-ratio:3/4;border:2px solid #1F3A52;border-radius:11px;background:#FCF9F8;overflow:hidden;box-shadow:0 6px 14px rgba(31,58,82,.28)"><img src="uploads/card-taxi-cut.png" alt="hand card" style="width:100%;height:100%;object-fit:contain;display:block"></div></div>
+    <div style="position:absolute;left:64px;bottom:48px;transform:rotate(-12deg);transform-origin:bottom center"><div style="width:98px;aspect-ratio:3/4;border:2px solid #1F3A52;border-radius:11px;background:#FCF9F8;overflow:hidden;box-shadow:0 6px 14px rgba(31,58,82,.28)"><img src="uploads/card-godfather-cut.png" alt="hand card" style="width:100%;height:100%;object-fit:contain;display:block"></div></div>
+    <div style="position:absolute;left:104px;bottom:56px;transform:rotate(-6deg);transform-origin:bottom center"><div style="width:98px;aspect-ratio:3/4;border:2px solid #1F3A52;border-radius:11px;background:#FCF9F8;overflow:hidden;box-shadow:0 6px 14px rgba(31,58,82,.28)"><img src="uploads/card-batman-cut.png" alt="hand card" style="width:100%;height:100%;object-fit:contain;display:block"></div></div>
+    <div style="position:absolute;left:144px;bottom:62px;z-index:2">
+      <span style="position:absolute;top:-20px;left:50%;transform:translateX(-50%);white-space:nowrap;font:700 8px 'JetBrains Mono',monospace;letter-spacing:.06em;background:#2C89A1;color:#F0EBD8;padding:3px 9px;border-radius:999px;z-index:2">HINT · PACINO</span>
+      <div style="width:98px;aspect-ratio:3/4;border:2.5px solid #2C89A1;border-radius:11px;background:#FCF9F8;overflow:hidden;box-shadow:0 0 16px rgba(44,137,161,.5),0 6px 14px rgba(31,58,82,.28)"><img src="uploads/card-godfather-cut.png" alt="hint card" style="width:100%;height:100%;object-fit:contain;display:block"></div>
+    </div>
+    <div style="position:absolute;left:184px;bottom:56px;transform:rotate(6deg);transform-origin:bottom center"><div style="width:98px;aspect-ratio:3/4;border:2px solid #1F3A52;border-radius:11px;background:#FCF9F8;overflow:hidden;box-shadow:0 6px 14px rgba(31,58,82,.28)"><img src="uploads/card-taxi-cut.png" alt="hand card" style="width:100%;height:100%;object-fit:contain;display:block"></div></div>
+    <div style="position:absolute;left:224px;bottom:48px;transform:rotate(12deg);transform-origin:bottom center"><div style="width:98px;aspect-ratio:3/4;border:2px solid #1F3A52;border-radius:11px;background:#FCF9F8;overflow:hidden;box-shadow:0 6px 14px rgba(31,58,82,.28)"><img src="uploads/card-batman-cut.png" alt="hand card" style="width:100%;height:100%;object-fit:contain;display:block"></div></div>
+    <div style="position:absolute;left:264px;bottom:36px;transform:rotate(18deg);transform-origin:bottom center"><div style="width:98px;aspect-ratio:3/4;border:2px solid #1F3A52;border-radius:11px;background:#FCF9F8;overflow:hidden;box-shadow:0 6px 14px rgba(31,58,82,.28)"><img src="uploads/card-godfather-cut.png" alt="hand card" style="width:100%;height:100%;object-fit:contain;display:block"></div></div>
+  </div>
+</div>
+</div>
+</div></div>
+
+<!-- ============ 7b LAY-OFF PICKER ============ -->
+<div class="dv-opt" id="7b"><div class="dv-olabel"><a class="dv-oid" href="#7b">7b</a>Lay-off picker — <a class="dv-oid" href="#4d">4d</a> remade: cream stub sheet, pill rows, amber = eligible</div>
+<div class="dv-card" style="width:390px">
+<div style="width:390px;height:844px;position:relative;overflow:hidden;display:flex;flex-direction:column;background:#F0EBD8;font-family:Inter,system-ui,sans-serif">
+<div style="position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(rgba(31,58,82,.06) 1px,transparent 1.2px);background-size:7px 7px"></div>
+<div style="position:absolute;inset:0;background:rgba(31,58,82,.62);z-index:2"></div>
+<!-- raised card being laid off -->
+<div style="position:relative;z-index:5;display:flex;flex-direction:column;align-items:center;padding-top:36px">
+  <span style="font:700 9px 'JetBrains Mono',monospace;letter-spacing:.18em;color:#CF952A;background:#1F3A52;padding:6px 14px;border-radius:999px">LAY OFF — PICK A ROW</span>
+  <div style="margin-top:14px;width:188px;border:2.5px solid #CF952A;border-radius:14px;background:#FCF9F8;overflow:hidden;box-shadow:0 0 22px rgba(207,149,42,.5),0 18px 40px rgba(9,22,34,.6)"><img src="uploads/card-godfather-cut.png" alt="raised card" style="width:100%;aspect-ratio:3/4;object-fit:contain;display:block"></div>
+</div>
+<!-- full shelf sheet -->
+<div style="position:absolute;inset-inline:0;bottom:0;z-index:6;background:#F0EBD8;border-top:2px solid #1F3A52;border-radius:22px 22px 0 0;box-shadow:0 -10px 30px rgba(9,22,34,.5);padding:14px 16px 18px;max-height:430px;display:flex;flex-direction:column">
+  <div style="width:44px;height:4px;border-radius:999px;background:#9AA5AD;margin:0 auto 10px"></div>
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+    <span style="font:600 9px 'JetBrains Mono',monospace;letter-spacing:.14em;color:#5B6B7A">ALL MELDS · 10</span>
+    <span style="font:700 8.5px 'JetBrains Mono',monospace;letter-spacing:.08em;color:#1F3A52;border:2px solid #1F3A52;padding:5px 12px;border-radius:999px;background:#FCF9F8">CANCEL</span>
+  </div>
+  <div style="flex:1;overflow:hidden;display:flex;flex-direction:column;gap:6px">
+    <div style="display:flex;align-items:center;gap:8px;background:#FCF9F8;border:2px solid #CF952A;border-radius:12px;padding:6px 10px;box-shadow:0 0 12px rgba(207,149,42,.35)"><span style="font:600 8px 'JetBrains Mono',monospace;letter-spacing:.06em;color:#1F3A52;min-width:110px">PACINO ×3</span><div style="display:flex;gap:4px"><div style="width:30px;border:1.5px solid #1F3A52;border-radius:6px;background:#FCF9F8;overflow:hidden"><img src="uploads/card-godfather-cut.png" alt="" style="width:100%;aspect-ratio:3/4;object-fit:contain;display:block"></div><div style="width:30px;border:1.5px solid #1F3A52;border-radius:6px;background:#FCF9F8;overflow:hidden"><img src="uploads/card-taxi-cut.png" alt="" style="width:100%;aspect-ratio:3/4;object-fit:contain;display:block"></div><div style="width:30px;border:1.5px solid #1F3A52;border-radius:6px;background:#FCF9F8;overflow:hidden"><img src="uploads/card-batman-cut.png" alt="" style="width:100%;aspect-ratio:3/4;object-fit:contain;display:block"></div></div><span style="margin-left:auto;font:700 8.5px 'JetBrains Mono',monospace;background:#CF952A;color:#1F3A52;padding:4px 9px;border-radius:999px">+2 ▸</span></div>
+    <div style="display:flex;align-items:center;gap:8px;background:#FCF9F8;border:2px solid #CF952A;border-radius:12px;padding:6px 10px;box-shadow:0 0 12px rgba(207,149,42,.35)"><span style="font:600 8px 'JetBrains Mono',monospace;letter-spacing:.06em;color:#1F3A52;min-width:110px">CRIME ×3</span><div style="display:flex;gap:4px"><div style="width:30px;border:1.5px solid #1F3A52;border-radius:6px;background:#FCF9F8;overflow:hidden"><img src="uploads/card-taxi-cut.png" alt="" style="width:100%;aspect-ratio:3/4;object-fit:contain;display:block"></div><div style="width:30px;border:1.5px solid #1F3A52;border-radius:6px;background:#FCF9F8;overflow:hidden"><img src="uploads/card-godfather-cut.png" alt="" style="width:100%;aspect-ratio:3/4;object-fit:contain;display:block"></div></div><span style="margin-left:auto;font:700 8.5px 'JetBrains Mono',monospace;background:#CF952A;color:#1F3A52;padding:4px 9px;border-radius:999px">+1 ▸</span></div>
+    <div style="display:flex;align-items:center;gap:8px;background:rgba(252,249,248,.6);border:2px solid #9AA5AD;border-radius:12px;padding:6px 10px;opacity:.6"><span style="font:600 8px 'JetBrains Mono',monospace;letter-spacing:.06em;color:#5B6B7A;min-width:110px">NOLAN ×4</span><div style="display:flex;gap:4px"><div style="width:30px;border:1.5px solid #5B6B7A;border-radius:6px;background:#FCF9F8;overflow:hidden"><img src="uploads/card-batman-cut.png" alt="" style="width:100%;aspect-ratio:3/4;object-fit:contain;display:block"></div><div style="width:30px;border:1.5px solid #5B6B7A;border-radius:6px;background:#FCF9F8;overflow:hidden"><img src="uploads/card-taxi-cut.png" alt="" style="width:100%;aspect-ratio:3/4;object-fit:contain;display:block"></div></div></div>
+    <div style="display:flex;align-items:center;gap:8px;background:rgba(252,249,248,.6);border:2px solid #9AA5AD;border-radius:12px;padding:6px 10px;opacity:.6"><span style="font:600 8px 'JetBrains Mono',monospace;letter-spacing:.06em;color:#5B6B7A;min-width:110px">DE NIRO ×3</span><div style="display:flex;gap:4px"><div style="width:30px;border:1.5px solid #5B6B7A;border-radius:6px;background:#FCF9F8;overflow:hidden"><img src="uploads/card-taxi-cut.png" alt="" style="width:100%;aspect-ratio:3/4;object-fit:contain;display:block"></div><div style="width:30px;border:1.5px solid #5B6B7A;border-radius:6px;background:#FCF9F8;overflow:hidden"><img src="uploads/card-godfather-cut.png" alt="" style="width:100%;aspect-ratio:3/4;object-fit:contain;display:block"></div></div></div>
+    <div style="display:flex;align-items:center;gap:8px;background:rgba(252,249,248,.6);border:2px solid #9AA5AD;border-radius:12px;padding:6px 10px;opacity:.6"><span style="font:600 8px 'JetBrains Mono',monospace;letter-spacing:.06em;color:#5B6B7A;min-width:110px">SCORSESE ×3</span><div style="display:flex;gap:4px"><div style="width:30px;border:1.5px solid #5B6B7A;border-radius:6px;background:#FCF9F8;overflow:hidden"><img src="uploads/card-taxi-cut.png" alt="" style="width:100%;aspect-ratio:3/4;object-fit:contain;display:block"></div><div style="width:30px;border:1.5px solid #5B6B7A;border-radius:6px;background:#FCF9F8;overflow:hidden"><img src="uploads/card-batman-cut.png" alt="" style="width:100%;aspect-ratio:3/4;object-fit:contain;display:block"></div></div></div>
+    <div style="display:flex;align-items:center;gap:8px;background:rgba(252,249,248,.6);border:2px solid #9AA5AD;border-radius:12px;padding:6px 10px;opacity:.6;position:relative;overflow:hidden"><span style="font:600 8px 'JetBrains Mono',monospace;letter-spacing:.06em;color:#5B6B7A;min-width:110px">1970s ×3</span><div style="display:flex;gap:4px"><div style="width:30px;border:1.5px solid #5B6B7A;border-radius:6px;background:#FCF9F8;overflow:hidden"><img src="uploads/card-godfather-cut.png" alt="" style="width:100%;aspect-ratio:3/4;object-fit:contain;display:block"></div></div><div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,#F0EBD8 100%)"></div></div>
+  </div>
+  <div style="margin-top:10px;text-align:center;font:600 8px 'JetBrains Mono',monospace;letter-spacing:.12em;color:#5B6B7A">SCROLL FOR 4 MORE · AMBER ROWS ACCEPT THIS CARD</div>
+</div>
+</div>
+</div></div>
+
+<!-- ============ 7c RECAST OVERLAY ============ -->
+<div class="dv-opt" id="7c"><div class="dv-olabel"><a class="dv-oid" href="#7c">7c</a>Recast offer — <a class="dv-oid" href="#4e">4e</a> remade on the <a class="dv-oid" href="#3c">3c</a> diorama stack</div>
+<div class="dv-card" style="width:390px">
+<div style="width:390px;height:844px;position:relative;overflow:hidden;background:#F0EBD8;font-family:Inter,system-ui,sans-serif">
+<div style="position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(rgba(31,58,82,.06) 1px,transparent 1.2px);background-size:7px 7px"></div>
+<div style="position:absolute;inset:0;background:rgba(31,58,82,.66);z-index:2"></div>
+<div style="position:absolute;left:50%;top:46%;transform:translate(-50%,-50%);width:560px;height:480px;pointer-events:none;z-index:3;background:radial-gradient(closest-side,rgba(207,149,42,.16),rgba(207,149,42,0) 70%)"></div>
+<div style="position:relative;z-index:5;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:0 42px">
+  <div style="width:100%;max-width:300px;position:relative">
+    <div style="position:absolute;inset-inline:10px;top:8px;bottom:-8px;background:#D9D2BC;border:2px solid #1F3A52;border-radius:18px"></div>
+    <div style="position:absolute;inset-inline:5px;top:4px;bottom:-4px;background:#E7E1CC;border:2px solid #1F3A52;border-radius:18px"></div>
+    <div style="position:relative;background:#FCF9F8;border:2px solid #1F3A52;border-radius:18px;box-shadow:0 20px 46px rgba(9,22,34,.55);padding:20px 20px 18px;display:flex;flex-direction:column;align-items:center;text-align:center">
+      <div style="position:absolute;inset-inline:-2px;top:-8px;height:8px;background:repeating-linear-gradient(90deg,#CF952A 0 14px,#F0EBD8 14px 28px);border:2px solid #1F3A52;border-bottom:none;border-radius:12px 12px 0 0"></div>
+      <span style="font:600 9px 'JetBrains Mono',monospace;letter-spacing:.18em;color:#5B6B7A">TAZ PLAYS</span>
+      <div style="margin-top:5px;font:700 26px Domine,serif;color:#1F3A52">The Godfather</div>
+      <div style="margin-top:4px;font:600 11.5px Inter,sans-serif;color:#A02C2C">Super link — +4 and an encore</div>
+      <div style="margin-top:14px;width:128px;border:2px solid #1F3A52;border-radius:12px;background:#FCF9F8;overflow:hidden;box-shadow:0 0 0 3px rgba(207,149,42,.85),0 8px 20px rgba(9,22,34,.35)"><img src="uploads/card-godfather-cut.png" alt="offered card" style="width:100%;aspect-ratio:3/4;object-fit:contain;display:block"></div>
+      <div style="margin-top:18px;width:100%;background:#CF952A;color:#1F3A52;font:800 12px Inter,sans-serif;letter-spacing:.08em;padding:13px 0;border-radius:999px">RECAST — CANCEL IT</div>
+      <div style="margin-top:8px;width:100%;color:#1F3A52;font:800 12px Inter,sans-serif;letter-spacing:.08em;padding:12px 0;border:2px solid #1F3A52;border-radius:999px;background:#FCF9F8">ALLOW IT</div>
+      <span style="margin-top:10px;font:600 8.5px 'JetBrains Mono',monospace;letter-spacing:.06em;color:#5B6B7A">YOUR RECAST TOKEN · ONE PER SHOW</span>
+    </div>
+  </div>
+</div>
+</div>
+</div></div>
+
+<!-- ============ 7d RECAP ============ -->
+<div class="dv-opt" id="7d"><div class="dv-olabel"><a class="dv-oid" href="#7d">7d</a>End of game — <a class="dv-oid" href="#4f">4f</a> remade: cream program page, ticket-stub score rows, pill actions</div>
+<div class="dv-card" style="width:390px">
+<div style="width:390px;height:844px;position:relative;overflow:hidden;display:flex;flex-direction:column;background:#F0EBD8;font-family:Inter,system-ui,sans-serif">
+<div style="position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(rgba(31,58,82,.06) 1px,transparent 1.2px);background-size:7px 7px"></div>
+<div style="position:absolute;inset:12px;pointer-events:none;border:2px solid #1F3A52;border-radius:18px"></div>
+<div style="position:absolute;inset:17px;pointer-events:none;border:1px solid rgba(31,58,82,.35);border-radius:14px"></div>
+<div style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;padding:46px 36px 0;text-align:center;height:100%;box-sizing:border-box">
+  <div style="display:flex;justify-content:center;gap:7px">
+    <div style="width:6px;height:6px;border-radius:50%;background:#CF952A"></div><div style="width:6px;height:6px;border-radius:50%;background:#1F3A52"></div><div style="width:6px;height:6px;border-radius:50%;background:#CF952A"></div><div style="width:6px;height:6px;border-radius:50%;background:#1F3A52"></div><div style="width:6px;height:6px;border-radius:50%;background:#CF952A"></div>
+  </div>
+  <h2 style="margin:12px 0 0;font:700 42px Domine,serif;color:#1F3A52">You win!</h2>
+  <p style="margin:8px 0 0;font:500 13px Inter,sans-serif;color:#5B6B7A">You played your last card.</p>
+  <p style="margin:16px 0 0;font:600 8.5px 'JetBrains Mono',monospace;letter-spacing:.16em;color:#5B6B7A">HIGHEST NET WINS · PLAYED − CARDS HELD</p>
+  <div style="margin-top:12px;width:100%;max-width:286px;display:flex;flex-direction:column;gap:8px">
+    <div style="position:relative;display:flex;align-items:center;justify-content:space-between;background:#1F3A52;color:#F0EBD8;padding:11px 20px;border-radius:14px">
+      <div style="position:absolute;left:-8px;top:50%;transform:translateY(-50%);width:14px;height:14px;border-radius:50%;background:#F0EBD8;border:2px solid #1F3A52"></div>
+      <div style="position:absolute;right:-8px;top:50%;transform:translateY(-50%);width:14px;height:14px;border-radius:50%;background:#F0EBD8;border:2px solid #1F3A52"></div>
+      <span style="font:700 11px 'JetBrains Mono',monospace;letter-spacing:.08em">YOU</span>
+      <span style="font:500 10.5px Inter,sans-serif;color:#8FA6BC;font-variant-numeric:tabular-nums">18 played − 2 held</span>
+      <span style="font:700 24px Domine,serif;font-variant-numeric:tabular-nums;color:#CF952A">16</span>
+    </div>
+    <div style="position:relative;display:flex;align-items:center;justify-content:space-between;background:#FCF9F8;color:#1F3A52;border:2px solid #1F3A52;padding:9px 20px;border-radius:14px">
+      <div style="position:absolute;left:-8px;top:50%;transform:translateY(-50%);width:14px;height:14px;border-radius:50%;background:#F0EBD8;border:2px solid #1F3A52"></div>
+      <div style="position:absolute;right:-8px;top:50%;transform:translateY(-50%);width:14px;height:14px;border-radius:50%;background:#F0EBD8;border:2px solid #1F3A52"></div>
+      <span style="font:700 11px 'JetBrains Mono',monospace;letter-spacing:.08em">TAZ</span>
+      <span style="font:500 10.5px Inter,sans-serif;color:#5B6B7A;font-variant-numeric:tabular-nums">14 played − 3 held</span>
+      <span style="font:700 24px Domine,serif;font-variant-numeric:tabular-nums">11</span>
+    </div>
+  </div>
+  <p style="margin:18px 0 0;font:600 12px Inter,sans-serif;color:#1F3A52">You ran the marquee. <span style="font-weight:400;color:#5B6B7A">2 melds banked · 1 super link.</span></p>
+  <div style="margin-top:10px;width:100%;max-width:296px;display:flex;flex-direction:column;gap:5px;text-align:left">
+    <div style="display:flex;align-items:center;gap:8px;background:#FCF9F8;border:1.5px solid #1F3A52;border-radius:10px;padding:7px 11px"><span style="background:#CF952A;color:#1F3A52;font:700 7.5px 'JetBrains Mono',monospace;letter-spacing:.06em;padding:2px 7px;border-radius:999px">YOU</span><span style="flex:1;font:500 10.5px Inter,sans-serif;color:#1F3A52">banked a 4-film Christopher Nolan meld</span><span style="font:700 13px Domine,serif;color:#1F3A52;font-variant-numeric:tabular-nums">+8</span></div>
+    <div style="display:flex;align-items:center;gap:8px;background:#FCF9F8;border:1.5px solid #9AA5AD;border-radius:10px;padding:7px 11px"><span style="background:#1F3A52;color:#F0EBD8;font:700 7.5px 'JetBrains Mono',monospace;letter-spacing:.06em;padding:2px 7px;border-radius:999px">TAZ</span><span style="flex:1;font:500 10.5px Inter,sans-serif;color:#1F3A52">super link: The Godfather via Pacino</span><span style="font:700 13px Domine,serif;color:#1F3A52;font-variant-numeric:tabular-nums">+4</span></div>
+    <div style="display:flex;align-items:center;gap:8px;background:#FCF9F8;border:1.5px solid #1F3A52;border-radius:10px;padding:7px 11px"><span style="background:#CF952A;color:#1F3A52;font:700 7.5px 'JetBrains Mono',monospace;letter-spacing:.06em;padding:2px 7px;border-radius:999px">YOU</span><span style="flex:1;font:500 10.5px Inter,sans-serif;color:#1F3A52">super link: The Dark Knight via the series</span><span style="font:700 13px Domine,serif;color:#1F3A52;font-variant-numeric:tabular-nums">+4</span></div>
+    <div style="display:flex;align-items:center;gap:8px;background:#FCF9F8;border:1.5px solid #1F3A52;border-radius:10px;padding:7px 11px"><span style="background:#CF952A;color:#1F3A52;font:700 7.5px 'JetBrains Mono',monospace;letter-spacing:.06em;padding:2px 7px;border-radius:999px">YOU</span><span style="flex:1;font:500 10.5px Inter,sans-serif;color:#1F3A52">banked a 3-film De Niro meld</span><span style="font:700 13px Domine,serif;color:#1F3A52;font-variant-numeric:tabular-nums">+6</span></div>
+    <div style="display:flex;align-items:center;gap:8px;background:#FCF9F8;border:1.5px solid #9AA5AD;border-radius:10px;padding:7px 11px"><span style="background:#1F3A52;color:#F0EBD8;font:700 7.5px 'JetBrains Mono',monospace;letter-spacing:.06em;padding:2px 7px;border-radius:999px">TAZ</span><span style="flex:1;font:500 10.5px Inter,sans-serif;color:#1F3A52">Final Cut: Taxi Driver — no link needed</span><span style="font:700 13px Domine,serif;color:#1F3A52;font-variant-numeric:tabular-nums">+1</span></div>
+  </div>
+  <div style="margin-top:auto;padding-bottom:34px;width:100%;max-width:286px;display:flex;flex-direction:column;gap:8px">
+    <div style="background:#CF952A;color:#1F3A52;font:800 12.5px Inter,sans-serif;letter-spacing:.08em;padding:14px 0;border-radius:999px">SHARE — 🎬🟨🟦🟨🟨🟦</div>
+    <div style="display:flex;gap:8px">
+      <div style="flex:1;color:#1F3A52;font:800 11.5px Inter,sans-serif;letter-spacing:.08em;padding:12px 0;border:2px solid #1F3A52;border-radius:999px;background:#FCF9F8">DEAL AGAIN</div>
+      <div style="flex:1;color:#1F3A52;font:800 11.5px Inter,sans-serif;letter-spacing:.08em;padding:12px 0;border:2px solid #1F3A52;border-radius:999px;background:#FCF9F8">MENU</div>
+    </div>
+  </div>
+</div>
+</div>
+</div></div>
+
+<!-- ============ 7e 667 STRESS ============ -->
+<div class="dv-opt" id="7e"><div class="dv-olabel"><a class="dv-oid" href="#7e">7e</a>Stress test 375×667 (iPhone SE) — <a class="dv-oid" href="#4g">4g</a> remade: 10-card fan, raised card on the traveling layer</div>
+<div class="dv-card" style="width:375px">
+<div style="width:375px;height:667px;position:relative;overflow:hidden;display:flex;flex-direction:column;background:#F0EBD8;font-family:Inter,system-ui,sans-serif">
+<div style="position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(rgba(31,58,82,.06) 1px,transparent 1.2px);background-size:7px 7px"></div>
+<!-- compact navy header: title + race in one row -->
+<div style="position:relative;z-index:5;background:#1F3A52;color:#F0EBD8;padding:10px 14px 12px;border-radius:0 0 18px 18px;display:flex;align-items:center;gap:10px">
+  <span style="font:600 14px Inter,sans-serif;color:#CF952A">←</span>
+  <span style="font:700 16px Domine,serif;letter-spacing:.03em">DUEL</span>
+  <div style="flex:1;display:flex;align-items:center;gap:8px">
+    <span style="font:700 17px Domine,serif;font-variant-numeric:tabular-nums;color:#F0EBD8">7</span>
+    <div style="flex:1;height:8px;display:flex;border:1px solid rgba(240,235,216,.45);border-radius:999px;overflow:hidden">
+      <div style="width:58%;background:#CF952A"></div>
+      <div style="flex:1;background:#41586E"></div>
+    </div>
+    <span style="font:700 17px Domine,serif;font-variant-numeric:tabular-nums;color:#B9C8D6">5</span>
+  </div>
+</div>
+<!-- booth: one-line ticket strip -->
+<div style="position:relative;z-index:5;margin:10px 14px 0;border:2px solid #1F3A52;border-radius:12px;background:#FCF9F8;padding:6px 12px;display:flex;align-items:center;gap:8px">
+  <div style="position:absolute;left:-8px;top:50%;transform:translateY(-50%);width:12px;height:12px;border-radius:50%;background:#F0EBD8;border:2px solid #1F3A52"></div>
+  <div style="position:absolute;right:-8px;top:50%;transform:translateY(-50%);width:12px;height:12px;border-radius:50%;background:#F0EBD8;border:2px solid #1F3A52"></div>
+  <div style="width:24px;height:24px;border-radius:50%;background:#1F3A52;display:flex;align-items:center;justify-content:center;font:700 12px Domine,serif;color:#CF952A">T</div>
+  <span style="font:600 9px 'JetBrains Mono',monospace;letter-spacing:.08em;color:#1F3A52">TAZ · 8 CARDS</span>
+  <span style="font:italic 400 10px Inter,sans-serif;color:#5B6B7A;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">“that one stings”</span>
+  <span style="font:700 7px 'JetBrains Mono',monospace;letter-spacing:.06em;padding:2px 6px;background:#1F3A52;color:#F0EBD8;border-radius:999px">FC</span>
+  <span style="font:700 7px 'JetBrains Mono',monospace;letter-spacing:.06em;padding:2px 6px;color:#9AA5AD;border:1px solid #9AA5AD;border-radius:999px;text-decoration:line-through">RC</span>
+</div>
+<!-- center: resting layer -->
+<div style="position:relative;z-index:3;margin-top:10px;display:flex;justify-content:center;gap:10px;align-items:flex-start">
+  <div style="display:flex;flex-direction:column;align-items:center;gap:4px;margin-top:24px">
+    <div style="width:66px;height:100px;background:#1F3A52;border-radius:10px;padding:4px;display:flex">
+      <div style="flex:1;border:1px dashed rgba(240,235,216,.55);border-radius:7px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px"><span style="font:700 12px Domine,serif;color:#F0EBD8">M</span><span style="font:600 8px 'JetBrains Mono',monospace;color:#CF952A">41</span></div>
+    </div>
+    <span style="font:600 7px 'JetBrains Mono',monospace;letter-spacing:.14em;color:#5B6B7A">DRAW</span>
+  </div>
+  <div style="width:120px;border:2px solid #1F3A52;border-radius:12px;background:#FCF9F8;overflow:hidden"><img src="uploads/card-taxi-cut.png" alt="pile card" style="width:100%;aspect-ratio:3/4;object-fit:contain;display:block"></div>
+  <div style="width:120px;border:2px solid #1F3A52;border-radius:12px;background:#FCF9F8;overflow:hidden"><img src="uploads/card-batman-cut.png" alt="pile card" style="width:100%;aspect-ratio:3/4;object-fit:contain;display:block"></div>
+</div>
+<!-- meld strip -->
+<div style="position:relative;z-index:3;margin:12px 0 0">
+  <div style="display:flex;gap:7px;overflow:hidden;padding:0 14px">
+    <div style="flex:none;background:#FCF9F8;border:2px solid #CF952A;border-radius:11px;padding:4px 7px"><div style="font:600 7px 'JetBrains Mono',monospace;letter-spacing:.06em;color:#1F3A52;margin-bottom:3px">PACINO ×3</div><div style="display:flex;gap:3px"><div style="width:28px;border:1.5px solid #1F3A52;border-radius:5px;background:#FCF9F8;overflow:hidden"><img src="uploads/card-godfather-cut.png" alt="" style="width:100%;aspect-ratio:3/4;object-fit:contain;display:block"></div><div style="width:28px;border:1.5px solid #1F3A52;border-radius:5px;background:#FCF9F8;overflow:hidden"><img src="uploads/card-taxi-cut.png" alt="" style="width:100%;aspect-ratio:3/4;object-fit:contain;display:block"></div><div style="width:28px;border:1.5px solid #1F3A52;border-radius:5px;background:#FCF9F8;overflow:hidden"><img src="uploads/card-batman-cut.png" alt="" style="width:100%;aspect-ratio:3/4;object-fit:contain;display:block"></div></div></div>
+    <div style="flex:none;background:#FCF9F8;border:2px solid #1F3A52;border-radius:11px;padding:4px 7px"><div style="font:600 7px 'JetBrains Mono',monospace;letter-spacing:.06em;color:#5B6B7A;margin-bottom:3px">NOLAN ×4</div><div style="display:flex;gap:3px"><div style="width:28px;border:1.5px solid #1F3A52;border-radius:5px;background:#FCF9F8;overflow:hidden"><img src="uploads/card-batman-cut.png" alt="" style="width:100%;aspect-ratio:3/4;object-fit:contain;display:block"></div><div style="width:28px;border:1.5px solid #1F3A52;border-radius:5px;background:#FCF9F8;overflow:hidden"><img src="uploads/card-godfather-cut.png" alt="" style="width:100%;aspect-ratio:3/4;object-fit:contain;display:block"></div><div style="width:28px;border:1.5px solid #1F3A52;border-radius:5px;background:#FCF9F8;overflow:hidden"><img src="uploads/card-taxi-cut.png" alt="" style="width:100%;aspect-ratio:3/4;object-fit:contain;display:block"></div></div></div>
+  </div>
+  <div style="position:absolute;right:0;top:0;bottom:0;width:36px;background:linear-gradient(90deg,rgba(240,235,216,0),rgba(240,235,216,.95));pointer-events:none"></div>
+  <div style="margin-top:5px;text-align:center;font:600 7px 'JetBrains Mono',monospace;letter-spacing:.12em;color:#5B6B7A">10 MELDS · SWIPE</div>
+</div>
+<!-- raised card: traveling layer -->
+<div style="position:absolute;left:50%;transform:translateX(-50%);top:92px;z-index:7">
+  <div style="width:180px;border:2.5px solid #CF952A;border-radius:14px;background:#FCF9F8;overflow:hidden;box-shadow:0 0 20px rgba(207,149,42,.5),0 18px 40px rgba(31,58,82,.45)"><img src="uploads/card-godfather-cut.png" alt="raised card" style="width:100%;aspect-ratio:3/4;object-fit:contain;display:block"></div>
+  <div style="position:absolute;left:50%;transform:translateX(-50%);bottom:-12px;background:#1F3A52;color:#F0EBD8;font:700 8px 'JetBrains Mono',monospace;letter-spacing:.1em;padding:5px 12px;border-radius:999px">FLIP</div>
+</div>
+<!-- 10-card fan -->
+<div style="position:relative;flex:1;min-height:0">
+  <div style="position:absolute;inset-inline:0;bottom:-48px;height:180px;z-index:6">
+    <div style="position:absolute;left:6px;bottom:26px;transform:rotate(-20deg);transform-origin:bottom center"><div style="width:94px;aspect-ratio:3/4;border:2px solid #1F3A52;border-radius:10px;background:#FCF9F8;overflow:hidden;box-shadow:0 4px 12px rgba(31,58,82,.3)"><img src="uploads/card-taxi-cut.png" alt="hand card" style="width:100%;height:100%;object-fit:contain;display:block"></div></div>
+    <div style="position:absolute;left:34px;bottom:34px;transform:rotate(-15deg);transform-origin:bottom center"><div style="width:94px;aspect-ratio:3/4;border:2px solid #1F3A52;border-radius:10px;background:#FCF9F8;overflow:hidden;box-shadow:0 4px 12px rgba(31,58,82,.3)"><img src="uploads/card-godfather-cut.png" alt="hand card" style="width:100%;height:100%;object-fit:contain;display:block"></div></div>
+    <div style="position:absolute;left:62px;bottom:41px;transform:rotate(-10.5deg);transform-origin:bottom center"><div style="width:94px;aspect-ratio:3/4;border:2px solid #1F3A52;border-radius:10px;background:#FCF9F8;overflow:hidden;box-shadow:0 4px 12px rgba(31,58,82,.3)"><img src="uploads/card-batman-cut.png" alt="hand card" style="width:100%;height:100%;object-fit:contain;display:block"></div></div>
+    <div style="position:absolute;left:90px;bottom:46px;transform:rotate(-6deg);transform-origin:bottom center"><div style="width:94px;aspect-ratio:3/4;border:2px solid #1F3A52;border-radius:10px;background:#FCF9F8;overflow:hidden;box-shadow:0 4px 12px rgba(31,58,82,.3)"><img src="uploads/card-taxi-cut.png" alt="hand card" style="width:100%;height:100%;object-fit:contain;display:block"></div></div>
+    <div style="position:absolute;left:118px;bottom:49px;transform:rotate(-2deg);transform-origin:bottom center"><div style="width:94px;aspect-ratio:3/4;border:2px solid #1F3A52;border-radius:10px;background:#FCF9F8;overflow:hidden;box-shadow:0 4px 12px rgba(31,58,82,.3)"><img src="uploads/card-godfather-cut.png" alt="hand card" style="width:100%;height:100%;object-fit:contain;display:block"></div></div>
+    <div style="position:absolute;left:146px;bottom:49px;transform:rotate(2deg);transform-origin:bottom center"><div style="width:94px;aspect-ratio:3/4;border:2px solid #1F3A52;border-radius:10px;background:#FCF9F8;overflow:hidden;box-shadow:0 4px 12px rgba(31,58,82,.3)"><img src="uploads/card-batman-cut.png" alt="hand card" style="width:100%;height:100%;object-fit:contain;display:block"></div></div>
+    <div style="position:absolute;left:174px;bottom:46px;transform:rotate(6deg);transform-origin:bottom center"><div style="width:94px;aspect-ratio:3/4;border:2px solid #1F3A52;border-radius:10px;background:#FCF9F8;overflow:hidden;box-shadow:0 4px 12px rgba(31,58,82,.3)"><img src="uploads/card-taxi-cut.png" alt="hand card" style="width:100%;height:100%;object-fit:contain;display:block"></div></div>
+    <div style="position:absolute;left:202px;bottom:41px;transform:rotate(10.5deg);transform-origin:bottom center"><div style="width:94px;aspect-ratio:3/4;border:2px solid #1F3A52;border-radius:10px;background:#FCF9F8;overflow:hidden;box-shadow:0 4px 12px rgba(31,58,82,.3)"><img src="uploads/card-godfather-cut.png" alt="hand card" style="width:100%;height:100%;object-fit:contain;display:block"></div></div>
+    <div style="position:absolute;left:230px;bottom:34px;transform:rotate(15deg);transform-origin:bottom center"><div style="width:94px;aspect-ratio:3/4;border:2px solid #1F3A52;border-radius:10px;background:#FCF9F8;overflow:hidden;box-shadow:0 4px 12px rgba(31,58,82,.3)"><img src="uploads/card-batman-cut.png" alt="hand card" style="width:100%;height:100%;object-fit:contain;display:block"></div></div>
+    <div style="position:absolute;left:258px;bottom:26px;transform:rotate(20deg);transform-origin:bottom center"><div style="width:94px;aspect-ratio:3/4;border:2px solid #1F3A52;border-radius:10px;background:#FCF9F8;overflow:hidden;box-shadow:0 4px 12px rgba(31,58,82,.3)"><img src="uploads/card-taxi-cut.png" alt="hand card" style="width:100%;height:100%;object-fit:contain;display:block"></div></div>
+  </div>
+</div>
+</div>
+</div></div>
+
+<!-- ============ 7f TOKEN SUMMARY ============ -->
+<div class="dv-opt" id="7f"><div class="dv-olabel"><a class="dv-oid" href="#7f">7f</a>Design-token summary — <a class="dv-oid" href="#4h">4h</a> rewritten for “The Stub”</div>
+<div class="dv-card" style="width:560px;background:#F0EBD8;padding:22px 24px;font-family:Inter,system-ui,sans-serif;color:#1F3A52">
+  <div style="font:700 19px Domine,serif;margin-bottom:14px">Marquee — “The Stub” tokens</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
+    <div>
+      <div style="font:600 8.5px 'JetBrains Mono',monospace;letter-spacing:.14em;color:#5B6B7A;margin-bottom:6px">PALETTE</div>
+      <div style="display:flex;flex-direction:column;gap:4px;font:600 10.5px 'JetBrains Mono',monospace">
+        <div style="display:flex;align-items:center;gap:8px"><span style="width:16px;height:16px;border-radius:5px;background:#F0EBD8;border:1.5px solid #1F3A52"></span>canvas.cream #F0EBD8</div>
+        <div style="display:flex;align-items:center;gap:8px"><span style="width:16px;height:16px;border-radius:5px;background:#FCF9F8;border:1.5px solid #1F3A52"></span>paper #FCF9F8 (cards, panels)</div>
+        <div style="display:flex;align-items:center;gap:8px"><span style="width:16px;height:16px;border-radius:5px;background:#1F3A52;border:1.5px solid #1F3A52"></span>ink.navy #1F3A52 · mid #41586E</div>
+        <div style="display:flex;align-items:center;gap:8px"><span style="width:16px;height:16px;border-radius:5px;background:#CF952A;border:1.5px solid #1F3A52"></span>action.amber #CF952A</div>
+        <div style="display:flex;align-items:center;gap:8px"><span style="width:16px;height:16px;border-radius:5px;background:#5B6B7A;border:1.5px solid #1F3A52"></span>muted #5B6B7A · #8FA6BC · #B9C8D6</div>
+        <div style="display:flex;align-items:center;gap:8px"><span style="width:16px;height:16px;border-radius:5px;background:#2C89A1;border:1.5px solid #1F3A52"></span>hint.teal #2C89A1</div>
+        <div style="display:flex;align-items:center;gap:8px"><span style="width:16px;height:16px;border-radius:5px;background:#A02C2C;border:1.5px solid #1F3A52"></span>alert.red #A02C2C</div>
+        <div style="display:flex;align-items:center;gap:8px"><span style="width:16px;height:16px;border-radius:5px;background:#9AA5AD;border:1.5px solid #1F3A52"></span>disabled #9AA5AD (+ strikethrough)</div>
+      </div>
+      <div style="font:600 8.5px 'JetBrains Mono',monospace;letter-spacing:.14em;color:#5B6B7A;margin:12px 0 6px">TYPE</div>
+      <div style="font:600 10.5px/1.6 'JetBrains Mono',monospace">display: Domine 700 · scores tabular-nums<br>ui: Inter 400–800<br>labels: JetBrains Mono 600–700, caps,<br>tracking .06–.18em</div>
+    </div>
+    <div>
+      <div style="font:600 8.5px 'JetBrains Mono',monospace;letter-spacing:.14em;color:#5B6B7A;margin-bottom:6px">SHAPE &amp; DEPTH</div>
+      <div style="font:600 10.5px/1.6 'JetBrains Mono',monospace">radius: header 24 · panels 14 · cards 12<br>· thumbs 6 · pills 999<br>borders do the work: 2px navy, no bevels<br>stub notches: 14px punched circles<br>diorama stack: 2 offset paper layers<br>awning: amber/cream 14px stripes<br>texture: 7px halftone dot, 6% navy<br>glow.take: 0 0 18px rgba(207,149,42,.4)<br>glow.hint: 0 0 16px rgba(44,137,161,.5)<br>overlay scrim: rgba(31,58,82,.62–.66)</div>
+      <div style="font:600 8.5px 'JetBrains Mono',monospace;letter-spacing:.14em;color:#5B6B7A;margin:12px 0 6px">Z-LAYERS</div>
+      <div style="font:600 10.5px/1.6 'JetBrains Mono',monospace">0 canvas · 10 resting cards · 20 shelf/booth<br>30 traveling+raised cards · 40 HUD/header<br>50 contextual bars · 60 overlays/sheets</div>
+      <div style="font:600 8.5px 'JetBrains Mono',monospace;letter-spacing:.14em;color:#5B6B7A;margin:12px 0 6px">MOTION</div>
+      <div style="font:600 10.5px/1.6 'JetBrains Mono',monospace">springs: stiffness 320 / damping 24<br>interactions ≤ 400ms · deal stagger 60ms<br>race bar: 500ms ease-out + tick-up<br>reduced-motion: crossfade 150ms</div>
+    </div>
+  </div>
+</div></div>
+
+</div>
+<p class="dv-next">Try next: "tweak <a class="dv-oid" href="#7a">7a</a>'s …" · "remake the menu (<a class="dv-oid" href="#4a">4a</a>) in this language" · "build <a class="dv-oid" href="#7a">7a</a> as an interactive prototype"</p>
+</section>
+
+
+</body>
+</html>

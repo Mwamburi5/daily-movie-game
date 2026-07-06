@@ -1,8 +1,10 @@
 // The family share format — every mode ends with the same three lines: a brand
 // line, the score in that mode's own words, and a 🎬-led emoji row. Lifted from
 // ChronologyGame (the app's first copy action) so Solo and Duel read as siblings.
-export function marqueeShare(mode: string, scoreLine: string, emoji: string): string {
-  return `Marquee · ${mode}\n${scoreLine}\n${emoji}`
+// Brand renamed Marquee → Match Cut 2026-07-04 (domains bought; "marquee" lives
+// on as the Duel pile term only).
+export function matchCutShare(mode: string, scoreLine: string, emoji: string): string {
+  return `Match Cut · ${mode}\n${scoreLine}\n${emoji}`
 }
 
 // Best-effort copy: the async Clipboard API where it exists (needs the click's

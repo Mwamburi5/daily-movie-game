@@ -1,4 +1,4 @@
-# Marquee (Daily Movie Game)
+# Match Cut (Daily Movie Game)
 
 A movie-trivia card game built as three modes, all sharing one idea: every card
 is a movie, every mode is scored like golf (low score wins), and every mode ends

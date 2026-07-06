@@ -235,7 +235,7 @@
     "id": "raging-bull",
     "title": "Raging Bull",
     "year": 1980,
-    "releaseDate": "1980-12-19",
+    "releaseDate": "1980-11-14",
     "decade": 1980,
     "popularity": 0
   },
@@ -419,7 +419,7 @@
     "id": "dead-poets-society",
     "title": "Dead Poets Society",
     "year": 1989,
-    "releaseDate": "1989-06-09",
+    "releaseDate": "1989-06-02",
     "decade": 1980,
     "popularity": 0
   },
@@ -435,7 +435,7 @@
     "id": "when-harry-met-sally",
     "title": "When Harry Met Sally...",
     "year": 1989,
-    "releaseDate": "1989-07-21",
+    "releaseDate": "1989-07-12",
     "decade": 1980,
     "popularity": 0
   },
@@ -803,7 +803,7 @@
     "id": "the-aviator",
     "title": "The Aviator",
     "year": 2004,
-    "releaseDate": "2004-12-25",
+    "releaseDate": "2004-12-17",
     "decade": 2000,
     "popularity": 0
   },
@@ -1003,7 +1003,7 @@
     "id": "sicario",
     "title": "Sicario",
     "year": 2015,
-    "releaseDate": "2015-10-02",
+    "releaseDate": "2015-09-18",
     "decade": 2010,
     "popularity": 0
   },

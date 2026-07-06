@@ -7,7 +7,21 @@
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
     />
     <meta name="theme-color" content="#f4efe6" />
-    <title>Marquee</title>
+    <!-- Quiet phase (WS1): keep the alias out of search indexes until launch. -->
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Match Cut</title>
+    <!-- Vercel Web Analytics via the script-tag route (deps are locked — no
+         @vercel/analytics). The stub queues events in window.vaq until the
+         deferred script loads; it silently never loads off-Vercel. Custom
+         events fire through src/lib/analytics.ts. -->
+    <script>
+      window.va =
+        window.va ||
+        function () {
+          ;(window.vaq = window.vaq || []).push(arguments)
+        }
+    </script>
+    <script defer src="/_vercel/insights/script.js"></script>
   </head>
   <body>
     <div id="root"></div>

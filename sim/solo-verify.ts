@@ -16,7 +16,8 @@
 // Sections and the PASS/FAIL printer mirror sim/verify.ts / chronology-verify.ts
 // so the three gates read the same.
 
-import { MOVIES, movieById } from '../src/data/movies.ts'
+import { movieById } from '../src/data/movies.ts'
+import { DUEL_POOL } from '../src/data/duelPool.ts'
 import { dailySoloPuzzle, localDateSeed, SOLO_HAND_SIZE } from '../src/lib/daily.ts'
 import { isSolvable, sharedPeople } from '../src/lib/solver.ts'
 import type { Puzzle } from '../src/data/types.ts'
@@ -53,10 +54,10 @@ for (let i = 0; i < DAYS; i++) {
 }
 
 console.log('\n  SOLO DAILY VERIFY')
-console.log(`  ${DAYS} days from ${seeds[0]}, pool ${MOVIES.length} films, hand ${SOLO_HAND_SIZE} + 1 starter`)
+console.log(`  ${DAYS} days from ${seeds[0]}, pool ${DUEL_POOL.length} films, hand ${SOLO_HAND_SIZE} + 1 starter`)
 
 // One generation pass shared by all sections.
-const puzzles: Puzzle[] = seeds.map((s) => dailySoloPuzzle(s, MOVIES))
+const puzzles: Puzzle[] = seeds.map((s) => dailySoloPuzzle(s, DUEL_POOL))
 
 // ═══════════════════════════════════════════════════════════════════════════
 //  #1  EVERY DAILY DEALS AND IS WINNABLE
@@ -81,7 +82,7 @@ function checkSolvable(): void {
       detail = detail || `malformed puzzle for ${seeds[i]}`
       continue
     }
-    const order = isSolvable(p, MOVIES)
+    const order = isSolvable(p, DUEL_POOL)
     if (!order) {
       solvedOk = false
       detail = detail || `unsolvable daily for ${seeds[i]}`
@@ -130,7 +131,7 @@ function checkDeterminism(): void {
   section('#3  Determinism, distinctness & the append-only pin')
 
   // Same seed → byte-identical puzzle, across the whole year.
-  const detOk = puzzles.every((p, i) => JSON.stringify(p) === JSON.stringify(dailySoloPuzzle(seeds[i], MOVIES)))
+  const detOk = puzzles.every((p, i) => JSON.stringify(p) === JSON.stringify(dailySoloPuzzle(seeds[i], DUEL_POOL)))
   check(`deterministic per seed (${DAYS}× regenerated identically)`, detOk)
 
   // Different days → different boards (catches a seed-ignoring bug).
@@ -140,7 +141,7 @@ function checkDeterminism(): void {
   // PIN — the append-only guard. 2026-07-03's daily, recorded at generator
   // birth. If an algorithm/pool change reshuffles it, every already-published
   // daily shifted with it: bump this pin ONLY with a conscious cutover plan.
-  const pinned = dailySoloPuzzle('2026-07-03', MOVIES)
+  const pinned = dailySoloPuzzle('2026-07-03', DUEL_POOL)
   check(
     'pinned seed 2026-07-03 → Once Upon a Time in Hollywood board, par 9',
     pinned.starterMovieId === 'once-upon-a-time-in-hollywood' &&

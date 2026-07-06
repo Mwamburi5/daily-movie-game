@@ -1,122 +1,169 @@
-# Marquee — Flow Package Implementation Plan
+# Marquee — Launch-Ramp Build (pre-playtest)
 
-**Double Feature + draw-3-keep-1 + race-to-20.** Status: **DRAFT awaiting approval** (2026-06-22).
+**Everything buildable WITHOUT playtest feedback, ending in a friends & family
+playtest of all FOUR modes on a ~300-film pool wearing the Stub UI.**
+Status: **DRAFT awaiting approval** (2026-07-04). Supersedes the executed flow-package
+plan (fully shipped 2026-06-22/27; preserved in git history and project memory).
 
-Contract: [`sim/RULESET.md`](sim/RULESET.md). Hard gate between steps: `npm run verify` = **60/60**.
+Contract unchanged: [`sim/RULESET.md`](sim/RULESET.md). Standing gates on every step:
+`tsc` + `vite build` clean · `npm run verify` **64/64** (63→64: the DUEL_POOL_IDS
+pool-pin landed with the duelPool split, 2026-07-05) · chronology **42/42** ·
+solo **8/8** (pin bumps only as a conscious cutover) · RULEBOOK.md updated in the
+same pass as any mechanic/mode change.
 
-## Goal
-Make the shipped React game match the sim's locked, verified flow package. The sim
-already implements all of it behind `Rules{ doubleFeature, draw3, targetScore }`, and
-its helpers are unit-tested by `sim/verify.ts`. **So this is mostly RELOCATE + WIRE,
-not invent** — the risk is in the 1,300-line component, not the logic.
+## Locked context (from the 2026-07-04 grill — don't re-litigate)
+- End goal **public**; front door **TBD by playtest** (leaning Chronology).
+- Persistence guardrail **lifted**: localStorage for meta-state only (streaks,
+  played-today, personal bests). Rules stay stateless and seed-derived.
+- **Connections** is mode 4, built before the playtest, Stub-native.
+- Quiet phase: obscure alias + `noindex`, **no gate**, shares stay URL-less
+  (URL-in-share is the launch growth switch, flipped later).
+- Winner picked via qualitative interviews ~2 weeks in ("which mode would you miss
+  most?"); streak/analytics data as the say/do cross-check.
+- Stub handoff verdict: pure reskin, rules-clean (handoff RULEBOOK byte-identical
+  to repo's); card art must be **scene-only** assets inside a live typographic
+  `StubCard` frame — the three handoff PNGs are style references, not assets.
 
-## Locked decisions
+## Workstream 1 — Instrumentation & quiet-phase plumbing (small, ships first)
+1. `src/lib/progress.ts`: per-mode localStorage — streak, played-today (keyed by
+   daily seed, not wall clock, so streaks survive timezone quirks), personal best.
+   Surfaced in the menu (streak chips) and end screens ("day N · streak M").
+2. Vercel Web Analytics via the script-tag route (no npm dep — deps stay locked).
+   **USER ACTION: enable Analytics in the Vercel dashboard.**
+3. `noindex` meta in index.html. **USER ACTION: quietly buy the domain; point
+   nothing at it yet.**
+4. Crispness prep (from the stack review): self-host + preload Domine / Inter /
+   JetBrains Mono (subset, `font-display: swap`); `env(safe-area-inset-bottom)`
+   padding under the hand fan (it overflows into home-indicator territory).
 
-**A — engine / data shape**
-1. Shared engine lives in **`src/lib/`** (not a new `duelEngine.ts`). *Refined during Step 1:
-   split by layer to avoid a `duel.ts`⇄`difficulty.ts` circular import — pure-engine bits
-   (`mostConnectiveTop`, `TARGET_SCORE`) → `duel.ts`; knobs-aware bits (`legalCardsAnyPile`,
-   `bestPilePlay`, `pickDraw`) → `difficulty.ts`, beside their single-pile twins. User-confirmed.*
-2. Board is **`piles: string[][]`** (array, not `pileA`/`pileB`); `runState`/`cpuRun` gain a `pileIdx`.
-3. Draw-3 burned cards stay **INVISIBLE** — no on-board discard. *Deferred choice, logged as D1 in the decisions log; revisit after the draw-3 feel pass.*
-4. *(emerged from reading the sim)* Shared helpers take **plain `tops: Movie[]` args, not the sim `State`** — so React (which has no `State` object) can call the exact same functions. Recommended; flagging because it adds churn to the sim/verify call sites. **Confirm this one too.**
+## Workstream 2 — Content engine: 89 → ~300 films, bought as clusters
+1. **Grid-generator FIRST**: `sim/connections-gen.ts` — builds 4×4 grids from
+   credited films with an **ambiguity gate** (any film fitting two groups rejects
+   the grid). Run it on the current 89 to emit the **cluster shopping list**
+   (which directors/actors/series need a 4th film).
+2. Cluster buy in waves — **89 → ~160 → ~230 → ~300** — every film with FULL
+   credits + year; unit of acquisition = a cluster (4–6 films); mix ~85%
+   recognizable / 15% deep cuts. Per-wave gates: connectivity check · full verify
+   suite · grid-generator yield report (viable unambiguous grids per wave).
+3. Guardrails: `duelPool` stays LOCKED at the tuned 89 (growing it invalidates
+   difficulty tuning — no retune this build). Chronology consumes the full pool.
+   Solo daily moves to the bigger credited pool as ONE conscious pin cutover
+   (**USER DECISION: cutover date** — it reshuffles future dailies).
+4. **USER ACTION: human date/credits spot-check pass** per wave — the one gate
+   Claude can't self-certify. *(→ Amendment 1: now TMDB-assisted arbitration via
+   `/tmdb-check`; the gate stays human.)*
 
-**B — sequencing guard** (Surgical Changes / CLAUDE.md): the DuelGame.tsx steps land
-as separate sub-steps; **run the app and confirm it still plays after each** — no
-big-bang port. Do **not** refactor the 31-`useState` soup while in there.
+## Workstream 3 — The Stub UI port (tokens → primitives → modes)
+1. Tokens into Tailwind 4 `@theme` (index.css) — handoff screen 7f is the checksum.
+2. Primitives built once in `src/components/`: `StubCard` (one frame, all sizes,
+   `reveal={{year, credits, art}}` — Duel/Solo show credits+year, Chronology hides
+   both, Connections reveals on solve), `Pill`, `PaperPanel` (diorama), `TicketRow`
+   (notched), `AwningStrip`, `BottomSheet`, `RaceBar`.
+3. Duel = the six handoff screens (7a–7e), **markup/className changes only** — the
+   31-`useState` soup is load-bearing and stays (Surgical Changes). Land as
+   sub-steps; the app must still play after each. Manual phone verify required
+   (Framer rejects synthetic pointer events).
+4. Solo + Chronology re-dressed from the same primitives (recap frame 7d
+   generalizes to every end screen). **No scene art this build**: `StubCard`'s
+   typographic face is the playtest look; a ~20-card art pilot runs in parallel
+   (non-blocking); full 300-card art waits for the front-door winner.
 
-## Step 0 — Pre-flight (no code change) — ✅ DONE 2026-06-22
-- Run `npm run verify` (expect 60/60) and `npm run build` (tsc clean) on the current tree, so any red later is provably ours.
-- **Result:** baseline verify **60/60**, build clean (395 modules). Any red from here is ours.
+## Workstream 4 — Connections (mode 4, Stub-native from birth)
+1. Engine in `src/lib/connections.ts` + date-seeded daily via the shared
+   `localDateSeed`; deals only grids passing the ambiguity gate.
+2. `sim/connections-verify.ts` (`npm run verify:connections`): 365 seeds solvable +
+   unambiguous + distinct · deterministic ×2 · append-only pin — same shape as
+   solo-verify.
+3. UI from WS3 primitives: 16 `StubCard`s, guess flow, one-away feedback, share
+   grid in the family format (`Marquee · Connections`). Menu card + streaks wired.
+4. RULEBOOK.md + HowToPlay section in the same pass (guardrail).
 
-## Step 1 — Shared multi-pile engine in `src/lib/` — ✅ DONE 2026-06-22
-**Gate result:** verify **60/60**, build clean, no Vite circular-dep warning. Placement split by
-layer (see A1 note): `mostConnectiveTop` + `TARGET_SCORE` → `duel.ts`; `legalCardsAnyPile`,
-`bestPilePlay`, `pickDraw` → `difficulty.ts`. `sim/duel-sim.ts` `drawCards` now delegates the
-choice to `pickDraw`; `sim/verify.ts` keystone + DF tests re-pointed to plain `tops` (dropped the
-dead inline `State`). Blast radius was exactly: duel.ts, difficulty.ts, duel-sim.ts, verify.ts.
+## Workstream 5 — Polish, gate sweep, ship, playtest kickoff
+1. Surviving Day-5 backlog: first-run onboarding funnel, CPU-final-card warning,
+   end-of-game stats.
+2. **Fairness call (USER):** recommendation — ship the playtest with the ~7pp
+   first-player edge as a documented, gate-pinned house edge; revisit with real
+   data rather than burning build days simming variants now.
+3. Full gate sweep · deploy · phone-in-hand pass on all four modes · **send the
+   link** to the 5–10 circle with a one-line pitch per mode. Interviews at ~2 weeks.
 
-Move these out of `sim/duel-sim.ts`, re-signatured from the sim `State` to plain args:
-- `legalCardsAnyPile(tops, hand, k)`
-- `bestPilePlay(tops, hand, unseen, k, rng) → { card, pileIdx } | null`
-- `mostConnectiveTop(tops, unseen) → number`
-- `pickDraw(take, tops, k, unseen) → { keep, burn[] }` — the pure draw-3 selection. The sim's `drawCards` stays sim-side but delegates the *choice* to this (it owns the deck/`burned` mutation).
-- Add `TARGET_SCORE = 20`.
+## Sequencing (aggressive; 4 days + buffer)
+- **Day 1:** WS1 complete · WS2.1 grid-generator + shopping list · wave 1 buy started.
+- **Day 2:** WS3 tokens + primitives + first Duel screens · WS2 waves continue.
+- **Day 3:** WS3 Duel finished + Solo/Chrono re-dress · WS2 reaches ~300 · user date pass.
+- **Day 4:** WS4 Connections end-to-end · WS5 polish.
+- **Day 5 (buffer):** gate sweep · deploy · phone verify · SEND.
 
-Re-point callers (logic unchanged, only argument plumbing):
-- `sim/duel-sim.ts` — call with `tops(s)`.
-- `sim/verify.ts` — lines ~237, 243, 321, 327, 362, 363.
-
-**Gate:** `npm run verify` = 60/60, `npm run build` clean. (If React shares the engine, the sim is now exercising the real shipped code — parity by construction.)
-
-## Step 2 — DuelGame board → two piles — ✅ DONE 2026-06-22
-**Verified:** tsc+build clean; in-browser (Director's Cut) the CPU plays onto BOTH marquees with
-correct tier scoring, melds + denial-tosses work, 0 console errors; deck seeds to 73 (74−1 lifted
-into pile 2); `pileAt` drop-routing maps points to the right pile (off-board → null); player
-draw→toss routes a brick via `mostConnectiveTop`. Notes: shrank the `pile` CardSize (152→124w) to
-fit two side-by-side + deck on the 420px board (flagged for the feel pass); per-pile super/deep fx
-via `fxPile`; player **toss target** = most-connective top (provisional — Step 3 reworks the draw);
-hint considers both tops. Framer drag/tap gestures can't be simulated in the preview harness, so
-player drag-to-play is verified by construction (unchanged drag plumbing + verified geometry/scoring).
-- `pile: string[]` → `piles: string[][]`, seeded `[[starterId], [deckTop]]` (mirror `playGame` lines 560–564).
-- `runState` / `cpuRun` gain `pileIdx`; a run stays on the pile it started.
-- Two drop-zones + two refs; `topId` / `underlays` become per-pile.
-- `playerPlay(id, point)`: route the dropped card to the pile it landed on; validate/score against THAT top.
-- CPU effect: swap single-top `pickPlay` for `bestPilePlay(tops, …)`.
-- `hintCard` must consider **both** tops.
-- **Surgical:** the `pile`→`piles` rename ripples ~15 refs (`topId`, `underlays`, `pileZoneRef`, `say()` lines, CPU effect, hint). Change only those; match existing style.
-- **Verify:** run the app — play onto each pile; CPU uses both (sim showed ~49% of plays route to pile 2); melds/runs/tokens still work.
-
-## Step 3 — Draw-3 picker UI — ✅ DONE 2026-06-22
-**Verified in-browser:** player draw reveals top 3 (deck −3), tap-one picker overlay with a "CONNECTS"
-badge on cards linking to either top; keep 1 → enters existing keep/toss/play (raised), the other 2
-burn (deck unchanged after pick) — conservation holds (89). CPU draw via `pickDraw` (deck −3, hand +1).
-No `burned` array needed in React: the sim's `unseenFor` already counts burned cards as unseen, so
-parity holds by just dropping them from the deck. tsc clean, 0 console errors. New: `drawChoice` state,
-`playerPickDraw`, `draw3()` in the CPU effect, picker overlay (real `onClick` buttons).
-- `playerDraw`: reveal the top 3 of the deck → player taps 1 to keep → existing keep/toss/play flow on the kept card; the other 2 → `burned` (invisible, per D1).
-- CPU draw: `pickDraw(…)` (auto-keep best, burn 2).
-- **Verify:** run the app — a draw reveals 3, keeps 1, 2 leave play, deck drops by 3; no card duplicated or lost.
-
-## Step 4 — Race-to-20 end + copy — ✅ DONE 2026-06-22
-**Verified in-browser:** drove a Director's Cut CPU to 20 → game ended at exactly CPU 20 (no overrun)
-via a score-watching `useEffect` (ends the moment either side hits `TARGET_SCORE`); end screen read
-"CPU wins." / "CPU hit 20 — the show goes to the higher net." / "Highest net wins · played − cards
-held" with both raw+net rows, winner row highlighted. The racer-loses case uses the same template
-(net-driven headline flips to "You win!") so it's clear by construction. HUD shows "show ends at 20".
-New: `EndReason 'target'`, race effect, `racerLabel`, rewritten end copy, target HUD hint. tsc+build clean.
-**Surfaced (pre-existing, flagged as a task, NOT fixed here):** rapid double-tap of the recast "Allow
-it" button double-resolves a CPU play → duplicate card (React key warning). Orthogonal to the flow
-package; single-tap play is clean. Needs a re-entry guard.
-- After every scoring action (play / meld / lay-off / Final Cut), if either side ≥ `TARGET_SCORE`, end the show; **highest NET still wins**.
-- The duel end screen is **inline in DuelGame.tsx** (Results.tsx is the *solo* screen). Rewrite end copy to defuse the "crossed 20 but lost on net" confusion: show raw **and** net, name the winner by net explicitly.
-- Scores now land ~18–26/game (was ~60) — re-scale any "good score" framing in the duel HUD.
-- **Verify:** run the app — force a 20-pt finish where the racer loses on net; confirm the end screen reads clearly, not confusingly.
-
-## Step 5 — Difficulty retune — ✅ DONE 2026-06-22
-**Result (flow package, 5000 games × 2 seeds):** Matinee 64.3/65.3, Feature 48.0/49.1, Director's
-39.4/41.0 — all within ~1.5pp of targets 65/50/41. Retuned `KNOBS`: Matinee whiff .55→.44 & meldMiss
-.85→.68 (it got *too easy* under Double Feature — random policy + heavy whiff); Feature whiff 0→.05;
-Director's whiff 0→.18 (low leverage — it just draws-3 a strong card, so needed a big whiff; left
-recast 'full' to keep the contract). Added a fast `eval tune` mode (race-to-20 only, all 3 tiers) for
-iteration. **`npm run sim` now runs the flow package by default** (was shipped rules) and its labels say
-65/50/41 — that reconciles the stale "target 30". **Gate:** verify 60/60, build clean, `eval package
---assert` conservation held under the flow package.
-- `npm run sim --seed=<n>` (paired). Targets: **Matinee down** (~74 → ~65), Feature ~as-is (~50), Director's ~41 (reconcile the stale CLI "target 30" label).
-- **Gate:** `npm run eval package <n> --seed=<s> --assert` — React-driving numbers match the sim within CI; asserts confirm conservation.
-
-## Then
-- ✅ **RULEBOOK.md** updated — "Coming Next" folded into the live Duel rules + glossary; "What's
-  new" changelog; "Last updated" bumped.
-- ✅ **sim/RULESET.md** (contract) updated — §8 KNOBS table to the retuned values, §9 reframed
-  ("shipped flow package", not port targets), §10 +divergence #4 (React has no `burned` zone).
-- ✅ `npm run build` clean.
-- ⏳ **Deploy** `npx vercel deploy --prod --yes` — held for user OK (outward-facing; the two-pile
-  **layout is functional, flagged for the feel pass** — user may want a local look first).
-- Resurface (standing directives): ending-stalemate **feel**; **D1** discard visibility; the
-  pre-existing **double-tap "Allow it"** guard (spawned as a task).
+## Explicitly deferred (not this build)
+Full 300-card scene art (winner's pool only, post-decision) · any fairness rule
+change · front-door commitment · backend/leaderboards · board-game track ·
+Duel pool growth/retune · URL-in-share (launch switch).
 
 ## Risks / watch
-- **Blast radius** of `pile`→`piles` in the 1,300-line file — mitigated by the B-guard (verify the app between sub-steps).
-- **Score-shrink** surprising the HUD / end copy (Step 4).
-- **verify.ts re-point** must keep 60/60 — change only arg plumbing, never the logic.
+- **WS3 traveling-card layer on mobile Safari** (z-30 card over piles, under
+  header) — the likeliest schedule-eater; transform/opacity only.
+- **WS2 pace**: ~210 new films with full credits in ~2 days is the aggressive
+  bet; if it slips, the playtest ships at wave 2 (~230) — repeat-rate math still
+  acceptable (~1 repeat film per Chronology hand per month).
+- **Connections ambiguity** gets harder as the pool grows — the gate must run on
+  every wave, not once.
+- **DuelGame.tsx blast radius** — same B-guard as the flow package: verify the app
+  plays between every sub-step.
+
+## Amendment 1 (2026-07-05, approved) — TMDB pipeline + pool unification
+
+**Status 2026-07-05 (end of session):** A1 ✅ key in, probe green · A2 ✅
+executed (162 audited: 148 clean · 5 fixes applied incl. re-pin-free rebuild ·
+9 ours-correct ledgered · attribution live in the rules modal, undeployed) ·
+A3 ✅ executed (74 merged → MOVIES=237, gates green, tune byte-identical,
+yield 9.86M/≈3.05M strict) · A4 design SIGNED OFF, implementation next
+session · A5 plan written · A6 done. Deploy of A2/A3 content = Buri's button.
+
+Inserts between WS2.2 (shipped 2026-07-05: wave-1 merged, MOVIES=163, duelPool
+split + pool-pin) and WS3. Absorbs WS2 item 4: the per-wave human date/credits
+pass is now TMDB-assisted arbitration via `/tmdb-check` — TMDB is a witness,
+not a judge; the gate stays human, litigation shrinks to the flagged diffs.
+
+**Sequencing ruling (Buri, 2026-07-05): wave 2 merges BEFORE unification.**
+The proven wave-1 protocol runs unchanged on today's `movies.ts`; unification
+then runs once, at 237 films, over all ~116 overlapping ids. (Wave 2 gains
+nothing from landing in a canonical pool — it's a credits-only draft, so its
+films wouldn't enter the chronology view either way.)
+
+1. **A1 — key gate (USER, ~2 min):** TMDB API Read Access Token into
+   `.env.local`, `npm run tmdb:probe` green. A2–A4 are blocked keyless.
+2. **A2 — Chronology date audit (the existing 162):** `npm run tmdb:dates` —
+   policy-encoded check (US theatrical via `/movie/{id}/release_dates`, types
+   2+3 limited+wide, earliest; NEVER TMDB's headline `release_date`) against
+   `chronology-pool.json`; report grouped likely-wrong / uncertain / cosmetic
+   (`docs/tmdb-date-audit.md`, wave1-diffs style); Buri arbitrates; fixes land
+   in `scripts/chronology-seed.ts` → rebuild pool → gates. ⚠ Date fixes
+   reshuffle the date-seeded Chronology daily: free pre-public, but the first
+   batch ships only on Buri's explicit confirm (verify:chronology re-pin in
+   the same pass). **TMDB attribution (logo + required notice, rules/About
+   modal placement — Buri-approved) ships in the same deploy** as the first
+   applied fixes: that is the first TMDB-derived data in the app.
+3. **A3 — wave-2 pass (163→237):** wave-1 protocol — `tmdb:audit` as the
+   first-line cross-check + targeted web checks (writers, flagged items) →
+   Buri arbitrates NEW question types only (credit conventions locked
+   2026-07-05: screenplay-only · performed-for-the-film · recognizability-first
+   topCast w/ true billing errors fixed · primary director · id reuse) →
+   append-only merge → full gate sweep → `gen:connections` yield vs the
+   3,047,293 / ≈755k-strict baseline.
+4. **A4 — pool unification (design → Buri sign-off → implement):** `Movie`
+   gains optional `releaseDate` under the locked date policy; overlapping ids
+   dedupe to one entry per film; `chronology-pool.json` becomes a DERIVED
+   artifact (build script filters canonical films that have policy dates
+   through the existing era/decade validator). Hard constraints:
+   `DUEL_POOL_IDS` byte-identical (Duel/Solo deals untouched by construction) ·
+   full gate sweep green, with the derived JSON byte-identical to the post-A2
+   pool = provably no reshuffle · content architecture only, zero rule
+   changes. Design doc: `docs/pool-unification.md`.
+5. **A5 — Stage B plan (162 → 300–500 dated films):** `docs/stage-b-plan.md`
+   — human picks era-stratified titles (PER_DECADE_MIN tightens toward 50–80
+   per decade), TMDB drafts policy dates into a review file, `/tmdb-check`
+   audits, Buri arbitrates, merge. Build a drafting tool only if hand-drafting
+   is the measured bottleneck.
+6. **A6 — docs/ledger/memory sync:** `docs/tmdb-plan.md` Phase 5 concretized;
+   rulings ledger in use; RULEBOOK untouched — nothing player-facing changes
+   except the attribution notice.

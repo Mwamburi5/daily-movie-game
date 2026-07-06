@@ -25,7 +25,8 @@ import {
   pickPlay,
   whiffs,
 } from '../src/lib/difficulty.ts'
-import { MOVIES, movieById } from '../src/data/movies.ts'
+import { movieById } from '../src/data/movies.ts'
+import { DUEL_POOL, DUEL_POOL_IDS } from '../src/data/duelPool.ts'
 import { deal, isWild, LADDER_PTS, meldRung, TIER_POINTS, MELD_POINTS_PER_CARD } from '../src/lib/duel.ts'
 import { linkTier, type SharedPerson } from '../src/lib/solver.ts'
 import type { Movie } from '../src/data/types.ts'
@@ -166,9 +167,24 @@ function checkSeedingAndPairing(): void {
 function checkConservation(): void {
   section('#2  Conservation (all 89 cards accounted for)')
 
+  // Pool pin (WS2 split, 2026-07-05): Duel and the Solo daily deal from the
+  // frozen 89-film DUEL_POOL while MOVIES grows in content waves. An edit to
+  // the list — or a merge that breaks id resolution — trips this before it can
+  // shift the tuning or reshuffle published Solo dailies. Bump the hash only
+  // as a conscious cutover (retune + solo re-pin in the same pass).
+  let poolHash = 0x811c9dc5
+  for (const ch of [...DUEL_POOL_IDS].sort().join('|')) {
+    poolHash = Math.imul(poolHash ^ ch.charCodeAt(0), 0x01000193) >>> 0
+  }
+  check(
+    'DUEL_POOL pinned to the tuned 89',
+    DUEL_POOL_IDS.length === 89 && DUEL_POOL.length === 89 && poolHash === 0x2fa00c8d,
+    `ids ${DUEL_POOL_IDS.length}, resolved ${DUEL_POOL.length}, fnv 0x${poolHash.toString(16)}`,
+  )
+
   // First prove the DETECTOR works — it must reject drops, dups, and aliens,
   // or "no violations" in real games would be meaningless.
-  const good = MOVIES.map((m) => m.id)
+  const good = DUEL_POOL.map((m) => m.id)
   check('detector passes a clean 89-card census', validateCensus(good) === null)
   check('detector catches a dropped card', validateCensus(good.slice(1)) !== null)
   check('detector catches a duplicate', validateCensus([good[0], ...good]) !== null)
@@ -251,11 +267,11 @@ function checkParity(): void {
   let exercised = 0
   let detail = ''
   for (let i = 0; i < 300 && redOk; i++) {
-    const d = deal(MOVIES, 7, makeRng(i, 'parity'))
+    const d = deal(DUEL_POOL, 7, makeRng(i, 'parity'))
     const top = movieById.get(d.starterId)!
     const hand = d.playerHand.map((id) => movieById.get(id)!)
     const seen = new Set([d.starterId, ...d.playerHand])
-    const unseen = MOVIES.filter((m) => !seen.has(m.id))
+    const unseen = DUEL_POOL.filter((m) => !seen.has(m.id))
     // The multi-pile helpers now take plain `tops`; with one pile that's [top],
     // and they must reduce EXACTLY to React's single-top calls.
     const simLegal = legalCardsAnyPile([top], hand, k).map((m) => m.id).sort().join()
@@ -319,7 +335,7 @@ function checkParity(): void {
 // Minimal State factory for unit-testing the new helpers in isolation.
 function baseState(over: Partial<State>): State {
   return {
-    piles: [[MOVIES[0].id]],
+    piles: [[DUEL_POOL[0].id]],
     hands: { A: [], B: [] },
     deck: [],
     burned: [],
@@ -339,8 +355,8 @@ function checkNewCode(): void {
   section('#4  New-code correctness (two-pile / draw-3 / race / go-out)')
 
   // ── draw-3-keep-1 burns EXACTLY 2 (unit test of drawCards) ──
-  const top0 = MOVIES[0]
-  const four = [MOVIES[1].id, MOVIES[2].id, MOVIES[3].id, MOVIES[4].id]
+  const top0 = DUEL_POOL[0]
+  const four = [DUEL_POOL[1].id, DUEL_POOL[2].id, DUEL_POOL[3].id, DUEL_POOL[4].id]
   const sShip = baseState({ deck: [...four], rules: {} })
   const keepShip = drawCards(sShip, 'A', [top0], KNOBS.feature)
   check(
@@ -377,12 +393,12 @@ function checkNewCode(): void {
   let routedDeals = 0
   let usedPile1 = 0
   for (let i = 0; i < 400 && routeOk; i++) {
-    const d = deal(MOVIES, 7, makeRng(i, 'df'))
+    const d = deal(DUEL_POOL, 7, makeRng(i, 'df'))
     const piles = [[d.starterId], [d.deck[0]]]
     const tops = piles.map((p) => movieById.get(p[p.length - 1])!)
     const hand = d.playerHand.map((id) => movieById.get(id)!)
     const seen = new Set([...piles.flat(), ...d.playerHand])
-    const unseen = MOVIES.filter((m) => !seen.has(m.id))
+    const unseen = DUEL_POOL.filter((m) => !seen.has(m.id))
     const anyLegal = legalCardsAnyPile(tops, hand, k).length > 0
     const bpp = bestPilePlay(tops, hand, unseen, k, makeRng(i))
     // The agent plays iff a legal play exists on EITHER top.

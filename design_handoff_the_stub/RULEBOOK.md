@@ -1,6 +1,6 @@
-# Match Cut — Rulebook
+# Marquee — Rulebook
 
-> **Living document.** This is the plain-English guide to how Match Cut plays *right
+> **Living document.** This is the plain-English guide to how Marquee plays *right
 > now*. Update it whenever a rule or mode changes, so the words here always match
 > the game. Written so anyone 12 and up can follow it.
 >

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
-import { MOVIES, movieById } from './data/movies.ts'
+import { movieById } from './data/movies.ts'
+import { DUEL_POOL } from './data/duelPool.ts'
 import type { Movie } from './data/types.ts'
 import { linkTier, sharedPeople, type LinkTier, type SharedPerson } from './lib/solver.ts'
 import {
@@ -43,6 +44,8 @@ import {
   pickPlay,
   whiffs,
 } from './lib/difficulty.ts'
+import { recordDuelFinish, type DuelMeta } from './lib/progress.ts'
+import { track } from './lib/analytics.ts'
 
 // Resolve a card id to its Movie — wild or canonical (the deck holds 3 wilds).
 const mv = (id: string): Movie => wildMovie(id) ?? movieById.get(id)!
@@ -51,7 +54,7 @@ const mv = (id: string): Movie => wildMovie(id) ?? movieById.get(id)!
 // piles/hands) so they're drawn naturally — mirrors the sim's playGame seeding.
 // d.deck[0] becomes the second Double Feature pile, so wilds go after it.
 function dealDuel(): Deal {
-  const d = deal(MOVIES)
+  const d = deal(DUEL_POOL)
   const [pile2, ...rest] = d.deck
   let deck = rest
   for (const w of WILD_MOVIES) {
@@ -74,7 +77,7 @@ import Hand from './components/Hand.tsx'
 import HowToPlay from './components/HowToPlay.tsx'
 import MeldZone, { meldLabel } from './components/MeldZone.tsx'
 import ShareCopy from './components/ShareCopy.tsx'
-import { marqueeShare } from './lib/share.ts'
+import { matchCutShare } from './lib/share.ts'
 
 type DuelStatus = 'playerTurn' | 'cpuTurn' | 'recastOffer' | 'over'
 type EndReason = 'playerOut' | 'cpuOut' | 'stalemate' | 'target'
@@ -225,6 +228,9 @@ export default function DuelGame({
   const [fxPile, setFxPile] = useState(0) // which Double Feature pile the super/deep fx plays on
   const [showRules, setShowRules] = useState(false)
   const [turnTick, setTurnTick] = useState(0) // re-arms the CPU effect for encores/runs
+  // Lifetime plays/wins at this difficulty, for the end screen — set by the
+  // finish effect. Meta-state only; no rule reads it (persistence guardrail).
+  const [duelMeta, setDuelMeta] = useState<DuelMeta | null>(null)
   // One drop-zone ref per Double Feature pile; a dropped card routes to the pile it landed on
   const pileZoneRefs = useRef<(HTMLDivElement | null)[]>([null, null])
   const meldRowRefs = useRef(new Map<number, HTMLDivElement>())
@@ -616,7 +622,7 @@ export default function DuelGame({
     // Bury the brick on the most-connective marquee (denial — degrades the CPU's
     // best top). With two Double Feature piles the toss needs a target.
     const seen = new Set([...piles.flat(), ...playerHand])
-    const unseen = MOVIES.filter((m) => !seen.has(m.id))
+    const unseen = DUEL_POOL.filter((m) => !seen.has(m.id))
     const tgt = mostConnectiveTop(tops, unseen)
     setPlayerHand((h) => h.filter((c) => c !== id))
     setPiles((ps) => ps.map((p, i) => (i === tgt ? [...p, id] : p)))
@@ -856,7 +862,7 @@ export default function DuelGame({
       const handMovies = cpuHand.map((id) => mv(id)!)
       const unseenWith = (extra: string[]) => {
         const seen = new Set([...piles.flat(), ...cpuHand, ...extra])
-        return MOVIES.filter((m) => !seen.has(m.id))
+        return DUEL_POOL.filter((m) => !seen.has(m.id))
       }
       // Draw-3-keep-1: reveal the top 3, keep the best (pickDraw), burn the rest.
       // Returns the kept card id; the others just leave the deck (invisible per D1).
@@ -1185,6 +1191,21 @@ export default function DuelGame({
   const playerNet = playerScore - playerHand.length
   const cpuNet = cpuScore - cpuHand.length
   const winner = playerNet > cpuNet ? 'player' : cpuNet > playerNet ? 'cpu' : 'draw'
+
+  useEffect(() => {
+    track('mode_start', { mode: 'duel', difficulty })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  // Every finished duel counts toward the per-difficulty record (no daily to
+  // gate on — replays ARE the return signal). newGame resets status, so the
+  // next finish records its own game.
+  useEffect(() => {
+    if (!gameOver) return
+    track('mode_finish', { mode: 'duel', difficulty })
+    setDuelMeta(recordDuelFinish(difficulty, winner === 'player'))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [gameOver])
   // Who crossed the finish line first (race-to-target end copy)
   const racerLabel =
     playerScore >= TARGET_SCORE && cpuScore >= TARGET_SCORE
@@ -1214,7 +1235,7 @@ export default function DuelGame({
   // net is the number we share.
   const shareResult = winner === 'player' ? 'won' : winner === 'cpu' ? 'lost' : 'draw'
   const shareEmoji = '🎬' + recap.map((e) => (e.who === 'You' ? '🟩' : '🟥')).join('')
-  const shareDuel = marqueeShare(
+  const shareDuel = matchCutShare(
     'Duel',
     `${shareResult} vs ${DIFFICULTY_META[difficulty].label} · net ${playerNet} to ${cpuNet}`,
     shareEmoji,
@@ -1926,6 +1947,17 @@ export default function DuelGame({
                     ))}
                   </div>
                 </div>
+              )}
+
+              {/* Lifetime record at this difficulty (localStorage meta-state) */}
+              {duelMeta && (
+                <p
+                  className="mt-3 text-[11px] font-bold uppercase tracking-wider text-[#9a917c] tabular-nums"
+                  data-duel-record
+                >
+                  {DIFFICULTY_META[difficulty].label} record · {duelMeta.plays} played ·{' '}
+                  {duelMeta.wins} won
+                </p>
               )}
 
               <ShareCopy text={shareDuel} />

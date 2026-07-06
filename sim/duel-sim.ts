@@ -14,7 +14,8 @@
 // analysis and rule variants (e.g. draw-3-keep-1).
 
 import type { Movie } from '../src/data/types.ts'
-import { MOVIES, movieById } from '../src/data/movies.ts'
+import { movieById } from '../src/data/movies.ts'
+import { DUEL_POOL } from '../src/data/duelPool.ts'
 import { sharedPeople, linkTier, type LinkTier } from '../src/lib/solver.ts'
 import {
   MELD_POINTS_PER_CARD,
@@ -142,7 +143,7 @@ function cardCensus(s: State): string[] {
 // Pure check on a census: returns an error string, or null if conserved.
 // Exported so the test suite can exercise the detector on crafted inputs.
 export function validateCensus(ids: string[]): string | null {
-  if (ids.length !== MOVIES.length) return `card count ${ids.length} ≠ ${MOVIES.length}`
+  if (ids.length !== DUEL_POOL.length) return `card count ${ids.length} ≠ ${DUEL_POOL.length}`
   const set = new Set(ids)
   if (set.size !== ids.length) return `${ids.length - set.size} duplicate card(s)`
   for (const id of ids) if (!movieById.has(id)) return `unknown card id "${id}"`
@@ -163,7 +164,7 @@ function assertConservation(s: State, label: string): void {
 
 function unseenFor(s: State, who: Who, extra: string[] = []): Movie[] {
   const seen = new Set([...s.piles.flat(), ...s.hands[who], ...extra])
-  return MOVIES.filter((m) => !seen.has(m.id))
+  return DUEL_POOL.filter((m) => !seen.has(m.id))
 }
 
 // The current top of each pile (one entry, or two under Double Feature).
@@ -682,7 +683,7 @@ export function playGame(
   const idx = opts.index ?? 0
   const dealRng: Rng = seeded ? makeRng(opts.seed!, 'deal', idx) : Math.random
   const playRng: Rng = seeded ? makeRng(opts.seed!, 'play', idx) : Math.random
-  const d = deal(MOVIES, 7, dealRng)
+  const d = deal(DUEL_POOL, 7, dealRng)
   let deck = d.deck
   const piles: string[][] = [[d.starterId]]
   if (rules.doubleFeature) {

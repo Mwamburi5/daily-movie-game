@@ -85,7 +85,9 @@ export const CHRONOLOGY_SEED: SeedEntry[] = [
   // ── 1980s ──────────────────────────────────────────────────────────────
   { id: 'the-empire-strikes-back', title: 'The Empire Strikes Back', releaseDate: '1980-05-21' },
   { id: 'the-shining', title: 'The Shining', releaseDate: '1980-05-23' },
-  { id: 'raging-bull', title: 'Raging Bull', releaseDate: '1980-12-19' },
+  // Raging Bull: paid 3-city opening (NY/LA/Toronto) 1980-11-14 per AFI Catalog;
+  // 12-19 was the wide date. Ruled 2026-07-05 (TMDB date audit batch 1).
+  { id: 'raging-bull', title: 'Raging Bull', releaseDate: '1980-11-14' },
   { id: 'raiders-of-the-lost-ark', title: 'Raiders of the Lost Ark', releaseDate: '1981-06-12' },
   { id: 'e-t-the-extra-terrestrial', title: 'E.T. the Extra-Terrestrial', releaseDate: '1982-06-11' },
   // Blade Runner and The Thing famously opened the same day, 1982-06-25.
@@ -111,9 +113,11 @@ export const CHRONOLOGY_SEED: SeedEntry[] = [
   { id: 'die-hard', title: 'Die Hard', releaseDate: '1988-07-15' },
   { id: 'rain-man', title: 'Rain Man', releaseDate: '1988-12-16' },
   { id: 'indiana-jones-and-the-last-crusade', title: 'Indiana Jones and the Last Crusade', releaseDate: '1989-05-24' },
-  { id: 'dead-poets-society', title: 'Dead Poets Society', releaseDate: '1989-06-09' },
+  // DPS: 8-theater limited opening 06-02; wide 06-09. Ruled 2026-07-05.
+  { id: 'dead-poets-society', title: 'Dead Poets Society', releaseDate: '1989-06-02' },
   { id: 'batman', title: 'Batman', releaseDate: '1989-06-23' },
-  { id: 'when-harry-met-sally', title: 'When Harry Met Sally...', releaseDate: '1989-07-21' },
+  // WHMS: 41-theater NYC-first opening 07-12; wide 07-21. Ruled 2026-07-05.
+  { id: 'when-harry-met-sally', title: 'When Harry Met Sally...', releaseDate: '1989-07-12' },
 
   // ── 1990s ──────────────────────────────────────────────────────────────
   { id: 'goodfellas', title: 'Goodfellas', releaseDate: '1990-09-19' },
@@ -165,7 +169,8 @@ export const CHRONOLOGY_SEED: SeedEntry[] = [
   { id: 'the-return-of-the-king', title: 'The Lord of the Rings: The Return of the King', releaseDate: '2003-12-17' },
   { id: 'the-matrix-reloaded', title: 'The Matrix Reloaded', releaseDate: '2003-05-15' },
   { id: 'the-matrix-revolutions', title: 'The Matrix Revolutions', releaseDate: '2003-11-05' },
-  { id: 'the-aviator', title: 'The Aviator', releaseDate: '2004-12-25' },
+  // The Aviator: 40-theater platform opening 12-17; wide 12-25. Ruled 2026-07-05.
+  { id: 'the-aviator', title: 'The Aviator', releaseDate: '2004-12-17' },
   { id: 'eternal-sunshine-of-the-spotless-mind', title: 'Eternal Sunshine of the Spotless Mind', releaseDate: '2004-03-19' },
   { id: 'collateral', title: 'Collateral', releaseDate: '2004-08-06' },
   { id: 'batman-begins', title: 'Batman Begins', releaseDate: '2005-06-15' },
@@ -195,7 +200,8 @@ export const CHRONOLOGY_SEED: SeedEntry[] = [
   { id: 'prisoners', title: 'Prisoners', releaseDate: '2013-09-20' },
   { id: 'interstellar', title: 'Interstellar', releaseDate: '2014-11-05' },
   { id: 'the-martian', title: 'The Martian', releaseDate: '2015-10-02' },
-  { id: 'sicario', title: 'Sicario', releaseDate: '2015-10-02' },
+  // Sicario: 6-theater NY/LA platform 09-18; wide 10-02. Ruled 2026-07-05.
+  { id: 'sicario', title: 'Sicario', releaseDate: '2015-09-18' },
   { id: 'the-big-short', title: 'The Big Short', releaseDate: '2015-12-11' },
   { id: 'arrival', title: 'Arrival', releaseDate: '2016-11-11' },
   { id: 'dunkirk', title: 'Dunkirk', releaseDate: '2017-07-21' },
