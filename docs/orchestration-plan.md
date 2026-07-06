@@ -11,6 +11,10 @@
 
 ---
 
+> **Artifact paths:** the UI-PRD this plan briefs from is
+> **`design/UI-PRD.md`** (not docs/). Contracts: `docs/ui-contracts.md`.
+> Task list: `docs/ui-tasks.md`.
+
 ## Step 0 — Reconcile (the executing session does this FIRST)
 
 The live wave plan was authored in-session and never committed, so this doc

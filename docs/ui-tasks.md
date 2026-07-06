@@ -17,14 +17,17 @@
   is `npm run verify` **64/64** · `verify:solo` **8/8** · `verify:chronology`
   **42/42** · `npm run build` clean; content edits to the frozen 89 addi-
   tionally require `npm run eval -- tune 8000 --seed=1` ≈ 66.7/49.2/43.5.
-- **⛔ Wave-0 blockers (user inputs):** the **UI-PRD is not in this repo** —
-  §1–§10 references (S1–S6 screens, §2 card sizes, §3 tokens, §7 motion,
-  §10 directions A–D) and some vocabulary ("Recast offer") resolve to
-  nothing locally. The **chosen visual direction (§10 A–D)** is likewise
-  uncommitted. Both must be supplied/committed before TOKENS and any FORGE
-  brief can be written honestly. (Likely related artifact already in-repo:
-  `design_handoff_the_stub/` — "The Stub" reskin handoff behind PLAN.md WS3;
-  whether the UI-PRD supersedes or extends it is a user call.)
+- **RESOLVED: the UI-PRD is `design/UI-PRD.md`** (was in design/, not docs/;
+  present since the initial commit). "Recast offer" is real repo vocabulary —
+  DuelGame.tsx's own `RecastOffer` type (the CPU super-link/Final-Cut
+  suspense modal, `:1824–1866`). **Orchestrator ruling:** FORGE
+  `RecastOffer.tsx` targets that modal; the take-to-meld glow (`:1438–1484`)
+  is NOT in its scope (recently user-tuned, Matinee-gated, stays inline).
+- **⛔ Remaining Wave-0 blocker: the §10 visual direction (A–D) was never
+  chosen.** User is reviewing examples; TOKENS and all restyle briefs hold
+  until the choice is recorded here.
+- Relationship note: `design_handoff_the_stub/` predates the UI-PRD; the
+  PRD is the briefing source, the handoff stays reference material.
 - CARDS lane (`src/components/Card.tsx`) untouched per plan §2.
 
 ## Wave 0 — foundation (in progress)
@@ -32,15 +35,15 @@
 - [ ] **Direction + TOKENS** (Sonnet) — ⛔ blocked on UI-PRD + direction
       choice. Acceptance: token system (palette, radii, shadows, named
       z-layers, timing) in `src/index.css`; direction recorded here.
-- [ ] **Contract extraction** (Sonnet scout, dispatched 2026-07-05) —
-      read-only on DuelGame.tsx → `docs/ui-contracts.md` freezing props/
-      callbacks/behavior per planned FORGE component; unmappable components
-      flagged, not guessed. Acceptance: every §4 candidate has a contract or
-      an explicit "no existing zone" note.
-- [ ] **Preview harness** (Sonnet, dispatched 2026-07-05) — dev-only
-      `?preview=<name>` route in `main.tsx` via
-      `import.meta.glob('./components/previews/*.preview.tsx')`. Acceptance:
-      tsc clean; prod bundle unaffected; a sample preview renders.
+- [x] **Contract extraction** — `docs/ui-contracts.md` landed 2026-07-05:
+      5 zones clean (ScoreRace, DrawChoice, PlayBanner, IdleCue, RecapReel),
+      3 with flagged risks (TazCorner layoutId coupling · MeldShelf's 4
+      meld-writers + `meldRowRefs` DOM plumbing · TokenChips is two blocks),
+      RecastOffer ambiguity ruled by the orchestrator (see above).
+- [x] **Preview harness** — landed 2026-07-05: DEV-gated `?preview=<name>`
+      in `main.tsx` (+51/−6) + `previews/Sample.preview.tsx`; tsc clean,
+      prod bundle byte-identical (439.94 kB), sample renders, unknown name
+      lists available previews.
 
 ## Wave A — hero skeleton + first forge batch
 
