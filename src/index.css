@@ -49,3 +49,90 @@ body {
      so the inset is real on notched phones and 0 elsewhere. */
   padding-bottom: env(safe-area-inset-bottom);
 }
+
+/* ============================================================
+   The Stub — design tokens (design_handoff_the_stub/README.md,
+   screen 7f checksum)
+
+   Wave 0 "Direction + TOKENS": these tokens land INERT. Nothing
+   in the app references them yet — restyle passes adopt them in
+   later waves. Namespaced stub-* so Tailwind utilities read as
+   `bg-stub-navy`, `rounded-stub-panel`, `shadow-stub-glow-amber`,
+   distinct from any pre-Stub tokens above/elsewhere in this file.
+   ============================================================ */
+@theme {
+  /* Colors — verbatim from README "Design Tokens" (= rendered 7f) */
+  --color-stub-cream: #F0EBD8; /* canvas background */
+  --color-stub-paper: #FCF9F8; /* cards, panels */
+  --color-stub-navy: #1F3A52; /* primary ink, headers, borders */
+  --color-stub-navy-mid: #41586E; /* navy mid tone (race bar remainder, etc.) */
+  --color-stub-amber: #CF952A; /* the ONLY action/highlight color */
+  --color-stub-slate: #5B6B7A; /* muted labels */
+  --color-stub-slate-light: #8FA6BC; /* muted, lighter step */
+  --color-stub-slate-faint: #B9C8D6; /* muted, faintest step (opponent score) */
+  --color-stub-teal: #2C89A1; /* hint affordance only */
+  --color-stub-red: #A02C2C; /* negative deltas / warnings */
+  --color-stub-disabled: #9AA5AD; /* always paired with strikethrough on spent tokens */
+  --color-stub-paper-layer-1: #E7E1CC; /* diorama stack, layer 1 (inset 5px/offset 4px) */
+  --color-stub-paper-layer-2: #D9D2BC; /* diorama stack, layer 2 (inset 10px/offset 8px) */
+  --color-stub-scrim: rgba(31, 58, 82, .64); /* overlay scrim; README gives .62-.66, 7f midpoint */
+
+  /* Radii */
+  /* header uses bottom corners ONLY (rounded-b-*, never the top) — apply as
+     rounded-bl-stub-header/rounded-br-stub-header or an explicit corner
+     utility in the consuming pass, not a plain rounded-stub-header */
+  --radius-stub-header: 24px;
+  --radius-stub-panel: 14px;
+  --radius-stub-card: 12px;
+  --radius-stub-thumb: 6px;
+  --radius-stub-pill: 999px;
+
+  /* Shadows / glows */
+  --shadow-stub-card-resting: 0 5px 13px rgba(31, 58, 82, .29);
+  --shadow-stub-card-raised: 0 18px 40px rgba(31, 58, 82, .45);
+  --shadow-stub-glow-amber: 0 0 18px rgba(207, 149, 42, .4);
+  --shadow-stub-glow-teal: 0 0 16px rgba(44, 137, 161, .5);
+  --shadow-stub-modal: 0 20px 46px rgba(9, 22, 34, .55);
+
+  /* Fonts — families are already @font-face'd above; these tokens just name
+     the stacks (fallbacks per README "Type" section) */
+  --font-stub-display: "Domine", ui-serif, Georgia, serif;
+  --font-stub-ui: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-stub-label: "JetBrains Mono", ui-monospace, "SFMono-Regular", monospace;
+}
+
+/* Z-layers — Tailwind 4's @theme has no z-index namespace, so these are
+   plain custom properties (not utilities-by-name). Wire them up in
+   consuming passes via arbitrary values (e.g. z-[var(--z-hud)]) or a
+   plain style={{ zIndex: 'var(--z-hud)' }}. Scale per README "Z-layers". */
+:root {
+  --z-canvas: 0;
+  --z-resting: 10;
+  --z-shelf-booth: 20;
+  --z-traveling: 30; /* traveling + raised cards share this rung */
+  --z-hud: 40;
+  --z-contextual: 50;
+  --z-overlay: 60;
+
+  /* Motion durations/stagger — spring physics (stiffness 320 / damping 24)
+     is JS-side (Framer Motion), not expressible as a CSS custom property;
+     recorded here as a comment for the pass that wires up transitions.
+     Springs apply to interactions ≤ 400ms; race bar is an explicit
+     500ms ease-out width tween + score tick-up; reduced-motion swaps
+     everything for 150ms crossfades. */
+  --dur-interaction: 400ms;
+  --dur-race: 500ms;
+  --dur-reduced: 150ms;
+  --stagger-deal: 60ms;
+}
+
+/* Halftone textures — patterns, not single-value tokens, so they're left
+   here as recipes for adoption passes to paste where needed rather than
+   forced into a custom property (a repeating-gradient string doesn't
+   compose the way a color/radius token does).
+   - cream (canvas):      radial-gradient(rgba(31,58,82,.06) 1px, transparent 1.2px)
+                           background-size: 7px 7px
+   - navy-inset (header): same dot recipe, tighter 6px tile, used INSIDE
+                           the navy header for a cream-on-navy variant
+                           background-size: 6px 6px
+*/

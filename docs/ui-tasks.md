@@ -23,18 +23,39 @@
   suspense modal, `:1824–1866`). **Orchestrator ruling:** FORGE
   `RecastOffer.tsx` targets that modal; the take-to-meld glow (`:1438–1484`)
   is NOT in its scope (recently user-tuned, Matinee-gated, stays inline).
-- **⛔ Remaining Wave-0 blocker: the §10 visual direction (A–D) was never
-  chosen.** User is reviewing examples; TOKENS and all restyle briefs hold
-  until the choice is recorded here.
-- Relationship note: `design_handoff_the_stub/` predates the UI-PRD; the
-  PRD is the briefing source, the handoff stays reference material.
+- **✅ DIRECTION RULED (Buri, 2026-07-05): "The Stub" —
+  `design_handoff_the_stub/` is the visual source of truth.** The UI-PRD's
+  §10 A–D add-ons are SUPERSEDED (none chosen; the Stub is the direction).
+  Briefing split: visual language, tokens, and screen fidelity come from the
+  handoff (README "Design Tokens" + screens 7a–7f, high-fidelity, "recreate
+  pixel-perfectly"); the UI-PRD stays the briefing source for what the
+  handoff doesn't cover — §4 desktop 1440×900 layout requirements, §5 gaps,
+  S5/S6 solo–chronology structure. Where they conflict on mobile duel
+  visuals, the handoff wins.
+- **Stub ↔ FORGE mapping** (briefs cite these): ScoreRace = 7a header race
+  bar (tug-of-war track) · TazCorner = 7a opponent booth / 7e ticket strip ·
+  MeldShelf = 7a meld shelf chips · RecastOffer = 7c (confirms the
+  orchestrator ruling: the suspense modal) · RecapReel = 7d ticket-stub
+  recap · PlayBanner = 7a last-play line + turn pill · TokenChips = FINAL
+  CUT/RECAST pills (disabled = #9AA5AD + strikethrough, never hidden) ·
+  DrawChoice + IdleCue = not in the six screens; extrapolate from the token
+  language, flag drift to the orchestrator. Lay-off picker (7b) styles the
+  existing bottom-sheet flow. Desktop re-architecture (Wave C) is
+  UI-PRD-driven within Stub language — the handoff is mobile-first.
+- Card art: the three `reference/uploads/*.png` are style references only in
+  this build — PLAN.md WS3 rules NO scene art this build (typographic faces;
+  scene-only art constraint per the Stub assessment).
 - CARDS lane (`src/components/Card.tsx`) untouched per plan §2.
 
 ## Wave 0 — foundation (in progress)
 
-- [ ] **Direction + TOKENS** (Sonnet) — ⛔ blocked on UI-PRD + direction
-      choice. Acceptance: token system (palette, radii, shadows, named
-      z-layers, timing) in `src/index.css`; direction recorded here.
+- [x] **Direction + TOKENS** — landed 2026-07-05: direction = The Stub
+      (ruled above); 25 @theme tokens (14 stub-* colors incl. scrim, 5
+      radii, 5 shadows/glows, 3 font stacks) + 11 custom props (7 z-layers,
+      4 motion durations) + texture recipes as comments, all INERT (no
+      stub-* class referenced yet; JIT emits zero bytes; menu
+      pixel-identical before/after; activation probe verified utilities
+      compile, then reverted). README vs 7f checksum: zero disagreements.
 - [x] **Contract extraction** — `docs/ui-contracts.md` landed 2026-07-05:
       5 zones clean (ScoreRace, DrawChoice, PlayBanner, IdleCue, RecapReel),
       3 with flagged risks (TazCorner layoutId coupling · MeldShelf's 4
