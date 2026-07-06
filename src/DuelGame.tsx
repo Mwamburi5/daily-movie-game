@@ -75,6 +75,7 @@ function ladderMeld(cards: Movie[], deep: boolean): { perCard: number; pts: numb
 import { CardView } from './components/Card.tsx'
 import Hand from './components/Hand.tsx'
 import HowToPlay from './components/HowToPlay.tsx'
+import IdleCue from './components/IdleCue.tsx'
 import MeldZone, { meldLabel } from './components/MeldZone.tsx'
 import ShareCopy from './components/ShareCopy.tsx'
 import { matchCutShare } from './lib/share.ts'
@@ -174,7 +175,9 @@ export default function DuelGame({
   onExit: () => void
   difficulty?: Difficulty
 }) {
-  const reduce = useReducedMotion()
+  // Coerced to a plain boolean: the forged Stub components (IdleCue,
+  // PlayBanner, ScoreRace…) take `reduce: boolean`, not framer's `| null`.
+  const reduce = useReducedMotion() ?? false
   const k = KNOBS[difficulty]
   const hintBudget = DIFFICULTY_META[difficulty].hints
   const hintEnabled = hintBudget > 0
@@ -1546,20 +1549,23 @@ export default function DuelGame({
           </AnimatePresence>
         </div>
 
-        {/* One-move-per-turn cue: sits in the empty mid-board band, idle turns only */}
-        {status === 'playerTurn' &&
-          !runState &&
-          pendingDraw === null &&
-          drawChoice === null &&
-          !meldSelect &&
-          raisedId === null &&
-          !gameOver && (
-            <div className="pointer-events-none absolute inset-0 z-[var(--z-resting)] flex -translate-y-3 items-center justify-center px-6">
-              <span className="rounded-full bg-[#23211c]/10 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-[#9a917c]">
-                one move — play a card or draw
-              </span>
-            </div>
-          )}
+        {/* One-move-per-turn cue: sits in the empty mid-board band, idle turns
+            only. The wrapper owns the pin (IdleCue renders in flow, W0d); the
+            seven-condition guard stays here per the IdleCue contract. */}
+        <div className="pointer-events-none absolute inset-0 z-[var(--z-resting)] flex -translate-y-3 flex-col justify-center">
+          <IdleCue
+            visible={
+              status === 'playerTurn' &&
+              !runState &&
+              pendingDraw === null &&
+              drawChoice === null &&
+              !meldSelect &&
+              raisedId === null &&
+              !gameOver
+            }
+            reduce={reduce}
+          />
+        </div>
         </div>
 
         {/* Banked melds — open to lay-offs from both sides */}
