@@ -27,6 +27,9 @@ Before dispatching anything, the orchestrator must:
    Commit it. (If this session no longer has the plan in context, rebuild the
    remaining list from the task catalog in §5 below — it covers the full
    UI-PRD scope; check off whatever the working tree already shows as done.)
+   **Include the chosen visual direction** (which UI-PRD §10 add-on, A–D) and
+   any design-token summary wave 1 produced — parallel agents style
+   consistently only if that decision is committed, not remembered.
 2. **Finish the task in flight (A3) to its gate before switching modes.**
    Never hand a half-edited `DuelGame.tsx` to a subagent.
 3. **Re-bucket every remaining task** into the lanes (§2) and tiers (§3),
@@ -87,9 +90,11 @@ The v1 plan treated S2/S3/S4 as inherently serial because they live in
 **FORGE (parallel):** each major piece of new duel chrome is built as a NEW
 standalone component file in `src/components/`, by a separate agent, against
 a props contract the orchestrator fixes in the brief (inputs, callbacks,
-placeholder card sizes from UI-PRD §2, token names). New files touch nothing
-existing → any number can be forged concurrently, each verified in isolation
-(build clean + a scratch harness render). Candidates:
+placeholder card sizes from UI-PRD §2, token names). Contracts come from
+`docs/ui-contracts.md` (extracted in Wave 0, not guessed). New files touch
+nothing existing → any number can be forged concurrently, each verified in
+isolation (`tsc --noEmit` clean + its own preview-harness render, §5 Wave 0).
+Candidates:
 
 - `ScoreRace.tsx` — the race-to-20 track (Opus)
 - `TazCorner.tsx` — opponent nameplate/avatar, fan, count, tokens (Opus)
@@ -117,13 +122,30 @@ checks off whatever the in-flight plan already landed, then packs waves:
 are ready.** Suggested shape — resequence freely to keep all lanes saturated,
 respecting only the arrows:
 
-**Wave A — foundation + first forge batch**
-- TOKENS: design-token system into `index.css` (palette, radii, shadows,
-  named z-layers, timing) — Sonnet. *(→ blocks all restyle tasks)*
+**Wave 0 — lock the foundation (short, mostly serial — do NOT skip it)**
+
+Everything parallel downstream depends on three artifacts existing first:
+
+- **Direction + TOKENS**: confirm the chosen UI-PRD §10 direction (from Step
+  0), then land the design-token system in `index.css` (palette, radii,
+  shadows, named z-layers, timing) — Sonnet. *(→ blocks all restyle tasks)*
+- **Contract extraction** (Sonnet scout, read-only on `DuelGame.tsx`): read
+  each inline zone the FORGE components will replace and freeze its props
+  contract — state in, callbacks out, current behavior notes — into
+  `docs/ui-contracts.md`. Forge briefs quote this file; contracts are not
+  guessed. Contract changes after dispatch are an orchestrator decision.
+- **Preview harness** (Sonnet): a dev-only route in `main.tsx` behind a
+  `?preview=<name>` query param that mounts previews discovered via
+  `import.meta.glob('./components/previews/*.preview.tsx')`. Each forge
+  agent then verifies by adding its OWN `<Component>.preview.tsx` file —
+  in-browser proof with zero shared-file edits. Excluded from the prod path.
+
+**Wave A — hero skeleton + first forge batch**
 - HERO (Fable): flex-zone layout skeleton + z-layer adoption inside the duel
   board — the no-fixed-pixel-stacking pass; 667px stress test.
 - FORGE in parallel: `ScoreRace` (Opus) · `TazCorner` (Opus) · `PlayBanner`
-  + `TokenChips` + `IdleCue` (Sonnet).
+  + `TokenChips` + `IdleCue` (Sonnet) — all against `docs/ui-contracts.md`,
+  each with its preview file.
 - CONTENT: Stage B pool growth kickoff (Sonnet, rides along every wave).
 
 **Wave B — wire batch 1 + second forge batch**
@@ -157,12 +179,17 @@ respecting only the arrows:
    acceptance criteria + the relevant UI-PRD sections pasted in; props
    contract for FORGE tasks; house rules (surgical, match style, lowercase
    `say()`, React 18 / Tailwind 4 / Framer Motion only, no new deps, no
-   localStorage, frozen copy); required gates (`npm run build`, relevant
+   localStorage, frozen copy); required gates (`tsc --noEmit`, the relevant
    `verify*`, and for screen work the B-guard: run the app — Chromium +
    Playwright preinstalled — and confirm it plays); report anything noticed
    but not touched.
 2. **Dispatch** the wave's tasks in one parallel batch; HERO/WIRE runs
-   alongside.
+   alongside. **Concurrency discipline:** lanes are disjoint files, so one
+   shared working tree is fine — but subagents never run `git` (the
+   orchestrator owns all commits) and never run the full `npm run build`
+   (concurrent Vite builds race on `dist/`; `tsc --noEmit` is safe in
+   parallel). Reach for worktree isolation only if two tasks genuinely must
+   overlap on a file — and prefer re-slicing the tasks instead.
 3. **Integrate** (orchestrator): diff review per brief — files touched ⊆
    files allowed — then merge and run the full suite once per wave:
    `npm run verify` (**60/60**) · `verify:solo` · `verify:chronology` ·
@@ -172,8 +199,11 @@ respecting only the arrows:
    updates to `docs/ui-tasks.md` in the same commit. A dead session loses at
    most one wave.
 5. **Review pass** in parallel at wave end: reviewer subagent on the wave
-   diff + browser smoke of all three modes. Findings feed the next wave's
-   briefs; only a broken gate interrupts the current one.
+   diff + browser smoke of all three modes, saving a screenshot set (menu +
+   each board) to the session scratchpad and eyeballing it against the prior
+   wave's set — the cheap tripwire for cross-mode visual regressions the
+   verify scripts can't see. Findings feed the next wave's briefs; only a
+   broken gate interrupts the current one.
 
 ## 7. What stays with the orchestrator, always
 
