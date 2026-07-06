@@ -49,9 +49,9 @@ since 2026-07-06 17:29, as **exported reference PNGs in
 7c-recast-overlay · 7d-endgame-recap · 7e-se-stress-test · 7f-design-tokens).
 The PNGs were viewed and cataloged 2026-07-06; 7f's token card matches the
 README table value-for-value, and each PNG matches the HTML section it renders —
-the reference set is internally consistent. (`Marquee Game UI Redesign.zip` in
-the folder is a byte-duplicate of the six PNGs — untracked; deleting it is
-Buri's call.) Scope is **Duel-only** by the README (line 4); the menu is flagged
+the reference set is internally consistent. (`Marquee Game UI Redesign.zip`,
+a byte-duplicate of the six PNGs, was deleted 2026-07-06 on Buri's ruling.)
+Scope is **Duel-only** by the README (line 4); the menu is flagged
 inside the HTML as an undone next step. Branding throughout is pre-rename
 "Marquee" — transcribe the language, never the brand strings. Token table gaps:
 no spacing scale, no type-size scale, no icon set (sizes live in per-screen
@@ -165,8 +165,8 @@ serial spine (single-writer DuelGame); pool/sim lanes ride beside every UI wave.
 - c. ✅ Acceptance references adopted: Buri exported
   `design_handoff_screenshots/7a–7f.png` (2026-07-06 17:29); orchestrator
   viewed all six and verified 7f ↔ README token parity and PNG ↔ HTML section
-  consistency. Committed as the frozen references. (The duplicate zip stays
-  untracked — Buri may delete it.)
+  consistency. Committed as the frozen references. (The duplicate zip was
+  deleted 2026-07-06 — Buri's ruling.)
 - d. Component pre-fixes, zero DuelGame contention: strip `PlayBanner`
   `top-[398px]` (:28) and `IdleCue` `top-[372px]` (:18) self-pins (they regress
   the 667px fix if wired verbatim); map their raw hex tier colors onto stub
@@ -327,7 +327,7 @@ what's ready-to-review per sitting.
       (2026-07-06: five wires + navy header/cream canvas/fonts live; 7e compact
       header+booth pulled forward from W2 — the 667 gate was unmeetable without
       it; short-viewport band de-collision; two full games played at both sizes;
-      checkpoint evidence in session) — **Buri approved: ___**
+      checkpoint evidence in session) — **Buri approved: ✅ 2026-07-06**
 - [x] P1 A4 unification (byte-identical JSON) — auto (2026-07-06: byte-identical
       ✓ · 116 dates + 46 stubs · CHRONO_TITLE_OVERRIDES for 4 title-convention
       splits · seed retired INCLUDING the sim migration the design's consumer
@@ -349,15 +349,14 @@ what's ready-to-review per sitting.
 1. ✅ RESOLVED 2026-07-06: the six reference PNGs landed
    (`design_handoff_screenshots/`). Still welcome, never blocking (per the
    extrapolation ruling): a **menu** comp and a **Chronology board** comp —
-   the two extrapolations with the least Duel analog. Also Buri's call: delete
-   the duplicate `Marquee Game UI Redesign.zip`.
+   the two extrapolations with the least Duel analog. The duplicate
+   `Marquee Game UI Redesign.zip` — Buri ruled delete; removed 2026-07-06
+   (hash-verified byte-identical to the committed PNGs first).
 2. Stage B title picks (decade slates arrive from P2; strike/keep at your pace).
 3. UI checkpoint approvals (W1/W2/W3/W4).
-3b. Ratify a P1 deviation (low stakes, already live): 4 films (LotR ×3,
-   M:I Fallout) keep different Duel card-face vs Chronology titles via a
-   self-checked `CHRONO_TITLE_OVERRIDES` map in the pool build. Alternative
-   was a `chronoTitle` field on `Movie`. Say the word to switch; silence =
-   map stands.
+3b. ✅ RESOLVED 2026-07-06: Buri ratified the self-checked
+   `CHRONO_TITLE_OVERRIDES` map (4 films: LotR ×3, M:I Fallout) over a
+   `chronoTitle` field on `Movie`. The map stands.
 4. W5 calls: tilt · pool cutover date.
 5. W6: the deploy button.
 
