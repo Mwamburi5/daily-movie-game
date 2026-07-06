@@ -77,6 +77,7 @@ import Hand from './components/Hand.tsx'
 import HowToPlay from './components/HowToPlay.tsx'
 import IdleCue from './components/IdleCue.tsx'
 import MeldZone, { meldLabel } from './components/MeldZone.tsx'
+import PlayBanner from './components/PlayBanner.tsx'
 import ShareCopy from './components/ShareCopy.tsx'
 import { matchCutShare } from './lib/share.ts'
 
@@ -1500,53 +1501,11 @@ export default function DuelGame({
             Banner and idle cue anchor to it instead of fixed pixel tops, so
             they stay mid-board on any viewport height. */}
         <div className="relative min-h-0 flex-1" data-mid-band>
-        {/* Turn banner */}
-        <div className="pointer-events-none absolute inset-0 z-[var(--z-hud)] flex translate-y-3 items-center justify-center px-4">
-          <AnimatePresence>
-            {banner && (
-              <motion.div
-                key={banner.seq}
-                initial={{ opacity: 0, y: reduce ? 0 : 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0 }}
-                transition={
-                  reduce ? { duration: 0.15 } : { type: 'spring', stiffness: 320, damping: 24 }
-                }
-                className={`flex items-center gap-2 rounded-full py-1.5 pl-1.5 pr-2.5 shadow-md ${
-                  banner.tier === 'super'
-                    ? 'bg-[#a3411a]'
-                    : banner.tier === 'strong'
-                      ? 'bg-[#7a5a10]'
-                      : 'bg-[#23211c]'
-                }`}
-              >
-                <span
-                  className={`rounded-full px-2 py-1 text-[10px] font-extrabold uppercase tracking-wide text-white ${
-                    banner.who === 'You' ? 'bg-[#2c5240]' : 'bg-[#b3541e]'
-                  }`}
-                >
-                  {banner.who}
-                </span>
-                <span className="text-[13px] font-semibold text-[#f4efe6]">{banner.text}</span>
-                {banner.deep && (
-                  <span
-                    data-banner-deep
-                    className="rounded-full bg-[#0f766e] px-1.5 py-0.5 text-[9px] font-extrabold uppercase tracking-wider text-white"
-                  >
-                    Deep cut
-                  </span>
-                )}
-                {banner.points !== null && (
-                  <span
-                    data-banner-points
-                    className="rounded-full bg-white/25 px-1.5 py-0.5 text-[11px] font-extrabold tabular-nums text-white"
-                  >
-                    +{banner.points}
-                  </span>
-                )}
-              </motion.div>
-            )}
-          </AnimatePresence>
+        {/* Turn banner — the say() narration channel. Wrapper owns the band
+            pin (PlayBanner renders in flow, W0d); the 2400ms auto-dismiss
+            effect stays the parent's, per contract. */}
+        <div className="pointer-events-none absolute inset-0 z-[var(--z-hud)] flex translate-y-3 flex-col justify-center">
+          <PlayBanner banner={banner} reduce={reduce} />
         </div>
 
         {/* One-move-per-turn cue: sits in the empty mid-board band, idle turns
