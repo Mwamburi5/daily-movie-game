@@ -1,3 +1,8 @@
+> ⛔ **SUPERSEDED 2026-07-06 by [`master-plan.md`](master-plan.md) — the only live plan.**
+> Kept for history; do not update. The wave protocol, lane map, and model tiering
+> that worked were carried into master-plan.md §2–§3; the Step 0 checkpoint and
+> 60/60 gate count here were already stale.
+
 # Orchestration Plan v2 — the Structured Orchestrated Path
 
 > **Directive: moving forward, all remaining build-plan work runs through this

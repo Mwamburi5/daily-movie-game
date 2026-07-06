@@ -21,7 +21,7 @@ Don't assume. Don't hide confusion. Surface tradeoffs.
 
 Touch only what you must. Match existing style. Clean up only your own mess.
 
-- `src/DuelGame.tsx` is ~1,300 lines / 31 `useState`. Highest blast radius in the
+- `src/DuelGame.tsx` is ~2,000 lines / 35 `useState`. Highest blast radius in the
   repo. Change only the lines the task requires; do **not** refactor the state
   soup into a reducer "while you're in there" — not asked, not broken.
 - Match the existing voice: lowercase `say()` messages, comments that explain
@@ -30,15 +30,19 @@ Touch only what you must. Match existing style. Clean up only your own mess.
 
 ## Project guardrails (what the rules above protect)
 
+- **`docs/master-plan.md` is the only live build plan** (since 2026-07-06). Its
+  Ledger is the resume sheet; PLAN.md / orchestration-plan.md / ui-tasks.md are
+  bannered history.
 - **`sim/RULESET.md` is the canonical contract.** The sim is the source of truth;
   React must match it. Any rule/scoring change → re-run `npm run verify` (must be
-  **60/60**) and re-tune difficulty before shipping. React and the sim should call
+  **64/64**, plus `verify:solo` 8/8 and `verify:chronology` 42/42) and re-tune
+  difficulty before shipping. React and the sim should call
   the **same** functions in `src/lib/` — parity by construction, not by discipline.
 - **Deps are locked:** React 18 / Vite / Tailwind 4 / Framer Motion only. No new
   deps or features without asking.
 - **Persistence: revisited 2026-07-04.** localStorage is now IN scope, but only for
   meta-state — per-mode streaks, played-today, personal bests. Game rules and deals
   stay stateless and seed-derived; never persist anything a rule depends on.
-- **`RULEBOOK.md` is the living plain-English guide** (the two modes, for a 12-year-old).
+- **`RULEBOOK.md` is the living plain-English guide** (every mode, for a 12-year-old).
   When a mechanic, mode, or scoring rule changes, update RULEBOOK.md in the same pass so
   it never drifts from the actual game.

@@ -1,3 +1,6 @@
+> ⛔ **SUPERSEDED 2026-07-06 by [`docs/master-plan.md`](docs/master-plan.md) — the only live plan.**
+> Kept for history; do not update. WS1–WS5 + Amendment 1 state was absorbed there.
+
 # Marquee — Launch-Ramp Build (pre-playtest)
 
 **Everything buildable WITHOUT playtest feedback, ending in a friends & family

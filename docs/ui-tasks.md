@@ -1,3 +1,8 @@
+> ⛔ **SUPERSEDED 2026-07-06 by [`master-plan.md`](master-plan.md) — the only live plan.**
+> Kept for history; do not update. Checkbox state as of 7ef95aa was absorbed into
+> master-plan.md §1/§6 (old "Wave 0/A–D" numbering retired; wire notes carried
+> into W1/W2 specs).
+
 # UI redesign — wave/task checklist (orchestration Step 0 snapshot)
 
 > Written 2026-07-05 per docs/orchestration-plan.md Step 0. Format follows
