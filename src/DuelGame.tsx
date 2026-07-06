@@ -182,6 +182,19 @@ export default function DuelGame({
   // Coerced to a plain boolean: the forged Stub components (IdleCue,
   // PlayBanner, ScoreRace…) take `reduce: boolean`, not framer's `| null`.
   const reduce = useReducedMotion() ?? false
+  // 7e compact threshold: the SE class (≤700px tall) gets the one-row header
+  // and ticket-strip booth; taller phones get the full 7a treatment. One JS
+  // flag (not CSS hiding) because TazCorner's pips carry layoutId={id} —
+  // rendering both variants would duplicate ids and break Framer's FLIPs.
+  const [shortViewport, setShortViewport] = useState(
+    () => window.matchMedia('(max-height: 700px)').matches,
+  )
+  useEffect(() => {
+    const mq = window.matchMedia('(max-height: 700px)')
+    const onChange = (e: MediaQueryListEvent) => setShortViewport(e.matches)
+    mq.addEventListener('change', onChange)
+    return () => mq.removeEventListener('change', onChange)
+  }, [])
   const k = KNOBS[difficulty]
   const hintBudget = DIFFICULTY_META[difficulty].hints
   const hintEnabled = hintBudget > 0
@@ -1269,7 +1282,11 @@ export default function DuelGame({
             scores/caption/bar/target-hint — and the data-score/data-turn
             attrs, in their NEW value-carrying shape (ui-contracts Appendix
             A4). */}
-        <header className="rounded-b-stub-header bg-stub-navy px-4 pb-3.5 pt-3">
+        <header
+          className={`rounded-b-stub-header bg-stub-navy px-4 ${
+            shortViewport ? 'pb-2 pt-1' : 'pb-3.5 pt-3'
+          }`}
+        >
           <div className="flex items-center">
             <button
               type="button"
@@ -1279,9 +1296,23 @@ export default function DuelGame({
             >
               ‹
             </button>
-            <span className="font-stub-display text-lg font-bold tracking-tight text-stub-cream">
-              Duel
-            </span>
+            {shortViewport ? (
+              /* 7e one-row header: the compact race replaces the wordmark —
+                 scores at each end, no labels, no caption/target lines. */
+              <ScoreRace
+                playerScore={playerScore}
+                cpuScore={cpuScore}
+                status={status}
+                runState={runState}
+                gameOver={gameOver}
+                TARGET_SCORE={TARGET_SCORE}
+                compact
+              />
+            ) : (
+              <span className="font-stub-display text-lg font-bold tracking-tight text-stub-cream">
+                Duel
+              </span>
+            )}
             <button
               type="button"
               aria-label="How to play"
@@ -1292,14 +1323,16 @@ export default function DuelGame({
               ?
             </button>
           </div>
-          <ScoreRace
-            playerScore={playerScore}
-            cpuScore={cpuScore}
-            status={status}
-            runState={runState}
-            gameOver={gameOver}
-            TARGET_SCORE={TARGET_SCORE}
-          />
+          {!shortViewport && (
+            <ScoreRace
+              playerScore={playerScore}
+              cpuScore={cpuScore}
+              status={status}
+              runState={runState}
+              gameOver={gameOver}
+              TARGET_SCORE={TARGET_SCORE}
+            />
+          )}
         </header>
 
         {/* Taz's booth (7a paper diorama). The old card-back pip row is fully
@@ -1308,8 +1341,13 @@ export default function DuelGame({
             (keeping both blocks would duplicate layoutIds and silently break
             Framer's cross-zone card animations). Booth owns the CPU token
             pills (W0d ruling). */}
-        <div className="relative z-[var(--z-resting)] mx-3 mt-3">
-          <TazCorner cpuHand={cpuHand} cpuTokens={cpuTokens} quote={lastCpuQuote} />
+        <div className={`relative z-[var(--z-resting)] mx-3 ${shortViewport ? 'mt-2' : 'mt-3'}`}>
+          <TazCorner
+            cpuHand={cpuHand}
+            cpuTokens={cpuTokens}
+            quote={lastCpuQuote}
+            compact={shortViewport}
+          />
         </div>
 
         {/* Draw deck + the two Double Feature marquees */}
