@@ -59,8 +59,12 @@ TMDB is a witness, not a judge (community-edited); Buri makes every ruling.
 
 5. **Apply the rulings.**
    - "we're wrong" → fix `src/data/movies.ts`, surgical, entry by entry.
-     For DATE rulings: fix `scripts/chronology-seed.ts` (the source of truth),
-     then `npm run build:chronology-pool` — never edit the derived JSON.
+     For DATE rulings (post-A4 unification, docs/pool-unification.md): the date
+     lives on the canonical entry — a credited film's `releaseDate` field, or a
+     `DATED_STUBS` entry for a chronology-only film — then
+     `npm run build:chronology-pool` regenerates the derived JSON (never edit the
+     JSON by hand). The chronology sim gates read that derived JSON directly,
+     so the rebuild is the whole story: no second copy to mirror.
    - "we're right" → append one line to `docs/tmdb-rulings.md`:
      `- <movie-id> · <field>: ours <X> vs TMDB <Y> — RULED ours-correct <YYYY-MM-DD>, <reason>`
      (this is what keeps the next run quiet; date rulings use field
@@ -75,7 +79,8 @@ TMDB is a witness, not a judge (community-edited); Buri makes every ruling.
      `npm run verify:chronology` · `npm run eval` (tune must stay on-target).
      Surface any tuning drift to Buri instead of shrugging it off.
    - Edits only outside the 89: `npm run build` + `npm run verify` suffice.
-   - Date fixes (chronology-seed.ts): `npm run build:chronology-pool` +
+   - Date fixes (canonical `releaseDate`/`DATED_STUBS` in movies.ts):
+     `npm run build:chronology-pool` +
      `npm run verify:chronology`. ⚠ Any applied date fix reshuffles the
      date-seeded Chronology daily — pre-public that's free, but get Buri's
      explicit confirm BEFORE applying the batch, and re-pin

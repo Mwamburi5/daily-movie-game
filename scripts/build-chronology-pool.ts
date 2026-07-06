@@ -6,13 +6,21 @@
 // puzzle.ts), not by scraping; recognizability is a human judgment, and TMDB
 // `popularity` is recency-biased, so an auto-filter would clump the pool toward
 // the 2010s and starve the 1970s, the exact failure the spec warns against. So
-// the pipeline is curate-then-validate, not scrape-then-filter:
+// the pipeline is curate-then-validate, not scrape-then-filter.
 //
-//   curated seed (human picks famous films, era-spread by hand, dates filled by
-//        a manual lookup under the locked date policy; see scripts/chronology-seed.ts)
+// UNIFIED SOURCE (A4, docs/pool-unification.md — executed 2026-07-06). The pool
+// is DERIVED from the one canonical database, src/data/movies.ts, in two grades:
+//   • credited films that carry a `releaseDate` (MOVIES.filter(m => m.releaseDate)),
+//   • dated stubs (DATED_STUBS): films with a policy date but no credits yet.
+// The retired scripts/chronology-seed.ts used to be this source; dates now live
+// on the canonical entries/stubs, so a Chronology date fix lands there. The
+// pipeline is unchanged downstream of the source:
+//
+//   union (credited-with-date ∪ dated stubs; dates filled by a manual lookup
+//        under the locked US-theatrical policy; see the movies.ts date-policy note)
 //     -> enrich: confirm every entry carries a date (no network; dates are committed)
-//     -> validate the hard constraints (era window, even decade spread,
-//        unique ids, decidable ISO dates) and REFUSE to emit on any violation
+//     -> validate the hard constraints (era window, even decade spread, unique ids,
+//        decidable ISO dates, AND stub ids disjoint from MOVIES) — REFUSE on any violation
 //     -> normalize (derive year + decade from releaseDate)
 //     -> write chronology-pool.json
 //
@@ -25,7 +33,7 @@
 
 import { writeFileSync } from 'node:fs'
 import { pathToFileURL } from 'node:url'
-import { CHRONOLOGY_SEED, type SeedEntry } from './chronology-seed.ts'
+import { MOVIES, DATED_STUBS } from '../src/data/movies.ts'
 
 // One emitted pool record. Mirrors ChronologyCard in src/lib/chronology.ts; kept
 // as a local shape so this author-time script has no app import dependency.
@@ -40,8 +48,32 @@ interface PoolRecord {
   popularity: number
 }
 
-// A date-bearing seed entry (post-enrich): releaseDate is guaranteed present.
-type DatedEntry = SeedEntry & { releaseDate: string }
+// A date-bearing pool-source entry (post-enrich): releaseDate is guaranteed
+// present. This is the seam both grades (credited-with-date, dated stub) reduce
+// to before validate/emit — the same shape the retired seed produced, so the
+// validator and emit downstream are untouched.
+interface DatedEntry {
+  id: string
+  title: string
+  releaseDate: string
+  popularity?: number
+}
+
+// Chronology-title overrides for the handful of credited films whose Duel
+// card-face title (Movie.title) differs from the title the Chronology pool shows
+// — a deliberate title-convention split, the same class ruled ours-correct in
+// docs/tmdb-rulings.md. The Duel card keeps the short form; the Chronology view
+// keeps the fuller form the pool always carried, so the derived JSON stays
+// byte-identical. Dated stubs carry their own Chronology title directly and need
+// no override. loadUnion() asserts every id here actually diverges, so a stale
+// entry can't silently lie. (When such a film graduates or is renamed, update
+// here in the same pass.)
+const CHRONO_TITLE_OVERRIDES: Record<string, string> = {
+  'the-fellowship-of-the-ring': 'The Lord of the Rings: The Fellowship of the Ring',
+  'the-two-towers': 'The Lord of the Rings: The Two Towers',
+  'the-return-of-the-king': 'The Lord of the Rings: The Return of the King',
+  'mission-impossible-fallout': 'Mission: Impossible - Fallout',
+}
 
 // Era window: films released on or after this date only. Pre-1970 is parked.
 const ERA_START_YEAR = 1970
@@ -60,22 +92,57 @@ const OUT_PATH = 'src/data/chronology-pool.json'
 const yearOf = (releaseDate: string): number => Number(releaseDate.slice(0, 4))
 const decadeOf = (year: number): number => Math.floor(year / 10) * 10
 
-// Step 1: load the hand-curated seed list (the recognizability decision). The
-// seed is committed source authored like movies.ts, not pulled at build time.
-function loadSeed(): SeedEntry[] {
-  return CHRONOLOGY_SEED
+// Step 1: assemble the pool source from the canonical database — the two grades
+// unioned into one DatedEntry list (the recognizability decision now lives in
+// movies.ts: a film is in the Chronology pool iff it carries a releaseDate, as a
+// credited Movie or a DatedStub). Credited films take the Chronology-title
+// override where their card-face title deliberately differs; stubs carry their
+// title as-is. Emit order matches the retired seed by re-sorting downstream.
+function loadUnion(): DatedEntry[] {
+  const movieIds = new Set(MOVIES.map((m) => m.id))
+
+  // Assert every override actually diverges from the current card-face title, so
+  // a stale override can never silently rewrite a title that already matches.
+  for (const [id, chronoTitle] of Object.entries(CHRONO_TITLE_OVERRIDES)) {
+    const m = MOVIES.find((x) => x.id === id)
+    if (!m) throw new Error(`CHRONO_TITLE_OVERRIDES: no MOVIES entry for '${id}' (stale override?)`)
+    if (m.title === chronoTitle) throw new Error(`CHRONO_TITLE_OVERRIDES: '${id}' no longer diverges (Movie.title already '${chronoTitle}'); drop the override`)
+  }
+
+  const credited: DatedEntry[] = MOVIES.filter((m) => m.releaseDate).map((m) => ({
+    id: m.id,
+    title: CHRONO_TITLE_OVERRIDES[m.id] ?? m.title,
+    releaseDate: m.releaseDate as string,
+  }))
+
+  const stubs: DatedEntry[] = DATED_STUBS.map((s) => ({
+    id: s.id,
+    title: s.title,
+    releaseDate: s.releaseDate,
+  }))
+
+  // Stub ids MUST be disjoint from MOVIES ids: a stub that collides with a
+  // credited film is a graduation that wasn't finished (delete the stub). Caught
+  // here with a clear message before the generic unique-id check muddies it.
+  const collisions = stubs.filter((s) => movieIds.has(s.id)).map((s) => s.id)
+  if (collisions.length) {
+    throw new Error(`loadUnion: ${collisions.length} DATED_STUBS id(s) collide with MOVIES (graduate them — delete the stub): ${collisions.join(', ')}`)
+  }
+
+  return [...credited, ...stubs]
 }
 
 // Step 2: ensure every entry has its canonical release date. Dates are filled by
-// hand in the seed under the locked US-theatrical policy and committed, so there
-// is no runtime network dependency; this step just confirms none is missing and
-// narrows the type. (A future TMDB cross-check could slot in here.)
-export function enrichDates(seed: SeedEntry[]): DatedEntry[] {
-  const missing = seed.filter((e) => !e.releaseDate || e.releaseDate.trim() === '')
+// hand on the canonical entries/stubs under the locked US-theatrical policy and
+// committed, so there is no runtime network dependency; this step just confirms
+// none is missing (a stub or credited film with a blank date is a bug, not a
+// silent drop). (A future TMDB cross-check could slot in here.)
+export function enrichDates(entries: DatedEntry[]): DatedEntry[] {
+  const missing = entries.filter((e) => !e.releaseDate || e.releaseDate.trim() === '')
   if (missing.length) {
     throw new Error(`enrichDates: ${missing.length} entr${missing.length === 1 ? 'y has' : 'ies have'} no releaseDate: ${missing.map((e) => e.id).join(', ')}`)
   }
-  return seed as DatedEntry[]
+  return entries
 }
 
 // Is `s` a real calendar date in strict ISO 'YYYY-MM-DD' form? Rejects both
@@ -150,8 +217,8 @@ export function toPoolRecord(entry: DatedEntry): PoolRecord {
 }
 
 function main(): void {
-  const seed = loadSeed()
-  const dated = enrichDates(seed)
+  const union = loadUnion()
+  const dated = enrichDates(union)
   validate(dated)
   const pool = dated.map(toPoolRecord).sort((a, b) =>
     a.releaseDate < b.releaseDate ? -1 : a.releaseDate > b.releaseDate ? 1 : a.id < b.id ? -1 : 1,

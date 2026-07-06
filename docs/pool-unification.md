@@ -1,3 +1,23 @@
+> **⚑ EXECUTED 2026-07-06 (steps 1–6) — historical design doc; the Ledger in
+> `docs/master-plan.md` is the live record.** Steps 1–6 landed exactly as
+> designed: `Movie.releaseDate?` added, 116 overlap dates copied onto canonical
+> entries, 46 `DATED_STUBS` added, `build-chronology-pool.ts` rewired to
+> `MOVIES.filter(m=>m.releaseDate)` ∪ `DATED_STUBS`, and the emitted
+> `chronology-pool.json` is **byte-identical** to the pre-A4 committed pool (the
+> go/no-go). `DUEL_POOL_IDS` pin `0x2fa00c8d` untouched; `verify:chronology`
+> 42/42, `verify:solo` 8/8, `tsc --noEmit` clean.
+> **Two deviations from the literal design, both flagged for the ledger:**
+> (1) 4 credited films (LOTR ×3 + Mission: Impossible – Fallout) carry a
+> Chronology title that deliberately differs from their Duel card-face title, so
+> the build applies a small `CHRONO_TITLE_OVERRIDES` map (asserted to actually
+> diverge) to keep byte-identity — the design assumed byte-identical titles across
+> both DBs, which is false for these 4. (2) **Step 7 seed retirement landed in a
+> same-day follow-up (orchestrator):** the design's consumer map had missed that
+> `sim/chronology-verify.ts` and `sim/chronology-eval.ts` also imported the
+> seed. Both now read the derived `src/data/chronology-pool.json` itself (fs
+> read — the gates verify the exact artifact the app deals from) and
+> `scripts/chronology-seed.ts` is deleted. One source, no split brain.
+
 # Pool unification — design (PLAN.md Amendment 1 · A4)
 
 **Status: DESIGN SIGNED OFF by Buri 2026-07-05; implementation = next

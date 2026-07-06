@@ -1,4 +1,4 @@
-import type { Movie } from './types.ts'
+import type { Movie, DatedStub } from './types.ts'
 
 // Only extremely famous films with credits that are common knowledge.
 // Names must be spelled identically everywhere — matching is exact string equality.
@@ -19,6 +19,7 @@ export const MOVIES: Movie[] = [
     deepCast: ['Samuel L. Jackson'],
     posterColor: '#7a1f1f',
     genre: 'Crime',
+    releaseDate: '1990-09-19',
   },
   {
     id: 'casino',
@@ -29,6 +30,7 @@ export const MOVIES: Movie[] = [
     topCast: ['Robert De Niro', 'Sharon Stone', 'Joe Pesci', 'James Woods', 'Don Rickles'],
     posterColor: '#8c2430',
     genre: 'Crime',
+    releaseDate: '1995-11-22',
   },
   {
     id: 'taxi-driver',
@@ -40,6 +42,7 @@ export const MOVIES: Movie[] = [
     deepCast: ['Albert Brooks'],
     posterColor: '#4a3960',
     genre: 'Thriller',
+    releaseDate: '1976-02-09',
   },
   {
     id: 'the-departed',
@@ -51,6 +54,7 @@ export const MOVIES: Movie[] = [
     deepCast: ['Vera Farmiga', 'Alec Baldwin'],
     posterColor: '#6e1a26',
     genre: 'Crime',
+    releaseDate: '2006-10-06',
   },
   {
     id: 'inception',
@@ -68,6 +72,7 @@ export const MOVIES: Movie[] = [
     deepCast: ['Cillian Murphy', 'Marion Cotillard', 'Michael Caine'],
     posterColor: '#28336e',
     genre: 'Sci-Fi',
+    releaseDate: '2010-07-16',
   },
   {
     id: 'the-dark-knight',
@@ -80,6 +85,7 @@ export const MOVIES: Movie[] = [
     posterColor: '#232c38',
     genre: 'Action',
     series: 'dark-knight',
+    releaseDate: '2008-07-18',
   },
   {
     id: 'interstellar',
@@ -97,6 +103,7 @@ export const MOVIES: Movie[] = [
     deepCast: ['Casey Affleck'],
     posterColor: '#1f2a5e',
     genre: 'Sci-Fi',
+    releaseDate: '2014-11-05',
   },
   {
     id: 'the-martian',
@@ -115,6 +122,7 @@ export const MOVIES: Movie[] = [
     ],
     posterColor: '#2f3d78',
     genre: 'Sci-Fi',
+    releaseDate: '2015-10-02',
   },
   // ----- Pool -----
   {
@@ -127,6 +135,7 @@ export const MOVIES: Movie[] = [
     deepCast: ['Tim Roth', 'Ving Rhames', 'Christopher Walken', 'Steve Buscemi'],
     posterColor: '#5f1717',
     genre: 'Crime',
+    releaseDate: '1994-10-14',
   },
   {
     id: 'django-unchained',
@@ -144,6 +153,7 @@ export const MOVIES: Movie[] = [
     deepCast: ['Jonah Hill', 'Don Johnson', 'Walton Goggins'],
     posterColor: '#8a4a1c',
     genre: 'Western',
+    releaseDate: '2012-12-25',
   },
   {
     id: 'inglourious-basterds',
@@ -155,6 +165,7 @@ export const MOVIES: Movie[] = [
     deepCast: ['Eli Roth'],
     posterColor: '#5a5326',
     genre: 'War',
+    releaseDate: '2009-08-21',
   },
   {
     id: 'once-upon-a-time-in-hollywood',
@@ -166,6 +177,7 @@ export const MOVIES: Movie[] = [
     deepCast: ['Dakota Fanning', 'Bruce Dern'],
     posterColor: '#257068',
     genre: 'Comedy',
+    releaseDate: '2019-07-26',
   },
   {
     id: 'forrest-gump',
@@ -177,6 +189,7 @@ export const MOVIES: Movie[] = [
     deepCast: ['Haley Joel Osment'],
     posterColor: '#75541f',
     genre: 'Drama',
+    releaseDate: '1994-07-06',
   },
   {
     id: 'catch-me-if-you-can',
@@ -187,6 +200,7 @@ export const MOVIES: Movie[] = [
     topCast: ['Leonardo DiCaprio', 'Tom Hanks', 'Christopher Walken', 'Martin Sheen', 'Amy Adams'],
     posterColor: '#1f6868',
     genre: 'Comedy',
+    releaseDate: '2002-12-25',
   },
   {
     id: 'saving-private-ryan',
@@ -198,6 +212,7 @@ export const MOVIES: Movie[] = [
     deepCast: ['Giovanni Ribisi', 'Vin Diesel', 'Paul Giamatti'],
     posterColor: '#4f5230',
     genre: 'War',
+    releaseDate: '1998-07-24',
   },
   {
     id: 'jurassic-park',
@@ -209,6 +224,7 @@ export const MOVIES: Movie[] = [
     deepCast: ['Wayne Knight'],
     posterColor: '#2d5e2d',
     genre: 'Adventure',
+    releaseDate: '1993-06-11',
   },
   {
     id: 'the-wolf-of-wall-street',
@@ -226,6 +242,7 @@ export const MOVIES: Movie[] = [
     deepCast: ['Rob Reiner'],
     posterColor: '#84301c',
     genre: 'Crime',
+    releaseDate: '2013-12-25',
   },
   {
     id: 'titanic',
@@ -237,6 +254,7 @@ export const MOVIES: Movie[] = [
     deepCast: ['Bill Paxton'],
     posterColor: '#8a3a55',
     genre: 'Romance',
+    releaseDate: '1997-12-19',
   },
   {
     id: 'fight-club',
@@ -247,6 +265,7 @@ export const MOVIES: Movie[] = [
     topCast: ['Brad Pitt', 'Edward Norton', 'Helena Bonham Carter', 'Meat Loaf', 'Jared Leto'],
     posterColor: '#36304a',
     genre: 'Thriller',
+    releaseDate: '1999-10-15',
   },
   {
     id: 'good-will-hunting',
@@ -258,6 +277,7 @@ export const MOVIES: Movie[] = [
     deepCast: ['Casey Affleck'],
     posterColor: '#6b4a2c',
     genre: 'Drama',
+    releaseDate: '1997-12-05',
   },
   {
     id: 'the-godfather',
@@ -270,6 +290,7 @@ export const MOVIES: Movie[] = [
     posterColor: '#4d1010',
     genre: 'Crime',
     series: 'godfather',
+    releaseDate: '1972-03-24',
   },
   {
     id: 'the-godfather-part-ii',
@@ -282,6 +303,7 @@ export const MOVIES: Movie[] = [
     posterColor: '#451414',
     genre: 'Crime',
     series: 'godfather',
+    releaseDate: '1974-12-20',
   },
   {
     id: 'heat',
@@ -293,6 +315,7 @@ export const MOVIES: Movie[] = [
     deepCast: ['Natalie Portman', 'Danny Trejo'],
     posterColor: '#7e2918',
     genre: 'Crime',
+    releaseDate: '1995-12-15',
   },
   {
     id: 'the-irishman',
@@ -304,6 +327,7 @@ export const MOVIES: Movie[] = [
     deepCast: ['Anna Paquin'],
     posterColor: '#6b2020',
     genre: 'Crime',
+    releaseDate: '2019-11-01',
   },
   {
     id: 'shutter-island',
@@ -320,6 +344,7 @@ export const MOVIES: Movie[] = [
     ],
     posterColor: '#463a5e',
     genre: 'Thriller',
+    releaseDate: '2010-02-19',
   },
   {
     id: 'the-aviator',
@@ -331,6 +356,7 @@ export const MOVIES: Movie[] = [
     deepCast: ['Alan Alda', 'Ian Holm'],
     posterColor: '#7a5a1c',
     genre: 'Drama',
+    releaseDate: '2004-12-17',
   },
   {
     id: 'gangs-of-new-york',
@@ -348,6 +374,7 @@ export const MOVIES: Movie[] = [
     deepCast: ['Liam Neeson'],
     posterColor: '#702a1a',
     genre: 'Crime',
+    releaseDate: '2002-12-20',
   },
   {
     id: 'batman-begins',
@@ -360,6 +387,7 @@ export const MOVIES: Movie[] = [
     posterColor: '#2a3440',
     genre: 'Action',
     series: 'dark-knight',
+    releaseDate: '2005-06-15',
   },
   {
     id: 'the-prestige',
@@ -371,6 +399,7 @@ export const MOVIES: Movie[] = [
     deepCast: ['David Bowie'],
     posterColor: '#514370',
     genre: 'Thriller',
+    releaseDate: '2006-10-20',
   },
   {
     id: 'se7en',
@@ -382,6 +411,7 @@ export const MOVIES: Movie[] = [
     deepCast: ['Kevin Spacey'],
     posterColor: '#3f3554',
     genre: 'Thriller',
+    releaseDate: '1995-09-22',
   },
   {
     id: 'the-shawshank-redemption',
@@ -393,6 +423,7 @@ export const MOVIES: Movie[] = [
     deepCast: ['James Whitmore'],
     posterColor: '#6b4a23',
     genre: 'Drama',
+    releaseDate: '1994-09-23',
   },
   {
     id: 'the-green-mile',
@@ -404,6 +435,7 @@ export const MOVIES: Movie[] = [
     deepCast: ['Barry Pepper'],
     posterColor: '#5e421f',
     genre: 'Drama',
+    releaseDate: '1999-12-10',
   },
   {
     id: 'apollo-13',
@@ -415,6 +447,7 @@ export const MOVIES: Movie[] = [
     deepCast: ['Kathleen Quinlan'],
     posterColor: '#7d5e23',
     genre: 'Drama',
+    releaseDate: '1995-06-30',
   },
   {
     id: 'schindlers-list',
@@ -425,6 +458,7 @@ export const MOVIES: Movie[] = [
     topCast: ['Liam Neeson', 'Ben Kingsley', 'Ralph Fiennes', 'Caroline Goodall', 'Embeth Davidtz'],
     posterColor: '#44442c',
     genre: 'War',
+    releaseDate: '1993-12-15',
   },
   {
     id: 'reservoir-dogs',
@@ -436,6 +470,7 @@ export const MOVIES: Movie[] = [
     deepCast: ['Lawrence Tierney'],
     posterColor: '#5c1515',
     genre: 'Crime',
+    releaseDate: '1992-10-23',
   },
   {
     id: 'gladiator',
@@ -447,6 +482,7 @@ export const MOVIES: Movie[] = [
     deepCast: ['Richard Harris'],
     posterColor: '#43682e',
     genre: 'Adventure',
+    releaseDate: '2000-05-05',
   },
   {
     id: 'american-gangster',
@@ -458,6 +494,7 @@ export const MOVIES: Movie[] = [
     deepCast: ['Ruby Dee', 'Idris Elba'],
     posterColor: '#59161c',
     genre: 'Crime',
+    releaseDate: '2007-11-02',
   },
   {
     id: 'toy-story',
@@ -470,6 +507,7 @@ export const MOVIES: Movie[] = [
     posterColor: '#2b6cb0',
     genre: 'Animation',
     series: 'toy-story',
+    releaseDate: '1995-11-22',
   },
   {
     id: 'the-dark-knight-rises',
@@ -482,6 +520,7 @@ export const MOVIES: Movie[] = [
     posterColor: '#1d2530',
     genre: 'Action',
     series: 'dark-knight',
+    releaseDate: '2012-07-20',
   },
   {
     id: 'the-godfather-part-iii',
@@ -494,6 +533,7 @@ export const MOVIES: Movie[] = [
     posterColor: '#3e1212',
     genre: 'Crime',
     series: 'godfather',
+    releaseDate: '1990-12-25',
   },
   {
     id: 'toy-story-2',
@@ -506,6 +546,7 @@ export const MOVIES: Movie[] = [
     posterColor: '#2f74ba',
     genre: 'Animation',
     series: 'toy-story',
+    releaseDate: '1999-11-24',
   },
   // ----- 2026-06-12 pool expansion -----
   {
@@ -517,6 +558,7 @@ export const MOVIES: Movie[] = [
     topCast: ['Robert De Niro', 'Cathy Moriarty', 'Joe Pesci', 'Frank Vincent'],
     posterColor: '#66461f',
     genre: 'Drama',
+    releaseDate: '1980-11-14',
   },
   {
     id: 'scarface',
@@ -527,6 +569,7 @@ export const MOVIES: Movie[] = [
     topCast: ['Al Pacino', 'Michelle Pfeiffer', 'Steven Bauer', 'Mary Elizabeth Mastrantonio', 'Robert Loggia'],
     posterColor: '#802222',
     genre: 'Crime',
+    releaseDate: '1983-12-09',
   },
   {
     id: 'the-untouchables',
@@ -537,6 +580,7 @@ export const MOVIES: Movie[] = [
     topCast: ['Kevin Costner', 'Sean Connery', 'Andy García', 'Robert De Niro'],
     posterColor: '#75201a',
     genre: 'Crime',
+    releaseDate: '1987-06-03',
   },
   {
     id: 'jackie-brown',
@@ -548,6 +592,7 @@ export const MOVIES: Movie[] = [
     deepCast: ['Robert De Niro', 'Chris Tucker'],
     posterColor: '#63181f',
     genre: 'Crime',
+    releaseDate: '1997-12-25',
   },
   {
     id: 'joker',
@@ -558,6 +603,7 @@ export const MOVIES: Movie[] = [
     topCast: ['Joaquin Phoenix', 'Robert De Niro', 'Zazie Beetz', 'Frances Conroy'],
     posterColor: '#5d1212',
     genre: 'Crime',
+    releaseDate: '2019-10-04',
   },
   {
     id: 'american-hustle',
@@ -569,6 +615,7 @@ export const MOVIES: Movie[] = [
     deepCast: ['Robert De Niro'],
     posterColor: '#7d2626',
     genre: 'Crime',
+    releaseDate: '2013-12-13',
   },
   {
     id: 'the-fighter',
@@ -579,6 +626,7 @@ export const MOVIES: Movie[] = [
     topCast: ['Mark Wahlberg', 'Christian Bale', 'Amy Adams', 'Melissa Leo'],
     posterColor: '#6f4f24',
     genre: 'Drama',
+    releaseDate: '2010-12-10',
   },
   {
     id: 'training-day',
@@ -590,6 +638,7 @@ export const MOVIES: Movie[] = [
     deepCast: ['Snoop Dogg'],
     posterColor: '#67161a',
     genre: 'Crime',
+    releaseDate: '2001-10-05',
   },
   {
     id: 'inside-man',
@@ -601,6 +650,7 @@ export const MOVIES: Movie[] = [
     deepCast: ['Chiwetel Ejiofor'],
     posterColor: '#722023',
     genre: 'Crime',
+    releaseDate: '2006-03-24',
   },
   {
     id: 'philadelphia',
@@ -611,6 +661,7 @@ export const MOVIES: Movie[] = [
     topCast: ['Tom Hanks', 'Denzel Washington', 'Jason Robards', 'Mary Steenburgen', 'Antonio Banderas'],
     posterColor: '#765425',
     genre: 'Drama',
+    releaseDate: '1993-12-22',
   },
   {
     id: 'the-silence-of-the-lambs',
@@ -621,6 +672,7 @@ export const MOVIES: Movie[] = [
     topCast: ['Jodie Foster', 'Anthony Hopkins', 'Scott Glenn', 'Ted Levine', 'Anthony Heald'],
     posterColor: '#352c48',
     genre: 'Thriller',
+    releaseDate: '1991-02-14',
   },
   {
     id: 'no-country-for-old-men',
@@ -631,6 +683,7 @@ export const MOVIES: Movie[] = [
     topCast: ['Tommy Lee Jones', 'Javier Bardem', 'Josh Brolin', 'Woody Harrelson', 'Kelly Macdonald'],
     posterColor: '#581414',
     genre: 'Crime',
+    releaseDate: '2007-11-09',
   },
   {
     id: 'fargo',
@@ -641,6 +694,7 @@ export const MOVIES: Movie[] = [
     topCast: ['Frances McDormand', 'William H. Macy', 'Steve Buscemi', 'Harve Presnell', 'Peter Stormare'],
     posterColor: '#6e1d28',
     genre: 'Crime',
+    releaseDate: '1996-03-08',
   },
   {
     id: 'the-big-lebowski',
@@ -651,6 +705,7 @@ export const MOVIES: Movie[] = [
     topCast: ['Jeff Bridges', 'John Goodman', 'Julianne Moore', 'Steve Buscemi', 'Philip Seymour Hoffman'],
     posterColor: '#2a6f66',
     genre: 'Comedy',
+    releaseDate: '1998-03-06',
   },
   {
     id: 'oceans-eleven',
@@ -662,6 +717,7 @@ export const MOVIES: Movie[] = [
     deepCast: ['Don Cheadle', 'Casey Affleck', 'Elliott Gould'],
     posterColor: '#7c2a20',
     genre: 'Crime',
+    releaseDate: '2001-12-07',
   },
   {
     id: 'the-big-short',
@@ -673,6 +729,7 @@ export const MOVIES: Movie[] = [
     deepCast: ['Margot Robbie'],
     posterColor: '#226b62',
     genre: 'Comedy',
+    releaseDate: '2015-12-11',
   },
   {
     id: 'moneyball',
@@ -683,6 +740,7 @@ export const MOVIES: Movie[] = [
     topCast: ['Brad Pitt', 'Jonah Hill', 'Philip Seymour Hoffman', 'Robin Wright', 'Chris Pratt'],
     posterColor: '#7b5a28',
     genre: 'Drama',
+    releaseDate: '2011-09-23',
   },
   {
     id: 'the-social-network',
@@ -694,6 +752,7 @@ export const MOVIES: Movie[] = [
     deepCast: ['Rooney Mara'],
     posterColor: '#6f5024',
     genre: 'Drama',
+    releaseDate: '2010-10-01',
   },
   {
     id: 'zodiac',
@@ -704,6 +763,7 @@ export const MOVIES: Movie[] = [
     topCast: ['Jake Gyllenhaal', 'Mark Ruffalo', 'Robert Downey Jr.', 'Anthony Edwards', 'Brian Cox'],
     posterColor: '#41365a',
     genre: 'Thriller',
+    releaseDate: '2007-03-02',
   },
   {
     id: 'a-few-good-men',
@@ -715,6 +775,7 @@ export const MOVIES: Movie[] = [
     deepCast: ['Cuba Gooding Jr.'],
     posterColor: '#684724',
     genre: 'Drama',
+    releaseDate: '1992-12-11',
   },
   {
     id: 'lincoln',
@@ -725,6 +786,7 @@ export const MOVIES: Movie[] = [
     topCast: ['Daniel Day-Lewis', 'Sally Field', 'David Strathairn', 'Joseph Gordon-Levitt', 'Tommy Lee Jones'],
     posterColor: '#715326',
     genre: 'Drama',
+    releaseDate: '2012-11-09',
   },
   {
     id: 'there-will-be-blood',
@@ -735,6 +797,7 @@ export const MOVIES: Movie[] = [
     topCast: ['Daniel Day-Lewis', 'Paul Dano', 'Kevin J. O\'Connor', 'Ciarán Hinds'],
     posterColor: '#5f421e',
     genre: 'Drama',
+    releaseDate: '2007-12-26',
   },
   {
     id: 'raiders-of-the-lost-ark',
@@ -746,6 +809,7 @@ export const MOVIES: Movie[] = [
     deepCast: ['Alfred Molina'],
     posterColor: '#356233',
     genre: 'Adventure',
+    releaseDate: '1981-06-12',
   },
   {
     id: 'unforgiven',
@@ -756,6 +820,7 @@ export const MOVIES: Movie[] = [
     topCast: ['Clint Eastwood', 'Gene Hackman', 'Morgan Freeman', 'Richard Harris'],
     posterColor: '#7e431a',
     genre: 'Western',
+    releaseDate: '1992-08-07',
   },
   {
     id: 'the-truman-show',
@@ -767,6 +832,7 @@ export const MOVIES: Movie[] = [
     deepCast: ['Paul Giamatti'],
     posterColor: '#7e5e2a',
     genre: 'Drama',
+    releaseDate: '1998-06-05',
   },
   {
     id: 'eternal-sunshine-of-the-spotless-mind',
@@ -777,6 +843,7 @@ export const MOVIES: Movie[] = [
     topCast: ['Jim Carrey', 'Kate Winslet', 'Kirsten Dunst', 'Mark Ruffalo', 'Elijah Wood'],
     posterColor: '#8f4260',
     genre: 'Romance',
+    releaseDate: '2004-03-19',
   },
   {
     id: 'the-sixth-sense',
@@ -787,6 +854,7 @@ export const MOVIES: Movie[] = [
     topCast: ['Bruce Willis', 'Haley Joel Osment', 'Toni Collette', 'Olivia Williams'],
     posterColor: '#3d3158',
     genre: 'Thriller',
+    releaseDate: '1999-08-06',
   },
   {
     id: 'memento',
@@ -797,6 +865,7 @@ export const MOVIES: Movie[] = [
     topCast: ['Guy Pearce', 'Carrie-Anne Moss', 'Joe Pantoliano'],
     posterColor: '#4d4066',
     genre: 'Thriller',
+    releaseDate: '2001-03-16',
   },
   {
     id: 'dunkirk',
@@ -808,6 +877,7 @@ export const MOVIES: Movie[] = [
     deepCast: ['Harry Styles'],
     posterColor: '#4a4d2c',
     genre: 'War',
+    releaseDate: '2017-07-21',
   },
   {
     id: 'oppenheimer',
@@ -819,6 +889,7 @@ export const MOVIES: Movie[] = [
     deepCast: ['Gary Oldman', 'Casey Affleck', 'Rami Malek'],
     posterColor: '#7f5c20',
     genre: 'Drama',
+    releaseDate: '2023-07-21',
   },
   {
     id: 'the-matrix',
@@ -830,6 +901,7 @@ export const MOVIES: Movie[] = [
     posterColor: '#1c2858',
     genre: 'Sci-Fi',
     series: 'matrix',
+    releaseDate: '1999-03-31',
   },
   {
     id: 'the-matrix-reloaded',
@@ -841,6 +913,7 @@ export const MOVIES: Movie[] = [
     posterColor: '#20305f',
     genre: 'Sci-Fi',
     series: 'matrix',
+    releaseDate: '2003-05-15',
   },
   {
     id: 'the-matrix-revolutions',
@@ -852,6 +925,7 @@ export const MOVIES: Movie[] = [
     posterColor: '#182350',
     genre: 'Sci-Fi',
     series: 'matrix',
+    releaseDate: '2003-11-05',
   },
   {
     id: 'blade-runner-2049',
@@ -863,6 +937,7 @@ export const MOVIES: Movie[] = [
     deepCast: ['Jared Leto', 'Dave Bautista'],
     posterColor: '#253468',
     genre: 'Sci-Fi',
+    releaseDate: '2017-10-06',
   },
   {
     id: 'arrival',
@@ -873,6 +948,7 @@ export const MOVIES: Movie[] = [
     topCast: ['Amy Adams', 'Jeremy Renner', 'Forest Whitaker', 'Michael Stuhlbarg'],
     posterColor: '#2a3a72',
     genre: 'Sci-Fi',
+    releaseDate: '2016-11-11',
   },
   {
     id: 'sicario',
@@ -884,6 +960,7 @@ export const MOVIES: Movie[] = [
     deepCast: ['Jon Bernthal'],
     posterColor: '#483866',
     genre: 'Thriller',
+    releaseDate: '2015-09-18',
   },
   {
     id: 'prisoners',
@@ -895,6 +972,7 @@ export const MOVIES: Movie[] = [
     deepCast: ['Paul Dano', 'Melissa Leo'],
     posterColor: '#3a3050',
     genre: 'Thriller',
+    releaseDate: '2013-09-20',
   },
   {
     id: 'collateral',
@@ -906,6 +984,7 @@ export const MOVIES: Movie[] = [
     deepCast: ['Javier Bardem'],
     posterColor: '#443c60',
     genre: 'Thriller',
+    releaseDate: '2004-08-06',
   },
   {
     id: 'mission-impossible',
@@ -917,6 +996,7 @@ export const MOVIES: Movie[] = [
     posterColor: '#28323e',
     genre: 'Action',
     series: 'mission-impossible',
+    releaseDate: '1996-05-22',
   },
   {
     id: 'mission-impossible-2',
@@ -928,6 +1008,7 @@ export const MOVIES: Movie[] = [
     posterColor: '#242e3a',
     genre: 'Action',
     series: 'mission-impossible',
+    releaseDate: '2000-05-24',
   },
   {
     id: 'mission-impossible-fallout',
@@ -939,6 +1020,7 @@ export const MOVIES: Movie[] = [
     posterColor: '#1f2934',
     genre: 'Action',
     series: 'mission-impossible',
+    releaseDate: '2018-07-27',
   },
   {
     id: 'iron-man',
@@ -950,6 +1032,7 @@ export const MOVIES: Movie[] = [
     deepCast: ['Samuel L. Jackson'],
     posterColor: '#2c3642',
     genre: 'Action',
+    releaseDate: '2008-05-02',
   },
   {
     id: 'ford-v-ferrari',
@@ -960,6 +1043,7 @@ export const MOVIES: Movie[] = [
     topCast: ['Matt Damon', 'Christian Bale', 'Jon Bernthal', 'Caitríona Balfe'],
     posterColor: '#735122',
     genre: 'Drama',
+    releaseDate: '2019-11-15',
   },
   {
     id: 'the-fellowship-of-the-ring',
@@ -972,6 +1056,7 @@ export const MOVIES: Movie[] = [
     posterColor: '#2a5a32',
     genre: 'Adventure',
     series: 'lotr',
+    releaseDate: '2001-12-19',
   },
   {
     id: 'the-two-towers',
@@ -984,6 +1069,7 @@ export const MOVIES: Movie[] = [
     posterColor: '#306038',
     genre: 'Adventure',
     series: 'lotr',
+    releaseDate: '2002-12-18',
   },
   {
     id: 'the-return-of-the-king',
@@ -996,6 +1082,7 @@ export const MOVIES: Movie[] = [
     posterColor: '#26542e',
     genre: 'Adventure',
     series: 'lotr',
+    releaseDate: '2003-12-17',
   },
   {
     id: 'monsters-inc',
@@ -1006,6 +1093,7 @@ export const MOVIES: Movie[] = [
     topCast: ['John Goodman', 'Billy Crystal', 'Steve Buscemi', 'James Coburn', 'Jennifer Tilly'],
     posterColor: '#2e6fb4',
     genre: 'Animation',
+    releaseDate: '2001-11-02',
   },
   {
     id: 'toy-story-3',
@@ -1018,6 +1106,7 @@ export const MOVIES: Movie[] = [
     posterColor: '#3378be',
     genre: 'Animation',
     series: 'toy-story',
+    releaseDate: '2010-06-18',
   },
 
   // ----- Wave 1 (2026-07-05): 74 films, cross-checked + arbitrated -----
@@ -1069,6 +1158,7 @@ export const MOVIES: Movie[] = [
     deepCast: ['Laurence Fishburne', 'Harrison Ford', 'Dennis Hopper'],
     posterColor: '#4e4f2c',
     genre: 'War',
+    releaseDate: '1979-08-15',
   },
   {
     id: 'rocky',
@@ -1079,6 +1169,7 @@ export const MOVIES: Movie[] = [
     topCast: ['Sylvester Stallone', 'Talia Shire', 'Burt Young', 'Carl Weathers', 'Burgess Meredith'],
     posterColor: '#6f5022',
     genre: 'Drama',
+    releaseDate: '1976-11-21',
   },
   {
     id: 'true-grit',
@@ -1153,6 +1244,7 @@ export const MOVIES: Movie[] = [
     topCast: ['Harrison Ford', 'Rutger Hauer', 'Sean Young', 'Edward James Olmos', 'Daryl Hannah'],
     posterColor: '#1c2858',
     genre: 'Sci-Fi',
+    releaseDate: '1982-06-25',
   },
   {
     id: 'alien',
@@ -1163,6 +1255,7 @@ export const MOVIES: Movie[] = [
     topCast: ['Sigourney Weaver', 'Tom Skerritt', 'John Hurt', 'Ian Holm', 'Harry Dean Stanton'],
     posterColor: '#182350',
     genre: 'Sci-Fi',
+    releaseDate: '1979-05-25',
   },
   {
     id: 'indiana-jones-and-the-last-crusade',
@@ -1174,6 +1267,7 @@ export const MOVIES: Movie[] = [
     deepCast: ['River Phoenix', 'Julian Glover'],
     posterColor: '#43682e',
     genre: 'Adventure', // no series id: pool's Raiders has none, and existing films are locked
+    releaseDate: '1989-05-24',
   },
   {
     id: 'the-fugitive',
@@ -1195,6 +1289,7 @@ export const MOVIES: Movie[] = [
     topCast: ['Jack Nicholson', 'Shelley Duvall', 'Danny Lloyd', 'Scatman Crothers'],
     posterColor: '#331025',
     genre: 'Horror', // NEW genre family — see judgment calls
+    releaseDate: '1980-05-23',
   },
   {
     id: '2001-a-space-odyssey',
@@ -1215,6 +1310,7 @@ export const MOVIES: Movie[] = [
     topCast: ['Matthew Modine', 'Adam Baldwin', 'Vincent D\'Onofrio', 'R. Lee Ermey'],
     posterColor: '#44442c',
     genre: 'War',
+    releaseDate: '1987-06-26',
   },
   {
     id: 'dr-strangelove',
@@ -1287,6 +1383,7 @@ export const MOVIES: Movie[] = [
     topCast: ['Ellen Burstyn', 'Max von Sydow', 'Linda Blair', 'Jason Miller'],
     posterColor: '#3a1220',
     genre: 'Horror',
+    releaseDate: '1973-12-26',
   },
   {
     id: 'phantom-thread',
@@ -1329,6 +1426,7 @@ export const MOVIES: Movie[] = [
     deepCast: ['Danny DeVito', 'Christopher Lloyd', 'Brad Dourif'],
     posterColor: '#7b5a28',
     genre: 'Drama',
+    releaseDate: '1975-11-19',
   },
   {
     id: 'chinatown',
@@ -1339,6 +1437,7 @@ export const MOVIES: Movie[] = [
     topCast: ['Jack Nicholson', 'Faye Dunaway', 'John Huston'],
     posterColor: '#5f1717',
     genre: 'Crime',
+    releaseDate: '1974-06-20',
   },
   {
     id: 'panic-room',
@@ -1382,6 +1481,7 @@ export const MOVIES: Movie[] = [
     deepCast: ['Michael Cera', 'Issa Rae', 'Simu Liu', 'Helen Mirren'],
     posterColor: '#2a6f66',
     genre: 'Comedy',
+    releaseDate: '2023-07-21',
   },
   {
     id: 'la-la-land',
@@ -1594,6 +1694,7 @@ export const MOVIES: Movie[] = [
     topCast: ['Roy Scheider', 'Robert Shaw', 'Richard Dreyfuss'],
     posterColor: '#3d3158',
     genre: 'Thriller',
+    releaseDate: '1975-06-20',
   },
   {
     id: 'e-t-the-extra-terrestrial', // id reused verbatim from chronology-pool.json
@@ -1604,6 +1705,7 @@ export const MOVIES: Movie[] = [
     topCast: ['Henry Thomas', 'Dee Wallace', 'Drew Barrymore', 'Peter Coyote'],
     posterColor: '#2a3a72',
     genre: 'Sci-Fi',
+    releaseDate: '1982-06-11',
   },
   {
     id: 'star-wars',
@@ -1616,6 +1718,7 @@ export const MOVIES: Movie[] = [
     posterColor: '#28336e',
     genre: 'Sci-Fi',
     series: 'star-wars',
+    releaseDate: '1977-05-25',
   },
   {
     id: 'the-empire-strikes-back',
@@ -1628,6 +1731,7 @@ export const MOVIES: Movie[] = [
     posterColor: '#1f2a5e',
     genre: 'Sci-Fi',
     series: 'star-wars',
+    releaseDate: '1980-05-21',
   },
   {
     id: 'return-of-the-jedi',
@@ -1640,6 +1744,7 @@ export const MOVIES: Movie[] = [
     posterColor: '#20305f',
     genre: 'Sci-Fi',
     series: 'star-wars',
+    releaseDate: '1983-05-25',
   },
   {
     id: 'the-force-awakens',
@@ -1703,6 +1808,7 @@ export const MOVIES: Movie[] = [
     deepCast: ['Tim Robbins', 'Meg Ryan'],
     posterColor: '#232c38',
     genre: 'Action',
+    releaseDate: '1986-05-16',
   },
   {
     id: 'days-of-thunder',
@@ -1755,6 +1861,7 @@ export const MOVIES: Movie[] = [
     topCast: ['Robin Williams', 'Robert Sean Leonard', 'Ethan Hawke'],
     posterColor: '#6f4f24',
     genre: 'Drama', // Weir at 2 with Truman Show — wave-2 note
+    releaseDate: '1989-06-02',
   },
   {
     id: 'jumanji',
@@ -1900,6 +2007,7 @@ export const MOVIES: Movie[] = [
     deepCast: ['Javier Bardem', 'Jason Momoa', 'Stellan Skarsgård', 'Dave Bautista', 'Charlotte Rampling'],
     posterColor: '#20305f',
     genre: 'Sci-Fi', // completes Eric Roth (writer); Villeneuve to 5; Brolin to 6
+    releaseDate: '2021-10-22',
   },
   {
     id: 'birdman',
@@ -2031,6 +2139,7 @@ export const MOVIES: Movie[] = [
     deepCast: ['Bill Paxton', 'Jenette Goldstein'],
     posterColor: '#182350',
     genre: 'Sci-Fi', // Weaver to 2; Biehn to 2 (Tombstone deep); no series id — see judgment calls
+    releaseDate: '1986-07-18',
   },
   {
     id: 'the-terminator',
@@ -2042,6 +2151,7 @@ export const MOVIES: Movie[] = [
     posterColor: '#1f2a5e',
     genre: 'Sci-Fi',
     series: 'terminator',
+    releaseDate: '1984-10-26',
   },
   {
     id: 'terminator-2-judgment-day',
@@ -2162,6 +2272,7 @@ export const MOVIES: Movie[] = [
     deepCast: ['Thomas F. Wilson'],
     posterColor: '#2f3d78',
     genre: 'Sci-Fi', // Zemeckis to 3 (wave-3 seed); Lloyd to 2 (Cuckoo's Nest deep)
+    releaseDate: '1985-07-03',
   },
   {
     id: 'the-bourne-identity',
@@ -2237,6 +2348,7 @@ export const MOVIES: Movie[] = [
     topCast: ['Billy Crystal', 'Meg Ryan', 'Carrie Fisher', 'Bruno Kirby'],
     posterColor: '#8f4260',
     genre: 'Romance', // Carrie Fisher to 5(!); Crystal to 2 (Princess Bride deep); Reiner directs 2
+    releaseDate: '1989-07-12',
   },
   {
     id: 'sleepless-in-seattle',
@@ -2365,6 +2477,7 @@ export const MOVIES: Movie[] = [
     deepCast: ['Billy Dee Williams', 'Jack Palance'],
     posterColor: '#26303c',
     genre: 'Action', // Nicholson to 6; Billy Dee to 3 (ESB · RotJ)
+    releaseDate: '1989-06-23',
   },
   {
     id: 'spotlight',
@@ -2533,6 +2646,7 @@ export const MOVIES: Movie[] = [
     deepCast: ['Jeff Conaway', 'Didi Conn'],
     posterColor: '#8f4260',
     genre: 'Romance', // Travolta to 2 (Pulp Fiction)
+    releaseDate: '1978-06-16',
   },
   {
     id: 'rain-man',
@@ -2543,6 +2657,7 @@ export const MOVIES: Movie[] = [
     topCast: ['Dustin Hoffman', 'Tom Cruise', 'Valeria Golino'],
     posterColor: '#7b5a28',
     genre: 'Drama', // Hoffman enters the pool (wave-3 seed: Graduate/Tootsie)
+    releaseDate: '1988-12-16',
   },
   {
     id: 'jerry-maguire',
@@ -2574,6 +2689,7 @@ export const MOVIES: Movie[] = [
     topCast: ['Song Kang-ho', 'Lee Sun-kyun', 'Cho Yeo-jeong', 'Choi Woo-shik', 'Park So-dam'],
     posterColor: '#3d3158',
     genre: 'Thriller', // wave-3 seed: Snowpiercer (Bong + Chris Evans + Swinton)
+    releaseDate: '2019-10-11',
   },
   {
     id: 'crouching-tiger-hidden-dragon',
@@ -2619,3 +2735,58 @@ export const MOVIES: Movie[] = [
 ]
 
 export const movieById = new Map(MOVIES.map((m) => [m.id, m]))
+
+// ── Dated stubs (Chronology-only films) ─────────────────────────────────────
+// Films with a locked US-theatrical release date but NO credits yet, so they are
+// DatedStubs, not Movies (see types.ts + docs/pool-unification.md). The Chronology
+// pool build unions these with MOVIES-that-carry-a-releaseDate; a stub graduates
+// to a full Movie (delete here, append above, same id + date) when a wave credits
+// it. Dates follow the same locked policy as Movie.releaseDate. Sorted by date.
+export const DATED_STUBS: DatedStub[] = [
+  { id: 'the-french-connection', title: 'The French Connection', releaseDate: '1971-10-09' },
+  { id: 'a-clockwork-orange', title: 'A Clockwork Orange', releaseDate: '1971-12-19' },
+  { id: 'dirty-harry', title: 'Dirty Harry', releaseDate: '1971-12-23' },
+  { id: 'blazing-saddles', title: 'Blazing Saddles', releaseDate: '1974-02-07' },
+  { id: 'young-frankenstein', title: 'Young Frankenstein', releaseDate: '1974-12-15' },
+  { id: 'all-the-presidents-men', title: 'All the President\'s Men', releaseDate: '1976-04-09' },
+  { id: 'carrie', title: 'Carrie', releaseDate: '1976-11-03' },
+  { id: 'network', title: 'Network', releaseDate: '1976-11-27' },
+  { id: 'annie-hall', title: 'Annie Hall', releaseDate: '1977-04-20' },
+  { id: 'close-encounters-of-the-third-kind', title: 'Close Encounters of the Third Kind', releaseDate: '1977-11-16' },
+  { id: 'saturday-night-fever', title: 'Saturday Night Fever', releaseDate: '1977-12-16' },
+  { id: 'halloween', title: 'Halloween', releaseDate: '1978-10-25' },
+  { id: 'the-deer-hunter', title: 'The Deer Hunter', releaseDate: '1978-12-08' },
+  { id: 'superman', title: 'Superman', releaseDate: '1978-12-15' },
+  { id: 'kramer-vs-kramer', title: 'Kramer vs. Kramer', releaseDate: '1979-12-19' },
+  { id: 'the-thing', title: 'The Thing', releaseDate: '1982-06-25' },
+  { id: 'ghostbusters', title: 'Ghostbusters', releaseDate: '1984-06-08' },
+  { id: 'gremlins', title: 'Gremlins', releaseDate: '1984-06-08' },
+  { id: 'the-breakfast-club', title: 'The Breakfast Club', releaseDate: '1985-02-15' },
+  { id: 'ferris-buellers-day-off', title: 'Ferris Bueller\'s Day Off', releaseDate: '1986-06-11' },
+  { id: 'platoon', title: 'Platoon', releaseDate: '1986-12-19' },
+  { id: 'predator', title: 'Predator', releaseDate: '1987-06-12' },
+  { id: 'beetlejuice', title: 'Beetlejuice', releaseDate: '1988-03-30' },
+  { id: 'die-hard', title: 'Die Hard', releaseDate: '1988-07-15' },
+  { id: 'tenet', title: 'Tenet', releaseDate: '2020-09-03' },
+  { id: 'a-quiet-place-part-ii', title: 'A Quiet Place Part II', releaseDate: '2021-05-28' },
+  { id: 'no-time-to-die', title: 'No Time to Die', releaseDate: '2021-10-08' },
+  { id: 'encanto', title: 'Encanto', releaseDate: '2021-11-24' },
+  { id: 'west-side-story', title: 'West Side Story', releaseDate: '2021-12-10' },
+  { id: 'spider-man-no-way-home', title: 'Spider-Man: No Way Home', releaseDate: '2021-12-17' },
+  { id: 'the-batman', title: 'The Batman', releaseDate: '2022-03-04' },
+  { id: 'everything-everywhere-all-at-once', title: 'Everything Everywhere All at Once', releaseDate: '2022-03-25' },
+  { id: 'top-gun-maverick', title: 'Top Gun: Maverick', releaseDate: '2022-05-27' },
+  { id: 'elvis', title: 'Elvis', releaseDate: '2022-06-24' },
+  { id: 'nope', title: 'Nope', releaseDate: '2022-07-22' },
+  { id: 'avatar-the-way-of-water', title: 'Avatar: The Way of Water', releaseDate: '2022-12-16' },
+  { id: 'john-wick-chapter-4', title: 'John Wick: Chapter 4', releaseDate: '2023-03-24' },
+  { id: 'the-super-mario-bros-movie', title: 'The Super Mario Bros. Movie', releaseDate: '2023-04-05' },
+  { id: 'killers-of-the-flower-moon', title: 'Killers of the Flower Moon', releaseDate: '2023-10-20' },
+  { id: 'wonka', title: 'Wonka', releaseDate: '2023-12-15' },
+  { id: 'dune-part-two', title: 'Dune: Part Two', releaseDate: '2024-03-01' },
+  { id: 'inside-out-2', title: 'Inside Out 2', releaseDate: '2024-06-14' },
+  { id: 'deadpool-and-wolverine', title: 'Deadpool & Wolverine', releaseDate: '2024-07-26' },
+  { id: 'gladiator-ii', title: 'Gladiator II', releaseDate: '2024-11-22' },
+  { id: 'wicked', title: 'Wicked', releaseDate: '2024-11-22' },
+  { id: 'a-minecraft-movie', title: 'A Minecraft Movie', releaseDate: '2025-04-04' },
+]

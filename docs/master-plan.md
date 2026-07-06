@@ -324,8 +324,15 @@ what's ready-to-review per sitting.
       ui-contracts Appendix A records all five rulings)
 - [x] W0e stale worktree removed (2026-07-06)
 - [ ] W1 wire ×5 + 7a language live · side-by-sides · played game @ both sizes — **Buri approved: ___**
-- [ ] P1 A4 unification (byte-identical JSON) — auto
-- [ ] M4a dealer lock encoded + verify:connections green — auto
+- [x] P1 A4 unification (byte-identical JSON) — auto (2026-07-06: byte-identical
+      ✓ · 116 dates + 46 stubs · CHRONO_TITLE_OVERRIDES for 4 title-convention
+      splits · seed retired INCLUDING the sim migration the design's consumer
+      map missed (chronology-verify/eval now read the derived JSON) · seeded
+      tune diff pre/post = byte-identical · full verify 64/64)
+- [x] M4a dealer lock encoded + verify:connections green — auto (2026-07-06:
+      ≤1-genre enforced constructionally in enumerateViable, person/series-first
+      via CATS key order, 365-grid digest pin + PIN_DAY spot-check, 11/11 ×2,
+      pin stable across the P1 merge)
 - [ ] W2 MeldShelf/RecastOffer/DrawChoice/StubCard forged · wired · Hand restyle — **Buri approved: ___**
 - [ ] P2 Stage B: draft tool · batch merges (log per batch) · POOL LOCK
 - [ ] W3 StubCard everywhere · menu/Solo/Chrono re-dress · RecapReel · desktop — **Buri approved: ___**

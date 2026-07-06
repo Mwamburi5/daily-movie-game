@@ -33,26 +33,18 @@ import {
   type ChronologyCard,
   type ChronoDifficulty,
 } from '../src/lib/chronology.ts'
-import { CHRONOLOGY_SEED, type SeedEntry } from '../scripts/chronology-seed.ts'
+import { readFileSync } from 'node:fs'
 import { makeRng } from './rng.ts'
 import { wilson, pairedDiff, pctCI } from './stats.ts'
 
-// The shipped pool, derived from the curated seed exactly as the build script
-// (and chronology-verify.ts) derive it. Node can't import the committed JSON
-// without an import attribute Vite doesn't need, so the sim layer reads the seed
-// — the JSON's single source — instead of the app's chronologyPool.ts wrapper.
-function toCard(e: SeedEntry): ChronologyCard {
-  const year = Number(e.releaseDate.slice(0, 4))
-  return {
-    id: e.id,
-    title: e.title,
-    year,
-    releaseDate: e.releaseDate,
-    decade: Math.floor(year / 10) * 10,
-    popularity: e.popularity ?? 0,
-  }
-}
-const CHRONOLOGY_POOL = CHRONOLOGY_SEED.map(toCard)
+// The shipped pool, read from the derived artifact itself (post-A4,
+// docs/pool-unification.md — the seed is retired; movies.ts is the source and
+// src/data/chronology-pool.json its build output, already ChronologyCard-shaped).
+// Read via fs so node needs no JSON import-attribute and the app's Vite-flavored
+// chronologyPool.ts wrapper stays out of the sim layer.
+const CHRONOLOGY_POOL: ChronologyCard[] = JSON.parse(
+  readFileSync(new URL('../src/data/chronology-pool.json', import.meta.url), 'utf8'),
+)
 
 const ROUNDS = Number(process.argv[2] ?? 4000)
 

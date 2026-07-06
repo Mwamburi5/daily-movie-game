@@ -31,7 +31,7 @@ import {
   type PlacementResult,
   type Round,
 } from '../src/lib/chronology.ts'
-import { CHRONOLOGY_SEED, type SeedEntry } from '../scripts/chronology-seed.ts'
+import { readFileSync } from 'node:fs'
 import { makeRng } from './rng.ts'
 import { wilson, pairedDiff, pctCI, diffCI } from './stats.ts'
 
@@ -67,21 +67,16 @@ function throws(fn: () => unknown): boolean {
 
 // ── fixtures ──────────────────────────────────────────────────────────────
 
-// Turn a curated seed entry into a full pool card, deriving year and decade from
-// the release date — exactly what scripts/build-chronology-pool.ts will do.
-function toCard(e: SeedEntry): ChronologyCard {
-  const year = Number(e.releaseDate.slice(0, 4))
-  return {
-    id: e.id,
-    title: e.title,
-    year,
-    releaseDate: e.releaseDate,
-    decade: Math.floor(year / 10) * 10,
-    popularity: e.popularity ?? 0,
-  }
-}
-
-const SEED_POOL = CHRONOLOGY_SEED.map(toCard)
+// The pool THE APP SHIPS. Post-A4 (docs/pool-unification.md) the gate verifies
+// the derived artifact itself — src/data/chronology-pool.json, whose records are
+// already ChronologyCard-shaped — instead of re-deriving from the retired seed.
+// A date fix lands on the canonical movies.ts entry/stub, the build regenerates
+// the JSON, and this gate reads the regenerated file: one source, no split
+// brain. Read via fs (not import) so node needs no import-attribute and the
+// app's Vite-flavored chronologyPool.ts wrapper stays out of the sim layer.
+const SEED_POOL: ChronologyCard[] = JSON.parse(
+  readFileSync(new URL('../src/data/chronology-pool.json', import.meta.url), 'utf8'),
+)
 const byId = new Map(SEED_POOL.map((c) => [c.id, c]))
 const card = (id: string): ChronologyCard => {
   const c = byId.get(id)

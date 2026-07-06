@@ -75,6 +75,15 @@ Three sub-steps, in order:
   gains optional `releaseDate`; dates-only films become `DATED_STUBS`;
   chronology-pool.json becomes a derived artifact; chronology-seed.ts
   retires. Acceptance test: byte-identical emitted JSON.
+  ✅ EXECUTED 2026-07-06 (steps 1–6): `releaseDate?` added, 116 overlap dates
+  copied onto canonical entries, 46 `DATED_STUBS` added, build rewired to the
+  MOVIES∪stubs union (+ stub-collision + 4 Chronology-title overrides for the
+  LOTR/MI-Fallout convention split), **JSON byte-identical**; DUEL_POOL_IDS pin
+  0x2fa00c8d intact; verify:chronology 42/42, verify:solo 8/8, tsc clean.
+  ⚠ Seed retirement (step 7) DEFERRED to arbitration: `sim/chronology-verify.ts`
+  + `sim/chronology-eval.ts` still import `chronology-seed.ts` (read-only sim),
+  so deleting it now breaks the 42/42 gate — the sim imports must move off the
+  seed first.
 - **5c — Stage B growth 162 → 300–500** (docs/stage-b-plan.md): Buri picks
   era-stratified titles, TMDB drafts policy dates into a review file,
   `/tmdb-check dates` audits, Buri arbitrates, stubs merge per batch.
