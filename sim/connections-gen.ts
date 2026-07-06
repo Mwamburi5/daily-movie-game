@@ -45,7 +45,21 @@ import type { Rng } from './rng.ts'
 import type { Movie } from '../src/data/types.ts'
 
 export type GroupCat = 'director' | 'actor' | 'series' | 'genre'
+
+// THE DEALER LOCK (master-plan §3·W4, a design lock — not a heuristic). Grids are
+// built person/series-first: director/actor/series keys before genre. CATS order
+// encodes that priority, and it is what buildKeys sorts by — so genre keys always
+// come LAST in the key list and the enumerator's nested walk reaches them last
+// (property a). The hard half of the lock — at most ONE genre group per grid
+// (property b) — is enforced in enumerateViable, so it holds on the *viable
+// space itself* and thus for every consumer (dealer, verify, WS4 mode) by
+// construction, not by luck of the seed. Strict accidental-free (property c)
+// stays where it was: the DEAL_TRIES walk against accidentalGroups.
 const CATS: GroupCat[] = ['director', 'actor', 'series', 'genre']
+// At most this many genre groups may share a grid. The lock pins it to 1; named
+// so the invariant reads once and the verify can assert the same constant.
+export const MAX_GENRE_GROUPS = 1
+const genreCount = (quad: GroupKey[]): number => quad.reduce((n, k) => n + (k.cat === 'genre' ? 1 : 0), 0)
 
 export interface GroupKey {
   cat: GroupCat
@@ -63,6 +77,7 @@ interface Net {
   directorForm: Set<string> // m.director — who can HEAD a director group this film sits in
   directorGate: Set<string> // m.director + m.writers — who this film poisons as a director key
   cast: Set<string> // topCast + deepCast — sits AND poisons actor groups
+  persons: Set<string> // directorGate ∪ cast, deduped once — the widest person net
   series: string | null
   genre: string
 }
@@ -70,10 +85,16 @@ interface Net {
 function buildNets(pool: Movie[]): Map<string, Net> {
   const nets = new Map<string, Net>()
   for (const m of pool) {
+    const directorGate = new Set([...m.director, ...m.writers])
+    const cast = new Set([...m.topCast, ...(m.deepCast ?? [])])
     nets.set(m.id, {
       directorForm: new Set(m.director),
-      directorGate: new Set([...m.director, ...m.writers]),
-      cast: new Set([...m.topCast, ...(m.deepCast ?? [])]),
+      directorGate,
+      cast,
+      // Precompute the merged person net once. accidentalGroups runs this union
+      // millions of times during a pathological deal walk; hoisting it here (same
+      // elements, same insertion order = same bucket order) is a pure speedup.
+      persons: new Set([...directorGate, ...cast]),
       series: m.series ?? null,
       genre: m.genre,
     })
@@ -97,7 +118,10 @@ function fits(n: Net, cat: GroupCat, key: string): boolean {
 
 // Every (cat, key) with its formation pool — INCLUDING undersized ones, because
 // the shopping list wants the exactly-3s. Sorted deterministically so the seeded
-// dealer is stable run to run.
+// dealer is stable run to run — and, per the lock (property a), by CATS order
+// FIRST, so director/actor/series keys precede genre and are placed before it in
+// every downstream 4-subset walk. The localeCompare tiebreak only orders keys
+// WITHIN a category; the cat rank is what carries the person/series-first lock.
 export function buildKeys(pool: Movie[], nets: Map<string, Net>): GroupKey[] {
   const byCat = new Map<GroupCat, Map<string, string[]>>(CATS.map((c) => [c, new Map()]))
   const add = (cat: GroupCat, key: string, id: string) => {
@@ -150,6 +174,14 @@ interface Viable {
 // group-ready keys enough that C(K,4) reaches the millions), so each entry
 // keeps only the pool SIZES; usablePools is deterministic, so consumers
 // re-derive the pools for just the sets they actually visit.
+//
+// LOCK (property b) enforced here: a quad carrying >MAX_GENRE_GROUPS genre keys
+// is dropped BEFORE usablePools, so it never enters the viable space. Every
+// consumer draws from this list — dealGrid, the yield report, the WS4 mode — so
+// the ≤1-genre invariant holds by construction, and it's the cheap check too
+// (a hidden multi-genre grid would otherwise be one bad seed away). Because big
+// is buildKeys-sorted, the four indices are always in cat order, i.e. any genre
+// keys sit at the tail of the quad (property a made concrete at the walk).
 export function enumerateViable(keys: GroupKey[], nets: Map<string, Net>): Viable[] {
   const big = keys.filter((k) => k.pool.length >= 4)
   const out: Viable[] = []
@@ -158,6 +190,7 @@ export function enumerateViable(keys: GroupKey[], nets: Map<string, Net>): Viabl
       for (let c = b + 1; c < big.length; c++)
         for (let d = c + 1; d < big.length; d++) {
           const quad = [big[a], big[b], big[c], big[d]]
+          if (genreCount(quad) > MAX_GENRE_GROUPS) continue // the lock: ≤1 genre group
           const pools = usablePools(quad, nets)
           if (pools)
             out.push({
@@ -179,27 +212,65 @@ function sample<T>(arr: T[], k: number, rng: Rng): T[] {
   return a.slice(0, k).sort()
 }
 
-// The deterministic dealer — the WS4 engine prototype. Re-enumerates per call
-// (fine for a content tool; the real mode will precompute viable sets once).
-// Beyond the hard gate, the dealer insists on accidental-free grids (see the
-// diagnostic below): the seed picks a starting key-set, then it walks — up to
-// DEAL_TRIES seeded assignments per set, advancing to the next viable set when
-// one can't field a clean grid (some sets never can: a genre key whose usable
-// pool overlaps another group's hidden credits). The seed stream makes the whole
-// walk deterministic; the spec-gate-only fallback is unreachable while the
-// strict yield is nonzero.
+// The deterministic dealer — the WS4 engine prototype. The nets/keys/viable
+// triple is a pure function of the pool, so it's cached per pool (see dealFor):
+// the WS4 mode and the standing verify both deal hundreds of grids from the same
+// pool, and re-enumerating ~10M quads each call turns a seconds-long gate into an
+// hours-long one. The cache changes nothing about the OUTPUT — same pool, same
+// viable set, same order — it just does the "precompute viable sets once" this
+// comment used to promise. Beyond the hard gate, the dealer insists on
+// accidental-free grids (see the diagnostic below): the seed picks a starting
+// key-set, then it walks — up to DEAL_TRIES seeded assignments per set, advancing
+// to the next viable set when one can't field a clean grid (some sets never can:
+// a genre key whose usable pool overlaps another group's hidden credits). The
+// seed stream makes the whole walk deterministic; the spec-gate-only fallback is
+// unreachable while the strict yield is nonzero.
 const DEAL_TRIES = 16
 
-export function dealGrid(seed: string, pool: Movie[] = MOVIES): Grid {
+interface DealCtx {
+  nets: Map<string, Net>
+  viable: Viable[]
+  // Lazy memo of usablePools by viable index. The accidental-free walk can, for a
+  // pathological start, step through thousands of viable sets before one fields a
+  // clean grid — and different seeds walk overlapping index ranges, so without
+  // this the standing verify recomputes the same usablePools thousands of times.
+  // Grows only to the indices actually visited (usually a thin slice of viable),
+  // and the arrays are identical to a fresh call, so the deal output is unchanged.
+  poolsAt: (idx: number) => string[][]
+}
+// Keyed by pool identity (default MOVIES is a stable reference; a caller passing
+// its own array gets its own entry). WeakMap so a throwaway pool can be GC'd.
+const dealCtxCache = new WeakMap<Movie[], DealCtx>()
+
+function dealFor(pool: Movie[]): DealCtx {
+  const hit = dealCtxCache.get(pool)
+  if (hit) return hit
   const nets = buildNets(pool)
   const viable = enumerateViable(buildKeys(pool, nets), nets)
   if (viable.length === 0) throw new Error('pool supports no unambiguous grid')
+  const memo = new Map<number, string[][]>()
+  const poolsAt = (idx: number): string[][] => {
+    let p = memo.get(idx)
+    if (!p) {
+      p = usablePools(viable[idx].quad, nets)! // enumerateViable already sized it ≥4
+      memo.set(idx, p)
+    }
+    return p
+  }
+  const ctx: DealCtx = { nets, viable, poolsAt }
+  dealCtxCache.set(pool, ctx)
+  return ctx
+}
+
+export function dealGrid(seed: string, pool: Movie[] = MOVIES): Grid {
+  const { nets, viable, poolsAt } = dealFor(pool)
   const rng = makeRng(seed, 'connections-grid')
   const start = Math.floor(rng() * viable.length)
   let grid: Grid = { groups: [] }
   for (let q = 0; q < viable.length; q++) {
-    const v = viable[(start + q) % viable.length]
-    const pools = usablePools(v.quad, nets)! // deterministic — same arrays enumerateViable sized
+    const idx = (start + q) % viable.length
+    const v = viable[idx]
+    const pools = poolsAt(idx) // deterministic — same arrays enumerateViable sized
     for (let tries = 0; tries < DEAL_TRIES; tries++) {
       grid = {
         groups: v.quad.map((g, i) => ({ cat: g.cat, key: g.key, films: sample(pools[i], 4, rng) })),
@@ -227,7 +298,7 @@ function accidentalGroups(grid: Grid, nets: Map<string, Net>): { key: string; fi
   }
   for (const id of all) {
     const n = nets.get(id)!
-    for (const p of new Set([...n.directorGate, ...n.cast])) add(`person:${p}`, id)
+    for (const p of n.persons) add(`person:${p}`, id) // directorGate ∪ cast, precomputed
     if (n.series) add(`series:${n.series}`, id)
     add(`genre:${n.genre}`, id)
   }

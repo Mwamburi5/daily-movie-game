@@ -10,6 +10,7 @@
     "verify": "node sim/verify.ts",
     "verify:chronology": "node sim/chronology-verify.ts",
     "verify:solo": "node sim/solo-verify.ts",
+    "verify:connections": "node sim/connections-verify.ts",
     "eval:chronology": "node sim/chronology-eval.ts",
     "gen:connections": "node --max-old-space-size=12288 sim/connections-gen.ts",
     "build:chronology-pool": "node scripts/build-chronology-pool.ts",
