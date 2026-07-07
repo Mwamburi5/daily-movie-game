@@ -3,28 +3,33 @@ import type { ReactNode } from 'react'
 
 const Section = ({ title, children }: { title: string; children: ReactNode }) => (
   <section className="mb-7">
-    <h3 className="mb-2 text-[11px] font-extrabold uppercase tracking-wider text-[#9a917c]">
+    <h3 className="mb-2 font-stub-label text-[11px] font-bold uppercase tracking-wider text-stub-slate">
       {title}
     </h3>
-    <div className="space-y-2 text-[13.5px] leading-relaxed text-[#3a352a]">{children}</div>
+    <div className="space-y-2 text-[13.5px] leading-relaxed text-stub-navy">{children}</div>
   </section>
 )
 
 const B = ({ children }: { children: ReactNode }) => (
-  <strong className="font-bold text-[#23211c]">{children}</strong>
+  <strong className="font-bold text-stub-navy">{children}</strong>
 )
 
-const TierPill = ({ bg, children }: { bg: string; children: ReactNode }) => (
+const TierPill = ({ tone, children }: { tone: 'navy' | 'amber' | 'red'; children: ReactNode }) => (
   <span
-    className="inline-block rounded-full px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wider text-white"
-    style={{ background: bg }}
+    className={`inline-block rounded-stub-pill px-2.5 py-1 font-stub-label text-[10px] font-bold uppercase tracking-wider ${
+      tone === 'navy'
+        ? 'bg-stub-navy text-stub-cream'
+        : tone === 'amber'
+          ? 'bg-stub-amber text-stub-navy'
+          : 'bg-stub-red text-stub-cream'
+    }`}
   >
     {children}
   </span>
 )
 
 const TokenPill = ({ children }: { children: ReactNode }) => (
-  <span className="inline-block rounded-full bg-[#23211c] px-2.5 py-1 text-[9px] font-extrabold uppercase tracking-wider text-[#f4efe6]">
+  <span className="inline-block rounded-stub-pill bg-stub-navy px-2.5 py-1 font-stub-label text-[9px] font-bold uppercase tracking-wider text-stub-cream">
     {children}
   </span>
 )
@@ -35,7 +40,7 @@ export default function HowToPlay({ onClose }: { onClose: () => void }) {
   const reduce = useReducedMotion()
   return (
     <motion.div
-      className="absolute inset-0 z-[120] overflow-y-auto overscroll-contain bg-[#f4efe6]"
+      className="absolute inset-0 z-[120] overflow-y-auto overscroll-contain bg-stub-cream"
       initial={{ opacity: 0, y: reduce ? 0 : 24 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: reduce ? 0 : 24 }}
@@ -43,14 +48,16 @@ export default function HowToPlay({ onClose }: { onClose: () => void }) {
       data-rules
     >
       <div className="mx-auto w-full max-w-[420px] px-5 pb-16">
-        <header className="sticky top-0 z-10 -mx-5 mb-4 flex items-center justify-between bg-[#f4efe6]/95 px-5 pb-2 pt-4 backdrop-blur-sm">
-          <h2 className="font-serif text-3xl font-black italic tracking-tight">How to Play</h2>
+        <header className="sticky top-0 z-10 -mx-5 mb-4 flex items-center justify-between bg-stub-cream/95 px-5 pb-2 pt-4 backdrop-blur-sm">
+          <h2 className="font-stub-display text-3xl font-bold tracking-tight text-stub-navy">
+            How to Play
+          </h2>
           <button
             type="button"
             aria-label="Close rules"
             data-rules-close
             onClick={onClose}
-            className="flex h-11 w-11 items-center justify-center rounded-full bg-[#23211c] text-lg text-[#f4efe6] shadow-md active:scale-90"
+            className="flex h-11 w-11 items-center justify-center rounded-stub-pill bg-stub-navy text-lg text-stub-cream shadow-stub-card-resting active:scale-90"
           >
             ✕
           </button>
@@ -79,7 +86,7 @@ export default function HowToPlay({ onClose }: { onClose: () => void }) {
             top-billed cast.
           </p>
           <p>
-            <span className="font-bold uppercase tracking-wider text-[#a3411a] text-[11px]">
+            <span className="font-stub-label text-[11px] font-bold uppercase tracking-wider text-stub-red">
               +N deeper credits
             </span>{' '}
             means the film has more notable names than the card shows. They are hidden — but they
@@ -120,9 +127,9 @@ export default function HowToPlay({ onClose }: { onClose: () => void }) {
 
         <Section title="Links & points">
           <div className="flex flex-wrap items-center gap-1.5 pb-1">
-            <TierPill bg="#23211c">Standard +1</TierPill>
-            <TierPill bg="#7a5a10">Strong +2</TierPill>
-            <TierPill bg="#a3411a">Super +4</TierPill>
+            <TierPill tone="navy">Standard +1</TierPill>
+            <TierPill tone="amber">Strong +2</TierPill>
+            <TierPill tone="red">Super +4</TierPill>
           </div>
           <p>
             <B>Standard +1</B> — one shared actor.
@@ -138,10 +145,7 @@ export default function HowToPlay({ onClose }: { onClose: () => void }) {
 
         <Section title="Deep cuts">
           <p>
-            <span
-              className="mr-1.5 inline-block rounded-full bg-[#0f766e] px-2 py-0.5 text-[9px] font-extrabold uppercase tracking-wider text-white"
-              style={{ boxShadow: '0 0 10px 2px rgba(45,212,191,0.6)' }}
-            >
+            <span className="mr-1.5 inline-block rounded-stub-pill bg-stub-teal px-2 py-0.5 font-stub-label text-[9px] font-bold uppercase tracking-wider text-stub-cream shadow-stub-glow-teal">
               Deep cut
             </span>
             A link that runs <B>only through hidden credits</B> — the pile glows teal. Same
@@ -158,13 +162,13 @@ export default function HowToPlay({ onClose }: { onClose: () => void }) {
         </Section>
 
         <Section title="Melds — a ladder">
-          <div className="mb-1 flex items-center gap-1 rounded-lg bg-white/60 px-2 py-1 shadow-sm">
-            <span className="text-[8px] font-extrabold uppercase tracking-wider text-[#7d7563]">
+          <div className="mb-1 flex items-center gap-1 rounded-stub-panel bg-stub-paper px-2 py-1 shadow-stub-card-resting">
+            <span className="font-stub-label text-[8px] font-bold uppercase tracking-wider text-stub-slate">
               De Niro ×3
             </span>
-            <span className="h-10 w-7 rounded ring-1 ring-inset ring-white/40" style={{ background: '#7a1f1f' }} />
-            <span className="h-10 w-7 rounded ring-1 ring-inset ring-white/40" style={{ background: '#8c2430' }} />
-            <span className="h-10 w-7 rounded ring-1 ring-inset ring-white/40" style={{ background: '#4a3960' }} />
+            <span className="h-10 w-7 rounded-stub-thumb ring-1 ring-inset ring-stub-navy/10" style={{ background: '#7a1f1f' }} />
+            <span className="h-10 w-7 rounded-stub-thumb ring-1 ring-inset ring-stub-navy/10" style={{ background: '#8c2430' }} />
+            <span className="h-10 w-7 rounded-stub-thumb ring-1 ring-inset ring-stub-navy/10" style={{ background: '#4a3960' }} />
           </div>
           <p>
             Tap <B>Meld</B>, select 3+ films sharing a through-line, and bank them into a marquee
@@ -289,12 +293,12 @@ export default function HowToPlay({ onClose }: { onClose: () => void }) {
 
         {/* TMDB free-tier attribution — required alongside any TMDB-derived
             data in the pool (docs/tmdb-plan.md "Obligations"). */}
-        <section className="mb-7 border-t border-[#d8d0bd] pt-5" data-tmdb-attribution>
-          <h3 className="mb-2 text-[11px] font-extrabold uppercase tracking-wider text-[#9a917c]">
+        <section className="mb-7 border-t border-stub-slate-light/40 pt-5" data-tmdb-attribution>
+          <h3 className="mb-2 font-stub-label text-[11px] font-bold uppercase tracking-wider text-stub-slate">
             About the data
           </h3>
           <img src="/tmdb-logo.svg" alt="TMDB" className="mb-2 h-3 w-auto" />
-          <p className="text-[11px] leading-relaxed text-[#9a917c]">
+          <p className="text-[11px] leading-relaxed text-stub-slate">
             This product uses TMDB and the TMDB APIs but is not endorsed, certified, or otherwise
             approved by TMDB.
           </p>
@@ -303,7 +307,7 @@ export default function HowToPlay({ onClose }: { onClose: () => void }) {
         <button
           type="button"
           onClick={onClose}
-          className="mt-2 min-h-12 w-full rounded-full bg-[#23211c] px-7 py-3 text-[15px] font-bold text-[#f4efe6] shadow-md active:scale-95"
+          className="mt-2 min-h-12 w-full rounded-stub-pill bg-stub-amber px-7 py-3 text-[15px] font-bold text-stub-navy shadow-stub-card-resting active:scale-95"
         >
           Got it — deal me in
         </button>

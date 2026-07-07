@@ -7,7 +7,7 @@ import { dailySoloPuzzle, localDateSeed } from './lib/daily.ts'
 import { hasAnyPlay, isSolvable, sharedPeople, type Role } from './lib/solver.ts'
 import { recordDailyFinish, type DailyFinish } from './lib/progress.ts'
 import { track } from './lib/analytics.ts'
-import { CardView } from './components/Card.tsx'
+import StubCard from './components/StubCard.tsx'
 import Hand from './components/Hand.tsx'
 import HowToPlay from './components/HowToPlay.tsx'
 import Results from './components/Results.tsx'
@@ -203,24 +203,30 @@ export default function SoloGame({ onExit, start }: { onExit: () => void; start:
   }, [status])
 
   return (
-    <div className="h-full overflow-hidden">
+    <div
+      className="h-full overflow-hidden bg-stub-cream"
+      style={{
+        backgroundImage: 'radial-gradient(rgba(31,58,82,.06) 1px, transparent 1.2px)',
+        backgroundSize: '7px 7px',
+      }}
+    >
       <div className="relative mx-auto h-full w-full max-w-[420px]">
-        <header className="flex items-center justify-between px-3 pb-1 pt-4">
+        <header className="flex items-center justify-between rounded-b-stub-header bg-stub-navy px-3 pb-3 pt-4">
           <div className="flex items-center">
             <button
               type="button"
               aria-label="Back to menu"
               onClick={onExit}
-              className="flex h-11 w-9 items-center justify-center text-2xl text-[#7d7563] active:scale-90"
+              className="flex h-11 w-9 items-center justify-center text-2xl text-stub-cream/80 active:scale-90"
             >
               ‹
             </button>
-            <span className="font-serif text-lg font-black italic tracking-tight">
+            <span className="font-stub-display text-lg font-bold tracking-tight text-stub-cream">
               {start.kind === 'daily' ? 'Daily' : 'Practice'}
             </span>
           </div>
-          <div className="flex items-center gap-1">
-            <div className="text-[12px] font-medium tabular-nums text-[#7d7563]">
+          <div className="flex items-center gap-1.5">
+            <div className="font-stub-label text-[11px] font-semibold uppercase tracking-wider tabular-nums text-stub-slate-light">
               Flips {flips} · Score {score} · Par {puzzle.par}
             </div>
             <button
@@ -228,7 +234,7 @@ export default function SoloGame({ onExit, start }: { onExit: () => void; start:
               aria-label="How to play"
               data-rules-open
               onClick={() => setShowRules(true)}
-              className="flex h-11 w-8 items-center justify-center text-[13px] font-extrabold text-[#7d7563] active:scale-90"
+              className="flex h-7 w-7 items-center justify-center rounded-stub-pill text-[12px] font-extrabold text-stub-cream/80 ring-1 ring-inset ring-stub-slate-light/50 active:scale-90"
             >
               ?
             </button>
@@ -236,7 +242,7 @@ export default function SoloGame({ onExit, start }: { onExit: () => void; start:
               type="button"
               aria-label="Restart game"
               onClick={resetGame}
-              className="flex h-11 w-11 items-center justify-center rounded-full text-xl text-[#7d7563] active:scale-90 active:text-[#23211c]"
+              className="flex h-9 w-9 items-center justify-center rounded-stub-pill text-xl text-stub-cream/80 active:scale-90 active:text-stub-amber"
             >
               ↺
             </button>
@@ -246,19 +252,29 @@ export default function SoloGame({ onExit, start }: { onExit: () => void; start:
         {/* Discard pile */}
         <section className="absolute inset-x-0 top-16 z-10 flex justify-center">
           <div ref={pileZoneRef} className="relative">
+            {/* Underlay stack: thin navy-edged paper ticket slabs, so the pile
+                reads as a stack of stubs rather than colored rectangles. Faint
+                navy tint + resting shadow, same rotate/opacity stagger. */}
             {underlays.map((id, i) => (
               <div
                 key={id}
-                className="absolute inset-0 rounded-xl"
+                className="absolute inset-0 border border-stub-navy/40 bg-stub-paper"
                 style={{
-                  background: movieById.get(id)!.posterColor,
+                  borderRadius: 'var(--radius-stub-card)',
+                  // faint navy tint (inset) layered over the resting drop-shadow
+                  boxShadow: 'inset 0 0 0 100px rgba(31,58,82,.05), var(--shadow-stub-card-resting)',
                   transform: `rotate(${i % 2 === 0 ? -4 : 3}deg)`,
-                  opacity: 0.45,
+                  opacity: 0.6,
                 }}
               />
             ))}
             <motion.div layoutId={topId} data-card="pile-top" onTap={() => flipCard(topId)}>
-              <CardView movie={topMovie} faceUp={faceUp.has(topId)} size="pile" />
+              <StubCard
+                movie={topMovie}
+                size="pile"
+                reveal={{ credits: faceUp.has(topId) }}
+                deepCut={!!topMovie.deepCast?.length}
+              />
             </motion.div>
           </div>
         </section>
@@ -273,7 +289,7 @@ export default function SoloGame({ onExit, start }: { onExit: () => void; start:
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
                 transition={reduce ? { duration: 0.15 } : { type: 'spring', stiffness: 320, damping: 24 }}
-                className="rounded-full bg-[#23211c] px-4 py-2 text-center text-[13px] font-semibold text-[#f4efe6] shadow-md"
+                className="rounded-stub-pill bg-stub-navy px-4 py-2 text-center font-stub-ui text-[13px] font-semibold text-stub-cream shadow-stub-card-raised"
               >
                 Connected via {connection.name} ({connection.role})
               </motion.div>
@@ -290,7 +306,7 @@ export default function SoloGame({ onExit, start }: { onExit: () => void; start:
                 transition={
                   reduce ? { duration: 0.15 } : { type: 'spring', stiffness: 460, damping: 13 }
                 }
-                className="rounded-full bg-[#b3541e] px-4 py-1.5 text-[12px] font-extrabold uppercase tracking-wider text-white shadow-md"
+                className="rounded-stub-pill bg-stub-amber px-4 py-1.5 font-stub-label text-[12px] font-extrabold uppercase tracking-wider text-stub-navy shadow-stub-glow-amber"
               >
                 {surname(connection.name)} ×{connection.comboCount}
               </motion.div>

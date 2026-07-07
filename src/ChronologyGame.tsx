@@ -247,38 +247,56 @@ export default function ChronologyGame({ onExit, start }: { onExit: () => void; 
   const flippingRaised = placing !== null && raised?.id === placing.card.id
 
   return (
-    <div className="h-full overflow-hidden">
+    <div
+      className="h-full overflow-hidden bg-stub-cream"
+      style={{
+        backgroundImage: 'radial-gradient(rgba(31,58,82,.06) 1px, transparent 1.2px)',
+        backgroundSize: '7px 7px',
+      }}
+    >
       <div className="relative mx-auto h-full w-full max-w-[420px]">
-        {/* Header — strokes + streak in the Daily Puzzle tally style */}
-        <header className="flex items-center justify-between px-3 pb-1 pt-4">
-          <div className="flex items-center">
+        {/* 7a navy Stub header: nav row + a strokes/streak tally, bottom corners
+            only per the token sheet. Cream ink on navy, with the header's cream
+            dot texture. Title in Domine; the tally reads in the same value shape
+            as Duel's HUD (mono eyebrows, tabular numerals). */}
+        <header
+          className="relative flex items-center justify-between overflow-hidden rounded-b-stub-header bg-stub-navy px-3 pb-2.5 pt-4"
+        >
+          <div
+            className="pointer-events-none absolute inset-0"
+            style={{
+              backgroundImage: 'radial-gradient(rgba(240,235,216,.10) 1px, transparent 1.2px)',
+              backgroundSize: '6px 6px',
+            }}
+          />
+          <div className="relative flex items-center">
             <button
               type="button"
               aria-label="Back to menu"
               onClick={onExit}
-              className="flex h-11 w-9 items-center justify-center text-2xl text-[#7d7563] active:scale-90"
+              className="flex h-11 w-9 items-center justify-center text-2xl text-stub-amber active:scale-90"
             >
               ‹
             </button>
             <div className="flex flex-col leading-none">
-              <span className="font-serif text-lg font-black italic tracking-tight">Chronology</span>
-              <span className="mt-0.5 text-[10px] font-bold uppercase tracking-wider text-[#9a917c]">
+              <span className="font-stub-display text-lg font-bold tracking-tight text-stub-cream">Chronology</span>
+              <span className="mt-1 font-stub-label text-[9px] uppercase tracking-wider text-stub-amber">
                 {start.kind === 'daily' ? 'daily' : `practice · ${start.difficulty === 'easy' ? 'wide' : 'tight'}`}
               </span>
             </div>
           </div>
-          <div className="flex items-center gap-2">
-            <div className="text-right text-[12px] font-medium tabular-nums text-[#7d7563]">
-              <div>
-                Strokes {strokes}
-                {credits > 0 && <span className="text-[#b3541e]"> · −{credits}</span>}
+          <div className="relative flex items-center gap-2">
+            <div className="text-right tabular-nums">
+              <div className="font-stub-label text-[11px] uppercase tracking-wide text-stub-cream">
+                Strokes <span className="font-stub-display text-[13px] font-bold">{strokes}</span>
+                {credits > 0 && <span className="text-stub-amber"> · −{credits}</span>}
               </div>
-              <div className="mt-0.5 flex items-center justify-end gap-1" aria-label="Streak">
+              <div className="mt-1 flex items-center justify-end gap-1" aria-label="Streak">
                 {Array.from({ length: STREAK_TARGET }).map((_, i) => (
                   <span
                     key={i}
                     className={`inline-block h-1.5 w-1.5 rounded-full ${
-                      i < streak.streak ? 'bg-[#23211c]' : 'bg-[#c5bca6]'
+                      i < streak.streak ? 'bg-stub-amber' : 'bg-stub-slate-light/40'
                     }`}
                   />
                 ))}
@@ -292,7 +310,7 @@ export default function ChronologyGame({ onExit, start }: { onExit: () => void; 
                 type="button"
                 aria-label="New round"
                 onClick={resetGame}
-                className="flex h-11 w-9 items-center justify-center text-xl text-[#7d7563] active:scale-90 active:text-[#23211c]"
+                className="flex h-11 w-9 items-center justify-center text-xl text-stub-cream/80 active:scale-90 active:text-stub-cream"
               >
                 ↺
               </button>
@@ -325,7 +343,7 @@ export default function ChronologyGame({ onExit, start }: { onExit: () => void; 
                       reduce ? { duration: 0.15 } : { type: 'spring', stiffness: 360, damping: 30 }
                     }
                   >
-                    <span className="mb-1 text-[11px] font-bold tabular-nums text-[#7d7563]">
+                    <span className="mb-1 font-stub-display text-[11px] font-bold tabular-nums text-stub-navy">
                       {line[i].year}
                     </span>
                     <ChronoCardView card={line[i]} faceUp={false} size="line" showYear />
@@ -347,7 +365,7 @@ export default function ChronologyGame({ onExit, start }: { onExit: () => void; 
                 animate={{ opacity: 1, scale: 1, rotate: 0 }}
                 exit={{ opacity: 0 }}
                 transition={reduce ? { duration: 0.15 } : { type: 'spring', stiffness: 460, damping: 13 }}
-                className="rounded-full bg-[#b3541e] px-4 py-1.5 text-[12px] font-extrabold uppercase tracking-wider text-white shadow-md"
+                className="rounded-stub-pill bg-stub-amber px-4 py-1.5 font-stub-label text-[11px] font-bold uppercase tracking-wider text-stub-navy shadow-stub-glow-amber"
               >
                 Streak ×{STREAK_TARGET}
               </motion.div>
@@ -361,7 +379,7 @@ export default function ChronologyGame({ onExit, start }: { onExit: () => void; 
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
                 transition={reduce ? { duration: 0.15 } : { type: 'spring', stiffness: 320, damping: 24 }}
-                className="rounded-full bg-[#23211c] px-4 py-2 text-center text-[13px] font-semibold text-[#f4efe6] shadow-md"
+                className="rounded-stub-pill bg-stub-navy px-4 py-2 text-center font-stub-ui text-[13px] font-semibold text-stub-cream shadow-stub-card-resting"
               >
                 {toast.text}
               </motion.div>
@@ -435,7 +453,7 @@ const Gap = ({
   >
     <div
       className="h-full w-[3px] rounded-full transition-colors"
-      style={{ background: active ? '#b3541e' : 'transparent' }}
+      style={{ background: active ? 'var(--color-stub-amber)' : 'transparent' }}
     />
   </div>
 )
@@ -570,7 +588,11 @@ function ChronoResults({
 
   return (
     <motion.div
-      className="absolute inset-0 z-[100] flex flex-col items-center justify-center bg-[#f4efe6]/95 px-8 text-center"
+      className="absolute inset-0 z-[100] flex flex-col items-center justify-center bg-stub-cream/95 px-8 text-center"
+      style={{
+        backgroundImage: 'radial-gradient(rgba(31,58,82,.06) 1px, transparent 1.2px)',
+        backgroundSize: '7px 7px',
+      }}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ delay: reduce ? 0.15 : 0.5, duration: reduce ? 0.15 : 0.35 }}
@@ -583,23 +605,23 @@ function ChronoResults({
         }
         className="flex w-full flex-col items-center"
       >
-        <h2 className="font-serif text-4xl font-black italic">Cleared!</h2>
-        <p className="mt-3 text-lg font-semibold tabular-nums">
+        <h2 className="font-stub-display text-4xl font-bold text-stub-navy">Cleared!</h2>
+        <p className="mt-3 font-stub-display text-lg font-bold tabular-nums text-stub-navy">
           Final score {score}
         </p>
-        <p className="mt-1 text-sm text-[#7d7563] tabular-nums">
+        <p className="mt-1 font-stub-ui text-sm text-stub-slate tabular-nums">
           {strokes} {strokes === 1 ? 'stroke' : 'strokes'}
           {credits > 0 && ` · ${credits} streak credit${credits === 1 ? '' : 's'}`}
         </p>
 
         {daily && (
-          <p className="mt-1 text-[13px] font-semibold text-[#9a917c] tabular-nums" data-daily-meta>
+          <p className="mt-1 font-stub-label text-[11px] font-semibold uppercase tracking-wider text-stub-slate tabular-nums" data-daily-meta>
             day {daily.day} · streak {daily.streak}
             {daily.best !== null && ` · best ${daily.best}`}
             {daily.repeat && ' · already played today'}
           </p>
         )}
-        <div className="mt-5 rounded-xl bg-white/70 px-5 py-3 text-xl tracking-wider shadow-sm">
+        <div className="mt-5 rounded-stub-panel border-2 border-stub-navy bg-stub-paper px-5 py-3 text-xl tracking-wider shadow-stub-card-resting">
           {emoji}
         </div>
 
@@ -608,7 +630,7 @@ function ChronoResults({
         <button
           type="button"
           onClick={onReset}
-          className="mt-3 min-h-12 rounded-full bg-white/70 px-7 py-3 text-[15px] font-bold text-[#23211c] shadow-sm active:scale-95"
+          className="mt-3 min-h-12 rounded-stub-pill border-2 border-stub-navy bg-stub-paper px-7 py-3 font-stub-ui text-[15px] font-bold text-stub-navy shadow-stub-card-resting active:scale-95"
         >
           Play again
         </button>

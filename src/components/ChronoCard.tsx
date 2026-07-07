@@ -8,33 +8,46 @@
 // with the year hidden; the flip reveals the YEAR. That reveal is the signature
 // moment of the mode (design/chronology.md §"Phase 3").
 //
-// The pool has no posterColor, so the card color is derived from `decade` — a
-// decade-banded look that doubles as a coarse reasoning cue.
+// "The Stub" restyle: the faces now wear the ticket look — cream/paper body,
+// 2px navy border, a genre-style left EDGE ACCENT + diamond pip driven by the
+// card's DECADE (Chronology's spine equivalent, since the pool has no genre),
+// Domine title in navy, and the reveal year set BIG in Domine tabular-nums.
+// ChronoCard cannot import StubCard (different card type — ChronologyCard has no
+// cast/director/genre), so it echoes the frame anatomy rather than reusing it.
+//
+// STRUCTURAL RULE (load-bearing): pre-placement the front prints "year ?" and the
+// year is OMITTED from the DOM entirely — no-year-leak is the whole point of the
+// mode. `showYear` gates the front; the BackFace year only mounts on the flip.
 
 import { motion, useReducedMotion } from 'framer-motion'
 import type { ChronologyCard } from '../lib/chronology.ts'
 
 export type ChronoCardSize = 'hand' | 'raised' | 'line'
 
+// Per-size internal scale. `edge` = the cream/decade accent rail on the left; the
+// diamond pip sizes off it. Kept width-relative to StubCard's proportions so the
+// two card systems read as one family across modes.
 const DIMS = {
-  hand: { w: 78, h: 110, title: 'text-[12px]', year: 'text-[30px]' },
-  raised: { w: 150, h: 210, title: 'text-[19px]', year: 'text-[64px]' },
-  line: { w: 64, h: 90, title: 'text-[10px]', year: 'text-[22px]' },
+  hand: { w: 78, h: 110, title: 'text-[12px]', year: 'text-[30px]', pad: 6, edge: 9, radius: '11px', border: 2 },
+  raised: { w: 150, h: 210, title: 'text-[19px]', year: 'text-[64px]', pad: 11, edge: 16, radius: 'var(--radius-stub-panel)', border: 2.5 },
+  line: { w: 64, h: 90, title: 'text-[10px]', year: 'text-[22px]', pad: 5, edge: 7, radius: 'var(--radius-stub-card)', border: 2 },
 } as const
 
-// Decade -> a deep, white-text-legible band color. A coarse era cue, and it makes
-// a filled line read as a colored timeline at a glance.
+// Decade -> a saturated accent, used as the ticket's left EDGE + diamond pip (not
+// a full body fill — the Stub body is always paper). A coarse era cue, and it
+// still makes a filled line read as a colored timeline at a glance. The hues are
+// nudged toward the Stub navy/plum/slate family so the accents sit on-brand.
 const DECADE_COLOR: Record<number, string> = {
   1970: '#8a5a2b', // sienna
   1980: '#7d3a8c', // purple
-  1990: '#1f6f6b', // teal
+  1990: '#1f6f6b', // teal-green
   2000: '#2f5d8a', // steel blue
   2010: '#3f4a63', // indigo slate
   2020: '#9a3b3b', // brick red
 }
 
 export function decadeColor(decade: number): string {
-  return DECADE_COLOR[decade] ?? '#5c5347'
+  return DECADE_COLOR[decade] ?? 'var(--color-stub-slate)'
 }
 
 interface FaceProps {
@@ -46,49 +59,110 @@ interface FaceProps {
   flat?: boolean
 }
 
-function FrontFace({ card, size, showYear, flat }: FaceProps) {
+// The Stub-style decade rail: a cream column at the card's left edge holding a
+// decade-colored diamond pip up top and a decade-colored inset bar below — the
+// Chronology analog of StubCard's genre spine. Legible down to the 64px line size.
+function EdgeRail({ accent, size }: { accent: string; size: ChronoCardSize }) {
   const d = DIMS[size]
+  const pip = Math.max(4, d.edge - 3)
   return (
     <div
-      className="absolute inset-0 overflow-hidden rounded-xl shadow-[0_8px_22px_rgba(40,32,18,0.25)]"
+      className="relative flex flex-none flex-col items-center"
+      style={{ width: d.edge, background: 'var(--color-stub-cream)', paddingBlock: d.pad * 0.5 }}
+    >
+      <div
+        className="flex-none"
+        style={{ width: pip, height: pip, background: accent, transform: 'rotate(45deg)' }}
+      />
+      <div
+        className="flex-1"
+        style={{ width: Math.max(3, d.edge - 4), marginBlock: d.pad * 0.5, background: accent, borderRadius: 999 }}
+      />
+    </div>
+  )
+}
+
+function FrontFace({ card, size, showYear, flat }: FaceProps) {
+  const d = DIMS[size]
+  const accent = decadeColor(card.decade)
+  return (
+    <div
+      className="absolute inset-0 box-border flex overflow-hidden border-solid"
       style={{
-        background: decadeColor(card.decade),
+        background: 'var(--color-stub-paper)',
+        borderWidth: d.border,
+        borderColor: 'var(--color-stub-navy)',
+        borderRadius: d.radius,
+        boxShadow: size === 'raised' ? 'var(--shadow-stub-card-raised)' : 'var(--shadow-stub-card-resting)',
         backfaceVisibility: flat ? undefined : 'hidden',
         WebkitBackfaceVisibility: flat ? undefined : 'hidden',
       }}
     >
-      <div className="flex h-full flex-col p-1.5">
-        <div className="flex h-full flex-col rounded-lg p-2 ring-1 ring-inset ring-white/30">
-          <span className={`font-extrabold leading-[1.12] text-white ${d.title}`}>
-            {card.title}
-          </span>
-          <span className="mt-auto font-semibold tracking-wide text-white/70 text-[10px]">
-            {showYear ? card.year : 'year ?'}
-          </span>
-        </div>
+      <EdgeRail accent={accent} size={size} />
+      {/* dotted navy perforation — the rail↔body seam, echoing StubCard */}
+      <div className="flex-none self-stretch" style={{ width: 3, display: 'flex', justifyContent: 'center' }}>
+        <div
+          style={{
+            width: 2,
+            height: '100%',
+            backgroundImage: 'repeating-linear-gradient(var(--color-stub-navy) 0 2px, transparent 2px 5px)',
+          }}
+        />
+      </div>
+      <div className="flex min-w-0 flex-1 flex-col justify-between" style={{ padding: d.pad, paddingLeft: d.pad * 0.6 }}>
+        <span
+          className={`min-w-0 break-words font-stub-display uppercase leading-[1.05] text-stub-navy ${d.title}`}
+          style={{ fontWeight: 700, hyphens: 'auto' }}
+        >
+          {card.title}
+        </span>
+        {/* year row — pre-placement prints the mono placeholder; the year itself
+            is OMITTED from the DOM unless showYear (no-year-leak, structural). */}
+        <span
+          className="mt-auto font-stub-label uppercase tracking-wider text-stub-slate text-[9px]"
+          style={{ fontWeight: 600, fontVariantNumeric: showYear ? 'tabular-nums' : undefined }}
+        >
+          {showYear ? card.year : 'year ?'}
+        </span>
       </div>
     </div>
   )
 }
 
-// The reveal face: the year, big. Shown by the flip on a misfire (and used as the
-// face-up state on the raised card while it self-corrects).
+// The reveal face: the year, big, in Domine. Shown by the flip on a misfire (and
+// used as the face-up state on the raised card while it self-corrects). The
+// decade accent runs as a top edge here (the card's era, framed in the ticket).
 function BackFace({ card, size, flat }: FaceProps) {
   const d = DIMS[size]
+  const accent = decadeColor(card.decade)
   return (
     <div
-      className="absolute inset-0 flex flex-col items-center justify-center overflow-hidden rounded-xl bg-[#fcf9f2] p-2 text-center shadow-[0_8px_22px_rgba(40,32,18,0.25)]"
+      className={`absolute inset-0 flex flex-col items-center justify-center overflow-hidden text-center ${
+        size === 'line' ? 'p-1.5' : 'p-2'
+      }`}
       style={{
+        background: 'var(--color-stub-paper)',
+        borderWidth: d.border,
+        borderColor: 'var(--color-stub-navy)',
+        borderStyle: 'solid',
+        borderRadius: d.radius,
+        borderTopWidth: size === 'raised' ? 6 : 5,
+        borderTopColor: accent,
+        boxShadow: size === 'raised' ? 'var(--shadow-stub-card-raised)' : 'var(--shadow-stub-card-resting)',
         transform: flat ? undefined : 'rotateY(180deg)',
         backfaceVisibility: flat ? undefined : 'hidden',
         WebkitBackfaceVisibility: flat ? undefined : 'hidden',
-        borderTop: `5px solid ${decadeColor(card.decade)}`,
       }}
     >
-      <span className={`font-serif font-black tabular-nums text-[#23211c] ${d.year}`}>
+      {/* decade diamond pip — the era marker, mirroring the front rail's pip */}
+      <span
+        className="mb-1 flex-none"
+        style={{ width: Math.max(5, d.edge - 3), height: Math.max(5, d.edge - 3), background: accent, transform: 'rotate(45deg)' }}
+      />
+      <span className={`font-stub-display font-bold tabular-nums text-stub-navy ${d.year}`}>
         {card.year}
       </span>
-      <span className="mt-1 line-clamp-3 px-1 text-[10px] font-semibold leading-tight text-[#8a8270]">
+      <span className="mt-1 line-clamp-3 px-1 font-stub-ui text-[10px] font-semibold leading-tight text-stub-slate">
         {card.title}
       </span>
     </div>
