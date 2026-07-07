@@ -390,7 +390,9 @@ what's ready-to-review per sitting.
       deck polish, marquee A/B pile cards → StubCard (board face = W3). Checkpoint
       flags: 3D flip → inline reveal; comps depict credits-on-face vs preserved
       flip-to-peek; Stub-native wild TBD; hint "· PACINO" label deferred. —
-      **Buri approved: ___**
+      **Buri approved: ✅ 2026-07-06** (W2 grill: flip-to-peek permanent +
+      Duel/Solo reveal divergence accepted + credits-on-face idea → parked as D1;
+      inline-reveal flip kept; pushed a1354be. All card-face deferrals → W3.)
 - [ ] P2 Stage B: draft tool · batch merges (log per batch) · POOL LOCK
 - [ ] W3 StubCard everywhere · menu/Solo/Chrono re-dress · RecapReel · desktop — **Buri approved: ___**
 - [ ] W4 Connections engine+verify (auto) · UI+RULEBOOK — **Buri approved: ___**
