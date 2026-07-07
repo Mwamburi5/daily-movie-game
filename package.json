@@ -17,6 +17,7 @@
     "tmdb:probe": "node scripts/tmdb-probe.ts",
     "tmdb:audit": "node scripts/tmdb-audit.ts",
     "tmdb:dates": "node scripts/tmdb-date-audit.ts",
+    "tmdb:draft": "node scripts/tmdb-date-draft.ts",
     "audit:names": "node scripts/name-audit.ts",
     "sim": "node sim/duel-sim.ts",
     "eval": "node sim/eval.ts"

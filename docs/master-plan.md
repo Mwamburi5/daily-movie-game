@@ -358,7 +358,10 @@ what's ready-to-review per sitting.
    the two extrapolations with the least Duel analog. The duplicate
    `Marquee Game UI Redesign.zip` — Buri ruled delete; removed 2026-07-06
    (hash-verified byte-identical to the committed PNGs first).
-2. Stage B title picks (decade slates arrive from P2; strike/keep at your pace).
+2. Stage B title picks — SLATES READY (2026-07-06): `docs/stage-b-slates.md`,
+   352 candidates across 1970s–2020s, 111 ⚡ cheap wins (already-credited
+   films needing only a date). Strike/keep at your pace; the date-draft tool
+   (`npm run tmdb:draft`) is built + smoke-tested for whatever you keep.
 3. UI checkpoint approvals (W1/W2/W3/W4).
 3b. ✅ RESOLVED 2026-07-06: Buri ratified the self-checked
    `CHRONO_TITLE_OVERRIDES` map (4 films: LotR ×3, M:I Fallout) over a
