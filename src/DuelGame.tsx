@@ -73,6 +73,7 @@ function ladderMeld(cards: Movie[], deep: boolean): { perCard: number; pts: numb
   return { perCard, pts: reals.length * perCard, rungName: meldRungName(reals, deep, GENRE_FLOOR) }
 }
 import StubCard from './components/StubCard.tsx'
+import RecapReel from './components/RecapReel.tsx'
 import DrawChoice from './components/DrawChoice.tsx'
 import Hand from './components/Hand.tsx'
 import HowToPlay from './components/HowToPlay.tsx'
@@ -1256,8 +1257,9 @@ export default function DuelGame({
         : winner === 'cpu'
           ? 'The CPU had your number.'
           : 'Dead even.'
-  const recapVerb = (kind: RecapEvent['kind']) =>
-    kind === 'meld' ? 'banked a' : kind === 'super' ? 'super link:' : 'Final Cut:'
+  const recapSummary = `You banked ${yourMelds} meld${yourMelds === 1 ? '' : 's'}${
+    yourSupers > 0 ? ` · ${yourSupers} super link${yourSupers === 1 ? '' : 's'}` : ''
+  }.`
 
   // Family share format (see lib/share.ts). Duel's emoji row is the highlight
   // reel in order — 🟩 your moment, 🟥 the CPU's — so the shape of the match
@@ -1370,19 +1372,36 @@ export default function DuelGame({
           >
             {deck.length > 0 ? (
               <>
-                <div className="absolute inset-0 translate-x-1.5 translate-y-1.5 rounded-lg bg-[#23211c]/25" />
-                <div className="absolute inset-0 flex flex-col items-center justify-center rounded-lg bg-[#23211c] ring-1 ring-inset ring-white/20">
-                  <span className="font-serif text-xl font-black italic text-[#f4efe6]/70">M</span>
-                  <span className="mt-1 text-[11px] font-bold tabular-nums text-[#f4efe6]/60">
-                    {deck.length}
-                  </span>
+                {/* Stub ticket-back deck: navy card with a dashed cream inner
+                    frame (mirrors StubCard's face-down back), the remaining count
+                    in Domine, and a vertical DECK mark. A second offset card
+                    behind reads as a stack. */}
+                <div
+                  className="absolute inset-0 translate-x-1.5 translate-y-1.5 rounded-stub-card"
+                  style={{ background: 'rgba(31,58,82,.28)' }}
+                />
+                <div className="absolute inset-0 box-border flex items-center justify-center rounded-stub-card border-2 border-solid border-stub-navy bg-stub-navy p-1.5">
+                  <div
+                    className="flex h-full w-full items-center justify-center gap-1 rounded-[8px] border border-dashed"
+                    style={{ borderColor: 'rgba(240,235,216,.5)' }}
+                  >
+                    <span
+                      className="font-stub-label font-bold uppercase text-stub-cream/70"
+                      style={{ writingMode: 'vertical-rl', letterSpacing: '.18em', fontSize: 8 }}
+                    >
+                      DECK
+                    </span>
+                    <span className="font-stub-display text-[22px] font-bold leading-none tabular-nums text-stub-cream">
+                      {deck.length}
+                    </span>
+                  </div>
                 </div>
-                <span className="absolute -bottom-6 inset-x-0 text-center text-[10px] font-bold uppercase tracking-wider text-[#9a917c]">
+                <span className="absolute -bottom-6 inset-x-0 text-center font-stub-label text-[10px] font-bold uppercase tracking-wider text-stub-slate">
                   Draw
                 </span>
               </>
             ) : (
-              <div className="flex h-full w-full items-center justify-center rounded-lg border-2 border-dashed border-[#c5bca6] text-[11px] font-bold uppercase tracking-wider text-[#9a917c]">
+              <div className="flex h-full w-full items-center justify-center rounded-stub-card border-2 border-dashed border-stub-slate-light font-stub-label text-[11px] font-bold uppercase tracking-wider text-stub-slate">
                 Pass
               </div>
             )}
@@ -1815,24 +1834,24 @@ export default function DuelGame({
         <AnimatePresence>
           {gameOver && (
             <motion.div
-              className="absolute inset-0 z-[100] flex flex-col items-center justify-center bg-[#f4efe6]/95 px-8 text-center"
+              className="absolute inset-0 z-[100] flex flex-col items-center justify-center bg-stub-cream/95 px-8 text-center"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: reduce ? 0.2 : 0.8, duration: reduce ? 0.15 : 0.35 }}
             >
-              <h2 className="font-serif text-4xl font-black italic" data-result>
+              <h2 className="font-stub-display text-4xl font-bold text-stub-navy" data-result>
                 {winner === 'player' && 'You win!'}
                 {winner === 'cpu' && 'CPU wins.'}
                 {winner === 'draw' && 'Dead heat.'}
               </h2>
-              <p className="mt-2 text-[14px] font-medium text-[#5b5546]">
+              <p className="mt-2 font-stub-ui text-[14px] font-medium text-stub-slate">
                 {endReason === 'playerOut' && 'You played your last card.'}
                 {endReason === 'cpuOut' && 'CPU emptied its hand.'}
                 {endReason === 'stalemate' && 'Deck empty — both passed.'}
                 {endReason === 'target' &&
                   `${racerLabel} hit ${TARGET_SCORE} — the show goes to the higher net.`}
               </p>
-              <p className="mt-4 text-[11px] font-bold uppercase tracking-wider text-[#9a917c]">
+              <p className="mt-4 font-stub-label text-[11px] font-bold uppercase tracking-wider text-stub-slate">
                 Highest net wins · played − cards held
               </p>
               <div className="mt-2 w-full max-w-[260px] space-y-1.5">
@@ -1842,64 +1861,38 @@ export default function DuelGame({
                 ].map((row) => (
                   <div
                     key={row.label}
-                    className={`flex items-baseline justify-between rounded-xl px-4 py-2.5 ${
-                      row.win ? 'bg-[#23211c] text-[#f4efe6]' : 'bg-white/70 text-[#23211c]'
+                    className={`flex items-baseline justify-between rounded-stub-panel border px-4 py-2.5 ${
+                      row.win
+                        ? 'border-stub-navy bg-stub-navy text-stub-cream'
+                        : 'border-stub-navy/15 bg-stub-paper text-stub-navy'
                     }`}
                   >
                     <span className="text-[13px] font-bold">{row.label}</span>
                     <span
-                      className={`text-[11px] font-medium tabular-nums ${
-                        row.win ? 'text-[#f4efe6]/60' : 'text-[#8a8270]'
+                      className={`font-stub-ui text-[11px] font-medium tabular-nums ${
+                        row.win ? 'text-stub-cream/60' : 'text-stub-slate'
                       }`}
                     >
                       {row.score} played − {row.held} held
                     </span>
-                    <span className="font-serif text-xl font-black italic tabular-nums">
+                    <span className="font-stub-display text-xl font-bold tabular-nums">
                       {row.net}
                     </span>
                   </div>
                 ))}
               </div>
 
-              {/* Recap reel: the match in highlights — melds, super links, Final Cuts */}
-              {recap.length > 0 && (
-                <div className="mt-4 w-full max-w-[260px]">
-                  <p className="text-[12px] font-bold text-[#3a352a]">
-                    {recapHeadline}{' '}
-                    <span className="font-medium text-[#8a8270]">
-                      You banked {yourMelds} meld{yourMelds === 1 ? '' : 's'}
-                      {yourSupers > 0 && ` · ${yourSupers} super link${yourSupers === 1 ? '' : 's'}`}.
-                    </span>
-                  </p>
-                  <div className="mt-2 max-h-[164px] space-y-1 overflow-y-auto pr-1 text-left">
-                    {recap.map((e, i) => (
-                      <div
-                        key={i}
-                        className="flex items-center gap-2 rounded-lg bg-white/60 px-2.5 py-1.5"
-                      >
-                        <span
-                          className={`shrink-0 rounded-full px-1.5 py-0.5 text-[9px] font-extrabold uppercase tracking-wide text-white ${
-                            e.who === 'You' ? 'bg-[#2c5240]' : 'bg-[#b3541e]'
-                          }`}
-                        >
-                          {e.who}
-                        </span>
-                        <span className="flex-1 text-[11px] font-semibold leading-tight text-[#3a352a]">
-                          {recapVerb(e.kind)} {e.text}
-                        </span>
-                        <span className="shrink-0 font-serif text-[13px] font-black italic tabular-nums text-[#23211c]">
-                          +{e.points}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
+              {/* Recap reel (7d): the match in highlights — melds, super links,
+                  Final Cuts. Forged as a standalone Stub component; self-guards on
+                  an empty reel (returns null). */}
+              <div className="mt-4 w-full max-w-[280px]">
+                <RecapReel headline={recapHeadline} summary={recapSummary} items={recap} />
+              </div>
 
               {/* Lifetime record at this difficulty (localStorage meta-state) */}
               {duelMeta && (
                 <p
-                  className="mt-3 text-[11px] font-bold uppercase tracking-wider text-[#9a917c] tabular-nums"
+                  className="mt-3 font-stub-label text-[11px] font-bold uppercase tracking-wider text-stub-slate tabular-nums"
                   data-duel-record
                 >
                   {DIFFICULTY_META[difficulty].label} record · {duelMeta.plays} played ·{' '}
@@ -1912,14 +1905,14 @@ export default function DuelGame({
               <button
                 type="button"
                 onClick={newGame}
-                className="mt-3 min-h-12 rounded-full bg-white/70 px-7 py-3 text-[15px] font-bold text-[#23211c] shadow-sm active:scale-95"
+                className="mt-3 min-h-12 rounded-stub-pill bg-stub-amber px-7 py-3 text-[15px] font-bold text-stub-navy shadow-stub-card-resting active:scale-95"
               >
                 Deal again
               </button>
               <button
                 type="button"
                 onClick={onExit}
-                className="mt-3 min-h-12 rounded-full bg-white/70 px-7 py-3 text-[15px] font-bold text-[#23211c] shadow-sm active:scale-95"
+                className="mt-3 min-h-12 rounded-stub-pill border-2 border-stub-navy bg-stub-paper px-7 py-3 text-[15px] font-bold text-stub-navy active:scale-95"
               >
                 Menu
               </button>
