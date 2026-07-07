@@ -1689,8 +1689,8 @@ export default function DuelGame({
               onClick={enterMeldSelect}
               className={`rounded-full px-2.5 py-1 text-[9px] font-extrabold uppercase tracking-wider shadow-sm transition-transform active:scale-95 disabled:opacity-50 ${
                 handHasMeld
-                  ? 'bg-[#7a5a10] text-white ring-2 ring-[#7a5a10]/40'
-                  : 'bg-[#23211c] text-[#f4efe6]'
+                  ? 'bg-stub-amber text-stub-navy ring-2 ring-stub-amber/40'
+                  : 'bg-stub-navy text-stub-cream'
               }`}
             >
               Meld
@@ -1712,7 +1712,7 @@ export default function DuelGame({
                 playerHand.length < 3
               }
               onClick={() => setPlayerHand((h) => autoSortHand(h))}
-              className="flex items-center gap-1 rounded-full bg-[#7d7563] px-2.5 py-1 text-[9px] font-extrabold uppercase tracking-wider text-[#f4efe6] shadow-sm transition-transform active:scale-95 disabled:opacity-40"
+              className="flex items-center gap-1 rounded-full bg-stub-navy px-2.5 py-1 text-[9px] font-extrabold uppercase tracking-wider text-stub-cream shadow-sm transition-transform active:scale-95 disabled:opacity-40"
             >
               ⇲ Sort
             </button>
@@ -1735,8 +1735,8 @@ export default function DuelGame({
               onClick={showHint}
               className={`flex items-center gap-1 rounded-full px-2.5 py-1 text-[9px] font-extrabold uppercase tracking-wider shadow-sm transition-transform active:scale-95 ${
                 hintsLeft <= 0
-                  ? 'bg-transparent text-[#9a917c] ring-1 ring-[#c5bca6] line-through'
-                  : 'bg-[#2c5240] text-[#f4efe6] disabled:opacity-40'
+                  ? 'bg-transparent text-stub-slate ring-1 ring-stub-disabled line-through'
+                  : 'bg-stub-teal text-stub-cream disabled:opacity-40'
               }`}
             >
               ◎ Hint{Number.isFinite(hintBudget) ? ` ·${hintsLeft}` : ''}
