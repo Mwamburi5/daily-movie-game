@@ -1,15 +1,13 @@
 import { useEffect, useRef, useState } from 'react'
 import { motion, useAnimationControls, useReducedMotion } from 'framer-motion'
 import type { Movie } from '../data/types.ts'
-import { isWild } from '../lib/duel.ts'
-import { CardView } from './Card.tsx'
 import StubCard from './StubCard.tsx'
 
 const CARD_W = 96
 
-// The hand wears the Stub ticket frame (W2). Real films render as StubCards;
-// wilds keep the legacy gold WildFace (CardView) — StubCard has no wild branch
-// and a Stub-native wild is comp-less, so it's a checkpoint flag, not a guess.
+// The hand wears the Stub ticket frame. Every card renders as a StubCard —
+// including wilds, which StubCard now paints as its own amber-accented wild
+// ticket (W3; the legacy gold WildFace/CardView is retired here).
 // This game's flip is inverted vs "face up": the resting hand shows the ticket
 // FRONT with credits hidden, and FLIP toggles the credit ledger. So StubCard's
 // faceUp stays true and the flip maps to reveal.credits — the peek mechanic is
@@ -23,9 +21,6 @@ function HandCardFace({
   credits: boolean
   size: 'hand' | 'raised'
 }) {
-  if (isWild(movie.id)) {
-    return <CardView movie={movie} faceUp={credits} size={size} />
-  }
   return (
     <StubCard
       movie={movie}

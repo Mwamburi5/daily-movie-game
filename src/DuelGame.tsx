@@ -72,7 +72,7 @@ function ladderMeld(cards: Movie[], deep: boolean): { perCard: number; pts: numb
   const perCard = ladderPtsPerCard(reals, deep, GENRE_FLOOR)
   return { perCard, pts: reals.length * perCard, rungName: meldRungName(reals, deep, GENRE_FLOOR) }
 }
-import { CardView } from './components/Card.tsx'
+import StubCard from './components/StubCard.tsx'
 import DrawChoice from './components/DrawChoice.tsx'
 import Hand from './components/Hand.tsx'
 import HowToPlay from './components/HowToPlay.tsx'
@@ -1406,11 +1406,12 @@ export default function DuelGame({
                   {unders.map((id, i) => (
                     <div
                       key={id}
-                      className="absolute inset-0 rounded-xl"
+                      className="absolute inset-0 box-border rounded-stub-card border border-solid border-stub-navy"
                       style={{
-                        background: mv(id)!.posterColor,
+                        background: 'var(--color-stub-paper)',
                         transform: `rotate(${i % 2 === 0 ? -4 : 3}deg)`,
-                        opacity: 0.45,
+                        opacity: 0.55,
+                        boxShadow: 'var(--shadow-stub-card-resting)',
                       }}
                     />
                   ))}
@@ -1428,7 +1429,12 @@ export default function DuelGame({
                       }
                       transition={{ duration: 0.5 }}
                     >
-                      <CardView movie={tMovie} faceUp={faceUp.has(tId)} size="pile" />
+                      <StubCard
+                        movie={tMovie}
+                        size="pile"
+                        reveal={{ credits: faceUp.has(tId) }}
+                        deepCut={!!tMovie.deepCast?.length}
+                      />
                     </motion.div>
                   </motion.div>
                   {/* Deep-cut glow: the FUT-style shimmer for hidden-credit links */}
@@ -1768,9 +1774,8 @@ export default function DuelGame({
 
         {/* Draw-3-keep-1: pick one of the revealed cards; the rest leave play.
             DrawChoice owns the Stub scrim/panel/pills/captions + the CONNECTS
-            hint; the parent injects each face-down card (CardView until the W3
-            StubCard rollout — StubCard has no wild branch yet and the draw can
-            deal a wild). */}
+            hint; the parent injects each face-down card as a StubCard ticket back
+            (W3: StubCard now has a wild branch, so a drawn wild renders correctly). */}
         {drawChoice !== null && (
           <DrawChoice
             options={drawChoice.map((id) => {
@@ -1778,7 +1783,7 @@ export default function DuelGame({
               return {
                 id,
                 connects: tops.some((t) => sharedPeople(t, dm).length > 0),
-                cardSlot: <CardView movie={dm} faceUp={false} size="hand" />,
+                cardSlot: <StubCard movie={dm} size="hand" faceUp={false} />,
               }
             })}
             onPick={playerPickDraw}
@@ -1790,8 +1795,8 @@ export default function DuelGame({
             full 7c overlay (scrim + glow + diorama modal + buttons); its root is
             an exit-capable motion.div so the parent AnimatePresence still drives
             the fade. The double-fire guard stays parent-side (allowCpuPlay /
-            playerRecast). cardSlot = CardView until the W3 StubCard rollout (a
-            Final-Cut dump can be a wild; StubCard has no wild branch yet). Note:
+            playerRecast). cardSlot = StubCard ticket back (W3: a Final-Cut dump
+            can be a wild; StubCard's wild branch now handles it). Note:
             the comp's flat "TAZ PLAYS" eyebrow drops today's draws-&-plays
             nuance — a checkpoint flag, not a bug (recastOffer.drew unused). */}
         <AnimatePresence>
@@ -1799,7 +1804,7 @@ export default function DuelGame({
             <RecastOffer
               finalCut={recastOffer.finalCut}
               movie={offerMovie}
-              cardSlot={<CardView movie={offerMovie} faceUp={false} size="hand" />}
+              cardSlot={<StubCard movie={offerMovie} size="hand" faceUp={false} />}
               onRecast={playerRecast}
               onAllow={allowCpuPlay}
               reduce={!!reduce}

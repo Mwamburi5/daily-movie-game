@@ -13,6 +13,7 @@
 // for free since they're color-only.
 import type { CSSProperties } from 'react'
 import type { Movie } from '../data/types.ts'
+import { isWild } from '../lib/duel.ts'
 
 export type StubCardSize = 'thumb' | 'hand' | 'pile' | 'raised'
 
@@ -233,9 +234,16 @@ export function StubCard({
   className,
 }: StubCardProps) {
   const s = SIZES[size]
-  const showYear = reveal?.year ?? true
+  // A wild is a mechanical card (12 Angry Men / Casablanca / Citizen Kane) with
+  // no real credits — it plays anywhere and fills melds but scores 0. It wears the
+  // same ticket frame, amber-accented (amber = the Stub's action/highlight hue, so
+  // the wild reads as the one special ticket), with a ★ WILD lockup in the art slot
+  // instead of a monogram, and NO ledger/year (there are no credits to weigh). This
+  // is EXTRAPOLATED — the comps have no wild card (checkpoint flag).
+  const wild = isWild(movie.id)
+  const showYear = wild ? false : (reveal?.year ?? true)
   const showCredits = reveal?.credits ?? true
-  const spine = spineColor(movie.genre)
+  const spine = wild ? 'var(--color-stub-amber)' : spineColor(movie.genre)
 
   // Frame border + shadow. selected (amber) beats hint (teal) beats resting.
   // The 3/4 aspect + parent-set width means everything below is width-relative.
@@ -320,7 +328,7 @@ export function StubCard({
     )
   }
 
-  const ledger = showCredits ? buildLedger(movie, s.maxCast) : []
+  const ledger = wild ? [] : showCredits ? buildLedger(movie, s.maxCast) : []
 
   return (
     <div className={`relative ${className ?? ''}`} style={{ width: s.width }}>
@@ -542,9 +550,9 @@ export function StubCard({
                 className="flex h-full w-full flex-col items-center justify-center text-center"
                 style={{ padding: s.pad, gap: Math.max(1, s.gap - 2) }}
               >
-                {/* oversized monogram — capped by both slot width and slot height
-                    (min-of via clamp on the smaller card axis) so it can't clip;
-                    Domine, spine hue, tight leading. */}
+                {/* oversized lockup — the title INITIAL for a real film, or a ★
+                    for a wild — capped by slot width/height so it can't clip;
+                    Domine, spine hue (amber for wilds), tight leading. */}
                 <span
                   className="font-stub-display"
                   style={{
@@ -554,7 +562,7 @@ export function StubCard({
                     color: spine,
                   }}
                 >
-                  {titleInitial(movie.title)}
+                  {wild ? '★' : titleInitial(movie.title)}
                 </span>
                 <span
                   className="max-w-full truncate font-stub-label text-stub-slate"
@@ -564,11 +572,11 @@ export function StubCard({
                     letterSpacing: '0.16em',
                   }}
                 >
-                  {movie.genre.toUpperCase()}
+                  {wild ? 'WILD' : movie.genre.toUpperCase()}
                 </span>
               </div>
 
-              {deepCut && s.badgePx > 0 && (
+              {deepCut && !wild && s.badgePx > 0 && (
                 <div
                   className="absolute flex items-center justify-center rounded-full"
                   style={{
