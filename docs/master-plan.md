@@ -337,7 +337,13 @@ what's ready-to-review per sitting.
       ≤1-genre enforced constructionally in enumerateViable, person/series-first
       via CATS key order, 365-grid digest pin + PIN_DAY spot-check, 11/11 ×2,
       pin stable across the P1 merge)
-- [ ] W2 MeldShelf/RecastOffer/DrawChoice/StubCard forged · wired · Hand restyle — **Buri approved: ___**
+- [ ] W2 MeldShelf/RecastOffer/DrawChoice/StubCard forged · wired · Hand restyle
+      (2026-07-06: all four FORGED + preview-verified vs comps at 390px —
+      StubCard took a comp-anatomy fix pass (cream rail/notches/circular
+      stamp/monogram art slot); LayoffPicker rides in MeldShelf.tsx; overlays
+      take cardSlot injection so StubCard swaps in at wire. Wire pass = next,
+      serial on DuelGame; checkpoint flags queued in the session summary) —
+      **Buri approved: ___**
 - [ ] P2 Stage B: draft tool · batch merges (log per batch) · POOL LOCK
 - [ ] W3 StubCard everywhere · menu/Solo/Chrono re-dress · RecapReel · desktop — **Buri approved: ___**
 - [ ] W4 Connections engine+verify (auto) · UI+RULEBOOK — **Buri approved: ___**
