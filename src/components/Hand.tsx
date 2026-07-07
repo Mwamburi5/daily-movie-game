@@ -1,9 +1,40 @@
 import { useEffect, useRef, useState } from 'react'
 import { motion, useAnimationControls, useReducedMotion } from 'framer-motion'
 import type { Movie } from '../data/types.ts'
+import { isWild } from '../lib/duel.ts'
 import { CardView } from './Card.tsx'
+import StubCard from './StubCard.tsx'
 
 const CARD_W = 96
+
+// The hand wears the Stub ticket frame (W2). Real films render as StubCards;
+// wilds keep the legacy gold WildFace (CardView) — StubCard has no wild branch
+// and a Stub-native wild is comp-less, so it's a checkpoint flag, not a guess.
+// This game's flip is inverted vs "face up": the resting hand shows the ticket
+// FRONT with credits hidden, and FLIP toggles the credit ledger. So StubCard's
+// faceUp stays true and the flip maps to reveal.credits — the peek mechanic is
+// preserved exactly (no rule change); only the 3D spin becomes an inline reveal.
+function HandCardFace({
+  movie,
+  credits,
+  size,
+}: {
+  movie: Movie
+  credits: boolean
+  size: 'hand' | 'raised'
+}) {
+  if (isWild(movie.id)) {
+    return <CardView movie={movie} faceUp={credits} size={size} />
+  }
+  return (
+    <StubCard
+      movie={movie}
+      size={size}
+      reveal={{ credits }}
+      deepCut={!!movie.deepCast?.length}
+    />
+  )
+}
 
 interface HandProps {
   cards: Movie[]
@@ -180,9 +211,9 @@ export default function Hand({
                 transition={spring}
                 className="relative"
               >
-                <CardView movie={m} faceUp={faceUp.has(m.id)} size="hand" />
+                <HandCardFace movie={m} credits={faceUp.has(m.id)} size="hand" />
                 {selected && (
-                  <div className="pointer-events-none absolute inset-0 rounded-xl ring-4 ring-[#7a5a10]/80" />
+                  <div className="pointer-events-none absolute inset-0 rounded-xl ring-4 ring-stub-amber/80" />
                 )}
                 {hinted && !reduce && (
                   <motion.div
@@ -191,13 +222,13 @@ export default function Hand({
                     initial={{ opacity: 0 }}
                     animate={{ opacity: [0.2, 1, 0.4, 1, 0.6] }}
                     transition={{ duration: 2.4, times: [0, 0.2, 0.5, 0.7, 1] }}
-                    style={{ boxShadow: '0 0 0 3px rgba(44,82,64,0.9), 0 0 18px 5px rgba(44,82,64,0.5)' }}
+                    style={{ boxShadow: '0 0 0 3px rgba(44,137,161,0.9), 0 0 18px 5px rgba(44,137,161,0.5)' }}
                   />
                 )}
                 {hinted && reduce && (
                   <div
                     data-hint-pulse
-                    className="pointer-events-none absolute inset-0 rounded-xl ring-4 ring-[#2c5240]"
+                    className="pointer-events-none absolute inset-0 rounded-xl ring-4 ring-stub-teal"
                   />
                 )}
               </motion.div>
@@ -258,7 +289,7 @@ function RaisedCard({
       onDragEnd={(_, info) => onDrop(movie.id, info.point)}
     >
       <motion.div animate={controls}>
-        <CardView movie={movie} faceUp={faceUp} size="raised" />
+        <HandCardFace movie={movie} credits={faceUp} size="raised" />
       </motion.div>
       <button
         type="button"
