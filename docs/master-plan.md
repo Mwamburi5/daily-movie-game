@@ -232,7 +232,16 @@ interrupted old-Wave-A close-out (375×667 stress + played game).
 **W3 — Whole game wears the Stub** *(UI, checkpointed)*
 - Cards: wire `StubCard` across Duel/Solo boards and Chronology's card face
   (ChronoCardView adopts the frame; year stays hidden pre-placement — the
-  scene-art-must-not-leak-year rule is structural here).
+  scene-art-must-not-leak-year rule is structural here). **Also folds the W2
+  card-face deferrals**: marquee A/B pile cards → StubCard (needs wild-top
+  handling), Solo pile (`SoloGame.tsx:261`), plus the DuelGame board leftovers
+  (LastPlayLine mount, FC/RC player compact chips, deck "MARQUEE/DECK" polish), a
+  **Stub-native wild face** (StubCard has no wild branch — Hand falls back to the
+  legacy gold WildFace; extrapolate or get a comp), and the hand **hint pill
+  label** ("HINT · PACINO" — needs the shared person plumbed from `hintCard` to
+  the Hand render; bare teal pulse today).
+  **D1 hook:** if the deep-cut initiative is ready, the Duel flip-side deep-cut
+  face is built here (else StubCard's deep-cut face waits for D1 — see §3·D1).
 - Menu restyle (**EXTRAPOLATED** — the handoff itself flags the menu as undone;
   upgrade if Buri exports a menu screen) · Solo re-dress · Chronology re-dress
   (standalone file, parallel-safe) · `RecapReel` forge+wire (7d generalizes to
@@ -273,6 +282,10 @@ interrupted old-Wave-A close-out (375×667 stress + played game).
   documented, gate-pinned house edge; revisit with real data) · Solo/Duel pool
   cutover to the big pool (one conscious pin cutover, reshuffles future dailies)
   — or explicitly defer both past SEND.
+- **D1 re-tune (if built):** if the deep-cut difficulty lever (§3·D1) landed via
+  W3 + the deepCast content pass, this is where its re-sim + re-tune runs (it
+  changes difficulty, so tuning is invalidated until re-measured). Defer past
+  SEND if D1 isn't ready — it's not a launch blocker.
 - Brand sweep (no stray "Marquee" in player-facing copy — share lines, menu,
   rules) · full gate sweep · phone-in-hand pass on all four modes.
 - Gate: everything. **STOP for Buri.**
@@ -281,6 +294,27 @@ interrupted old-Wave-A close-out (375×667 stress + played game).
 - Deploy quiet alias (noindex holds, no gate, shares URL-less) · send to the
   5–10 circle with a one-line pitch per mode · interviews ~2 weeks out pick the
   front door. URL-in-share stays the launch switch.
+
+**D1 — Duel deep-cut reveal as a difficulty lever** *(PARKED — concept
+Buri-approved 2026-07-06 during the W2 grill; do NOT fold into a wire)*.
+Vision: in **Duel**, the card FRONT shows the top 1–3 credits + director and the
+FLIP side reveals the **deep-cut names** (today they're hidden — flip shows only
+a "+N deeper credits" count). Reveal amount is **difficulty-gated**: easy
+(Matinee) flips deep cuts open as an aid; hard (Director's Cut) keeps them
+hidden — pure knowledge. **Solo is exempt** (front stays hidden; its score IS
+`flippedEver.size`, so credits-on-face would gut it — Buri accepted the Duel↔Solo
+divergence). **Why it's not trivial (3 gated dependencies, must all land):**
+(1) **Mechanic/difficulty** — deep cuts are a *scored discovery* (`duel.ts:114`
+folds `deepCast` into linkable names; `DuelGame.tsx:553/820` celebrate an
+all-deep-cut link). Revealing names removes the discovery skill, so this is a
+difficulty change → **re-sim + re-tune** per `sim/RULESET.md` (the sim must model
+the aid). (2) **Content** — only **152/283** films carry `deepCast`; ~131 have
+none → a **TMDB deepCast pass** through `/tmdb-check` arbitration (rides P2).
+(3) **Card design** — StubCard has no deep-cut face → a new flip-side (W3 card
+work). **Sequencing:** deepCast content pass (P2-adjacent) → deep-cut flip face
+(W3) → ship behind the difficulty knob + re-tune (W5). Needs its own grill/spec
+before build. Surfaces in the Ledger (§6) every session, and is cross-noted in
+W3 (card face) and W5 (tune) below.
 
 ## 4. Dependency spine
 
@@ -362,6 +396,10 @@ what's ready-to-review per sitting.
 - [ ] W4 Connections engine+verify (auto) · UI+RULEBOOK — **Buri approved: ___**
 - [ ] W5 readouts · chrono daily pin · polish · tilt call: ___ · cutover call: ___
 - [ ] W6 SEND (deploy = Buri)
+- [ ] **D1 Duel deep-cut reveal as a difficulty lever** (PARKED, concept
+      approved 2026-07-06; §3·D1) — deepCast TMDB content pass (P2-adjacent) →
+      deep-cut flip face (W3) → difficulty knob + re-tune (W5); needs its own
+      grill/spec before build. **Not a launch blocker.**
 
 ## 7. User-input queue (standing asks — never silently block)
 
