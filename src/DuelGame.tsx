@@ -76,7 +76,7 @@ import { CardView } from './components/Card.tsx'
 import Hand from './components/Hand.tsx'
 import HowToPlay from './components/HowToPlay.tsx'
 import IdleCue from './components/IdleCue.tsx'
-import MeldZone, { meldLabel } from './components/MeldZone.tsx'
+import MeldShelf, { meldLabel } from './components/MeldShelf.tsx'
 import PlayBanner from './components/PlayBanner.tsx'
 import ScoreRace from './components/ScoreRace.tsx'
 import ShareCopy from './components/ShareCopy.tsx'
@@ -1542,7 +1542,7 @@ export default function DuelGame({
         </div>
 
         {/* Banked melds — open to lay-offs from both sides */}
-        <MeldZone
+        <MeldShelf
           melds={melds}
           highlightIds={meldHighlights}
           setRowRef={(id, el) => {
