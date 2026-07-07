@@ -342,7 +342,20 @@ what's ready-to-review per sitting.
       StubCard took a comp-anatomy fix pass (cream rail/notches/circular
       stamp/monogram art slot); LayoffPicker rides in MeldShelf.tsx; overlays
       take cardSlot injection so StubCard swaps in at wire. Wire pass = next,
-      serial on DuelGame; checkpoint flags queued in the session summary) —
+      serial on DuelGame; checkpoint flags queued in the session summary).
+      **WIRE ✅ 2026-07-06** (4 commits 30087ff→dfb4635, pushed): (1) MeldShelf
+      atomic swap (identical props; orphaned MeldZone.tsx deleted); (2)
+      RecastOffer/DrawChoice overlay chrome goes Stub — cardSlot stays CardView
+      (verified StubCard has no wild branch + both slots can hold a wild → W3);
+      (3) Hand fan → StubCard, Duel + Solo (shared Hand.tsx; flip → reveal.credits
+      so the peek mechanic is preserved with zero rule change; wilds → legacy
+      WildFace); (4-partial) MELD/SORT/HINT buttons → Stub tokens. Full verify
+      **64/64**; side-by-sides @390×844 + @375×667 both modes browser-verified
+      (hand StubCards, raise+flip ledger, compact 667). DEFERRED (next session /
+      W3): LastPlayLine mount (new last-play state), FC/RC player compact chips,
+      deck polish, marquee A/B pile cards → StubCard (board face = W3). Checkpoint
+      flags: 3D flip → inline reveal; comps depict credits-on-face vs preserved
+      flip-to-peek; Stub-native wild TBD; hint "· PACINO" label deferred. —
       **Buri approved: ___**
 - [ ] P2 Stage B: draft tool · batch merges (log per batch) · POOL LOCK
 - [ ] W3 StubCard everywhere · menu/Solo/Chrono re-dress · RecapReel · desktop — **Buri approved: ___**
