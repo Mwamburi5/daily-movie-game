@@ -394,7 +394,25 @@ what's ready-to-review per sitting.
       Duel/Solo reveal divergence accepted + credits-on-face idea → parked as D1;
       inline-reveal flip kept; pushed a1354be. All card-face deferrals → W3.)
 - [ ] P2 Stage B: draft tool · batch merges (log per batch) · POOL LOCK
-- [ ] W3 StubCard everywhere · menu/Solo/Chrono re-dress · RecapReel · desktop — **Buri approved: ___**
+- [ ] W3 StubCard everywhere · menu/Solo/Chrono re-dress · RecapReel · desktop
+      — **increment 1 SHIPPED 2026-07-07** (4 commits c3f601e→aa39422 + ShareCopy,
+      pushed): StubCard gained a wild branch (amber ticket: amber spine/pip, ★ WILD
+      lockup, no year/ledger) → every CardView special-case collapsed to StubCard
+      (Duel piles/draw/recast, Hand wild fallback retired); board underlays +
+      Solo pile-stack → paper ticket slabs; deck "M 76" → Stub navy ticket-back
+      (DECK + count). Five parallel agent lanes (disjoint files, shared Stub
+      cheatsheet): Chronology (ticket frame w/ decade accent, **no-year-leak
+      intact**), Solo (navy header/pile StubCard/Stub banners), Menu (navy hero
+      panel, amber-active pills — EXTRAPOLATED), Rules (token swap, **TMDB
+      attribution survives**), RecapReel (7d-matched) + Results restyle; Duel end
+      screen restyled + RecapReel wired; ShareCopy → Stub. Card.tsx/CardView now
+      ORPHANED (flagged, not deleted). Gate: full verify **64/64**, build green,
+      console clean; side-by-sides @390×844 + @375×667 (menu/duel/solo/chrono/
+      rules) + raise+flip-to-credits played on the 667 board. **DEFERRED → W3
+      increment 2:** desktop 1440×900 re-arch (Fable, riskiest) · LastPlayLine
+      mount (new state) · FC/RC player compact chips (shortViewport) · hint
+      "· PERSON" label plumb. Checkpoint flags in session summary.
+      — **Buri approved: ___**
 - [ ] W4 Connections engine+verify (auto) · UI+RULEBOOK — **Buri approved: ___**
 - [ ] W5 readouts · chrono daily pin · polish · tilt call: ___ · cutover call: ___
 - [ ] W6 SEND (deploy = Buri)

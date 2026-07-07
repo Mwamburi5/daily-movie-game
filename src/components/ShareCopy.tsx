@@ -27,7 +27,7 @@ export default function ShareCopy({ text }: { text: string }) {
         data-share-copy
         onClick={onCopy}
         aria-live="polite"
-        className="mt-5 min-h-12 rounded-full bg-[#23211c] px-7 py-3 text-[15px] font-bold text-[#f4efe6] shadow-md active:scale-95"
+        className="mt-5 min-h-12 rounded-stub-pill bg-stub-navy px-7 py-3 text-[15px] font-bold text-stub-cream shadow-stub-card-resting active:scale-95"
       >
         {copy === 'copied' ? 'copied ✓' : copy === 'failed' ? 'select below to copy' : 'copy result'}
       </button>
@@ -36,7 +36,7 @@ export default function ShareCopy({ text }: { text: string }) {
       {copy === 'failed' && (
         <pre
           data-share-fallback
-          className="mt-3 w-full max-w-[280px] select-all whitespace-pre-wrap rounded-xl bg-white/70 px-4 py-3 text-left font-sans text-[13px] text-[#23211c] shadow-sm"
+          className="mt-3 w-full max-w-[280px] select-all whitespace-pre-wrap rounded-stub-panel border border-stub-navy/15 bg-stub-paper px-4 py-3 text-left font-stub-ui text-[13px] text-stub-navy shadow-stub-card-resting"
         >
           {text}
         </pre>
