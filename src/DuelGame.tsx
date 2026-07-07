@@ -73,11 +73,13 @@ function ladderMeld(cards: Movie[], deep: boolean): { perCard: number; pts: numb
   return { perCard, pts: reals.length * perCard, rungName: meldRungName(reals, deep, GENRE_FLOOR) }
 }
 import { CardView } from './components/Card.tsx'
+import DrawChoice from './components/DrawChoice.tsx'
 import Hand from './components/Hand.tsx'
 import HowToPlay from './components/HowToPlay.tsx'
 import IdleCue from './components/IdleCue.tsx'
 import MeldShelf, { meldLabel } from './components/MeldShelf.tsx'
 import PlayBanner from './components/PlayBanner.tsx'
+import RecastOffer from './components/RecastOffer.tsx'
 import ScoreRace from './components/ScoreRace.tsx'
 import ShareCopy from './components/ShareCopy.tsx'
 import TazCorner from './components/TazCorner.tsx'
@@ -1764,81 +1766,44 @@ export default function DuelGame({
           onReorder={(id, toIndex) => setPlayerHand((h) => moveId(h, id, toIndex))}
         />
 
-        {/* Draw-3-keep-1: pick one of the revealed cards; the rest leave play */}
+        {/* Draw-3-keep-1: pick one of the revealed cards; the rest leave play.
+            DrawChoice owns the Stub scrim/panel/pills/captions + the CONNECTS
+            hint; the parent injects each face-down card (CardView until the W3
+            StubCard rollout — StubCard has no wild branch yet and the draw can
+            deal a wild). */}
         {drawChoice !== null && (
-          <div className="absolute inset-0 z-[85] flex flex-col items-center justify-center bg-[#23211c]/45 px-4">
-            <span className="mb-3 rounded-full bg-[#23211c] px-3 py-1.5 text-[12px] font-bold text-[#f4efe6] shadow-md">
-              Keep one — {drawChoice.length > 2 ? 'the other two leave' : 'the rest leave'} play
-            </span>
-            <div className="flex items-end gap-2">
-              {drawChoice.map((id) => {
-                const dm = mv(id)!
-                const connects = tops.some((t) => sharedPeople(t, dm).length > 0)
-                return (
-                  <button
-                    key={id}
-                    type="button"
-                    data-draw-choice={id}
-                    onClick={() => playerPickDraw(id)}
-                    className="relative rounded-xl transition-transform active:scale-95"
-                  >
-                    {connects && (
-                      <span className="absolute -top-2.5 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded-full bg-[#2c5240] px-2 py-0.5 text-[8px] font-extrabold uppercase tracking-wider text-white shadow">
-                        Connects
-                      </span>
-                    )}
-                    <CardView movie={dm} faceUp={false} size="hand" />
-                  </button>
-                )
-              })}
-            </div>
-            <span className="mt-3 text-[11px] font-medium text-[#f4efe6]/80">
-              Tap to keep · then play it, keep it, or toss it
-            </span>
-          </div>
+          <DrawChoice
+            options={drawChoice.map((id) => {
+              const dm = mv(id)!
+              return {
+                id,
+                connects: tops.some((t) => sharedPeople(t, dm).length > 0),
+                cardSlot: <CardView movie={dm} faceUp={false} size="hand" />,
+              }
+            })}
+            onPick={playerPickDraw}
+            reduce={!!reduce}
+          />
         )}
 
-        {/* Recast offer: CPU's big play held in suspense */}
+        {/* Recast offer: CPU's big play held in suspense. RecastOffer owns the
+            full 7c overlay (scrim + glow + diorama modal + buttons); its root is
+            an exit-capable motion.div so the parent AnimatePresence still drives
+            the fade. The double-fire guard stays parent-side (allowCpuPlay /
+            playerRecast). cardSlot = CardView until the W3 StubCard rollout (a
+            Final-Cut dump can be a wild; StubCard has no wild branch yet). Note:
+            the comp's flat "TAZ PLAYS" eyebrow drops today's draws-&-plays
+            nuance — a checkpoint flag, not a bug (recastOffer.drew unused). */}
         <AnimatePresence>
           {recastOffer && offerMovie && (
-            <motion.div
-              className="absolute inset-0 z-[90] flex flex-col items-center justify-center bg-[#23211c]/35 px-8"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: reduce ? 0.1 : 0.2 }}
-            >
-              <div className="flex w-full max-w-[300px] flex-col items-center rounded-2xl bg-[#f4efe6] p-5 text-center shadow-xl">
-                <span className="text-[11px] font-bold uppercase tracking-wider text-[#9a917c]">
-                  {recastOffer.drew ? 'CPU draws & plays' : 'CPU plays'}
-                </span>
-                <h3 className="mt-1 font-serif text-2xl font-black italic">{offerMovie.title}</h3>
-                <p className="mt-1 text-[13px] font-semibold text-[#a3411a]">
-                  {recastOffer.finalCut
-                    ? 'Final Cut — no connection needed'
-                    : 'Super link — +4 and an encore'}
-                </p>
-                <div className="mt-3">
-                  <CardView movie={offerMovie} faceUp={false} size="hand" />
-                </div>
-                <button
-                  type="button"
-                  data-offer="recast"
-                  onClick={playerRecast}
-                  className="mt-4 min-h-12 w-full rounded-full bg-[#a3411a] px-6 py-3 text-[14px] font-bold text-white shadow-md active:scale-95"
-                >
-                  Recast — cancel it
-                </button>
-                <button
-                  type="button"
-                  data-offer="allow"
-                  onClick={allowCpuPlay}
-                  className="mt-2 min-h-12 w-full rounded-full bg-white/80 px-6 py-3 text-[14px] font-bold text-[#23211c] shadow-sm active:scale-95"
-                >
-                  Allow it
-                </button>
-              </div>
-            </motion.div>
+            <RecastOffer
+              finalCut={recastOffer.finalCut}
+              movie={offerMovie}
+              cardSlot={<CardView movie={offerMovie} faceUp={false} size="hand" />}
+              onRecast={playerRecast}
+              onAllow={allowCpuPlay}
+              reduce={!!reduce}
+            />
           )}
         </AnimatePresence>
 
