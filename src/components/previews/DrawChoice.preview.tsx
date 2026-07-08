@@ -1,6 +1,6 @@
 // Preview: ?preview=DrawChoice — the draw-3-keep-1 modal, EXTRAPOLATED (no
 // reference comp; composed from the Stub library as 7c's sibling). Self-
-// contained: real movies from src/data/movies.ts, face-down CardViews injected
+// contained: real movies from src/data/movies.ts, face-down StubCards injected
 // as cardSlots. Verifies: diorama stack + awning render, the amber CONNECTS
 // pill lands only on connecting options, three cards clear a 375px frame, and
 // the 2-option / 1-option (deck-ran-short) states read correctly.
@@ -8,14 +8,15 @@
 // Each modal is mounted inside a relatively-positioned phone-sized frame so the
 // component's own `absolute inset-0` scrim fills the frame, not the page.
 import DrawChoice, { type DrawOption } from '../DrawChoice'
-import { CardView } from '../Card.tsx'
+import StubCard from '../StubCard.tsx'
 import { MOVIES } from '../../data/movies.ts'
 
 const byId = (id: string) => MOVIES.find((m) => m.id === id)!
 
-// Face-down card slot, exactly as DuelGame injects it (CardView faceUp={false}).
+// Face-down card slot, exactly as DuelGame injects it (StubCard faceUp={false}
+// ticket back — CardView/Card.tsx retired W3 inc2).
 function faceDown(id: string) {
-  return <CardView movie={byId(id)} faceUp={false} size="hand" />
+  return <StubCard movie={byId(id)} faceUp={false} size="hand" />
 }
 
 function opt(id: string, connects: boolean): DrawOption {

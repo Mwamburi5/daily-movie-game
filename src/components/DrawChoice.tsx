@@ -38,7 +38,7 @@ export interface DrawOption {
   id: string
   /** True → this card shares a person with a marquee pile top (the amber hint). */
   connects: boolean
-  /** The face-down card, rendered by the parent (CardView faceUp={false} today). */
+  /** The face-down card, rendered by the parent (StubCard faceUp={false} ticket back). */
   cardSlot: React.ReactNode
 }
 

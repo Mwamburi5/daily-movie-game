@@ -2,7 +2,7 @@ import { motion, useReducedMotion } from 'framer-motion'
 
 // The end-of-game highlights reel (handoff screen 7d, "the match in highlights").
 // Presentational only — the Duel screen maps its recap data onto RecapItem[] and
-// drops this in. Repainted to the Stub language: paper pills, WHO chips, amber
+// drops this in. Repainted to the Stub language: paper pills, WHO chips, navy
 // point chips. Kept self-contained so it renders standalone with no game state.
 
 export interface RecapItem {
@@ -70,7 +70,9 @@ export function RecapReel({
                 {recapVerb(e.kind)} {e.text}
               </span>
 
-              <span className="shrink-0 font-stub-display text-[15px] font-bold tabular-nums text-stub-amber">
+              {/* +points in navy to match the 7d comp (Buri ruling 2026-07-07,
+                  flag b) — the amber-vs-navy call resolved navy. */}
+              <span className="shrink-0 font-stub-display text-[15px] font-bold tabular-nums text-stub-navy">
                 +{e.points}
               </span>
             </motion.div>

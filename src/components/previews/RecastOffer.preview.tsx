@@ -1,15 +1,15 @@
 // Preview: ?preview=RecastOffer — the 7c drama-moment overlay, super-link and
-// Final Cut variants, each with a real CardView as the injected cardSlot.
+// Final Cut variants, each with a real StubCard as the injected cardSlot.
 // Self-contained (own mock props). Verifies: scrim + amber glow read behind the
 // modal, diorama stack + awning, the amber-ring card slot, both buttons, and
 // the consequence line swapping copy by variant.
 //
-// The PREVIEW may import CardView + real movies (the component itself must not).
+// The PREVIEW may import StubCard + real movies (the component itself must not).
 // Each overlay lives in a relatively-positioned phone-sized frame so the
 // absolute-inset overlay reads correctly.
 import { useReducedMotion } from 'framer-motion'
 import RecastOffer from '../RecastOffer.tsx'
-import { CardView } from '../Card.tsx'
+import StubCard from '../StubCard.tsx'
 import { movieById } from '../../data/movies.ts'
 
 const godfather = movieById.get('the-godfather')!
@@ -27,7 +27,7 @@ export default function RecastOfferPreview() {
               finalCut={false}
               movie={godfather}
               cardSlot={
-                <CardView movie={godfather} faceUp size="pile" />
+                <StubCard movie={godfather} faceUp size="pile" />
               }
               onRecast={() => console.log('recast')}
               onAllow={() => console.log('allow')}
@@ -42,7 +42,7 @@ export default function RecastOfferPreview() {
               finalCut
               movie={taxiDriver}
               cardSlot={
-                <CardView movie={taxiDriver} faceUp size="pile" />
+                <StubCard movie={taxiDriver} faceUp size="pile" />
               }
               onRecast={() => console.log('recast')}
               onAllow={() => console.log('allow')}

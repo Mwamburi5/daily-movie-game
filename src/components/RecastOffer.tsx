@@ -21,8 +21,8 @@ import type { Movie } from '../data/types.ts'
 // opacity. z-index stays z-[90] — the app's z-map (draw-choice 85 < recast 90
 // < game-over 100) wins over the README's design-doc z-60 scale.
 //
-// The offered card is injected by the parent as `cardSlot` (today's CardView,
-// StubCard after W3); we wrap it in the navy-border + amber-ring slot and
+// The offered card is injected by the parent as `cardSlot` (a StubCard since
+// W3); we wrap it in the navy-border + amber-ring slot and
 // never import a card component ourselves.
 
 export interface RecastOfferProps {

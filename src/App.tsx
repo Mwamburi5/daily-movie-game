@@ -50,21 +50,35 @@ export default function App() {
 
   return (
     <div
-      className="relative mx-auto h-full w-full max-w-[420px] bg-stub-cream"
+      className="relative mx-auto flex h-full w-full max-w-[420px] flex-col bg-stub-cream"
       style={{
         backgroundImage: 'radial-gradient(rgba(31,58,82,.06) 1px, transparent 1.2px)',
         backgroundSize: '7px 7px',
       }}
     >
-      <div className="flex h-full w-full flex-col items-center justify-center gap-10 px-8">
-        <div className="text-center">
-          <h1 className="font-stub-display text-5xl font-bold italic tracking-tight text-stub-navy">
-            Match Cut
-          </h1>
-          <p className="mt-2 font-stub-ui text-sm text-stub-slate">
-            Connect movies by the people who made them.
-          </p>
-        </div>
+      {/* Navy header — cohesion with the game screens' navy bar (Buri flag c,
+          2026-07-07): the menu no longer opens header-less. Carries the wordmark
+          and the rules affordance (the old bottom "How to play" button folds
+          into this ?, matching every game screen). */}
+      <header className="flex items-center justify-between rounded-b-stub-header bg-stub-navy px-5 pb-4 pt-4">
+        <h1 className="font-stub-display text-2xl font-bold italic tracking-tight text-stub-cream">
+          Match Cut
+        </h1>
+        <button
+          type="button"
+          aria-label="How to play"
+          data-rules-open
+          onClick={() => setShowRules(true)}
+          className="flex h-8 w-8 items-center justify-center rounded-stub-pill text-[13px] font-extrabold text-stub-cream/80 ring-1 ring-inset ring-stub-slate-light/50 active:scale-90"
+        >
+          ?
+        </button>
+      </header>
+
+      <div className="flex w-full flex-1 flex-col items-center justify-center gap-8 px-8">
+        <p className="text-center font-stub-ui text-sm text-stub-slate">
+          Connect movies by the people who made them.
+        </p>
         <div className="flex w-full max-w-[300px] flex-col gap-3">
           {/* Hero card: the navy panel echoing the 7a board header — one clear
               primary for the menu (EXTRAPOLATED; menu has no reference PNG). */}
@@ -186,14 +200,6 @@ export default function App() {
               </div>
             </div>
           </div>
-          <button
-            type="button"
-            data-mode="rules"
-            onClick={() => setShowRules(true)}
-            className="min-h-11 rounded-stub-panel px-6 py-2.5 text-center font-stub-label text-[13px] font-bold uppercase tracking-[0.06em] text-stub-slate ring-1 ring-inset ring-stub-navy/25 active:scale-[0.98]"
-          >
-            How to play
-          </button>
         </div>
       </div>
       <AnimatePresence>
