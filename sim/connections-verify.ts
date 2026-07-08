@@ -32,8 +32,8 @@
 import { createHash } from 'node:crypto'
 import { MOVIES } from '../src/data/movies.ts'
 import { localDateSeed } from '../src/lib/daily.ts'
-import { dealGrid, MAX_GENRE_GROUPS } from './connections-gen.ts'
-import type { GroupCat, Grid } from './connections-gen.ts'
+import { dealGrid, MAX_GENRE_GROUPS } from '../src/lib/connections.ts'
+import type { GroupCat, Grid } from '../src/lib/connections.ts'
 import type { Movie } from '../src/data/types.ts'
 
 let passed = 0
