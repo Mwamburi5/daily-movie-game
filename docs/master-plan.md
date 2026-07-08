@@ -412,6 +412,33 @@ what's ready-to-review per sitting.
       increment 2:** desktop 1440×900 re-arch (Fable, riskiest) · LastPlayLine
       mount (new state) · FC/RC player compact chips (shortViewport) · hint
       "· PERSON" label plumb. Checkpoint flags in session summary.
+      — **increment 2 SHIPPED 2026-07-07 ⛔ AWAITING BURI CHECKPOINT** (2 commits
+      dffda29 + 75fb2d0, pushed): (1) **LastPlayLine** wired (7a item 4) — the
+      forged strip mounts under the score header, fed from the `say()` chokepoint
+      (rides alongside `lastCpuQuote`, no new capture at the 6 scoring sites);
+      new `lastPlay` state, reset in `newGame`; delta signed so Taz's gain paints
+      stub-red from the player's POV (verified "LAST · TAZ +1" in red). (2)
+      **TokenChips** player `compact` variant (px-2/py-1/7.5px) via
+      `compact={shortViewport}` — matches the CPU booth footprint at 667, full
+      size at 844 (inspected compact:true). (3) **Hint "· PERSON" label** —
+      `sharedPeople(pileTop, hintedCard)` computed at the Hand call site (hintCard
+      returns id only), threaded Hand→StubCard's existing hintLabel pill;
+      lay-off-only hints show the pulse alone (never name a non-pile person);
+      verified "HINT · NOLAN". (4) **Desktop 1440×900 theater** — the 420px column
+      becomes a lit screen in a navy movie house (vignette + amber spotlight + dot
+      texture + marquee-bulb side rails + warm ring/shadow); all `hidden lg:block`
+      behind the column + `lg:bg-stub-cream` on the column, so **390×844 + 375×667
+      byte-identical, no regression** (both re-verified). Cards keep size — the
+      TABLE scales (§4.2). EXTRAPOLATED (no desktop comp). Gate: full verify
+      **64/64** (2:30), build green, console clean; desktop shot + both mobile
+      sizes + played game (draw-3, CPU scoring play, hint) captured. **DEFERRED /
+      FLAGGED for Buri:** (a) §4.2 shelf-as-side-rail relocation held (blast radius
+      on the single-writer absolute layout — meldRowRefs/booth layoutId); (b) 4
+      inc-1 flags still open (wild amber / RecapReel +pts chip / menu header / rules
+      scrim tokens); (c) LastPlayLine copy — mixed casing "LAST · YOU drew 3" vs
+      "LAST · TAZ Connected via…" (run past Buri); (d) Card.tsx/CardView dead in
+      shipping code but still imported by 2 preview harnesses — delete needs
+      preview repoint, held.
       — **Buri approved: ___**
 - [ ] W4 Connections engine+verify (auto) · UI+RULEBOOK — **Buri approved: ___**
 - [ ] W5 readouts · chrono daily pin · polish · tilt call: ___ · cutover call: ___
