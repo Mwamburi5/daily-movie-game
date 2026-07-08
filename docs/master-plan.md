@@ -446,7 +446,42 @@ what's ready-to-review per sitting.
       folds into the header ?) · flags a (Stub wild) + d (rules scrim tokens)
       kept as shipped · **Card.tsx/CardView DELETED** + 2 preview harnesses
       repointed to StubCard. Full verify 64/64 post-follow-ups. **W3 CLOSED.**
-- [ ] W4 Connections engine+verify (auto) · UI+RULEBOOK — **Buri approved: ___**
+- [ ] W4 Connections engine+verify (auto) · UI+RULEBOOK — **engine ✅ auto
+      2026-07-07** (3 commits ff512a2→27a2904, pushed): dealer LIFTED
+      sim→`src/lib/connections.ts` (rng.ts precedent: app build graph is
+      src/-only; sim imports it back — parity, never a fork); dead `sits()`
+      dropped (formation pools guarantee sitting). **Runtime feasibility
+      caught by measurement:** `dealGrid` enumerates ~9.5M viable key-sets /
+      ~12 GB heap → **OOMs a 2 GB browser-ish heap outright**, so "dealing
+      only pre-verified grids" = a BAKE: `scripts/build-connections-grids.ts`
+      pre-runs the dealer over the pinned 365-day window into
+      `src/data/connections-grids.json` (172 KB, day-0 == PIN_DAY grid), and
+      `dailyConnectionsGrid` (data-layer wrapper) indexes it by calendar
+      offset — pinned year IS the dealer's seed-output. `verify:connections`
+      **14/14** (+3 baked-parity #6: baked file == dealer for all 365 days,
+      read via fs so Node needs no import-attribute). Pin digest byte-identical
+      across the lift. **UI+guardrail ⛔ AWAITING BURI CHECKPOINT** (commit
+      34931f1, pushed): `ConnectionsGame.tsx` (standalone; 4×4 grid, select-4/
+      Submit, one-away, reveal-on-solve bands, 4-mistake loss reveal, share
+      `Match Cut · Connections` NYT-style emoji guess-grid URL-less) · App
+      menu card + streak chip · progress.ts connections DailyMeta
+      (backfilled, no streak-wipe) · RULESET §13 (additive contract) +
+      RULEBOOK Mode 4 + HowToPlay section (TMDB attribution intact). Gate:
+      full verify **64/64** · build · verify:connections 14/14 · solo 8/8 ·
+      chronology 42/42; browser-verified @390×844 + @375×667 (menu, board
+      both sizes, full solve → 4 reveal bands, one-away, Solved!+day/streak/
+      best+share grid, practice deals a different grid), console clean.
+      **EXTRAPOLATED (no Connections comp) + FLAGS for Buri:** (a) board
+      tiles are title-only Stub tickets, NOT literal 3/4 StubCards — a
+      word-grid needs square tiles AND StubCard's genre-tag art slot would
+      LEAK the genre group; (b) solved-band + share-emoji palette
+      (navy/plum/red/slate ↔ 🟦🟪🟥⬛) is an extrapolated 4-color set (amber/
+      teal reserved); (c) share grid has no 🎬 lead row (NYT-style grid vs
+      the other modes' 🎬 row) — house call, confirm; (d) bundle +19 KB gzip
+      from the baked JSON (unavoidable — the dealer can't run in-browser);
+      (e) grid category mix skews actor-heavy (aaaa×106/365) — a data
+      observation for W5's grid-hardness readout, not a wave blocker.
+      **Buri approved: ___**
 - [ ] W5 readouts · chrono daily pin · polish · tilt call: ___ · cutover call: ___
 - [ ] W6 SEND (deploy = Buri)
 - [ ] **D1 Duel deep-cut reveal as a difficulty lever** (PARKED, concept
