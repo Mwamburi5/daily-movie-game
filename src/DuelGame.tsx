@@ -1309,13 +1309,69 @@ export default function DuelGame({
   )
 
   return (
-    <div className="h-full overflow-hidden bg-stub-cream">
+    <div className="relative h-full overflow-hidden bg-stub-cream">
+      {/* ── Desktop theater (lg+ only) ────────────────────────────────────────
+          Kills the 420px letterbox: the phone column becomes a LIT SCREEN
+          mounted in a navy movie house, the dead margin becomes an ambient
+          stage (UI-PRD §4.2 "ambient backdrop that sets a scene", "play area
+          centered and breathing"). Cards keep their size — the TABLE scales,
+          not the cards. Every layer here is `hidden lg:block` and behind the
+          column, so mobile renders NONE of it and the phone layout is byte-
+          identical. EXTRAPOLATED (no desktop reference PNG); the shelf-as-
+          side-rail ask is deferred — relocating the shelf/booth would move the
+          load-bearing absolute layout on the single-writer file (§2.5). */}
+      <div
+        className="pointer-events-none absolute inset-0 hidden lg:block"
+        style={{
+          background:
+            'radial-gradient(120% 85% at 50% -4%, rgba(207,149,42,.18), transparent 52%),' +
+            'radial-gradient(80% 65% at 50% 44%, #22405a, #16293a 80%),' +
+            '#122032',
+        }}
+      >
+        {/* cream-on-navy dot texture (the README navy-inset recipe) */}
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage:
+              'radial-gradient(rgba(240,235,216,.055) 1px, transparent 1.2px)',
+            backgroundSize: '6px 6px',
+          }}
+        />
+        {/* vignette so the lit screen reads against the house */}
+        <div
+          className="absolute inset-0"
+          style={{ background: 'radial-gradient(72% 62% at 50% 46%, transparent 54%, rgba(0,0,0,.4))' }}
+        />
+      </div>
+
+      {/* Marquee-bulb frame hugging the screen (lg+ only), centred on the
+          420px column so a rail of amber bulbs runs down each side — the
+          cinema-marquee motif that gives the table a home. */}
+      <div className="pointer-events-none absolute inset-y-0 left-1/2 hidden w-[440px] -translate-x-1/2 lg:block">
+        {(['left-0', 'right-0'] as const).map((side) => (
+          <div
+            key={side}
+            className={`absolute ${side} top-0 h-full w-[7px]`}
+            style={{
+              background:
+                'repeating-linear-gradient(to bottom, rgba(207,149,42,.85) 0 5px, transparent 5px 22px)',
+              filter: 'drop-shadow(0 0 4px rgba(207,149,42,.55))',
+            }}
+          />
+        ))}
+      </div>
+
       {/* Flex-zone board (Stub Wave A): the top stack flows, a flex-1 band
           absorbs height differences (banner/cue anchor inside it), and the
           shelf rides above the fan reservation — no fixed-pixel tops, so
           667px-class phones compress the band instead of colliding zones.
-          pb reserves the hand fan's overlay height (Hand is h-[225px]). */}
-      <div className="relative mx-auto flex h-full w-full max-w-[420px] flex-col pb-[225px]">
+          pb reserves the hand fan's overlay height (Hand is h-[225px]).
+          lg: the column gains its own cream surface + a warm ring and a big
+          soft shadow so it reads as a lit screen on the theater — on mobile
+          none of the lg: classes apply, so the board still inherits the outer
+          cream exactly as before. */}
+      <div className="relative mx-auto flex h-full w-full max-w-[420px] flex-col pb-[225px] lg:bg-stub-cream lg:shadow-[0_0_64px_rgba(0,0,0,.5)] lg:ring-1 lg:ring-stub-amber/20">
         {/* 7a navy header: nav row + the race-to-20 block. Bottom corners
             only per the token sheet (rounded-b, never the top). ScoreRace owns
             scores/caption/bar/target-hint — and the data-score/data-turn
