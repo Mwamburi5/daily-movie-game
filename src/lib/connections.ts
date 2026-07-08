@@ -39,7 +39,6 @@
 import { MOVIES } from '../data/movies.ts'
 import { makeRng } from './rng.ts'
 import type { Rng } from './rng.ts'
-import { localDateSeed } from './daily.ts'
 import type { Movie } from '../data/types.ts'
 
 export type GroupCat = 'director' | 'actor' | 'series' | 'genre'
@@ -277,14 +276,16 @@ export function dealGrid(seed: string, pool: Movie[] = MOVIES): Grid {
   return grid
 }
 
-// The React-facing daily. Both dailies (solo, connections) derive their seed
-// with localDateSeed, so a given calendar day maps to the same seed string in
-// either mode and sim/connections-verify.ts asserts the exact grids this returns.
-// Deals only pre-verified grids by construction — it IS dealGrid, the same
-// function the standing gate pins.
-export function dailyConnectionsGrid(seed: string = localDateSeed(), pool: Movie[] = MOVIES): Grid {
-  return dealGrid(seed, pool)
-}
+// The runtime NEVER runs dealGrid — it enumerates ~9.5M viable key-sets to deal
+// one grid (needs ~12 GB heap) and OOMs a browser tab. The mode reads pre-baked
+// grids instead: scripts/build-connections-grids.ts pre-runs dealGrid over the
+// pinned 365-day window into src/data/connections-grids.json, and the daily
+// accessors (dailyConnectionsGrid / practiceConnectionsGrid) live in that data
+// module (src/data/connectionsGrids.ts, app-only). "Dealing only pre-verified
+// grids" (master-plan §3·W4) means exactly that — the baked grids ARE dealGrid's
+// output, and sim/connections-verify.ts #6 asserts the baked file matches the
+// dealer across the window so it can never drift. This engine file stays free of
+// the JSON import so the sim (raw Node) can import it without an import-attribute.
 
 // ── Accidental-group diagnostic (used by the dealer's strict walk; the CLI
 // report re-uses it) ────────────────────────────────────────────────────────

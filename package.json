@@ -13,6 +13,7 @@
     "verify:connections": "node sim/connections-verify.ts",
     "eval:chronology": "node sim/chronology-eval.ts",
     "gen:connections": "node --max-old-space-size=12288 sim/connections-gen.ts",
+    "build:connections-grids": "node --max-old-space-size=12288 scripts/build-connections-grids.ts",
     "build:chronology-pool": "node scripts/build-chronology-pool.ts",
     "tmdb:probe": "node scripts/tmdb-probe.ts",
     "tmdb:audit": "node scripts/tmdb-audit.ts",

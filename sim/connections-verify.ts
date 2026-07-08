@@ -32,6 +32,7 @@
 import { createHash } from 'node:crypto'
 import { MOVIES } from '../src/data/movies.ts'
 import { localDateSeed } from '../src/lib/daily.ts'
+import { readFileSync } from 'node:fs'
 import { dealGrid, MAX_GENRE_GROUPS } from '../src/lib/connections.ts'
 import type { GroupCat, Grid } from '../src/lib/connections.ts'
 import type { Movie } from '../src/data/types.ts'
@@ -291,11 +292,57 @@ function checkDeterminism(): void {
   )
 }
 
+// ═══════════════════════════════════════════════════════════════════════════
+//  #6  BAKED RUNTIME PARITY — the app serves exactly what the dealer deals
+// ═══════════════════════════════════════════════════════════════════════════
+// The browser can't run dealGrid (it enumerates ~9.5M viable sets — OOM), so the
+// mode reads baked grids from src/data/connections-grids.json (built by
+// scripts/build-connections-grids.ts over THIS window). This is the guard that
+// the baked file never drifts from the dealer: in seed order, the baked grids
+// must equal the grids dealGrid produced above. The runtime accessor
+// (dailyConnectionsGrid, src/data/connectionsGrids.ts) indexes this same array by
+// day-offset, so proving the FILE matches the dealer proves the daily does too.
+// Read via fs — not import — so Node needs no import-attribute and the app's
+// Vite-flavored wrapper stays out of the sim layer (same convention as
+// chronology-verify's pool read). If the pool changes, #5's pin trips AND this
+// trips until the bake is re-run, so a stale JSON can't ship silently.
+function checkBaked(): void {
+  section('#6  Baked runtime parity (connections-grids.json === dealer over the window)')
+
+  const baked = JSON.parse(
+    readFileSync(new URL('../src/data/connections-grids.json', import.meta.url), 'utf8'),
+  ) as { anchor: string; grids: Grid[] }
+
+  check(
+    `baked set covers the window (${baked.grids.length} grids)`,
+    baked.grids.length === DAYS,
+    `got ${baked.grids.length}, expected ${DAYS} — re-run npm run build:connections-grids`,
+  )
+  check(
+    `baked anchor matches this window's day 0 (${seeds[0]})`,
+    baked.anchor === seeds[0],
+    `baked anchor ${baked.anchor}`,
+  )
+
+  // The load-bearing assertion: baked grid i equals dealGrid(seeds[i]) for the
+  // whole window. grids[i] is that dealer output from the shared pass at the top.
+  let parityOk = true
+  let detail = ''
+  for (let i = 0; i < seeds.length; i++) {
+    if (!baked.grids[i] || gridStr(baked.grids[i]) !== gridStr(grids[i])) {
+      parityOk = false
+      detail = detail || `${seeds[i]}: baked grid ≠ dealer grid — re-run npm run build:connections-grids`
+    }
+  }
+  check(`baked grid equals the dealer for all ${DAYS} days (bake is current)`, parityOk, detail)
+}
+
 // ── run ──────────────────────────────────────────────────────────────────
 checkSolvable()
 checkUnambiguous()
 checkDistinct()
 checkLock()
 checkDeterminism()
+checkBaked()
 console.log(`\n  ${passed} passed, ${failed} failed\n`)
 process.exit(failed > 0 ? 1 : 0)
