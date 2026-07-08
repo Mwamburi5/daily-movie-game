@@ -9,13 +9,13 @@
 
 ---
 
-## The big idea (all three modes)
+## The big idea (all four modes)
 
-Every card is a **movie**, every mode is **golf** (low score wins), and every mode
-ends with a little **emoji row** you can share. That is the family bond that ties
-all three together.
+Every card is a **movie**, doing **more with less** is always the goal (fewest
+moves, fewest mistakes), and every mode ends with a little **emoji row** you can
+share. That is the family bond that ties all four together.
 
-There are **three ways to play**:
+There are **four ways to play**:
 
 1. **Daily Puzzle** (Mode 1) is solo. Connect a hand of linked films in as few moves
    as you can, like golf.
@@ -23,14 +23,19 @@ There are **three ways to play**:
    try to outscore the computer.
 3. **Chronology** (Mode 3) is solo too, but it drops the links entirely. Put movies
    in the order they came out.
+4. **Connections** (Mode 4) is solo. Sort sixteen movies into four hidden groups of
+   four — same director, actor, series, or genre.
 
-### How Modes 1 and 2 connect movies
+### How Modes 1, 2, and 4 connect movies
 
 Modes 1 and 2 share one idea. You **connect movies through the people who made
 them** (actors, directors, and writers), or because they are in the **same series**.
 
 > Example: *Titanic* and *Inception* connect because **Leonardo DiCaprio** is in both.
 > *The Dark Knight* and *Inception* connect because **Christopher Nolan** directed both.
+
+**Connections (Mode 4) uses the same links** to *group* films — four films that
+share a director, an actor, a series, or a genre — instead of chaining them.
 
 **Chronology does not use these links at all.** It is pure release-date ordering:
 your only tool is your sense of *when* a film came out. Its own big idea is in the
@@ -250,6 +255,60 @@ and 1999.
 
 ---
 
+## Mode 4 - Connections (Solo) · NEW
+
+> Playable right now. Like Chronology, the **public daily** is warming up while we
+> grow and fact-check the film pool, so treat today's boards as a preview.
+
+Sixteen movies, **four hidden groups of four**. If you've played the newspaper word
+game, you know the shape — here the connection is always about the *movies*.
+
+### How to play in 30 seconds
+1. You see a **4×4 grid** of sixteen movie titles. Hidden inside are **four groups of
+   four**, each joined by one thing: the same **director**, **actor**, **series**, or
+   **genre**.
+2. **Tap four** titles you think belong together, then tap **Submit**.
+3. **Right** — the group locks in and reveals its connection (e.g. *Director · Martin
+   Scorsese*).
+4. **Wrong** — you lose one of your **four guesses**. If **three** of your four shared
+   a group, it tells you **"one away."**
+5. Solve **all four groups** before you run out of guesses.
+
+### What's on screen
+```
+   Connections            Mistakes left ● ● ● ●   (top bar)
+
+ ┌──────┐ ┌──────┐ ┌──────┐ ┌──────┐
+ │TITLE │ │TITLE │ │TITLE │ │TITLE │             (16 title tiles, 4×4)
+ └──────┘ └──────┘ └──────┘ └──────┘
+      … solved groups slide up as colored bands …
+   [ Shuffle ]  [ Deselect ]  [ Submit ]         (Submit lights at 4 picked)
+```
+
+### Scoring — fewest mistakes
+- You get **four mistakes**. Each wrong guess spends one (a dot goes dark).
+- **Solve all four groups** and you win; the fewer mistakes, the better your day.
+- Run out of guesses and the board **reveals** the remaining groups — you still keep
+  your streak for showing up (like a stuck Daily Puzzle).
+
+### The one rule that makes it fair
+Every movie belongs to **exactly one** group. No title honestly fits two connections
+at once — so there is always **one clean answer**, never a coin-flip. (Behind the
+scenes the game checks this for a whole year of boards before any of them ship.)
+
+### How it ends
+- **Solved!** All four groups found. You get an emoji **grid** to share — one row of
+  four squares per guess, colored by each tile's real group, so friends see how tangled
+  your path was without spoiling the answers.
+- **Missed it** — out of guesses. The groups reveal themselves on the board.
+
+### Daily vs practice
+- **Daily:** the Connections card's main button. Everyone on the same calendar day gets
+  the **same sixteen**, so you can compare. (Your day rolls over at your own local midnight.)
+- **Practice:** the **Random grid** pill deals a fresh, already-checked board any time.
+
+---
+
 ## Words to know
 
 - **Link** — a connection between two movies (a shared person, or same series).
@@ -281,9 +340,23 @@ and 1999.
 - **Streak credit:** the stroke you earn back after three clean placements in a row.
 - **Tight-call mercy:** a shield you get for landing a clean card between two close years. It lets a streak survive one later misfire.
 
+*Connections terms:*
+
+- **Grid:** the 4×4 board of sixteen movie titles (Connections' board).
+- **Group:** four movies joined by one shared thing — a director, actor, series, or genre.
+- **Guess:** one submitted set of four tiles. You get four wrong guesses before the game ends.
+- **One away:** the hint you see when three of your four picks belonged to the same group.
+- **Band:** the colored strip a solved group collapses into, showing its connection.
+
 ---
 
 ## What's new
+
+**Connections (Mode 4) is playable (2026-07-07).** A fourth, solo mode: sort sixteen
+movies into four hidden groups of four (same director, actor, series, or genre) within
+four mistakes. Every board is checked so exactly one clean solution exists, and it ships
+with a date-seeded **daily** plus a **Random grid** practice board. Like Chronology, the
+public daily waits on locking the film pool, so until then it is a preview.
 
 **The Daily Puzzle is now really daily (2026-07-03).** Mode 1 used to serve one fixed,
 hand-designed puzzle; it now deals a **fresh date-seeded hand every day** — the same board

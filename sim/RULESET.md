@@ -266,3 +266,56 @@ Rules of the road:
    wobble inside the interval.
 4. Fairness reads use the **full-flow mirror** (`verify.ts #6`), not the
    single-pile mirror — the shipped game is the flow package.
+
+---
+
+## 13. Connections (Mode 4) — its own contract (additive; Duel/Solo frozen)
+
+Connections is a standalone mode with no shared mechanics with Duel or Solo — it
+touches none of §1–§12. This section is its parity contract, added when the mode
+landed (W4). Engine: `src/lib/connections.ts`. Executable contract:
+`sim/connections-verify.ts` (`npm run verify:connections`, joined the standing
+gate suite). Author-time tooling: `sim/connections-gen.ts` (yield + cluster
+shopping report), `scripts/build-connections-grids.ts` (the daily bake).
+
+**The board.** A grid is 16 films = **4 hidden groups of 4**. A group is keyed by
+one shared credit, in four categories: **director · actor · series · genre**. The
+player picks 4 and submits; solving all 4 groups within **4 mistakes** wins.
+Scoring is NOT golf and NOT the Duel economy — the only recorded number is
+mistakes (fewer is better; `best` in `progress.ts` stores it, streak on
+completion, a loss still counts as played like a stuck Solo).
+
+**The ambiguity gate (hard, engine-enforced).** No film may **fit** two of its
+grid's groups — there is always exactly one clean solution. "Fit" is WIDER than
+"sit": a film sits in a director group only if it **directed** it, but fits (and
+so poisons) that group if it directed OR **wrote** it; actor groups use the full
+cast (topCast + deepCast) both ways; series/genre are exact both ways. Because
+fit ⊇ sit, the usable pools of a viable key-set are disjoint by construction
+(`usablePools`). `connections-verify` #1–#3 re-prove solvable / unambiguous /
+distinct from the Movie data with its OWN predicates (not the dealer's).
+
+**The dealer lock (design lock, not a heuristic).** Grids are built
+**person/series-first**: director/actor/series keys are placed before genre
+(`CATS` order → `buildKeys` sort → the enumerator reaches genre last), and at
+most **ONE genre group per grid** (`MAX_GENRE_GROUPS = 1`, enforced in
+`enumerateViable` so it holds on the viable space itself). Plus **strict
+accidental-free**: the deal walk rejects any grid where 4 films drawn from
+different intended groups share a person/series/genre (an alternative solution the
+puzzle would call wrong). `connections-verify` #4 asserts ≤1 genre group and that
+a genre group, when present, is placed last.
+
+**Determinism & the daily.** `dealGrid(seed)` is deterministic (same seed+pool →
+same grid, `connections-verify` #5). BUT the dealer enumerates ~9.5M viable
+key-sets per pool (needs ~12 GB heap) — it **cannot run in a browser**. So the
+runtime serves **pre-baked** grids: `build-connections-grids.ts` runs `dealGrid`
+over the pinned 365-day anchor window into `src/data/connections-grids.json`, and
+`dailyConnectionsGrid` (in `src/data/connectionsGrids.ts`) indexes that array by
+calendar offset from the anchor — so for the pinned year the daily IS the dealer's
+seed-output. `connections-verify` #6 asserts the baked file equals the dealer for
+all 365 days; #5's **append-only pin** (digest + a PIN_DAY spot-check) guards the
+published grids exactly like solo-verify's pin. Any pool change re-runs the gate
+and, if a published grid moved, re-bakes and bumps the pin — a conscious cutover.
+
+**Frozen this build:** the pool is the shared credited `MOVIES` (grids get richer
+as Stage B grows it; the gate re-runs per merge). No difficulty dial (unlike
+Chronology's Wide/Tight) — one board per day, one for practice.

@@ -38,10 +38,11 @@ interface ProgressV1 {
   v: 1
   solo: DailyMeta
   chronology: DailyMeta
+  connections: DailyMeta
   duel: Record<Difficulty, DuelMeta>
 }
 
-export type DailyMode = 'solo' | 'chronology'
+export type DailyMode = 'solo' | 'chronology' | 'connections'
 
 const freshDaily = (): DailyMeta => ({ lastSeed: null, streak: 0, best: null })
 
@@ -49,6 +50,7 @@ const fresh = (): ProgressV1 => ({
   v: 1,
   solo: freshDaily(),
   chronology: freshDaily(),
+  connections: freshDaily(),
   duel: {
     matinee: { plays: 0, wins: 0 },
     feature: { plays: 0, wins: 0 },
@@ -65,6 +67,10 @@ export function loadProgress(): ProgressV1 {
     if (!raw) return fresh()
     const p = JSON.parse(raw) as ProgressV1
     if (p?.v !== 1 || !p.solo || !p.chronology || !p.duel) return fresh()
+    // connections is an additive v1 field (arrived with Mode 4). Backfill it on a
+    // pre-connections blob rather than requiring it — a missing mode must never
+    // wipe the solo/chronology streaks a player already earned.
+    if (!p.connections) p.connections = freshDaily()
     return p
   } catch {
     return fresh()

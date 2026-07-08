@@ -3,12 +3,13 @@ import { AnimatePresence } from 'framer-motion'
 import SoloGame, { type SoloStart } from './SoloGame.tsx'
 import DuelGame from './DuelGame.tsx'
 import ChronologyGame, { type ChronoStart } from './ChronologyGame.tsx'
+import ConnectionsGame, { type ConnectionsStart } from './ConnectionsGame.tsx'
 import HowToPlay from './components/HowToPlay.tsx'
 import { type Difficulty, DIFFICULTIES, DIFFICULTY_META } from './lib/difficulty.ts'
 import { localDateSeed } from './lib/daily.ts'
 import { dailyStatus, duelRecord, type DailyStatus } from './lib/progress.ts'
 
-type Mode = 'menu' | 'solo' | 'duel' | 'chronology'
+type Mode = 'menu' | 'solo' | 'duel' | 'chronology' | 'connections'
 
 // Chronology's OWN practice-spread dial (NOT Duel's difficulty.ts, which is link-
 // engine tuned). House voice borrows film-distribution words: a "wide" release is
@@ -23,12 +24,18 @@ export default function App() {
   const [mode, setMode] = useState<Mode>('menu')
   const [difficulty, setDifficulty] = useState<Difficulty>('matinee')
   const [chronoStart, setChronoStart] = useState<ChronoStart>({ kind: 'daily' })
+  const [connStart, setConnStart] = useState<ConnectionsStart>({ kind: 'daily' })
   const [soloStart, setSoloStart] = useState<SoloStart>({ kind: 'daily' })
   const [showRules, setShowRules] = useState(false)
 
   const startChronology = (start: ChronoStart) => {
     setChronoStart(start)
     setMode('chronology')
+  }
+
+  const startConnections = (start: ConnectionsStart) => {
+    setConnStart(start)
+    setMode('connections')
   }
 
   const startSolo = (start: SoloStart) => {
@@ -42,11 +49,13 @@ export default function App() {
   const todaySeed = localDateSeed()
   const soloChip = useMemo(() => dailyStatus('solo', todaySeed), [mode, todaySeed])
   const chronoChip = useMemo(() => dailyStatus('chronology', todaySeed), [mode, todaySeed])
+  const connChip = useMemo(() => dailyStatus('connections', todaySeed), [mode, todaySeed])
   const duelChip = useMemo(() => duelRecord(difficulty), [mode, difficulty])
 
   if (mode === 'solo') return <SoloGame onExit={() => setMode('menu')} start={soloStart} />
   if (mode === 'duel') return <DuelGame onExit={() => setMode('menu')} difficulty={difficulty} />
   if (mode === 'chronology') return <ChronologyGame onExit={() => setMode('menu')} start={chronoStart} />
+  if (mode === 'connections') return <ConnectionsGame onExit={() => setMode('menu')} start={connStart} />
 
   return (
     <div
@@ -198,6 +207,40 @@ export default function App() {
                   </button>
                 ))}
               </div>
+            </div>
+          </div>
+          {/* Connections (Mode 4) — EXTRAPOLATED, composed from the same paper
+              panel as the other daily cards (cohesion ruling). */}
+          <div className="rounded-stub-panel bg-stub-paper px-6 py-4 shadow-stub-card-resting">
+            <button
+              type="button"
+              data-mode="connections"
+              onClick={() => startConnections({ kind: 'daily' })}
+              className="block w-full text-left active:scale-[0.98]"
+            >
+              <span className="flex items-baseline justify-between">
+                <span className="font-stub-display text-[17px] font-bold text-stub-navy">
+                  Connections
+                </span>
+                <StreakChip mode="connections" status={connChip} />
+              </span>
+              <span className="mt-0.5 block font-stub-ui text-[12px] text-stub-slate">
+                Today's sixteen. Find four groups of four — same director, actor, series, or genre.
+              </span>
+            </button>
+            {/* The daily is the button above; practice deals a fresh verified grid. */}
+            <div className="mt-3 flex items-center gap-2">
+              <span className="font-stub-label text-[11px] font-semibold uppercase tracking-[0.08em] text-stub-slate">
+                practice
+              </span>
+              <button
+                type="button"
+                data-connections-practice
+                onClick={() => startConnections({ kind: 'practice' })}
+                className="flex-1 rounded-stub-pill bg-stub-navy/[0.06] px-2 py-1.5 font-stub-label text-[11px] font-bold text-stub-slate transition-colors active:bg-stub-navy/10 active:text-stub-navy"
+              >
+                Random grid
+              </button>
             </div>
           </div>
         </div>

@@ -291,6 +291,24 @@ export default function HowToPlay({ onClose }: { onClose: () => void }) {
           </p>
         </Section>
 
+        <Section title="Connections (solo)">
+          <p>
+            Sixteen movies, <B>four hidden groups of four</B>. Every group is joined by one thing —
+            a shared <B>director</B>, <B>actor</B>, <B>series</B>, or <B>genre</B>. Tap four you
+            think belong together, then <B>Submit</B>.
+          </p>
+          <p>
+            Right, the group locks in and reveals its connection. Wrong, you lose one of your{' '}
+            <B>four guesses</B> — and if three of your four shared a group, it tells you{' '}
+            <B>one away</B>. Solve all four groups before the mistakes run out.
+          </p>
+          <p>
+            Every movie fits <B>exactly one</B> group — no card can honestly belong to two, so
+            there's always one clean answer. It's a true daily: the <B>same sixteen for everyone</B>{' '}
+            on the same day. <B>Random grid</B> on the menu deals a fresh board any time.
+          </p>
+        </Section>
+
         {/* TMDB free-tier attribution — required alongside any TMDB-derived
             data in the pool (docs/tmdb-plan.md "Obligations"). */}
         <section className="mb-7 border-t border-stub-slate-light/40 pt-5" data-tmdb-attribution>
