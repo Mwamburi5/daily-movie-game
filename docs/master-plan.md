@@ -394,7 +394,7 @@ what's ready-to-review per sitting.
       Duel/Solo reveal divergence accepted + credits-on-face idea → parked as D1;
       inline-reveal flip kept; pushed a1354be. All card-face deferrals → W3.)
 - [ ] P2 Stage B: draft tool · batch merges (log per batch) · POOL LOCK
-- [ ] W3 StubCard everywhere · menu/Solo/Chrono re-dress · RecapReel · desktop
+- [x] W3 StubCard everywhere · menu/Solo/Chrono re-dress · RecapReel · desktop
       — **increment 1 SHIPPED 2026-07-07** (4 commits c3f601e→aa39422 + ShareCopy,
       pushed): StubCard gained a wild branch (amber ticket: amber spine/pip, ★ WILD
       lockup, no year/ledger) → every CardView special-case collapsed to StubCard
@@ -439,7 +439,13 @@ what's ready-to-review per sitting.
       "LAST · TAZ Connected via…" (run past Buri); (d) Card.tsx/CardView dead in
       shipping code but still imported by 2 preview harnesses — delete needs
       preview repoint, held.
-      — **Buri approved: ___**
+      — **Buri approved: ✅ 2026-07-07** (checkpoint, commit ed798b3): desktop
+      framed-theater shipped as-is (§4.2 side-rail deferred, his call) · LastPlay
+      mixed-casing copy kept · **flipped flag b** (RecapReel +pts chip → navy,
+      7d-match) + **flag c** (menu gains the navy header; bottom "How to play"
+      folds into the header ?) · flags a (Stub wild) + d (rules scrim tokens)
+      kept as shipped · **Card.tsx/CardView DELETED** + 2 preview harnesses
+      repointed to StubCard. Full verify 64/64 post-follow-ups. **W3 CLOSED.**
 - [ ] W4 Connections engine+verify (auto) · UI+RULEBOOK — **Buri approved: ___**
 - [ ] W5 readouts · chrono daily pin · polish · tilt call: ___ · cutover call: ___
 - [ ] W6 SEND (deploy = Buri)
