@@ -79,7 +79,7 @@ import Hand from './components/Hand.tsx'
 import HowToPlay from './components/HowToPlay.tsx'
 import IdleCue from './components/IdleCue.tsx'
 import MeldShelf, { meldLabel } from './components/MeldShelf.tsx'
-import PlayBanner from './components/PlayBanner.tsx'
+import PlayBanner, { LastPlayLine } from './components/PlayBanner.tsx'
 import RecastOffer from './components/RecastOffer.tsx'
 import ScoreRace from './components/ScoreRace.tsx'
 import ShareCopy from './components/ShareCopy.tsx'
@@ -249,6 +249,13 @@ export default function DuelGame({
   // Taz's last say() line, persisted for the booth nameplate — the banner
   // auto-nulls at 2400ms but the quote stays readable until his next line.
   const [lastCpuQuote, setLastCpuQuote] = useState('')
+  // The 7a "last play" strip — persists the most recent move + its point delta
+  // after the transient banner fades (display-only; the say() chokepoint feeds it,
+  // so no new capture at the six scoring sites). null until the first move.
+  const [lastPlay, setLastPlay] = useState<{
+    text: string
+    delta: { label: string; value: number } | null
+  } | null>(null)
   const [superKey, setSuperKey] = useState(0) // drives the super-link flash + pile pulse
   const [deepKey, setDeepKey] = useState(0) // drives the deep-cut glow on the pile
   const [fxPile, setFxPile] = useState(0) // which Double Feature pile the super/deep fx plays on
@@ -339,8 +346,20 @@ export default function DuelGame({
   ) => {
     setBanner({ who, text, tier, points, deep, seq: ++seq.current })
     // say() is the single chokepoint for all ~20 banner call sites, so the
-    // booth quote rides along here rather than at each CPU call site.
+    // booth quote AND the persistent "last play" strip both ride along here
+    // rather than at each call site.
     if (who === 'CPU') setLastCpuQuote(text)
+    // Persist the last play for the 7a strip. Body keeps the lowercase say()
+    // voice verbatim (per LastPlayLine's contract); the delta is signed so the
+    // opponent's gain paints red from the player's POV (Taz's points → negative).
+    const who1 = who === 'You' ? 'YOU' : 'TAZ'
+    setLastPlay({
+      text: `LAST · ${who1} ${text}`,
+      delta:
+        points != null && points !== 0
+          ? { label: `${who1} +${points}`, value: who === 'You' ? points : -points }
+          : null,
+    })
   }
 
   // Record a highlight for the end-of-game recap reel.
@@ -1216,6 +1235,7 @@ export default function DuelGame({
     setHintMeldId(null)
     setHintsLeft(hintBudget)
     setBanner(null)
+    setLastPlay(null)
   }
 
   // Net score: points played minus a point per card still in hand
@@ -1245,6 +1265,21 @@ export default function DuelGame({
         ? 'You'
         : 'CPU'
   const offerMovie = recastOffer ? mv(recastOffer.id)! : null
+
+  // Hint pill label ("HINT · PACINO"): hintCard returns an id only, so name the
+  // shared person here. Only label a genuine pile link — a lay-off-only hint
+  // (hintMeldId set, no shared pile top) shows the pulse alone rather than lie
+  // about a name that isn't on the pile.
+  const hintLabel = (() => {
+    if (hintId === null) return undefined
+    const hm = mv(hintId)
+    if (!hm) return undefined
+    for (const t of tops) {
+      const sp = sharedPeople(t, hm)
+      if (sp.length > 0) return `HINT · ${sp[0].name.split(' ').pop()!.toUpperCase()}`
+    }
+    return undefined
+  })()
 
   // End recap: your highlights and a one-line read on how the match went.
   const yourMelds = recap.filter((e) => e.who === 'You' && e.kind === 'meld').length
@@ -1338,6 +1373,15 @@ export default function DuelGame({
             />
           )}
         </header>
+
+        {/* 7a "last play" strip — persistent readout of the most recent move,
+            distinct from the transient banner mid-board. Sits directly under the
+            score header per the reference; hidden until the first move. */}
+        {lastPlay && (
+          <div className={shortViewport ? 'mt-1' : 'mt-1.5'}>
+            <LastPlayLine text={lastPlay.text} delta={lastPlay.delta} />
+          </div>
+        )}
 
         {/* Taz's booth (7a paper diorama). The old card-back pip row is fully
             retired HERE — TazCorner re-renders the pips under the same
@@ -1691,6 +1735,7 @@ export default function DuelGame({
         >
           <TokenChips
             side="player"
+            compact={shortViewport}
             finalCut={playerTokens.finalCut}
             recast={playerTokens.recast}
             fcArmed={fcArmed}
@@ -1773,6 +1818,7 @@ export default function DuelGame({
           cards={playerHandMovies}
           raisedId={raisedId}
           hintId={hintId}
+          hintLabel={hintLabel}
           faceUp={faceUp}
           invalidNonce={invalidNonce}
           raisedBottom={190}

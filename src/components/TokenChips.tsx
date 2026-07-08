@@ -25,6 +25,10 @@ export interface TokenChipsProps {
    *  and the `fcArmed` state (docs/ui-contracts.md TokenChips "Behavior notes" recommends this
    *  boundary over threading a `say`-like reporter into a presentational component). */
   onToggleFinalCut?: () => void
+  /** Player side only: shrink the pills for 667px-class heights (W3). The CPU booth is
+   *  already compact (W1 TazCorner); this brings the player pills to the same footprint
+   *  so the bottom-left HUD doesn't crowd the fan on short viewports. */
+  compact?: boolean
 }
 
 export default function TokenChips({
@@ -34,8 +38,13 @@ export default function TokenChips({
   fcArmed = false,
   finalCutDisabled = false,
   onToggleFinalCut,
+  compact = false,
 }: TokenChipsProps) {
   const interactive = side === 'player'
+  // Player pill footprint: compact drops to the CPU booth's px-2/py-1/7.5px so the
+  // two token HUDs read as one family at 667px (only the player side toggles size —
+  // the cpu path is display-only and already compact).
+  const playerPill = compact ? 'px-2 py-1 text-[7.5px]' : 'px-2.5 py-1.5 text-[8px]'
 
   return (
     <div
@@ -48,7 +57,7 @@ export default function TokenChips({
           data-token="finalCut"
           disabled={!finalCut || finalCutDisabled}
           onClick={onToggleFinalCut}
-          className={`rounded-stub-pill border-2 px-2.5 py-1.5 font-stub-label text-[8px] font-bold uppercase tracking-[.08em] transition-transform active:scale-95 ${
+          className={`rounded-stub-pill border-2 ${playerPill} font-stub-label font-bold uppercase tracking-[.08em] transition-transform active:scale-95 ${
             !finalCut
               ? 'border-stub-disabled bg-stub-paper text-stub-disabled line-through'
               : fcArmed
@@ -78,7 +87,7 @@ export default function TokenChips({
         data-token="recast"
         className={
           side === 'player'
-            ? `rounded-stub-pill border-2 px-2.5 py-1.5 font-stub-label text-[8px] font-bold uppercase tracking-[.08em] ${
+            ? `rounded-stub-pill border-2 ${playerPill} font-stub-label font-bold uppercase tracking-[.08em] ${
                 recast
                   ? 'border-stub-navy bg-stub-paper text-stub-navy'
                   : 'border-stub-disabled bg-stub-paper text-stub-disabled line-through'

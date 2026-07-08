@@ -16,10 +16,16 @@ function HandCardFace({
   movie,
   credits,
   size,
+  hint = false,
+  hintLabel,
 }: {
   movie: Movie
   credits: boolean
   size: 'hand' | 'raised'
+  // The hinted fan card delegates the teal frame + "HINT · PACINO" pill to StubCard
+  // (README treatment); Hand keeps its own animated pulse on top as the motion layer.
+  hint?: boolean
+  hintLabel?: string
 }) {
   return (
     <StubCard
@@ -27,6 +33,8 @@ function HandCardFace({
       size={size}
       reveal={{ credits }}
       deepCut={!!movie.deepCast?.length}
+      hint={hint}
+      hintLabel={hintLabel}
     />
   )
 }
@@ -36,6 +44,9 @@ interface HandProps {
   raisedId: string | null
   // Hint target: this fan card pulses to flag a legal play (easy modes)
   hintId?: string | null
+  // Label for the hint pill above the hinted card, e.g. "HINT · PACINO" — the
+  // shared person is computed by the parent (hintCard returns an id only).
+  hintLabel?: string
   faceUp: ReadonlySet<string>
   invalidNonce: number
   raisedBottom?: number
@@ -54,6 +65,7 @@ export default function Hand({
   cards,
   raisedId,
   hintId,
+  hintLabel,
   faceUp,
   invalidNonce,
   raisedBottom = 238,
@@ -206,7 +218,13 @@ export default function Hand({
                 transition={spring}
                 className="relative"
               >
-                <HandCardFace movie={m} credits={faceUp.has(m.id)} size="hand" />
+                <HandCardFace
+                  movie={m}
+                  credits={faceUp.has(m.id)}
+                  size="hand"
+                  hint={hinted}
+                  hintLabel={hinted ? hintLabel : undefined}
+                />
                 {selected && (
                   <div className="pointer-events-none absolute inset-0 rounded-xl ring-4 ring-stub-amber/80" />
                 )}
