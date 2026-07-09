@@ -634,7 +634,19 @@ what's ready-to-review per sitting.
 5. W6: the deploy button.
 6. **W5c follow-ups (Buri RULED 2026-07-08 via grill) — ACTIVE this session
    (2026-07-08), in his order** (W5c checkpoint approved ✅; grill-first on (i)):
-   - (i) **Card title redesign → "NAME IS THE HERO" (ruled). ◀ IN SCOPING (grill).**
+   - (i) **Card title redesign → "NAME IS THE HERO" (ruled). ◀ SCOPED ✅ (grill
+     2026-07-08) → building.** Grill rulings (all Buri's recommended picks):
+     **SCOPE = StubCard only** (Duel/Solo hand·pile·raised lock to one zone ratio;
+     ride-along fix ChronoCard's *own* title mid-word break but KEEP its year-hero
+     layout; Connections tiles already ship the adaptive fit — untouched). **MONOGRAM
+     = demote to a small corner accent** (full auto-fit title becomes the dominant
+     type; ticket-stub character preserved, name wins). **FIT = adaptive font-size**
+     (the just-approved Connections `tileFontSize` model: measure longest word,
+     shrink with a min floor, wrap whole words — no "…", no mid-word break at any
+     size). Year → small tabular eyebrow/corner, out of the title's width (orchestrator
+     detail, shown at confirm). Note: StubCard is already wired into every caller, so
+     this edit updates all six contexts at once — single-writer, checkpointed, full
+     side-by-sides + a played game, then STOP.
      The movie name is
      "the most important part" — make the full title ALWAYS readable (auto-fit,
      no "…", no mid-word break), **shrink/demote the big first-letter monogram**
