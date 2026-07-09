@@ -77,6 +77,22 @@ function prettyKey(cat: GroupCat, key: string): string {
 
 const titleOf = (id: string): string => movieById.get(id)?.title ?? id
 
+// Fit the LONGEST word in a tile title so proper-noun single words never
+// force-break into an orphan char ("GOODFELLA/S", "ANCHORMA/N:") — the W5c
+// polish (2026-07-08). CSS hyphenation can't help: the dictionary can't split
+// proper nouns, so break-word just chops them mid-word. Instead we shrink the
+// font on tiles with a long word until it fits the tile width. The divisor is
+// calibrated to the WORST case — the 71px inner tile at the 375px viewport (not
+// 75px at 390), so it holds at every supported width — against measured wide
+// Domine caps (~0.73px per char per px, e.g. "ANCHORMAN:"): ≤8-char words stay
+// 11px, 9 → 10px, GOODFELLAS/ANCHORMAN: (10) → 9px, 11 → 8px, floor 7. A pure
+// char-count avoids a canvas measureText that would race the web-font load and
+// mis-size the first paint. break-word stays as the final backstop.
+function tileFontSize(title: string): number {
+  const longest = title.split(/\s+/).reduce((a, w) => (w.length > a.length ? w : a), '')
+  return Math.max(7, Math.min(11, Math.floor(94 / longest.length)))
+}
+
 // Seeded Fisher–Yates (same shape as daily/chronology) so a given board's tile
 // layout is stable per seed — the daily looks identical for everyone, and a
 // practice round is stable until reshuffled.
@@ -335,6 +351,7 @@ export default function ConnectionsGame({ onExit, start }: { onExit: () => void;
             <motion.div className="grid grid-cols-4 gap-[6px]" animate={shakeControls}>
               {remaining.map((id) => {
                 const on = selected.includes(id)
+                const title = titleOf(id)
                 return (
                   <button
                     key={id}
@@ -355,7 +372,7 @@ export default function ConnectionsGame({ onExit, start }: { onExit: () => void;
                       className="font-stub-display uppercase"
                       lang="en"
                       style={{
-                        fontSize: 11,
+                        fontSize: tileFontSize(title), // shrink long-word titles to fit (no mid-word break)
                         fontWeight: 700,
                         lineHeight: 1.06,
                         letterSpacing: '0.005em',
@@ -363,10 +380,10 @@ export default function ConnectionsGame({ onExit, start }: { onExit: () => void;
                         WebkitBoxOrient: 'vertical',
                         WebkitLineClamp: 5,
                         overflow: 'hidden',
-                        overflowWrap: 'anywhere', // break a too-long word (INGLOURIOUS) instead of clipping it
+                        overflowWrap: 'break-word', // final backstop if a word overflows even at 7px
                       }}
                     >
-                      {titleOf(id)}
+                      {title}
                     </span>
                   </button>
                 )

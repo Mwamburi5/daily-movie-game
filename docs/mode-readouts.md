@@ -105,6 +105,26 @@ actor-heavier than uniform.
   change (re-bake + re-pin + feel shift) — decide it against this histogram, and
   note P2 pool growth (more directors/series) will shift the mix on its own.
 
+**W5c phone-in-hand feel-read (Call 3, 2026-07-08) — consecutive dailies.** The
+histogram above is per-grid; the *lived* daily is a sequence, so this reads the
+baked window as consecutive days (the true "several dailies back-to-back"):
+
+- First 14 dailies (sorted signature): `AAAA · ADDG · AAAD · ADDG · AADD · AAAA ·
+  AADD · AAAD · AAAA · AAAD · AAAA · AAAD · AAAD · AAAS`. Day 0 (today's real
+  daily) is all-actor.
+- **Longest run of consecutive all-actor dailies: 4 days.** 19 separate runs of
+  ≥2 consecutive `AAAA` days across the year; 25 of 364 day-pairs are both
+  all-actor. Every grid has ≥2 actor groups; 64% (`AAAA`+`AAAD`) have ≥3.
+- **Verdict: it DOES read repetitive.** On reveal the four group labels are
+  almost always actor names (or 3 actors + a director), and all-actor grids
+  cluster up to 4-in-a-row. This is the trigger condition in Buri's W5b ruling
+  ("leave as-is *unless* the phone-in-hand pass shows consecutive dailies read
+  repetitive") → **the diversity floor (D4) is warranted at P2 LOCK.** Note the
+  cheapest effective floor is a *cap on actor groups* (`≤2 actor`, forcing
+  `aadd`/`aadg` shapes), not merely "≥2 distinct kinds" (which only kills the 29%
+  pure-`AAAA` and leaves `AAAD`'s 3-actor feel intact) — and the stronger cap
+  costs yield, the real tension to settle at LOCK with the grown pool.
+
 ---
 
 ## Reproduce

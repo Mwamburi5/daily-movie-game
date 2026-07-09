@@ -35,6 +35,13 @@ export interface TazCornerProps {
   quote?: string
   /** Compact one-line ticket strip (7e) instead of the full booth (7a). */
   compact?: boolean
+  /**
+   * Taz is one card from going out — surface a calm stub-red "last card"
+   * warning (Buri's "quiet booth warning" call, 2026-07-08). Presentational
+   * only: the count is already public via the pips, so this is emphasis on
+   * visible state, NOT new information — no rule/difficulty change.
+   */
+  warn?: boolean
 }
 
 // A spent token stays VISIBLE (README: "disabled tokens are ALWAYS visible,
@@ -68,6 +75,7 @@ export default function TazCorner({
   cpuTokens,
   quote,
   compact = false,
+  warn = false,
 }: TazCornerProps) {
   const count = cpuHand.length
 
@@ -83,7 +91,13 @@ export default function TazCorner({
         <div className="flex h-6 w-6 items-center justify-center rounded-full bg-stub-navy font-stub-display text-xs font-bold text-stub-amber">
           T
         </div>
-        <span className="whitespace-nowrap font-stub-label text-[9px] font-semibold tracking-[0.08em] text-stub-navy">
+        {/* warn → the count goes stub-red; the tight strip has no room for a
+            pill, so the recolored "1 CARD" carries the last-card signal. */}
+        <span
+          className={`whitespace-nowrap font-stub-label text-[9px] font-bold tracking-[0.08em] ${
+            warn ? 'text-stub-red' : 'font-semibold text-stub-navy'
+          }`}
+        >
           TAZ · {count} {count === 1 ? 'CARD' : 'CARDS'}
         </span>
         {/* Truncating italic quote — verbatim say() text, min-w-0 so ellipsis
@@ -128,8 +142,17 @@ export default function TazCorner({
 
           {/* Nameplate + quote */}
           <div className="min-w-0 flex-1">
-            <div className="font-stub-label text-[10px] font-semibold tracking-[0.1em] text-stub-navy">
+            <div
+              className={`font-stub-label text-[10px] tracking-[0.1em] ${
+                warn ? 'font-bold text-stub-red' : 'font-semibold text-stub-navy'
+              }`}
+            >
               TAZ · CPU · {count} {count === 1 ? 'CARD' : 'CARDS'}
+              {warn && (
+                <span className="ml-1.5 inline-block rounded-stub-pill bg-stub-red px-1.5 py-[1px] align-middle font-stub-label text-[8px] font-bold uppercase tracking-wider text-stub-cream">
+                  Last card
+                </span>
+              )}
             </div>
             <div className="mt-0.5 truncate font-stub-ui text-[11px] italic text-stub-slate">
               {quote ? `“${quote}”` : ''}
@@ -144,7 +167,7 @@ export default function TazCorner({
               <motion.div
                 key={id}
                 layoutId={id}
-                className="h-4 w-[11px] rounded-[3px] bg-stub-navy"
+                className={`h-4 w-[11px] rounded-[3px] ${warn ? 'bg-stub-red' : 'bg-stub-navy'}`}
               />
             ))}
           </div>

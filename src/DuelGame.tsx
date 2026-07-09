@@ -1451,6 +1451,7 @@ export default function DuelGame({
             cpuTokens={cpuTokens}
             quote={lastCpuQuote}
             compact={shortViewport}
+            warn={cpuHand.length === 1 && !gameOver}
           />
         </div>
 

@@ -530,6 +530,43 @@ what's ready-to-review per sitting.
       histogram the actor-heavy mix (~29% all-actor) in the grid-hardness
       readout, then rule constrain-vs-leave with data; (iii) minor: hyphenate/
       soft-wrap long Connections tile titles.
+      — **W5c POLISH SLICE (UI, checkpointed) SHIPPED 2026-07-08 ⛔ AWAITING BURI
+      CHECKPOINT:** three under-specified backlog features scoped grill-first
+      (one at a time, Buri ruled each), then built: **(a) onboarding →
+      Buri ruled "minimal framing now"** (not the funnel; deferred the funnel to
+      post-SEND friction from the phone pass + interviews) → built a one-shot
+      first-run welcome overlay (navy hero card, amber PLAY, rules hint) gated by
+      a new `seenIntro` **meta-only** flag in progress.ts (additive/optional,
+      backfill-safe, no rule reads it); verified shows-once + persists across
+      reload @390 + @375. **(b) CPU-final-card warning → Buri ruled "quiet booth
+      warning"** → TazCorner gains a `warn` prop (`cpuHand.length===1 &&
+      !gameOver`, zero new state): booth pip + nameplate go stub-red + a "LAST
+      CARD" pill; compact strip recolors the count red. KEY: Taz's hand size is
+      already public via the pips, so this is emphasis on visible state — NOT new
+      info → no rule/difficulty change, verify stays 64/64 by construction.
+      Harness-verified both variants (`?preview=TazCorner`). **(c) end-of-game
+      stats → Buri ruled "Duel end-screen record line" — but it ALREADY SHIPS**
+      (DuelGame.tsx:1996–2002, "Matinee record · N played · M won", reads
+      duelMeta); mis-scoped on a partial end-screen read, corrected before any
+      code → NO duplicate built (held the win-rate% idea: "0% won" at N=1 reads
+      harsh — Buri's call). **(iii) Connections tile titles** — the reported
+      "GOODFELL/AS" break FIXED, but not by CSS hyphenation (dictionary can't
+      split proper nouns): shipped an **adaptive per-tile font-size**
+      (`tileFontSize`, char-count calibrated to the 375px worst-case 71px tile →
+      ≤8ch=11px, 10ch=9px, floor 7; break-word backstop) — measured
+      `allLongWordsFit:true` on all 16 tiles @375 AND @390. **Phone-in-hand pass:
+      all four modes played @390×844 + @375×667, console clean, no regressions**
+      (Duel LastPlayLine/DrawChoice/CPU-scored turn healthy; Solo/Chrono
+      no-year-leak intact). **Connections category-diversity feel-read (Call 3) =
+      the trigger fired:** consecutive dailies DO read repetitive (day 0 = AAAA;
+      longest all-actor run 4 days; 19 runs ≥2; every grid ≥2 actor groups) →
+      **D4 diversity floor now WARRANTED at P2 LOCK** (docs/mode-readouts.md
+      addendum; cheapest effective floor = cap actor groups ≤2, costs yield —
+      settle at LOCK with the grown pool). Gate GREEN: full verify **64/64**
+      (2:29) · build · solo 8/8 · chrono 42/42 · connections 14/14. Out-of-scope
+      flag for Buri: raised **StubCard** titles break mid-word too ("MONEYBAL/L")
+      — same class, different (high-blast-radius) component; flagged, NOT fixed.
+      **W5c carry (iii) DONE.**
 - [ ] W6 SEND (deploy = Buri)
 - [ ] **D1 Duel deep-cut reveal as a difficulty lever** (PARKED, concept
       approved 2026-07-06; §3·D1) — deepCast TMDB content pass (P2-adjacent) →

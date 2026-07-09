@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import { AnimatePresence } from 'framer-motion'
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import SoloGame, { type SoloStart } from './SoloGame.tsx'
 import DuelGame from './DuelGame.tsx'
 import ChronologyGame, { type ChronoStart } from './ChronologyGame.tsx'
@@ -7,7 +7,7 @@ import ConnectionsGame, { type ConnectionsStart } from './ConnectionsGame.tsx'
 import HowToPlay from './components/HowToPlay.tsx'
 import { type Difficulty, DIFFICULTIES, DIFFICULTY_META } from './lib/difficulty.ts'
 import { localDateSeed } from './lib/daily.ts'
-import { dailyStatus, duelRecord, type DailyStatus } from './lib/progress.ts'
+import { dailyStatus, duelRecord, hasSeenIntro, markIntroSeen, type DailyStatus } from './lib/progress.ts'
 
 type Mode = 'menu' | 'solo' | 'duel' | 'chronology' | 'connections'
 
@@ -27,6 +27,14 @@ export default function App() {
   const [connStart, setConnStart] = useState<ConnectionsStart>({ kind: 'daily' })
   const [soloStart, setSoloStart] = useState<SoloStart>({ kind: 'daily' })
   const [showRules, setShowRules] = useState(false)
+  // First-run framing: shown once per device, before the menu makes sense.
+  // Lazy init reads the meta flag a single time (persistence guardrail: display
+  // only). Dismiss persists so it never nags a returning player.
+  const [showIntro, setShowIntro] = useState(() => !hasSeenIntro())
+  const dismissIntro = () => {
+    markIntroSeen()
+    setShowIntro(false)
+  }
 
   const startChronology = (start: ChronoStart) => {
     setChronoStart(start)
@@ -247,8 +255,63 @@ export default function App() {
       </div>
       <AnimatePresence>
         {showRules && <HowToPlay onClose={() => setShowRules(false)} />}
+        {showIntro && <IntroOverlay onDismiss={dismissIntro} />}
       </AnimatePresence>
     </div>
+  )
+}
+
+// One-shot first-run framing (Buri: "minimal framing now", 2026-07-08). NOT a
+// tutorial funnel — a single welcome beat that answers "what is this?" before the
+// four cards land, then never returns (gated by the seenIntro meta flag).
+// Composed from the menu's own Stub tokens: navy hero panel, amber primary, cream
+// text — the cohesion ruling (EXTRAPOLATED; no reference comp). Tapping the scrim
+// or Play both dismiss; the card stops propagation so an inside tap doesn't.
+function IntroOverlay({ onDismiss }: { onDismiss: () => void }) {
+  const reduce = useReducedMotion()
+  return (
+    <motion.div
+      className="absolute inset-0 z-[130] flex items-center justify-center bg-stub-navy/40 px-8 backdrop-blur-sm"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: reduce ? 0.15 : 0.25 }}
+      data-intro
+      onClick={onDismiss}
+    >
+      <motion.div
+        className="w-full max-w-[320px] rounded-stub-panel bg-stub-navy px-7 py-8 text-center shadow-stub-card-resting"
+        initial={{ opacity: 0, y: reduce ? 0 : 16, scale: reduce ? 1 : 0.96 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        exit={{ opacity: 0, y: reduce ? 0 : 16, scale: reduce ? 1 : 0.96 }}
+        transition={reduce ? { duration: 0.15 } : { type: 'spring', stiffness: 320, damping: 26 }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <p className="font-stub-label text-[10px] font-bold uppercase tracking-[0.18em] text-stub-amber">
+          Welcome to
+        </p>
+        <h2 className="mt-1 font-stub-display text-3xl font-bold italic tracking-tight text-stub-cream">
+          Match Cut
+        </h2>
+        <p className="mt-4 font-stub-ui text-[13.5px] leading-relaxed text-stub-cream/80">
+          Movies connect through the people who make them — the actors, directors, and series they share.
+        </p>
+        <p className="mt-2.5 font-stub-ui text-[13.5px] leading-relaxed text-stub-cream/80">
+          Four ways to play with those links. Fresh puzzles daily.
+        </p>
+        <button
+          type="button"
+          data-intro-dismiss
+          onClick={onDismiss}
+          className="mt-6 w-full rounded-stub-pill bg-stub-amber px-6 py-3 font-stub-label text-[13px] font-bold uppercase tracking-wider text-stub-navy shadow-stub-card-resting active:scale-[0.98]"
+        >
+          Play
+        </button>
+        <p className="mt-3 font-stub-ui text-[11px] text-stub-cream/45">
+          New here? Tap ? any time for the full rules.
+        </p>
+      </motion.div>
+    </motion.div>
   )
 }
 

@@ -40,6 +40,10 @@ interface ProgressV1 {
   chronology: DailyMeta
   connections: DailyMeta
   duel: Record<Difficulty, DuelMeta>
+  // First-run framing dismissed. META ONLY — a one-shot UI gate (App.tsx), never
+  // read by a rule. Optional/additive: a pre-intro blob lacks it → treated as
+  // unseen (shows once, then persists). Same additive pattern as `connections`.
+  seenIntro?: boolean
 }
 
 export type DailyMode = 'solo' | 'chronology' | 'connections'
@@ -56,6 +60,7 @@ const fresh = (): ProgressV1 => ({
     feature: { plays: 0, wins: 0 },
     directors: { plays: 0, wins: 0 },
   },
+  seenIntro: false,
 })
 
 // localStorage can be absent or throwing (Safari private mode, storage full).
@@ -166,4 +171,21 @@ export function dailyStatus(mode: DailyMode, todaySeed: string): DailyStatus {
 
 export function duelRecord(difficulty: Difficulty): DuelMeta {
   return loadProgress().duel[difficulty] ?? { plays: 0, wins: 0 }
+}
+
+// ── first-run framing ─────────────────────────────────────────────────────────
+// A one-shot welcome overlay (App.tsx) — Buri's "minimal framing" call
+// (2026-07-08), NOT a tutorial funnel. Meta-state only: a UI gate, never a rule
+// input. A blob without the flag reads as unseen, so the intro shows exactly once
+// per device and then persists.
+
+export function hasSeenIntro(): boolean {
+  return loadProgress().seenIntro === true
+}
+
+export function markIntroSeen(): void {
+  const p = loadProgress()
+  if (p.seenIntro) return
+  p.seenIntro = true
+  save(p)
 }

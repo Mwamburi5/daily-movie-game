@@ -33,6 +33,15 @@ export default function TazCornerPreview() {
           />
         </Section>
 
+        <Section label="Booth — WARN: Taz on his last card (stub-red pip + LAST CARD tag)">
+          <TazCorner
+            cpuHand={['a']}
+            cpuTokens={{ finalCut: true, recast: true }}
+            quote="one card left — don't blink"
+            warn
+          />
+        </Section>
+
         <Section label="Compact strip (7e) — both live">
           <TazCorner
             compact
@@ -48,6 +57,16 @@ export default function TazCornerPreview() {
             cpuHand={['a', 'b', 'c', 'd', 'e']}
             cpuTokens={{ finalCut: true, recast: false }}
             quote="you really thought that was going to work against me? adorable, honestly"
+          />
+        </Section>
+
+        <Section label="Compact strip — WARN: last card (count goes stub-red)">
+          <TazCorner
+            compact
+            cpuHand={['a']}
+            cpuTokens={{ finalCut: true, recast: true }}
+            quote="one card left — don't blink"
+            warn
           />
         </Section>
       </div>
