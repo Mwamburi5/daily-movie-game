@@ -573,6 +573,35 @@ what's ready-to-review per sitting.
       CLOSED** (the Chronology published-daily pin is the one W5 line intentionally
       relocated to the P2-LOCK docket §7·4b·D1, not a SEND blocker). The StubCard
       mid-word-break flag ("MONEYBAL/L") carries into §7·6 (i) "NAME IS THE HERO".
+- [ ] **W5c FOLLOW-UPS (UI, checkpointed) — SHIPPED 2026-07-09 ⛔ AWAITING BURI
+      CHECKPOINT** (§7·6 i+ii; grill-scoped 2026-07-08, built 2026-07-09):
+      **(i) NAME IS THE HERO** — StubCard title-block redesign (Duel + Solo, all
+      sizes): adaptive `titleFit` (measure longest word + total len → shrink with a
+      floor, wrap whole words, `hyphens:manual`) makes the full name ALWAYS whole —
+      no "…", no mid-word break; the giant `width×0.46` monogram is DEMOTED to a
+      small accent in a fixed-height art strip; year → small tabular eyebrow off the
+      title's width; a bottom `flex-1` spacer pins title/art to the top so the ratio
+      holds regardless of reveal state. **Exhaustively gated:** `?preview=
+      StubTitleAudit` (new, 89 films × 3 sizes = 267 cards) → **0 mid-word breaks,
+      0 content clips** measured in-browser with real Domine (a canvas pass caught
+      that `break-word` hides overflow, so the real test is longest-word-fits, not
+      scrollWidth). Key calibration: Domine caps advance is ~0.80/char/px (not the
+      Connections fit's 0.73) → `CAPS_ADVANCE=0.82` + a −4px box buffer; floors
+      lowered so 12-char words ("UNTOUCHABLES") fit whole (hand 6px, longest title
+      "ONCE UPON A TIME IN HOLLYWOOD" floors at 6px @hand — whole > big, Buri's
+      ruling). **Ride-along:** ChronoCard's own title had the identical bug — same
+      fit ported (year-hero UNTOUCHED); `?preview=ChronoTitleAudit` (162×3=486) →
+      **0 breaks** (caught + fixed "THE SOCIAL NETWOR/K" live). **(ii) TAZ → CPU**
+      — neutral label everywhere player-facing: TazCorner nameplate `TAZ · CPU` →
+      `CPU` + avatar `T`→`C` (booth + compact), ScoreRace header `TAZ`→`CPU` +
+      "Taz's turn"→"CPU's turn", RecastOffer "TAZ PLAYS"/aria→CPU, DuelGame
+      LastPlayLine `who1` `TAZ`→`CPU`; quip infra (`lastCpuQuote`/say) KEPT intact
+      (parked persona reclaims it); internal `TazCorner` component name + codename
+      comments left. Verified in real Duel: score+booth say CPU, `anyTazText:false`.
+      Gate: build · full verify **64/64** · solo 8/8 · chrono 42/42 · connections
+      14/14; browser-verified Duel @390×844+@375×667, Solo @390, Chronology @390.
+      **PARKED (§7·6): difficulty-as-personas — NOT built.** Two throwaway audit
+      harnesses kept as P2 pool-merge regression guards (flag: remove if unwanted).
 - [ ] W6 SEND (deploy = Buri)
 - [ ] **D1 Duel deep-cut reveal as a difficulty lever** (PARKED, concept
       approved 2026-07-06; §3·D1) — deepCast TMDB content pass (P2-adjacent) →
@@ -634,8 +663,9 @@ what's ready-to-review per sitting.
 5. W6: the deploy button.
 6. **W5c follow-ups (Buri RULED 2026-07-08 via grill) — ACTIVE this session
    (2026-07-08), in his order** (W5c checkpoint approved ✅; grill-first on (i)):
-   - (i) **Card title redesign → "NAME IS THE HERO" (ruled). ◀ SCOPED ✅ (grill
-     2026-07-08) → building.** Grill rulings (all Buri's recommended picks):
+   - (i) **Card title redesign → "NAME IS THE HERO" (ruled). ◀ SHIPPED 2026-07-09
+     ⛔ AWAITING CHECKPOINT (see Ledger W5c-follow-ups).** Grill rulings (all Buri's
+     recommended picks):
      **SCOPE = StubCard only** (Duel/Solo hand·pile·raised lock to one zone ratio;
      ride-along fix ChronoCard's *own* title mid-word break but KEEP its year-hero
      layout; Connections tiles already ship the adaptive fit — untouched). **MONOGRAM
@@ -656,11 +686,17 @@ what's ready-to-review per sitting.
      §2.6 typographic-face design). SUBSUMES the raised-StubCard mid-word-break
      flag. Direction is locked; still scope the exact layout grill-first.
      Checkpointed UI.
-   - (ii) **Opponent → RENAME "TAZ" → "CPU" now (ruled).** Neutral label
+   - (ii) **Opponent → RENAME "TAZ" → "CPU" now (ruled). ◀ SHIPPED 2026-07-09 ⛔
+     AWAITING CHECKPOINT.** Neutral label
      everywhere (score header, TazCorner nameplate/avatar, LastPlayLine "CPU
      +1"). **Keep the quip infrastructure** (`lastCpuQuote` / say quotes) — the
      parked persona concept reclaims it. Copy sweep; confirm at build whether the
-     neutral CPU keeps the first-person quips as flavor or mutes them.
+     neutral CPU keeps the first-person quips as flavor or mutes them. **Built:
+     labels swept (nameplate `TAZ · CPU`→`CPU`, avatar `T`→`C`, score `TAZ`→`CPU`,
+     "Taz's turn"→"CPU's turn", "TAZ PLAYS"→"CPU PLAYS", LastPlayLine `who1`→`CPU`);
+     quips KEPT (first-person flavor retained — the CPU still taunts; Buri to
+     confirm keep-vs-mute at checkpoint). Internal `TazCorner` name + codename
+     comments left intentionally.**
    - **⏸ PARKED CONCEPT (Buri, 2026-07-08): difficulty-as-PERSONAS.** Replace the
      Matinee/Feature/Director's difficulty *labels* with named rival characters
      you choose to play against — e.g. **snobby movie critic = hardest · hipster

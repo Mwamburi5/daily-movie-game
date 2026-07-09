@@ -33,7 +33,7 @@ export default function TazCornerPreview() {
           />
         </Section>
 
-        <Section label="Booth — WARN: Taz on his last card (stub-red pip + LAST CARD tag)">
+        <Section label="Booth — WARN: CPU on its last card (stub-red pip + LAST CARD tag)">
           <TazCorner
             cpuHand={['a']}
             cpuTokens={{ finalCut: true, recast: true }}

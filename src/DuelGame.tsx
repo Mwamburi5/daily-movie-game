@@ -351,8 +351,8 @@ export default function DuelGame({
     if (who === 'CPU') setLastCpuQuote(text)
     // Persist the last play for the 7a strip. Body keeps the lowercase say()
     // voice verbatim (per LastPlayLine's contract); the delta is signed so the
-    // opponent's gain paints red from the player's POV (Taz's points → negative).
-    const who1 = who === 'You' ? 'YOU' : 'TAZ'
+    // opponent's gain paints red from the player's POV (CPU's points → negative).
+    const who1 = who === 'You' ? 'YOU' : 'CPU'
     setLastPlay({
       text: `LAST · ${who1} ${text}`,
       delta:
@@ -1919,7 +1919,7 @@ export default function DuelGame({
             the fade. The double-fire guard stays parent-side (allowCpuPlay /
             playerRecast). cardSlot = StubCard ticket back (W3: a Final-Cut dump
             can be a wild; StubCard's wild branch now handles it). Note:
-            the comp's flat "TAZ PLAYS" eyebrow drops today's draws-&-plays
+            the comp's flat "CPU PLAYS" eyebrow drops today's draws-&-plays
             nuance — a checkpoint flag, not a bug (recastOffer.drew unused). */}
         <AnimatePresence>
           {recastOffer && offerMovie && (

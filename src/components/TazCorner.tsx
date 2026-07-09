@@ -87,9 +87,9 @@ export default function TazCorner({
             straddling the left/right edges (translated half outside). */}
         <div className="absolute -left-2 top-1/2 h-3 w-3 -translate-y-1/2 rounded-full border-2 border-stub-navy bg-stub-cream" />
         <div className="absolute -right-2 top-1/2 h-3 w-3 -translate-y-1/2 rounded-full border-2 border-stub-navy bg-stub-cream" />
-        {/* 24px avatar */}
+        {/* 24px avatar (CPU) */}
         <div className="flex h-6 w-6 items-center justify-center rounded-full bg-stub-navy font-stub-display text-xs font-bold text-stub-amber">
-          T
+          C
         </div>
         {/* warn → the count goes stub-red; the tight strip has no room for a
             pill, so the recolored "1 CARD" carries the last-card signal. */}
@@ -98,7 +98,7 @@ export default function TazCorner({
             warn ? 'text-stub-red' : 'font-semibold text-stub-navy'
           }`}
         >
-          TAZ · {count} {count === 1 ? 'CARD' : 'CARDS'}
+          CPU · {count} {count === 1 ? 'CARD' : 'CARDS'}
         </span>
         {/* Truncating italic quote — verbatim say() text, min-w-0 so ellipsis
             actually kicks in inside the flex row. */}
@@ -135,9 +135,9 @@ export default function TazCorner({
         />
 
         <div className="flex items-center gap-[11px]">
-          {/* 38px navy avatar with amber Domine "T" */}
+          {/* 38px navy avatar with amber Domine "C" (CPU) */}
           <div className="flex h-[38px] w-[38px] shrink-0 items-center justify-center rounded-full bg-stub-navy font-stub-display text-lg font-bold text-stub-amber">
-            T
+            C
           </div>
 
           {/* Nameplate + quote */}
@@ -147,7 +147,7 @@ export default function TazCorner({
                 warn ? 'font-bold text-stub-red' : 'font-semibold text-stub-navy'
               }`}
             >
-              TAZ · CPU · {count} {count === 1 ? 'CARD' : 'CARDS'}
+              CPU · {count} {count === 1 ? 'CARD' : 'CARDS'}
               {warn && (
                 <span className="ml-1.5 inline-block rounded-stub-pill bg-stub-red px-1.5 py-[1px] align-middle font-stub-label text-[8px] font-bold uppercase tracking-wider text-stub-cream">
                   Last card

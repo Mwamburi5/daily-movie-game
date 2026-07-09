@@ -21,7 +21,7 @@ export default function RecastOfferPreview() {
   return (
     <div className="flex h-full w-full flex-col gap-8 overflow-auto bg-stub-cream p-8">
       <div className="mx-auto w-full max-w-[430px] space-y-8">
-        <Section label="Super link — Taz lands +4 and an encore">
+        <Section label="Super link — CPU lands +4 and an encore">
           <Frame>
             <RecastOffer
               finalCut={false}

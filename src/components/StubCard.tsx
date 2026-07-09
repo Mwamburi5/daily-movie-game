@@ -73,13 +73,49 @@ function spineColor(genre: string): string {
 }
 
 // ── Art-slot monogram ────────────────────────────────────────────────────────
-// The typographic art slot shows the title's INITIAL, not the whole title (which
-// lives once in the header). Skip a leading article so "The Godfather" → G,
-// "A Clockwork Orange" → C. Falls back to '?' for an empty/whitespace title.
+// The monogram is the title's INITIAL — a DEMOTED corner accent under the
+// "NAME IS THE HERO" redesign (Buri grill, 2026-07-08): the full title now owns
+// the face; this is a small ticket-stub flourish, not the hero. Skip a leading
+// article so "The Godfather" → G, "A Clockwork Orange" → C. Falls back to '?'.
 function titleInitial(title: string): string {
   const stripped = title.replace(/^(the|a|an)\s+/i, '').trim()
   const first = (stripped || title).trim().charAt(0)
   return (first || '?').toUpperCase()
+}
+
+// ── Adaptive title fit — the NAME-IS-THE-HERO guarantee (Buri, 2026-07-08) ─────
+// The full movie name must ALWAYS be readable: no "…", no mid-word break, at
+// every card size. Same proven heuristic as ConnectionsGame.tileFontSize (shipped
+// + Buri-approved same day): shrink the font on a pure CHAR COUNT — no canvas
+// measureText that would race the web-font load and mis-size the first paint —
+// against two caps, taking the smaller:
+//   • widthCap: the LONGEST word must fit the title box on one line, so a
+//     proper-noun single word ("MONEYBALL") can never force-break mid-glyph.
+//   • lineCap: the WHOLE title must fit in `maxLines`, so a many-short-word title
+//     ("ONCE UPON A TIME IN HOLLYWOOD") shrinks instead of overflowing the fixed
+//     title band (which would break the locked zone ratio).
+// Domine caps advance: the WIDEST caps (M/W/E-heavy words like "MEMENTO") measure
+// ~0.80px per char per font-px in the shipped subset; 0.82 adds a safety margin so
+// the fitted size guarantees the longest word fits one line (verified 0 mid-word
+// breaks across the whole pool via ?preview=StubTitleAudit's canvas measure). The
+// Connections tile fit's 0.73 was calibrated to its own wider tiles + shorter
+// titles; StubCard's narrower title box needs the true worst-case advance.
+// `break-word` stays as the final backstop; the floor keeps long titles legible.
+const CAPS_ADVANCE = 0.82
+function titleFit(
+  title: string,
+  boxW: number,
+  basePx: number,
+  floorPx: number,
+  maxLines: number,
+): number {
+  const words = title.split(/\s+/).filter(Boolean)
+  const longestLen = words.reduce((a, w) => Math.max(a, w.length), 1)
+  const totalLen = title.replace(/\s+/g, ' ').trim().length || 1
+  const widthCap = boxW / (CAPS_ADVANCE * longestLen)
+  // chars that fit one line at font f = boxW/(0.73·f); want totalLen ≤ maxLines·that
+  const lineCap = (boxW * maxLines) / (CAPS_ADVANCE * totalLen)
+  return Math.max(floorPx, Math.min(basePx, widthCap, lineCap))
 }
 
 // ── +1 / +2 ledger mapping ───────────────────────────────────────────────────
@@ -144,6 +180,10 @@ const SIZES = {
     badgePx: 0,
     notchPx: 0,
     gap: 0,
+    titleBasePx: 0,
+    titleFloorPx: 0,
+    titleMaxLines: 0,
+    artH: 0,
   },
   hand: {
     width: 96,
@@ -169,6 +209,14 @@ const SIZES = {
     badgePx: 8,
     notchPx: 0,
     gap: 3,
+    // NAME IS THE HERO: title owns the face; base bumped from the old 11, art
+    // strip demoted to a thin genre+monogram band (was flex-1 filling the card).
+    // maxLines 2 + a slim artH so title+art+full-ledger fit the tight frame with
+    // NO clip (verified across the whole pool via ?preview=StubTitleAudit).
+    titleBasePx: 12,
+    titleFloorPx: 6,
+    titleMaxLines: 2,
+    artH: 14,
   },
   pile: {
     width: 130,
@@ -194,6 +242,10 @@ const SIZES = {
     badgePx: 9.5,
     notchPx: 12,
     gap: 4,
+    titleBasePx: 14,
+    titleFloorPx: 8,
+    titleMaxLines: 2,
+    artH: 14,
   },
   raised: {
     width: 184,
@@ -219,6 +271,10 @@ const SIZES = {
     badgePx: 12,
     notchPx: 14,
     gap: 5,
+    titleBasePx: 20,
+    titleFloorPx: 9,
+    titleMaxLines: 2,
+    artH: 24,
   },
 } as const
 
@@ -329,6 +385,18 @@ export function StubCard({
   }
 
   const ledger = wild ? [] : showCredits ? buildLedger(movie, s.maxCast) : []
+
+  // Title box inner width = card − rail − perforation − the main column's own
+  // left(gap)/right(pad) padding, minus a 2px safety buffer. Feeds the adaptive
+  // fit so the fitted size is derived from the real space the name has to live in.
+  const titleBoxW = Math.max(1, s.width - s.railW - s.perfW - s.gap - s.pad - 4)
+  const titlePx = titleFit(
+    movie.title,
+    titleBoxW,
+    s.titleBasePx,
+    s.titleFloorPx,
+    s.titleMaxLines,
+  )
 
   return (
     <div className={`relative ${className ?? ''}`} style={{ width: s.width }}>
@@ -471,45 +539,42 @@ export function StubCard({
             paddingBottom: Math.max(s.pad, s.notchPx / 2 + 2),
           }}
         >
-          {/* title + year, thin navy rule beneath. Title wraps to 2 lines then
-              ellipsizes (never mid-word-clips); year stays top-right on line 1
-              (items-start + flex-none). line-clamp caps height so the rule and
-              the rows below don't get shoved around by a long title. */}
+          {/* ── Title band — NAME IS THE HERO (Buri grill, 2026-07-08): the full
+              movie name owns the face. `titlePx` is adaptively fitted so the name
+              is ALWAYS whole — no "…", no mid-word break — wrapping on whole words
+              up to titleMaxLines. The year is demoted to a small tabular eyebrow
+              ABOVE the name (off the title's line, so the name gets the full
+              column width). Thin navy rule beneath. `hyphens:manual` kills the old
+              auto-hyphenation that chopped proper nouns ("MONEYBAL/L"). ── */}
           <div style={{ flex: 'none' }}>
-            <div className="flex items-start justify-between gap-1">
-              <span
-                className="min-w-0 break-words font-stub-display uppercase text-stub-navy"
-                lang="en"
+            {showYear && (
+              <div
+                className="font-stub-label text-stub-slate"
                 style={{
-                  fontSize: s.titlePx,
+                  fontSize: s.yearPx,
                   fontWeight: 700,
-                  lineHeight: 1.02,
-                  display: '-webkit-box',
-                  WebkitBoxOrient: 'vertical',
-                  WebkitLineClamp: 2,
-                  overflow: 'hidden',
-                  // long single words (GODFATHER) hyphenate across the wrap
-                  // instead of ellipsizing — the year column narrows both
-                  // clamped lines, so unbroken 9+ char words can't fit whole.
-                  hyphens: 'auto',
+                  fontVariantNumeric: 'tabular-nums',
+                  letterSpacing: '0.1em',
+                  lineHeight: 1,
+                  marginBottom: 1,
                 }}
               >
-                {movie.title}
-              </span>
-              {showYear && (
-                <span
-                  className="flex-none font-stub-display text-stub-navy"
-                  style={{
-                    fontSize: s.yearPx,
-                    fontWeight: 700,
-                    fontVariantNumeric: 'tabular-nums',
-                    lineHeight: 1.02,
-                  }}
-                >
-                  {movie.year}
-                </span>
-              )}
-            </div>
+                {movie.year}
+              </div>
+            )}
+            <span
+              className="block min-w-0 break-words font-stub-display uppercase text-stub-navy"
+              lang="en"
+              style={{
+                fontSize: titlePx,
+                fontWeight: 700,
+                lineHeight: 1.03,
+                overflowWrap: 'break-word', // backstop only — titleFit prevents it
+                hyphens: 'manual', // NO auto-hyphenation (the old mid-word culprit)
+              }}
+            >
+              {movie.title}
+            </span>
             <div
               style={{
                 marginTop: 2,
@@ -520,16 +585,17 @@ export function StubCard({
             />
           </div>
 
-          {/* ── Art region → TYPOGRAPHIC LOCKUP (Buri's standing ruling: no scene
-              art, ever; the title lives ONCE in the header). A framed block
-              echoing the comps' art box, filled with an oversized Domine MONOGRAM
-              — the title's initial in the spine hue — over the genre tag. Sized
-              relative to the slot so it never clips. reveal.art is ignored.
-              DEEP CUT rides the bottom-right as a circular double-ring stamp. */}
+          {/* ── Art strip → DEMOTED (Buri grill, 2026-07-08): a FIXED-height band
+              (was flex-1, which swelled the monogram whenever credits were hidden
+              — the reason cards didn't share one ratio). Holds a SMALL monogram
+              accent + the genre tag; the name is the hero now, this is a ticket
+              flourish. reveal.art is ignored (typographic-face ruling §2.6). DEEP
+              CUT rides the bottom-right as a circular double-ring stamp. ── */}
           {s.showArt && (
             <div
-              className="relative min-h-0 flex-1 overflow-hidden"
+              className="relative flex-none overflow-hidden"
               style={{
+                height: s.artH,
                 borderWidth: Math.max(1, s.borderPx - 0.5),
                 borderStyle: 'solid',
                 borderColor: 'var(--color-stub-navy)',
@@ -546,17 +612,21 @@ export function StubCard({
                   backgroundSize: '7px 7px',
                 }}
               />
+              {/* monogram · genre · deep-cut, laid out as a FLEX ROW so nothing
+                  overlaps in the thin strip. genre takes the middle and truncates;
+                  the stamp is an inline flex item on the right (the old absolute
+                  bottom-right stamp collided with the now vertically-centered
+                  content once the art slot shrank to a band). */}
               <div
-                className="flex h-full w-full flex-col items-center justify-center text-center"
-                style={{ padding: s.pad, gap: Math.max(1, s.gap - 2) }}
+                className="flex h-full w-full items-center"
+                style={{ paddingInline: s.pad, gap: s.gap }}
               >
-                {/* oversized lockup — the title INITIAL for a real film, or a ★
-                    for a wild — capped by slot width/height so it can't clip;
-                    Domine, spine hue (amber for wilds), tight leading. */}
+                {/* small monogram accent — title INITIAL (★ for a wild), spine
+                    hue; sized to the strip so it reads as a flourish, not a hero. */}
                 <span
-                  className="font-stub-display"
+                  className="flex-none font-stub-display"
                   style={{
-                    fontSize: Math.round(s.width * 0.46),
+                    fontSize: Math.round(s.artH * 0.78),
                     fontWeight: 700,
                     lineHeight: 0.9,
                     color: spine,
@@ -565,7 +635,7 @@ export function StubCard({
                   {wild ? '★' : titleInitial(movie.title)}
                 </span>
                 <span
-                  className="max-w-full truncate font-stub-label text-stub-slate"
+                  className="min-w-0 flex-1 truncate text-center font-stub-label text-stub-slate"
                   style={{
                     fontSize: s.monoPx,
                     fontWeight: 600,
@@ -574,38 +644,36 @@ export function StubCard({
                 >
                   {wild ? 'WILD' : movie.genre.toUpperCase()}
                 </span>
-              </div>
 
-              {deepCut && !wild && s.badgePx > 0 && (
-                <div
-                  className="absolute flex items-center justify-center rounded-full"
-                  style={{
-                    right: s.gap,
-                    bottom: s.gap,
-                    // circular stamp: filled genre-hue disc with a thin cream
-                    // inner ring inset from the edge (comp's double-ring look).
-                    width: s.badgePx * 2.9,
-                    height: s.badgePx * 2.9,
-                    background: spine,
-                    boxShadow: `inset 0 0 0 1.5px var(--color-stub-cream)`,
-                  }}
-                >
-                  <span
-                    className="text-center font-stub-label"
+                {deepCut && !wild && s.badgePx > 0 && (
+                  <div
+                    className="flex flex-none items-center justify-center rounded-full"
                     style={{
-                      color: 'var(--color-stub-cream)',
-                      fontSize: s.badgePx * 0.62,
-                      fontWeight: 700,
-                      lineHeight: 1.05,
-                      letterSpacing: '0.04em',
+                      // capped to the strip height so it fits the band (comp's
+                      // filled genre-hue disc + thin cream inner ring look).
+                      width: Math.min(s.badgePx * 2.6, s.artH * 0.82),
+                      height: Math.min(s.badgePx * 2.6, s.artH * 0.82),
+                      background: spine,
+                      boxShadow: `inset 0 0 0 1.5px var(--color-stub-cream)`,
                     }}
                   >
-                    DEEP
-                    <br />
-                    CUT
-                  </span>
-                </div>
-              )}
+                    <span
+                      className="text-center font-stub-label"
+                      style={{
+                        color: 'var(--color-stub-cream)',
+                        fontSize: Math.min(s.badgePx * 2.6, s.artH * 0.82) * 0.22,
+                        fontWeight: 700,
+                        lineHeight: 1.05,
+                        letterSpacing: '0.04em',
+                      }}
+                    >
+                      DEEP
+                      <br />
+                      CUT
+                    </span>
+                  </div>
+                )}
+              </div>
             </div>
           )}
 
@@ -666,6 +734,12 @@ export function StubCard({
               ))}
             </div>
           )}
+
+          {/* Bottom spacer — absorbs slack so the title + art zones stay pinned to
+              the top at a constant size whether or not the ledger is present (an
+              unflipped, credits-hidden card looks proportionally identical to a
+              revealed one). This is what locks the "one ratio across every card". */}
+          <div style={{ flex: 1 }} />
         </div>
       </div>
     </div>

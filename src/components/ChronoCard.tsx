@@ -27,11 +27,29 @@ export type ChronoCardSize = 'hand' | 'raised' | 'line'
 // Per-size internal scale. `edge` = the cream/decade accent rail on the left; the
 // diamond pip sizes off it. Kept width-relative to StubCard's proportions so the
 // two card systems read as one family across modes.
+// titleBasePx/titleFloorPx feed the adaptive fit (NAME IS THE HERO ride-along,
+// Buri 2026-07-08): the front title shrinks so proper-noun single words never
+// break mid-glyph — the same class of bug the StubCard redesign fixed. The big
+// reveal YEAR stays the hero (Chronology's whole point), untouched.
 const DIMS = {
-  hand: { w: 78, h: 110, title: 'text-[12px]', year: 'text-[30px]', pad: 6, edge: 9, radius: '11px', border: 2 },
-  raised: { w: 150, h: 210, title: 'text-[19px]', year: 'text-[64px]', pad: 11, edge: 16, radius: 'var(--radius-stub-panel)', border: 2.5 },
-  line: { w: 64, h: 90, title: 'text-[10px]', year: 'text-[22px]', pad: 5, edge: 7, radius: 'var(--radius-stub-card)', border: 2 },
+  hand: { w: 78, h: 110, titleBasePx: 12, titleFloorPx: 5, year: 'text-[30px]', pad: 6, edge: 9, radius: '11px', border: 2 },
+  raised: { w: 150, h: 210, titleBasePx: 19, titleFloorPx: 10, year: 'text-[64px]', pad: 11, edge: 16, radius: 'var(--radius-stub-panel)', border: 2.5 },
+  line: { w: 64, h: 90, titleBasePx: 10, titleFloorPx: 4, year: 'text-[22px]', pad: 5, edge: 7, radius: 'var(--radius-stub-card)', border: 2 },
 } as const
+
+// Adaptive title fit — mirrors StubCard.titleFit (kept local: ChronoCard is
+// deliberately decoupled from StubCard, see file header). Shrink so the longest
+// word fits the box width and the whole title fits `maxLines`; Domine caps ≈
+// 0.73px advance per char per font-px. break-word stays as the backstop.
+const CHRONO_CAPS_ADVANCE = 0.82 // widest Domine caps ≈ 0.80/char/px + margin (matches StubCard)
+function fitTitlePx(title: string, boxW: number, basePx: number, floorPx: number): number {
+  const words = title.split(/\s+/).filter(Boolean)
+  const longestLen = words.reduce((a, w) => Math.max(a, w.length), 1)
+  const totalLen = title.replace(/\s+/g, ' ').trim().length || 1
+  const widthCap = boxW / (CHRONO_CAPS_ADVANCE * longestLen)
+  const lineCap = (boxW * 3) / (CHRONO_CAPS_ADVANCE * totalLen) // up to 3 lines
+  return Math.max(floorPx, Math.min(basePx, widthCap, lineCap))
+}
 
 // Decade -> a saturated accent, used as the ticket's left EDGE + diamond pip (not
 // a full body fill — the Stub body is always paper). A coarse era cue, and it
@@ -85,6 +103,11 @@ function EdgeRail({ accent, size }: { accent: string; size: ChronoCardSize }) {
 function FrontFace({ card, size, showYear, flat }: FaceProps) {
   const d = DIMS[size]
   const accent = decadeColor(card.decade)
+  // Title box = card − edge rail − 3px perf − the body's left/right padding
+  // − a 4px safety buffer (the measured render width runs a touch under the raw
+  // arithmetic; the buffer keeps the longest word inside the real box).
+  const titleBoxW = Math.max(1, d.w - d.edge - 3 - d.pad * 0.6 - d.pad - 4)
+  const titlePx = fitTitlePx(card.title, titleBoxW, d.titleBasePx, d.titleFloorPx)
   return (
     <div
       className="absolute inset-0 box-border flex overflow-hidden border-solid"
@@ -111,8 +134,8 @@ function FrontFace({ card, size, showYear, flat }: FaceProps) {
       </div>
       <div className="flex min-w-0 flex-1 flex-col justify-between" style={{ padding: d.pad, paddingLeft: d.pad * 0.6 }}>
         <span
-          className={`min-w-0 break-words font-stub-display uppercase leading-[1.05] text-stub-navy ${d.title}`}
-          style={{ fontWeight: 700, hyphens: 'auto' }}
+          className="min-w-0 break-words font-stub-display uppercase leading-[1.05] text-stub-navy"
+          style={{ fontSize: titlePx, fontWeight: 700, hyphens: 'manual' }}
         >
           {card.title}
         </span>

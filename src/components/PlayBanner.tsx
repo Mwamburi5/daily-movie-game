@@ -13,7 +13,7 @@ export interface PlayBannerData {
   seq: number
 }
 
-// The turn/announcement line (Stub 7a item 4: "LAST · TAZ PLAYED THE
+// The turn/announcement line (Stub 7a item 4: "LAST · CPU PLAYED THE
 // GODFATHER → PACINO" mono/slate, delta in stub-red). Presentational only —
 // the parent still owns the banner state and the 2400ms auto-dismiss timer
 // (contract: "Callbacks out: none").
@@ -92,7 +92,7 @@ export default function PlayBanner({
 // left "LAST · <WHO> PLAYED <TITLE> → <LINK>"-style copy comes in via props
 // verbatim (lowercase say() voice preserved by the caller); right delta is
 // signed and renders in stub-red only when negative (per the reference:
-// "TAZ +1" in red is the OPPONENT's gain from the PLAYER's point of view —
+// "CPU +1" in red is the OPPONENT's gain from the PLAYER's point of view —
 // callers decide sign, this component just paints negative red).
 export function LastPlayLine({
   text,

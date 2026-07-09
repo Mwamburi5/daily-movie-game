@@ -68,7 +68,7 @@ export default function RecastOffer({
       transition={{ duration: reduce ? 0.1 : 0.2 }}
       role="dialog"
       aria-modal="true"
-      aria-label={`Taz plays ${movie.title} — recast or allow`}
+      aria-label={`CPU plays ${movie.title} — recast or allow`}
     >
       {/* Navy scrim + soft amber radial glow. These exact rgba values have no
           stub token (README §7c sanctions them verbatim). Glow is centered a
@@ -106,9 +106,9 @@ export default function RecastOffer({
             }}
           />
 
-          {/* TAZ PLAYS — mono slate eyebrow. Wide tracking per the comp. */}
+          {/* CPU PLAYS — mono slate eyebrow. Wide tracking per the comp. */}
           <span className="font-stub-label text-[9px] font-semibold uppercase tracking-[0.18em] text-stub-slate">
-            TAZ PLAYS
+            CPU PLAYS
           </span>
 
           {/* Movie title — Domine 26px navy. */}

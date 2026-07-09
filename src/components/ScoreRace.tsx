@@ -126,7 +126,7 @@ export default function ScoreRace({
         ? `Run ×${runState.count + 1}?`
         : 'Your turn'
       : status === 'cpuTurn' || status === 'recastOffer'
-        ? "Taz's turn"
+        ? "CPU's turn"
         : ''
 
   // === 7e compact: one inline row, 17px Domine scores at each end, no labels ===
@@ -168,10 +168,10 @@ export default function ScoreRace({
           </span>
         )}
 
-        {/* TAZ: muted label + 40px slate-faint score */}
+        {/* CPU: muted label + 40px slate-faint score */}
         <div className="flex items-baseline gap-2">
           <span className="font-stub-label text-[9px] font-semibold uppercase tracking-[0.16em] text-stub-slate-light">
-            TAZ
+            CPU
           </span>
           <ScoreNumeral value={tazDisplay} className="text-[40px] text-stub-slate-faint" reduce={reduce} />
         </div>

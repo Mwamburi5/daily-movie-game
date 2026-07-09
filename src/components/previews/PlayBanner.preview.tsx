@@ -38,7 +38,7 @@ export default function PlayBannerPreview() {
       </div>
 
       <div className="absolute inset-x-0 top-[220px]">
-        <LastPlayLine text="LAST · TAZ PLAYED THE GODFATHER → PACINO" delta={{ label: 'TAZ +1', value: -1 }} />
+        <LastPlayLine text="LAST · CPU PLAYED THE GODFATHER → PACINO" delta={{ label: 'CPU +1', value: -1 }} />
       </div>
       <div className="absolute inset-x-0 top-[248px]">
         <LastPlayLine text="LAST · YOU PLAYED TAXI DRIVER → DE NIRO" delta={{ label: 'YOU +2', value: 2 }} />
