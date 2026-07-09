@@ -502,7 +502,18 @@ what's ready-to-review per sitting.
       cosmetic for W5 polish: long titles break mid-word on the small tiles
       ("GOODFELL/AS") — nothing clips. **W4 CLOSED.**
 - [ ] W5 readouts · chrono daily pin · polish · tilt call: ___ · cutover call: ___
-      — **W4 carry-forwards (2026-07-08):** (i) Connections bundle −9 KB via
+      — **W5a DATA READOUTS ✅ auto 2026-07-08** (`docs/mode-readouts.md` +
+      reusable `scripts/connections-mix.ts`): Duel tune @4000 **65.5 / 49.7 /
+      41.8** vs targets 65/50/41 — all on-target; full-flow tilt **A 53.6 / B
+      44.1, gap 9.5pp** (gate band ≤12pp, re-proven by verify 64/64). Solo par
+      min7/median9/max12 (unimodal, bounds [6–12]). Chronology standard skill
+      gap **+2.29 str/rd** (naive 77.8% / calibrated 92.6% clean). Connections
+      yield 9.86M viable key-quads; baked-window mix actor-dominated (74.1% of
+      groups actor; aaaa 29.0%; 30.4% single-kind grids; genre cap holds 0
+      violations) — the Flag-5 evidence. All four modes fire per-mode
+      analytics events. **W5b grill next** (tilt · pool cutover · category-
+      diversity). —
+      **W4 carry-forwards (2026-07-08):** (i) Connections bundle −9 KB via
       interning film ids in the baked grids (do at pool LOCK) — measure in the
       data pass; (ii) Connections grid category-diversity constraint decision —
       histogram the actor-heavy mix (~29% all-actor) in the grid-hardness
