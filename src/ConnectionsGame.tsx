@@ -44,14 +44,20 @@ const MAX_MISTAKES = 4
 // Solved bands + the share grid color by group index. Four distinct on-brand
 // hues; amber and teal are excluded (amber = selection, teal = hint, both
 // interactive affordances). The genre group, when present, is always index 3 (the
-// dealer places it last), so it lands on slate + ⬛.
+// dealer places it last), so its band lands on slate.
+//
+// The SHARE emoji are chosen for four-clean-squares legibility, NOT to echo the
+// band hues — players never see bands and grid side by side (bands are in-game,
+// the grid is post-game copy). Index 3 is 🟩 (Buri's W4 ruling, 2026-07-08): the
+// old ⬛ read as a blank/missing tile next to three saturated squares. Don't
+// "fix" 🟩 back to match the slate band — the mismatch is intentional.
 const GROUP_HUES = [
   'var(--color-stub-navy)', //      #1F3A52
   'var(--color-stub-genre-pip)', // #58486C plum
   'var(--color-stub-red)', //       #A02C2C
   'var(--color-stub-slate)', //     #5B6B7A
 ]
-const GROUP_EMOJI = ['🟦', '🟪', '🟥', '⬛']
+const GROUP_EMOJI = ['🟦', '🟪', '🟥', '🟩']
 
 const CAT_LABEL: Record<GroupCat, string> = {
   director: 'Director',

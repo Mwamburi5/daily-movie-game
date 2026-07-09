@@ -446,7 +446,7 @@ what's ready-to-review per sitting.
       folds into the header ?) · flags a (Stub wild) + d (rules scrim tokens)
       kept as shipped · **Card.tsx/CardView DELETED** + 2 preview harnesses
       repointed to StubCard. Full verify 64/64 post-follow-ups. **W3 CLOSED.**
-- [ ] W4 Connections engine+verify (auto) · UI+RULEBOOK — **engine ✅ auto
+- [x] W4 Connections engine+verify (auto) · UI+RULEBOOK — **engine ✅ auto
       2026-07-07** (3 commits ff512a2→27a2904, pushed): dealer LIFTED
       sim→`src/lib/connections.ts` (rng.ts precedent: app build graph is
       src/-only; sim imports it back — parity, never a fork); dead `sits()`
@@ -481,8 +481,33 @@ what's ready-to-review per sitting.
       from the baked JSON (unavoidable — the dealer can't run in-browser);
       (e) grid category mix skews actor-heavy (aaaa×106/365) — a data
       observation for W5's grid-hardness readout, not a wave blocker.
-      **Buri approved: ___**
+      **Buri approved: ✅ 2026-07-08** (W4 grill, five flags each resolved to a
+      concrete ruling — one produced code, four ratified the shipped
+      extrapolation): (a) board tiles = **keep the clean title tile** (cohesion
+      carried by Stub tokens; StubCard frame can't tile square at ~85px and its
+      art slot would leak genre — no frame ornament added); (b) palette = **swap
+      the share's ⬛ → 🟩** (only code change: `GROUP_EMOJI` index 3; bands stay
+      navy/plum/red/slate, index-mapped; the four share squares are now clean
+      saturated colors, chosen for legibility not band-echo — a comment pins the
+      intentional mismatch); (c) share = **no 🎬 lead** (Connections is the one
+      mode whose share stays NYT-clean; the other three keep their 🎬 row); (d)
+      bundle +19 KB = **defer but track** → W5 backlog (interning film ids is
+      cheapest at pool LOCK, not now); (e) actor-heavy mix = **measure in W5**
+      (never-trivial dealer change; decide the diversity constraint with the
+      grid-hardness histogram, not blind). Gate after the fix: full verify
+      **64/64** · verify:connections 14/14 · solo 8/8 · chrono 42/42 · build
+      clean. Browser-verified @390×844 + @375×667: menu, board both sizes, and a
+      full played solve on today's mixed daily (Scorsese/Voight/Carell/Plummer)
+      → won share `🟦🟦🟦🟦/🟥🟥🟥🟥/🟩🟩🟩🟩/🟪🟪🟪🟪` (no ⬛, no 🎬). Noted
+      cosmetic for W5 polish: long titles break mid-word on the small tiles
+      ("GOODFELL/AS") — nothing clips. **W4 CLOSED.**
 - [ ] W5 readouts · chrono daily pin · polish · tilt call: ___ · cutover call: ___
+      — **W4 carry-forwards (2026-07-08):** (i) Connections bundle −9 KB via
+      interning film ids in the baked grids (do at pool LOCK) — measure in the
+      data pass; (ii) Connections grid category-diversity constraint decision —
+      histogram the actor-heavy mix (~29% all-actor) in the grid-hardness
+      readout, then rule constrain-vs-leave with data; (iii) minor: hyphenate/
+      soft-wrap long Connections tile titles.
 - [ ] W6 SEND (deploy = Buri)
 - [ ] **D1 Duel deep-cut reveal as a difficulty lever** (PARKED, concept
       approved 2026-07-06; §3·D1) — deepCast TMDB content pass (P2-adjacent) →
@@ -501,7 +526,7 @@ what's ready-to-review per sitting.
    352 candidates across 1970s–2020s, 111 ⚡ cheap wins (already-credited
    films needing only a date). Strike/keep at your pace; the date-draft tool
    (`npm run tmdb:draft`) is built + smoke-tested for whatever you keep.
-3. UI checkpoint approvals (W1/W2/W3/W4).
+3. UI checkpoint approvals (W1/W2/W3/W4 all ✅; W5 next).
 3b. ✅ RESOLVED 2026-07-06: Buri ratified the self-checked
    `CHRONO_TITLE_OVERRIDES` map (4 films: LotR ×3, M:I Fallout) over a
    `chronoTitle` field on `Movie`. The map stands.
