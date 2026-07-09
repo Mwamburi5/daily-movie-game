@@ -393,7 +393,11 @@ what's ready-to-review per sitting.
       **Buri approved: ✅ 2026-07-06** (W2 grill: flip-to-peek permanent +
       Duel/Solo reveal divergence accepted + credits-on-face idea → parked as D1;
       inline-reveal flip kept; pushed a1354be. All card-face deferrals → W3.)
-- [ ] P2 Stage B: draft tool · batch merges (log per batch) · POOL LOCK
+- [ ] P2 Stage B: draft tool · batch merges (log per batch) · POOL LOCK →
+      **at LOCK, run the P2-LOCK docket (§7·4b) as a grill-me session** (chrono
+      pin · Solo cutover · Duel cutover+re-tune · Connections diversity floor ·
+      bundle intern — all folded into the LOCK re-bake). Status 2026-07-08:
+      **UNLOCKED** — 0/352 slates struck, no merges since kickoff `3f3f251`.
 - [x] W3 StubCard everywhere · menu/Solo/Chrono re-dress · RecapReel · desktop
       — **increment 1 SHIPPED 2026-07-07** (4 commits c3f601e→aa39422 + ShareCopy,
       pushed): StubCard gained a wild branch (amber ticket: amber spine/pip, ★ WILD
@@ -501,7 +505,7 @@ what's ready-to-review per sitting.
       → won share `🟦🟦🟦🟦/🟥🟥🟥🟥/🟩🟩🟩🟩/🟪🟪🟪🟪` (no ⬛, no 🎬). Noted
       cosmetic for W5 polish: long titles break mid-word on the small tiles
       ("GOODFELL/AS") — nothing clips. **W4 CLOSED.**
-- [ ] W5 readouts · chrono daily pin · polish · tilt call: ___ · cutover call: ___
+- [ ] W5 readouts · chrono daily pin · polish · tilt call: **SHIP ✅ 2026-07-08** · cutover call: **DEFER now → cut at P2 LOCK ✅ 2026-07-08**
       — **W5a DATA READOUTS ✅ auto 2026-07-08** (`docs/mode-readouts.md` +
       reusable `scripts/connections-mix.ts`): Duel tune @4000 **65.5 / 49.7 /
       41.8** vs targets 65/50/41 — all on-target; full-flow tilt **A 53.6 / B
@@ -511,8 +515,15 @@ what's ready-to-review per sitting.
       yield 9.86M viable key-quads; baked-window mix actor-dominated (74.1% of
       groups actor; aaaa 29.0%; 30.4% single-kind grids; genre cap holds 0
       violations) — the Flag-5 evidence. All four modes fire per-mode
-      analytics events. **W5b grill next** (tilt · pool cutover · category-
-      diversity). —
+      analytics events. **W5b grill CLOSED ✅ 2026-07-08** — all three calls
+      resolved (§7·4): **tilt → SHIP** the ~9.5pp house edge (human always
+      seated first; tune already contains it) · **pool cutover → DEFER now, cut
+      at P2 LOCK** (Solo = cheap re-pin at LOCK; Duel = own re-tune, §0) ·
+      **Connections diversity → LEAVE AS-IS, re-eval at LOCK** (not proven flat;
+      P2 growth + the LOCK re-bake make a floor near-free if the phone-in-hand
+      pass flags repetition). Everything deferred → **P2-LOCK docket §7·4b**
+      (grill-me session at LOCK, after testing/feedback — Buri's ask). **W5c
+      polish next.** —
       **W4 carry-forwards (2026-07-08):** (i) Connections bundle −9 KB via
       interning film ids in the baked grids (do at pool LOCK) — measure in the
       data pass; (ii) Connections grid category-diversity constraint decision —
@@ -541,7 +552,42 @@ what's ready-to-review per sitting.
 3b. ✅ RESOLVED 2026-07-06: Buri ratified the self-checked
    `CHRONO_TITLE_OVERRIDES` map (4 films: LotR ×3, M:I Fallout) over a
    `chronoTitle` field on `Movie`. The map stands.
-4. W5 calls: tilt · pool cutover date.
+4. W5 calls: tilt ✅ **SHIP ruled 2026-07-08** (Buri agreed the ~9.5pp edge ships
+   as a documented, gate-pinned house edge; human is always seated first
+   (`DuelGame.tsx:218` inits `status='playerTurn'`, no seating coin-flip) so the
+   edge always favors the human; the difficulty tune already contains it; revisit
+   only with real post-SEND data or if PvP/randomized-seating ever lands) · pool
+   cutover ✅ **DEFER now → cut at P2 LOCK ruled 2026-07-08** (Buri: neither Solo
+   nor Duel moves off the frozen tuned 89 for SEND; revisit at pool LOCK. Split
+   preserved: **Solo** cutover at LOCK = a cheap `verify:solo` re-pin; **Duel**
+   cutover stays bundled with its mandatory re-tune — a bigger Duel pool
+   invalidates the 65.5/49.7/41.8 tune (§0 "Duel pool growth/retune"), so it can
+   never be a blind pin-swap; it rides its own re-tune pass at/after LOCK, not a
+   W5 item) · Connections category-diversity ✅ **LEAVE AS-IS for SEND → re-eval
+   at P2 LOCK ruled 2026-07-08** (Buri: the actor-heavy mix — 29% `aaaa`, 74%
+   of groups actor — isn't *proven* flat, only histogrammed; P2 growth
+   diversifies it for free; the LOCK re-bake makes a "≥2 distinct kinds" floor
+   near-free *if* the W5c phone-in-hand pass shows consecutive dailies read
+   repetitive on reveal). **All three W5b calls resolved.**
+4b. **P2-LOCK re-evaluation docket + grill (Buri, 2026-07-08).** Everything
+   deferred to the moment P2 Stage B LOCKs the pool is collected here so nothing
+   silently falls off; when LOCK lands, convene a **grill-me session** (after some
+   real testing + circle feedback) to rule these with data, not blind:
+   - **(D1) Chronology published-daily pin** — lands at LOCK (solo-verify shape;
+     pinning earlier churns every Stage-B merge). §3·W5.
+   - **(D2) Solo pool cutover** — the cheap one: reshuffle onto the big pool +
+     re-pin `verify:solo`. A live call at LOCK. §7·4.
+   - **(D3) Duel pool cutover + re-tune** — the heavy one: a bigger Duel pool
+     invalidates the difficulty tune, so it rides its own re-sim/re-tune pass,
+     never a blind pin-swap (§0 "Duel pool growth/retune"). At/after LOCK. §7·4.
+   - **(D4) Connections category-diversity** — decide the "≥2 distinct kinds"
+     floor against the LOCK-era histogram + the W5c phone-in-hand feel read;
+     fold into the re-bake that LOCK forces anyway. §7·4, Ledger W4 carry (ii).
+   - **(D5) Connections bundle −9 KB** — intern film ids in the baked grids;
+     cheapest at the LOCK re-bake, not before. Ledger W4 carry (i).
+   - **Enabling action:** LOCK forces a **Connections grid re-bake** (pool
+     changed) — D4 + D5 ride it for near-zero marginal cost; that's *why* they
+     wait for LOCK rather than spending a standalone re-bake now.
 5. W6: the deploy button.
 
 ## 8. Master Prompt (paste this to boot any future build session)
