@@ -700,15 +700,16 @@ what's ready-to-review per sitting.
      quips KEPT (first-person flavor retained — the CPU still taunts; Buri to
      confirm keep-vs-mute at checkpoint). Internal `TazCorner` name + codename
      comments left intentionally.**
-   - **⏸ PARKED CONCEPT (Buri, 2026-07-08): difficulty-as-PERSONAS.** Replace the
-     Matinee/Feature/Director's difficulty *labels* with named rival characters
-     you choose to play against — e.g. **snobby movie critic = hardest · hipster
-     movie buff = mid · a different character = easy**. "Personas to play against
-     instead of the difficulties." Benched for later in the plan; the CPU rename
-     now keeps the door open (quip infra stays). If personas MAP onto the existing
+   - **⏸ PARKED CONCEPT → NOW POST-SEND (Buri, 2026-07-09): difficulty-as-PERSONAS.**
+     Replace the Matinee/Feature/Director's difficulty *labels* with named rival
+     characters you choose to play against — e.g. **snobby movie critic = hardest ·
+     hipster movie buff = mid · a different character = easy**. "Personas to play
+     against instead of the difficulties." **Moved to AFTER W6 SEND (Buri, 2026-07-09):
+     gate it on real circle feedback — don't build it pre-SEND.** The CPU rename
+     already kept the door open (quip infra stays). If personas MAP onto the existing
      3 difficulty knob-sets it's a re-skin (no re-tune); adding/altering knobs =
      a difficulty change → re-sim + re-tune (§2.9). Needs its own grill/spec
-     before build. NOT a launch blocker.
+     before build. NOT a launch blocker (and now explicitly a post-launch idea).
    - (iii) **Intro copy → STAY HIGH-LEVEL (ruled, CLOSED).** No change — the menu
      cards already blurb each mode; naming them in the overlay would duplicate and
      edge toward the declined funnel.
