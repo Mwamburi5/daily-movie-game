@@ -573,8 +573,11 @@ what's ready-to-review per sitting.
       CLOSED** (the Chronology published-daily pin is the one W5 line intentionally
       relocated to the P2-LOCK docket §7·4b·D1, not a SEND blocker). The StubCard
       mid-word-break flag ("MONEYBAL/L") carries into §7·6 (i) "NAME IS THE HERO".
-- [ ] **W5c FOLLOW-UPS (UI, checkpointed) — SHIPPED 2026-07-09 ⛔ AWAITING BURI
-      CHECKPOINT** (§7·6 i+ii; grill-scoped 2026-07-08, built 2026-07-09):
+- [x] **W5c FOLLOW-UPS (UI, checkpointed) — SHIPPED 2026-07-09 · Buri approved
+      ✅ 2026-07-09** (checkpoint: "approve both as-is" + "keep the taunts" — the
+      thin art strip, 6px longest-title floor, and first-person CPU quips all stay;
+      difficulty-as-personas remains PARKED as the next §7·6 concept) (§7·6 i+ii;
+      grill-scoped 2026-07-08, built 2026-07-09):
       **(i) NAME IS THE HERO** — StubCard title-block redesign (Duel + Solo, all
       sizes): adaptive `titleFit` (measure longest word + total len → shrink with a
       floor, wrap whole words, `hyphens:manual`) makes the full name ALWAYS whole —
@@ -663,8 +666,8 @@ what's ready-to-review per sitting.
 5. W6: the deploy button.
 6. **W5c follow-ups (Buri RULED 2026-07-08 via grill) — ACTIVE this session
    (2026-07-08), in his order** (W5c checkpoint approved ✅; grill-first on (i)):
-   - (i) **Card title redesign → "NAME IS THE HERO" (ruled). ◀ SHIPPED 2026-07-09
-     ⛔ AWAITING CHECKPOINT (see Ledger W5c-follow-ups).** Grill rulings (all Buri's
+   - (i) **Card title redesign → "NAME IS THE HERO" (ruled). ◀ SHIPPED + Buri
+     approved ✅ 2026-07-09 (as-is).** Grill rulings (all Buri's
      recommended picks):
      **SCOPE = StubCard only** (Duel/Solo hand·pile·raised lock to one zone ratio;
      ride-along fix ChronoCard's *own* title mid-word break but KEEP its year-hero
@@ -686,8 +689,8 @@ what's ready-to-review per sitting.
      §2.6 typographic-face design). SUBSUMES the raised-StubCard mid-word-break
      flag. Direction is locked; still scope the exact layout grill-first.
      Checkpointed UI.
-   - (ii) **Opponent → RENAME "TAZ" → "CPU" now (ruled). ◀ SHIPPED 2026-07-09 ⛔
-     AWAITING CHECKPOINT.** Neutral label
+   - (ii) **Opponent → RENAME "TAZ" → "CPU" now (ruled). ◀ SHIPPED + Buri approved
+     ✅ 2026-07-09 (keep the taunts).** Neutral label
      everywhere (score header, TazCorner nameplate/avatar, LastPlayLine "CPU
      +1"). **Keep the quip infrastructure** (`lastCpuQuote` / say quotes) — the
      parked persona concept reclaims it. Copy sweep; confirm at build whether the
