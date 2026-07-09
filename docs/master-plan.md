@@ -626,29 +626,33 @@ what's ready-to-review per sitting.
      changed) — D4 + D5 ride it for near-zero marginal cost; that's *why* they
      wait for LOCK rather than spending a standalone re-bake now.
 5. W6: the deploy button.
-6. **W5c follow-ups (Buri's 2026-07-08 wind-down thoughts) — NEXT SESSION, in
-   his order; each needs a scoping mini-grill / direction confirm before build:**
-   - (i) **Card title readability + anatomy standardization** — long/single-word
-     titles are cut off: Duel/Solo StubCards truncate ("THE RETUR…"), raised
-     cards break mid-word ("MONEYBAL/L"), and the title / big first-letter
-     monogram / art slot render at different sizes across cards. Buri: make the
-     movie **NAME fully readable** ("that's the most important part") and
-     **standardize the zones** so they're not all different sizes. = a **StubCard
-     title-block redesign** (high blast radius — StubCard renders every mode's
-     cards; reopens the §2.6 typographic-face design). SUBSUMES the out-of-scope
-     raised-StubCard mid-word-break flag. Checkpointed UI. Orchestrator read:
-     make the full name the hero (auto-fit, no "…"/no mid-word break), shrink/
-     rework the monogram so it stops stealing the name's room, fix title/art to
-     one standard ratio.
-   - (ii) **Rename opponent TAZ → CPU?** — Buri leans rename ("Taz" read as
-     arbitrary while testing). Tradeoff: Taz is a deliberate booth persona
-     (avatar "T", first-person say() quotes = charm/differentiation) vs "CPU" =
-     neutral + clearer for first-timers; nameplate already shows "TAZ · CPU".
-     Copy sweep (score header, TazCorner nameplate, LastPlayLine "TAZ +1",
-     first-person quotes). Confirm direction (rename-to-CPU / rename-to-better /
-     keep dual-label), then execute.
-   - (iii) **Intro copy** — first-run overlay: name the four modes, or stay
-     high-level ("four ways to play")? Buri to confirm.
+6. **W5c follow-ups (Buri RULED 2026-07-08 via grill) — NEXT SESSION, in his order:**
+   - (i) **Card title redesign → "NAME IS THE HERO" (ruled).** The movie name is
+     "the most important part" — make the full title ALWAYS readable (auto-fit,
+     no "…", no mid-word break), **shrink/demote the big first-letter monogram**
+     so the name has room, and **lock the title / monogram / art zones to ONE
+     ratio across every card**. = a **StubCard title-block redesign** (high blast
+     radius — StubCard renders Duel/Solo/Chronology/Connections cards; reopens the
+     §2.6 typographic-face design). SUBSUMES the raised-StubCard mid-word-break
+     flag. Direction is locked; still scope the exact layout grill-first.
+     Checkpointed UI.
+   - (ii) **Opponent → RENAME "TAZ" → "CPU" now (ruled).** Neutral label
+     everywhere (score header, TazCorner nameplate/avatar, LastPlayLine "CPU
+     +1"). **Keep the quip infrastructure** (`lastCpuQuote` / say quotes) — the
+     parked persona concept reclaims it. Copy sweep; confirm at build whether the
+     neutral CPU keeps the first-person quips as flavor or mutes them.
+   - **⏸ PARKED CONCEPT (Buri, 2026-07-08): difficulty-as-PERSONAS.** Replace the
+     Matinee/Feature/Director's difficulty *labels* with named rival characters
+     you choose to play against — e.g. **snobby movie critic = hardest · hipster
+     movie buff = mid · a different character = easy**. "Personas to play against
+     instead of the difficulties." Benched for later in the plan; the CPU rename
+     now keeps the door open (quip infra stays). If personas MAP onto the existing
+     3 difficulty knob-sets it's a re-skin (no re-tune); adding/altering knobs =
+     a difficulty change → re-sim + re-tune (§2.9). Needs its own grill/spec
+     before build. NOT a launch blocker.
+   - (iii) **Intro copy → STAY HIGH-LEVEL (ruled, CLOSED).** No change — the menu
+     cards already blurb each mode; naming them in the overlay would duplicate and
+     edge toward the declined funnel.
 
 ## 8. Master Prompt (paste this to boot any future build session)
 
