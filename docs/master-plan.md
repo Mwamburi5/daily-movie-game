@@ -505,7 +505,7 @@ what's ready-to-review per sitting.
       → won share `🟦🟦🟦🟦/🟥🟥🟥🟥/🟩🟩🟩🟩/🟪🟪🟪🟪` (no ⬛, no 🎬). Noted
       cosmetic for W5 polish: long titles break mid-word on the small tiles
       ("GOODFELL/AS") — nothing clips. **W4 CLOSED.**
-- [ ] W5 readouts · chrono daily pin · polish · tilt call: **SHIP ✅ 2026-07-08** · cutover call: **DEFER now → cut at P2 LOCK ✅ 2026-07-08**
+- [x] W5 readouts · chrono daily pin (→P2-LOCK) · polish · tilt call: **SHIP ✅ 2026-07-08** · cutover call: **DEFER now → cut at P2 LOCK ✅ 2026-07-08** — **W5 CLOSED 2026-07-08** (W5c checkpoint approved)
       — **W5a DATA READOUTS ✅ auto 2026-07-08** (`docs/mode-readouts.md` +
       reusable `scripts/connections-mix.ts`): Duel tune @4000 **65.5 / 49.7 /
       41.8** vs targets 65/50/41 — all on-target; full-flow tilt **A 53.6 / B
@@ -530,8 +530,8 @@ what's ready-to-review per sitting.
       histogram the actor-heavy mix (~29% all-actor) in the grid-hardness
       readout, then rule constrain-vs-leave with data; (iii) minor: hyphenate/
       soft-wrap long Connections tile titles.
-      — **W5c POLISH SLICE (UI, checkpointed) SHIPPED 2026-07-08 ⛔ AWAITING BURI
-      CHECKPOINT:** three under-specified backlog features scoped grill-first
+      — **W5c POLISH SLICE (UI, checkpointed) SHIPPED 2026-07-08 — Buri approved
+      ✅ 2026-07-08:** three under-specified backlog features scoped grill-first
       (one at a time, Buri ruled each), then built: **(a) onboarding →
       Buri ruled "minimal framing now"** (not the funnel; deferred the funnel to
       post-SEND friction from the phone pass + interviews) → built a one-shot
@@ -566,7 +566,13 @@ what's ready-to-review per sitting.
       (2:29) · build · solo 8/8 · chrono 42/42 · connections 14/14. Out-of-scope
       flag for Buri: raised **StubCard** titles break mid-word too ("MONEYBAL/L")
       — same class, different (high-blast-radius) component; flagged, NOT fixed.
-      **W5c carry (iii) DONE.**
+      **W5c carry (iii) DONE. Buri approved all three ✅ 2026-07-08** (checkpoint,
+      this session: intro overlay + CPU last-card warn + Connections tile-fit shown
+      @390×844 + @375×667; harness warn variants; 0-overflow measured on all 16
+      tiles @375; console clean; fade-in perceptible but accepted as-is). **W5
+      CLOSED** (the Chronology published-daily pin is the one W5 line intentionally
+      relocated to the P2-LOCK docket §7·4b·D1, not a SEND blocker). The StubCard
+      mid-word-break flag ("MONEYBAL/L") carries into §7·6 (i) "NAME IS THE HERO".
 - [ ] W6 SEND (deploy = Buri)
 - [ ] **D1 Duel deep-cut reveal as a difficulty lever** (PARKED, concept
       approved 2026-07-06; §3·D1) — deepCast TMDB content pass (P2-adjacent) →
@@ -626,8 +632,10 @@ what's ready-to-review per sitting.
      changed) — D4 + D5 ride it for near-zero marginal cost; that's *why* they
      wait for LOCK rather than spending a standalone re-bake now.
 5. W6: the deploy button.
-6. **W5c follow-ups (Buri RULED 2026-07-08 via grill) — NEXT SESSION, in his order:**
-   - (i) **Card title redesign → "NAME IS THE HERO" (ruled).** The movie name is
+6. **W5c follow-ups (Buri RULED 2026-07-08 via grill) — ACTIVE this session
+   (2026-07-08), in his order** (W5c checkpoint approved ✅; grill-first on (i)):
+   - (i) **Card title redesign → "NAME IS THE HERO" (ruled). ◀ IN SCOPING (grill).**
+     The movie name is
      "the most important part" — make the full title ALWAYS readable (auto-fit,
      no "…", no mid-word break), **shrink/demote the big first-letter monogram**
      so the name has room, and **lock the title / monogram / art zones to ONE
