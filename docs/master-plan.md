@@ -626,6 +626,29 @@ what's ready-to-review per sitting.
      changed) — D4 + D5 ride it for near-zero marginal cost; that's *why* they
      wait for LOCK rather than spending a standalone re-bake now.
 5. W6: the deploy button.
+6. **W5c follow-ups (Buri's 2026-07-08 wind-down thoughts) — NEXT SESSION, in
+   his order; each needs a scoping mini-grill / direction confirm before build:**
+   - (i) **Card title readability + anatomy standardization** — long/single-word
+     titles are cut off: Duel/Solo StubCards truncate ("THE RETUR…"), raised
+     cards break mid-word ("MONEYBAL/L"), and the title / big first-letter
+     monogram / art slot render at different sizes across cards. Buri: make the
+     movie **NAME fully readable** ("that's the most important part") and
+     **standardize the zones** so they're not all different sizes. = a **StubCard
+     title-block redesign** (high blast radius — StubCard renders every mode's
+     cards; reopens the §2.6 typographic-face design). SUBSUMES the out-of-scope
+     raised-StubCard mid-word-break flag. Checkpointed UI. Orchestrator read:
+     make the full name the hero (auto-fit, no "…"/no mid-word break), shrink/
+     rework the monogram so it stops stealing the name's room, fix title/art to
+     one standard ratio.
+   - (ii) **Rename opponent TAZ → CPU?** — Buri leans rename ("Taz" read as
+     arbitrary while testing). Tradeoff: Taz is a deliberate booth persona
+     (avatar "T", first-person say() quotes = charm/differentiation) vs "CPU" =
+     neutral + clearer for first-timers; nameplate already shows "TAZ · CPU".
+     Copy sweep (score header, TazCorner nameplate, LastPlayLine "TAZ +1",
+     first-person quotes). Confirm direction (rename-to-CPU / rename-to-better /
+     keep dual-label), then execute.
+   - (iii) **Intro copy** — first-run overlay: name the four modes, or stay
+     high-level ("four ways to play")? Buri to confirm.
 
 ## 8. Master Prompt (paste this to boot any future build session)
 
