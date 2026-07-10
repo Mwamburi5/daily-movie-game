@@ -16,6 +16,14 @@
 
 ## 0. Finish line (ruled by Buri, 2026-07-06)
 
+> **🏁 REACHED 2026-07-10.** W0–W6 all closed (Ledger §6): four modes on the
+> Stub UI, unified audited pool, per-mode gates green, RULEBOOK current, and
+> SEND deployed — **live at https://matchcutdaily.com** (public URL per Buri's
+> amendment; noindex + URL-less shares still hold). The project is now in the
+> **post-SEND phase**: circle feedback → interviews (~2026-07-24) pick the
+> front door; build tracks = P2 Stage B strikes → LOCK docket (§7·4b) +
+> post-SEND fix backlog (§7·7b) + personas (§7·6).
+
 All four modes — **Solo, Duel, Chronology, Connections** — playable on the Stub UI ·
 one unified TMDB-audited movie pool feeding all modes · per-mode sims/verifies
 producing hard tuning data · RULEBOOK current · quiet-launch deploy ready
@@ -294,6 +302,10 @@ interrupted old-Wave-A close-out (375×667 stress + played game).
 - Deploy quiet alias (noindex holds, no gate, shares URL-less) · send to the
   5–10 circle with a one-line pitch per mode · interviews ~2 weeks out pick the
   front door. URL-in-share stays the launch switch.
+- **EXECUTED 2026-07-10** with Buri's in-session amendment: deployed to the
+  **public domain matchcutdaily.com** (shareability, not discoverability —
+  noindex and URL-less shares still hold; URL-in-share remains the launch
+  switch). Full record in the Ledger W6 entry.
 
 **D1 — Duel deep-cut reveal as a difficulty lever** *(PARKED — concept
 Buri-approved 2026-07-06 during the W2 grill; do NOT fold into a wire)*.
@@ -673,8 +685,8 @@ what's ready-to-review per sitting.
       RESOLVED 2026-07-10:** (a) Connections selected tile — Buri confirmed
       keep-shipped (navy fill + amber border); (b) new majors ruled → §7·7(b)
       rulings + the W5e slice below.
-- [ ] **W5e PRE-SEND FIX SLICE (UI, checkpointed) — RULED + SHIPPED 2026-07-10
-      ⛔ AWAITING BURI CHECKPOINT** (Buri's §7·7 picks): (1) **pinch-zoom
+- [x] **W5e PRE-SEND FIX SLICE (UI, checkpointed) — RULED + SHIPPED 2026-07-10 ·
+      Buri approved ✅ 2026-07-10** (Buri's §7·7 picks): (1) **pinch-zoom
       unblock** — `maximum-scale=1.0, user-scalable=no` dropped from
       index.html (WCAG 1.4.4; the low-vision cover for the 6–9px type floors;
       iOS ignored the lock anyway, Android Chrome enforced it). (2)
@@ -699,7 +711,21 @@ what's ready-to-review per sitting.
       game-over this session — the played-game evidence is the Connections
       daily. **NOT pulled (post-SEND backlog, §7·7b):** HUD/MeldShelf overlap
       @667 · Domine ticking numerals · full keyboard operability.
-- [ ] W6 SEND (deploy = Buri)
+- [x] **W6 SEND — DEPLOY EXECUTED 2026-07-10 (Buri pressed the button in-session,
+      with one amendment: PUBLIC URL).** Buri ruled the circle send happens on
+      the real domain — easier to hand to 5–10 people than the vercel.app
+      alias. Executed: fresh production deploy (`marquee-m4tonx239`, the W5e
+      build, 15s build, READY) + **matchcutdaily.com attached to the project**
+      (domain was Vercel-registered 2026-07-04, nameservers already Vercel —
+      instant). Verified live: `https://matchcutdaily.com` HTTP 200, serves the
+      W5e build (zoom lock absent, viewport-fit present), `noindex, nofollow`
+      HOLDS (quiet phase — public URL ≠ indexed; Buri's stated reason was
+      shareability), old `marquee-one-iota.vercel.app` alias also updated.
+      **Guardrails intentionally kept:** noindex stays until real launch ·
+      share text stays URL-less (URL-in-share remains THE launch switch) ·
+      playmatchcut.com parked unattached (point/redirect later). **Still
+      human:** Buri texts the circle the link + one-line pitch per mode;
+      interviews ~2 weeks out (→ ~2026-07-24) pick the front door.
 - [ ] **D1 Duel deep-cut reveal as a difficulty lever** (PARKED, concept
       approved 2026-07-06; §3·D1) — deepCast TMDB content pass (P2-adjacent) →
       deep-cut flip face (W3) → difficulty knob + re-tune (W5); needs its own
@@ -717,7 +743,8 @@ what's ready-to-review per sitting.
    352 candidates across 1970s–2020s, 111 ⚡ cheap wins (already-credited
    films needing only a date). Strike/keep at your pace; the date-draft tool
    (`npm run tmdb:draft`) is built + smoke-tested for whatever you keep.
-3. UI checkpoint approvals (W1/W2/W3/W4/W5a–d all ✅; W5e next).
+3. UI checkpoint approvals — **ALL CLOSED**: W1/W2/W3/W4/W5a–e ✅ (W5e approved
+   2026-07-10; the pre-SEND UI program is complete).
 3b. ✅ RESOLVED 2026-07-06: Buri ratified the self-checked
    `CHRONO_TITLE_OVERRIDES` map (4 films: LotR ×3, M:I Fallout) over a
    `chronoTitle` field on `Movie`. The map stands.
@@ -757,7 +784,9 @@ what's ready-to-review per sitting.
    - **Enabling action:** LOCK forces a **Connections grid re-bake** (pool
      changed) — D4 + D5 ride it for near-zero marginal cost; that's *why* they
      wait for LOCK rather than spending a standalone re-bake now.
-5. W6: the deploy button.
+5. W6: the deploy button — **✅ PRESSED 2026-07-10** (public-URL amendment;
+   Ledger W6). Remaining human steps: Buri texts the circle the link + pitches;
+   interviews ~2 weeks out (~2026-07-24) pick the front door.
 6. **W5c follow-ups (Buri RULED 2026-07-08 via grill) — ACTIVE this session
    (2026-07-08), in his order** (W5c checkpoint approved ✅; grill-first on (i)):
    - (i) **Card title redesign → "NAME IS THE HERO" (ruled). ◀ SHIPPED + Buri
