@@ -605,8 +605,9 @@ what's ready-to-review per sitting.
       14/14; browser-verified Duel @390×844+@375×667, Solo @390, Chronology @390.
       **PARKED (§7·6): difficulty-as-personas — NOT built.** Two throwaway audit
       harnesses kept as P2 pool-merge regression guards (flag: remove if unwanted).
-- [ ] **W5d CARD/UI REDESIGN BUILD (UI, checkpointed) — SHIPPED 2026-07-10
-      ⛔ AWAITING BURI CHECKPOINT** (Buri approved all four proposals 2026-07-09;
+- [x] **W5d CARD/UI REDESIGN BUILD (UI, checkpointed) — SHIPPED 2026-07-10 ·
+      Buri approved ✅ 2026-07-10 (as shipped; Connections selected tile
+      confirmed navy fill + amber border)** (Buri approved all four proposals 2026-07-09;
       comp = `docs/card-redesign-proposal.html`, committed with this wave).
       **Ruled fixes first (Buri, 2026-07-10, in-session):** (1) **BLOCKER
       Chronology year-in-DOM leak FIXED** — BackFace (which prints `card.year`)
@@ -668,11 +669,22 @@ what's ready-to-review per sitting.
       Duel, Solo, Connections; Chronology @390). **2026-07-10 REVIEW COMPLETION:**
       the 5 unrun areas (tokens-typography · layout-spacing · a11y · ledger-audit
       · process-retro) ran as a fresh 19-agent workflow (worktree-isolated,
-      adversarially verified) — results in §7·7 + the fix docket. **FLAGS for
-      Buri (§7·7):** (a) Connections selected tile keeps the shipped navy fill
-      (comp sheet showed paper-bg selection — ruled "amber selection stays" as
-      keep-shipped; confirm); (b) new majors from the review (Domine has NO
-      tabular figures — tabular-nums on scores is a silent no-op — et al).
+      adversarially verified) — results in §7·7 + the fix docket. **FLAGS
+      RESOLVED 2026-07-10:** (a) Connections selected tile — Buri confirmed
+      keep-shipped (navy fill + amber border); (b) new majors ruled → §7·7(b)
+      rulings + the W5e slice below.
+- [ ] **W5e PRE-SEND FIX SLICE (UI, checkpointed) — RULED 2026-07-10** (Buri's
+      §7·7 picks): (1) **pinch-zoom unblock** — drop `user-scalable=no` from
+      index.html (WCAG 1.4.4 one-liner; the low-vision cover for the 6–9px
+      type floors); (2) **end-screen overlay clip @667** — menu-fix scroll
+      pattern (scroll container + `my-auto`) on the end overlays; Duel
+      game-over (recap reel + record line, DuelGame.tsx:1940) is the worst
+      case, sweep Results/ChronoResults/ConnectionsResults for the same class;
+      (3) **analytics replay desync pulled FORWARD** (Buri flipped the W5d
+      deferral 2026-07-10 — mode_start/finish guards across all 4 modes;
+      protects the 2-week front-door data window that SEND exists to gather).
+      **NOT pulled (post-SEND backlog, §7·7b):** HUD/MeldShelf overlap @667 ·
+      Domine ticking numerals · full keyboard operability.
 - [ ] W6 SEND (deploy = Buri)
 - [ ] **D1 Duel deep-cut reveal as a difficulty lever** (PARKED, concept
       approved 2026-07-06; §3·D1) — deepCast TMDB content pass (P2-adjacent) →
@@ -691,7 +703,7 @@ what's ready-to-review per sitting.
    352 candidates across 1970s–2020s, 111 ⚡ cheap wins (already-credited
    films needing only a date). Strike/keep at your pace; the date-draft tool
    (`npm run tmdb:draft`) is built + smoke-tested for whatever you keep.
-3. UI checkpoint approvals (W1/W2/W3/W4 all ✅; W5 next).
+3. UI checkpoint approvals (W1/W2/W3/W4/W5a–d all ✅; W5e next).
 3b. ✅ RESOLVED 2026-07-06: Buri ratified the self-checked
    `CHRONO_TITLE_OVERRIDES` map (4 films: LotR ×3, M:I Fallout) over a
    `chronoTitle` field on `Movie`. The map stands.
@@ -788,13 +800,14 @@ what's ready-to-review per sitting.
    known docket is FIXED in W5d (year-leak blocker · decade rail · wild burn ·
    Connections loss reveal · genre truncation · menu 667 overflow — the last
    found independently at blocker severity by the layout agent AND caught live
-   during W5d captures). **AWAITING BURI:**
-   - **(a) W5d checkpoint approval** — side-by-sides @390×844 + @375×667 shown
-     in-session; one judgment call to confirm: Connections SELECTED tile kept
-     the shipped navy fill + amber border (the proposal sheet's minimal `.sel`
-     css showed paper-bg selection; read "amber selection stays" as
-     keep-shipped).
-   - **(b) NEW CONFIRMED MAJORS (not yet fixed — rule fix-now vs post-SEND):**
+   during W5d captures). **ALL RULED 2026-07-10:**
+   - **(a) W5d checkpoint approval — ✅ APPROVED as shipped 2026-07-10.**
+     Judgment call confirmed: Connections SELECTED tile keeps the navy fill +
+     amber border (the proposal sheet's minimal `.sel` css showed paper-bg
+     selection; Buri ruled keep-shipped).
+   - **(b) NEW CONFIRMED MAJORS — RULED 2026-07-10: pre-SEND = 2's pinch-zoom
+     line + 4 (→ W5e slice, §6); post-SEND backlog = 1 (Domine numerals) +
+     3 (HUD/shelf overlap) + the full keyboard path from 2:**
      1. **Domine has no tabular figures** — every `tabular-nums` on
         font-stub-display is a silent no-op; scores/deck count/end totals/
         strokes reflow as they tick (ScoreRace.tsx:224 et al; the shipped woff2
@@ -812,11 +825,15 @@ what's ready-to-review per sitting.
      4. **End-screen overlays can clip at 667** — same class as the fixed menu
         bug: `absolute inset-0 justify-center` + no scroll; Duel game-over
         worst case (recap reel + record line) is the risk (DuelGame.tsx:1940).
-     Recommendation: fix 2's pinch-zoom line + 4 (mechanical, small) pre-SEND;
-     1 + 3 pre-SEND if cheap after inspection; full keyboard operability =
-     post-SEND backlog.
-   - **(c) Deferred by Buri's W5d scope ruling:** analytics replay desync
-     (mode_start/finish, all 4 modes) + the minors sweep (favicon, Solo blurb
+     Recommendation was: fix 2's pinch-zoom line + 4 (mechanical, small)
+     pre-SEND; 1 + 3 pre-SEND if cheap after inspection; full keyboard
+     operability = post-SEND backlog. Buri took the two recommended picks
+     and sent 1 + 3 post-SEND outright.
+   - **(c) Deferred by Buri's W5d scope ruling — analytics PULLED FORWARD
+     2026-07-10:** analytics replay desync (mode_start/finish, all 4 modes)
+     now rides the W5e pre-SEND slice (it pollutes the exact 2-week data
+     window SEND exists to gather). Still deferred: the minors sweep (favicon,
+     Solo blurb
      two-win-conditions, MeldShelf legacy posterColor spine, difficulty reset
      on load, race-to-20 mid-turn timing, stale design_handoff RULEBOOK dupe,
      practice-vs-daily share ambiguity, Chrono "Play again" re-deals identical
