@@ -199,7 +199,16 @@ export default function SoloGame({ onExit, start }: { onExit: () => void; start:
   // never records — the daily streak is the daily's.
   useEffect(() => {
     if (status === 'playing') return
-    track('mode_finish', { mode: 'solo', kind: start.kind })
+    // outcome ride-alongs, all settled by the time status flips: won|stuck,
+    // flips (flippedEver + invalid penalty), score (flips − combo), solver par
+    track('mode_finish', {
+      mode: 'solo',
+      kind: start.kind,
+      result: status,
+      flips,
+      score,
+      par: puzzle.par,
+    })
     if (start.kind !== 'daily') return
     setFinishMeta(recordDailyFinish('solo', dailySeed, status === 'won' ? score : null))
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -346,6 +355,7 @@ export default function SoloGame({ onExit, start }: { onExit: () => void; start:
               emoji={emoji}
               solution={solutionSteps}
               daily={start.kind === 'daily' ? finishMeta : null}
+              analytics={{ mode: 'solo', kind: start.kind }}
               onReset={resetGame}
               onMenu={onExit}
             />

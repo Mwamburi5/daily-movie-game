@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react'
+import { track, type EventData } from '../lib/analytics.ts'
 import { copyToClipboard } from '../lib/share.ts'
 
 type CopyState = 'idle' | 'copied' | 'failed'
 
 // The "copy result" button + blocked-clipboard fallback, exactly as ChronoResults
 // shipped it — now shared so all three end screens behave identically.
-export default function ShareCopy({ text }: { text: string }) {
+// `analytics` names the mode for the 'share' event — the caller supplies it
+// because this component can't know which mode it's mounted in.
+export default function ShareCopy({ text, analytics }: { text: string; analytics?: EventData }) {
   const [copy, setCopy] = useState<CopyState>('idle')
 
   // Revert the transient "copied" / "failed" label back to idle after a beat.
@@ -17,6 +20,9 @@ export default function ShareCopy({ text }: { text: string }) {
 
   const onCopy = async () => {
     const ok = await copyToClipboard(text)
+    // only a landed copy counts as a share — a blocked clipboard shows the
+    // select-by-hand fallback, which we can't observe
+    if (ok && analytics) track('share', analytics)
     setCopy(ok ? 'copied' : 'failed')
   }
 

@@ -28,7 +28,7 @@ import { matchCutShare } from './lib/share.ts'
 import { localDateSeed } from './lib/daily.ts'
 import { makeRng } from './lib/rng.ts'
 import { recordDailyFinish, type DailyFinish } from './lib/progress.ts'
-import { track } from './lib/analytics.ts'
+import { track, type EventData } from './lib/analytics.ts'
 import ShareCopy from './components/ShareCopy.tsx'
 
 // How a round was started (chosen at the menu, App.tsx). The DAILY rides today's
@@ -504,6 +504,7 @@ export default function ConnectionsGame({ onExit, start }: { onExit: () => void;
               guesses={guesses}
               groupOf={groupOf}
               daily={start.kind === 'daily' ? finishMeta : null}
+              analytics={{ mode: 'connections', kind: start.kind }}
               onReset={resetGame}
               onMenu={onExit}
               onPeek={status === 'lost' ? () => setPeekBoard(true) : undefined}
@@ -541,6 +542,7 @@ function ConnectionsResults({
   guesses,
   groupOf,
   daily,
+  analytics,
   onReset,
   onMenu,
   onPeek,
@@ -550,6 +552,7 @@ function ConnectionsResults({
   guesses: string[][]
   groupOf: Map<string, number>
   daily: DailyFinish | null
+  analytics: EventData // mode identity for the share event (parent owns kind)
   onReset: () => void
   onMenu: () => void // back to the mode menu (W5d: every end screen routes home)
   onPeek?: () => void // loss only: step aside so the revealed board can be read
@@ -610,7 +613,7 @@ function ConnectionsResults({
           </div>
         )}
 
-        <ShareCopy text={text} />
+        <ShareCopy text={text} analytics={analytics} />
 
         {onPeek && (
           <button

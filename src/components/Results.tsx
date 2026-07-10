@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
 import { matchCutShare } from '../lib/share.ts'
+import type { EventData } from '../lib/analytics.ts'
 import type { DailyFinish } from '../lib/progress.ts'
 import ShareCopy from './ShareCopy.tsx'
 
@@ -20,6 +21,7 @@ interface ResultsProps {
   emoji: string
   solution: SolutionStep[]
   daily: DailyFinish | null // streak readout — null on practice rounds
+  analytics: EventData // mode identity for the share event (SoloGame owns kind)
   onReset: () => void
   onMenu: () => void // back to the mode menu (W5d: every end screen routes home)
 }
@@ -35,6 +37,7 @@ export default function Results({
   emoji,
   solution,
   daily,
+  analytics,
   onReset,
   onMenu,
 }: ResultsProps) {
@@ -114,7 +117,7 @@ export default function Results({
           {emoji}
         </div>
 
-        <ShareCopy text={text} />
+        <ShareCopy text={text} analytics={analytics} />
 
         <button
           type="button"

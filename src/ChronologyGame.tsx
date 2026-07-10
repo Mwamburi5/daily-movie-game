@@ -33,7 +33,7 @@ import { matchCutShare } from './lib/share.ts'
 // shares the exact local-midnight rollover rule (no drift between modes).
 import { localDateSeed } from './lib/daily.ts'
 import { recordDailyFinish, type DailyFinish } from './lib/progress.ts'
-import { track } from './lib/analytics.ts'
+import { track, type EventData } from './lib/analytics.ts'
 import ShareCopy from './components/ShareCopy.tsx'
 
 // How a round was started (chosen at the menu, App.tsx). The DAILY rides the
@@ -138,7 +138,9 @@ export default function ChronologyGame({ onExit, start }: { onExit: () => void; 
   // practice rounds never record — they'd let streaks be farmed off-seed.
   useEffect(() => {
     if (status !== 'cleared') return
-    track('mode_finish', { mode: 'chronology', kind: start.kind })
+    // strokes = raw effort, score = strokes − streak credits (the golf number
+    // the end screen shows and the daily records) — both settled at 'cleared'
+    track('mode_finish', { mode: 'chronology', kind: start.kind, strokes, score })
     if (start.kind !== 'daily') return
     setFinishMeta(recordDailyFinish('chronology', dailySeed, score))
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -429,6 +431,7 @@ export default function ChronologyGame({ onExit, start }: { onExit: () => void; 
               credits={credits}
               log={playLog}
               daily={start.kind === 'daily' ? finishMeta : null}
+              analytics={{ mode: 'chronology', kind: start.kind }}
               onReset={resetGame}
               onMenu={onExit}
             />
@@ -574,6 +577,7 @@ function ChronoResults({
   credits,
   log,
   daily,
+  analytics,
   onReset,
   onMenu,
 }: {
@@ -582,6 +586,7 @@ function ChronoResults({
   credits: number
   log: LogEntry[]
   daily: DailyFinish | null // streak readout — null on practice rounds
+  analytics: EventData // mode identity for the share event (parent owns kind)
   onReset: () => void
   onMenu: () => void // back to the mode menu (W5d: every end screen routes home)
 }) {
@@ -633,7 +638,7 @@ function ChronoResults({
           {emoji}
         </div>
 
-        <ShareCopy text={text} />
+        <ShareCopy text={text} analytics={analytics} />
 
         <button
           type="button"

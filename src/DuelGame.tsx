@@ -1264,7 +1264,13 @@ export default function DuelGame({
   // next finish records its own game.
   useEffect(() => {
     if (!gameOver) return
-    track('mode_finish', { mode: 'duel', difficulty })
+    // winner is the derived net comparison above — 'draw' already exists there,
+    // so the result field costs no new state
+    track('mode_finish', {
+      mode: 'duel',
+      difficulty,
+      result: winner === 'player' ? 'won' : winner === 'cpu' ? 'lost' : 'draw',
+    })
     setDuelMeta(recordDuelFinish(difficulty, winner === 'player'))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gameOver])
@@ -2025,7 +2031,7 @@ export default function DuelGame({
                   </p>
                 )}
 
-                <ShareCopy text={shareDuel} />
+                <ShareCopy text={shareDuel} analytics={{ mode: 'duel', difficulty }} />
 
                 <button
                   type="button"
