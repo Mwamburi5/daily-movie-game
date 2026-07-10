@@ -968,10 +968,12 @@ what's ready-to-review per sitting.
      it?"** — not "is it an emoji?". Match Cut is a game; over-cleaning into a
      productivity-app look is as much a failure as emoji clutter.
 9. **Post-SEND asks (logged 2026-07-10 at the analytics-slice close):**
-   - **(a) Deploy → then text, in that order:** `npx vercel deploy --prod`
-     (authed as mwamburi5; pushes do NOT auto-deploy) ships the analytics
-     slice (efae3d4) — text the circle only AFTER it's live, so the full
-     2-week window has share + outcome data.
+   - **(a) Deploy → then text, in that order:** ✅ **DEPLOY EXECUTED
+     2026-07-10** (Buri asked in-session; `npx vercel deploy --prod` →
+     `dpl_Hj31Au4fmFoaoBxe8uGSD4FPUdmv`, matchcutdaily.com verified serving
+     the new bundle `index-CCwc83pU.js` with the 'share' event in the JS;
+     noindex meta intact). Remaining human half: **text the circle** — the
+     full 2-week window now has share + outcome data from message one.
    - **(b) Dashboard receipt check:** after a few real plays, confirm the
      custom events (mode_start / mode_finish / share) actually appear in the
      Vercel Analytics dashboard. Client-side vaq proof ≠ server receipt —
