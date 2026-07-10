@@ -21,7 +21,7 @@ Don't assume. Don't hide confusion. Surface tradeoffs.
 
 Touch only what you must. Match existing style. Clean up only your own mess.
 
-- `src/DuelGame.tsx` is ~2,000 lines / 35 `useState`. Highest blast radius in the
+- `src/DuelGame.tsx` is ~2,060 lines / 39 `useState`. Highest blast radius in the
   repo. Change only the lines the task requires; do **not** refactor the state
   soup into a reducer "while you're in there" — not asked, not broken.
 - Match the existing voice: lowercase `say()` messages, comments that explain
@@ -35,8 +35,8 @@ Touch only what you must. Match existing style. Clean up only your own mess.
   bannered history.
 - **`sim/RULESET.md` is the canonical contract.** The sim is the source of truth;
   React must match it. Any rule/scoring change → re-run `npm run verify` (must be
-  **64/64**, plus `verify:solo` 8/8 and `verify:chronology` 42/42) and re-tune
-  difficulty before shipping. React and the sim should call
+  **64/64**, plus `verify:solo` 8/8, `verify:chronology` 42/42, and
+  `verify:connections` 14/14) and re-tune difficulty before shipping. React and the sim should call
   the **same** functions in `src/lib/` — parity by construction, not by discipline.
 - **Deps are locked:** React 18 / Vite / Tailwind 4 / Framer Motion only. No new
   deps or features without asking.

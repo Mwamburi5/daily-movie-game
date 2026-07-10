@@ -21,8 +21,10 @@
 > SEND deployed — **live at https://matchcutdaily.com** (public URL per Buri's
 > amendment; noindex + URL-less shares still hold). The project is now in the
 > **post-SEND phase**: circle feedback → interviews (~2026-07-24) pick the
-> front door; build tracks = P2 Stage B strikes → LOCK docket (§7·4b) +
-> post-SEND fix backlog (§7·7b) + personas (§7·6) + UI-overhaul intake (§7·8).
+> front door; every circle report lands in `docs/feedback-log.md` (append-only;
+> the interview session reads it); build tracks = P2 Stage B strikes → LOCK
+> docket (§7·4b) + post-SEND fix backlog (§7·7b) + personas (§7·6) +
+> UI-overhaul intake (§7·8). Deploys ride the window FREEZE policy (§2.11).
 
 All four modes — **Solo, Duel, Chronology, Connections** — playable on the Stub UI ·
 one unified TMDB-audited movie pool feeding all modes · per-mode sims/verifies
@@ -158,6 +160,14 @@ dead) · the Wave-D "double-tap Allow It guard" already exists
     operator-agnostic for later handover). Long session → wind down: finish the
     wave in flight to its gate, commit+push, tick the Ledger, update memory,
     tell Buri to restart fresh. A dead session loses at most one wave.
+11. **SEND-window deploy policy (Buri, 2026-07-10):** default **deploy-FREEZE**
+    for the feedback window (SEND → interviews ~2026-07-24) — the circle plays
+    one stable build so feedback maps to one version. Exceptions: (a) anything
+    blocking a circle member from playing; (b) the SEND-window analytics slice
+    (shipped 2026-07-10, must be live before the circle is texted). Backlog
+    fixes build+commit+push freely during the window but batch into **ONE
+    deploy at window close**. Deploys stay Buri's button, always — and pushes
+    never auto-deploy (`npx vercel deploy --prod` is the only path to prod).
 
 ## 3. Waves (fresh numbering W0–W6; old "Wave 0/A–D" and content "waves 1/2" vocabularies are retired)
 
@@ -726,6 +736,38 @@ what's ready-to-review per sitting.
       playmatchcut.com parked unattached (point/redirect later). **Still
       human:** Buri texts the circle the link + one-line pitch per mode;
       interviews ~2 weeks out (→ ~2026-07-24) pick the front door.
+- [x] **POST-SEND · analytics slice (objective, auto) — SHIPPED 2026-07-10**
+      (commit efae3d4, pushed; §2.11 exception b — **deploy before Buri texts
+      the circle**): track() gains 'share' (fired by ShareCopy only on a
+      LANDED clipboard copy; payload threaded from all four callers — {mode,
+      kind} dailies, {mode, difficulty} Duel; the component never guesses its
+      mode) + mode_finish outcome ride-alongs from existing in-scope state
+      (Duel result won|lost|draw off the derived winner · Solo
+      result/flips/score/par · Chronology strokes+score · Connections already
+      had result). Gates: full verify 64/64 · solo 8/8 · chrono 42/42 ·
+      connections 14/14 · build. Browser-verified: Chronology cleared, Solo
+      driven to stuck, Connections driven to a loss — share fired on all
+      three with correct payloads, every replay appended exactly ONE
+      mode_start (W5e pairing holds); Duel boot live, finish/share
+      structural (W5e precedent); console clean. **Buri: deploy receipt +
+      dashboard custom-events check = §7·9.**
+- [ ] **POST-SEND · fix slice (§7·7b + §7·7c minors)** — Domine ticking
+      numerals · Duel HUD/MeldShelf overlap @667 · full keyboard operability ·
+      minors sweep (favicon, Solo blurb, MeldShelf legacy spine, difficulty
+      reset, race-to-20 timing, stale handoff RULEBOOK dupe, practice-vs-daily
+      share ambiguity, Chrono replay re-deal). Build+commit freely; **deploys
+      batch to window close (§2.11)**.
+- [ ] **POST-SEND · icon pass + Framer polish (§7·8·1/·3)** — overhaul-era:
+      zero-dep local SVG icon set (share-emoji exempt per §7·8·2) + Framer
+      micro-animations. Ticket-stub-voice filter applies (§7·8).
+- [ ] **POST-SEND · launch-switch landing pass (§7·8·4)** — menu becomes the
+      de-facto landing page when URL-in-share flips; **gated on the
+      front-door pick (post-interviews)**.
+- [ ] **POST-SEND · personas (§7·6, feedback-gated)** — difficulty-as-personas
+      grill/spec first; re-skin if knobs unchanged, re-sim/re-tune if not.
+- [ ] **POST-SEND · P2-LOCK docket grill (§7·4b, at LOCK)** — chrono pin ·
+      Solo cutover · Duel cutover+re-tune · Connections diversity floor ·
+      bundle intern; convene as a grill-me session with real feedback in hand.
 - [ ] **D1 Duel deep-cut reveal as a difficulty lever** (PARKED, concept
       approved 2026-07-06; §3·D1) — deepCast TMDB content pass (P2-adjacent) →
       deep-cut flip face (W3) → difficulty knob + re-tune (W5); needs its own
@@ -925,6 +967,21 @@ what's ready-to-review per sitting.
      glyph/element ask **"does this carry the ticket-stub voice or fight
      it?"** — not "is it an emoji?". Match Cut is a game; over-cleaning into a
      productivity-app look is as much a failure as emoji clutter.
+9. **Post-SEND asks (logged 2026-07-10 at the analytics-slice close):**
+   - **(a) Deploy → then text, in that order:** `npx vercel deploy --prod`
+     (authed as mwamburi5; pushes do NOT auto-deploy) ships the analytics
+     slice (efae3d4) — text the circle only AFTER it's live, so the full
+     2-week window has share + outcome data.
+   - **(b) Dashboard receipt check:** after a few real plays, confirm the
+     custom events (mode_start / mode_finish / share) actually appear in the
+     Vercel Analytics dashboard. Client-side vaq proof ≠ server receipt —
+     custom events can be plan-gated. If absent, flag loudly: the ~07-24
+     data cross-check needs a rethink.
+   - **(c) Rotate the mode order across the 5–10 pitch texts** — pitch order
+     biases which mode gets tried first; rotation keeps the front-door data
+     clean.
+   - **(d) Stage B strikes are the launch long-pole** (0/352 struck; the 111
+     ⚡ cheap wins are the natural quiet-window batch — §7·2).
 
 ## 8. Master Prompt (paste this to boot any future build session)
 
@@ -960,6 +1017,14 @@ localStorage = meta only. Content merges go through /tmdb-check arbitration.
 
 Wind-down on long sessions: finish the in-flight wave to its gate,
 commit+push, tick Ledger, update memory, tell Buri to restart fresh.
+
+POST-SEND (since 2026-07-10, live at matchcutdaily.com): build tracks are
+§0's list — P2 Stage B strikes → LOCK docket (§7·4b), fix backlog (§7·7b),
+personas (§7·6), UI-overhaul intake (§7·8). Pushes NEVER auto-deploy
+(npx vercel deploy --prod, Buri's button). The window deploy-FREEZE policy
+(§2.11) applies until interviews close (~2026-07-24): fixes build+commit+
+push freely, deploys batch to window close. Circle feedback lands in
+docs/feedback-log.md as it arrives.
 ```
 
 ## 9. Amendment log
@@ -974,3 +1039,11 @@ commit+push, tick Ledger, update memory, tell Buri to restart fresh.
   compose non-Duel surfaces from the six comps under the cohesion rule; menu +
   Chronology comps welcome, never blocking) · **kickoff = commit docs only**
   (plan/banners/references pushed; W0d–e run next session via §8).
+- v3 (2026-07-10, post-SEND session): SEND-window deploy-FREEZE policy →
+  §2.11 (Buri's 2026-07-10 ruling) · §6 gains the post-SEND track entries
+  (analytics slice ticked; fix slice / icon+Framer / landing pass / personas /
+  P2-LOCK grill queued) · §8 gains the post-SEND paragraph · §7·9 logs the
+  four close-out asks (deploy→text order · dashboard receipt · pitch rotation ·
+  Stage B long-pole) · `docs/feedback-log.md` created (append-only circle
+  ledger, pointed from §0) · CLAUDE.md gate line gains verify:connections
+  14/14 + DuelGame stats refreshed (~2,060 ln / 39 useState).
