@@ -9,6 +9,10 @@ All four modes emit Vercel Web Analytics `mode_start` / `mode_finish` events wit
 a per-mode discriminator (`{mode: duel|solo|chronology|connections, kind|difficulty}`)
 — confirmed wired at every call site (`src/lib/analytics.ts`, script-tag route,
 no-op if Analytics is unloaded). This is the say/do cross-check for interviews.
+**W5e (2026-07-10):** in-component replays ("Play again" / "Deal again") re-fire
+`mode_start`, so starts pair 1:1 with finishes across replays — pre-W5e a single
+mount could emit 1 start / N finishes, which would have polluted the 2-week
+front-door read.
 
 ---
 

@@ -673,18 +673,32 @@ what's ready-to-review per sitting.
       RESOLVED 2026-07-10:** (a) Connections selected tile — Buri confirmed
       keep-shipped (navy fill + amber border); (b) new majors ruled → §7·7(b)
       rulings + the W5e slice below.
-- [ ] **W5e PRE-SEND FIX SLICE (UI, checkpointed) — RULED 2026-07-10** (Buri's
-      §7·7 picks): (1) **pinch-zoom unblock** — drop `user-scalable=no` from
-      index.html (WCAG 1.4.4 one-liner; the low-vision cover for the 6–9px
-      type floors); (2) **end-screen overlay clip @667** — menu-fix scroll
-      pattern (scroll container + `my-auto`) on the end overlays; Duel
-      game-over (recap reel + record line, DuelGame.tsx:1940) is the worst
-      case, sweep Results/ChronoResults/ConnectionsResults for the same class;
-      (3) **analytics replay desync pulled FORWARD** (Buri flipped the W5d
-      deferral 2026-07-10 — mode_start/finish guards across all 4 modes;
-      protects the 2-week front-door data window that SEND exists to gather).
-      **NOT pulled (post-SEND backlog, §7·7b):** HUD/MeldShelf overlap @667 ·
-      Domine ticking numerals · full keyboard operability.
+- [ ] **W5e PRE-SEND FIX SLICE (UI, checkpointed) — RULED + SHIPPED 2026-07-10
+      ⛔ AWAITING BURI CHECKPOINT** (Buri's §7·7 picks): (1) **pinch-zoom
+      unblock** — `maximum-scale=1.0, user-scalable=no` dropped from
+      index.html (WCAG 1.4.4; the low-vision cover for the 6–9px type floors;
+      iOS ignored the lock anyway, Android Chrome enforced it). (2)
+      **end-screen overlay clip @667 FIXED in all four** — menu-fix scroll
+      pattern (root `overflow-y-auto`, inner column `my-auto`) on Duel
+      game-over (wrapper column added — children sat directly in the root),
+      Solo Results (card gets `my-auto`, root py; the revealed-solution list
+      was the tall case), ChronoResults + ConnectionsResults (inner column
+      `my-auto py-6`). (3) **analytics replay desync FIXED** — every
+      in-component replay (`resetGame` ×3 / `newGame`) re-fires `mode_start`,
+      pairing starts 1:1 with finishes (pre-fix one mount emitted 1 start /
+      N finishes); docs/mode-readouts.md synced. **Gates GREEN:** tsc+build
+      clean · verify **64/64** · solo 8/8 · chrono 42/42 · connections 14/14
+      (sim untouched — regression confirm). **Browser-verified @375×667:**
+      viewport meta clean in DOM · Connections daily played to a real loss —
+      end screen centered + complete at 667 (`my-auto` = 43px margins),
+      scrolls with top reachable at a forced 480 (was unreachable under
+      justify-center) · "See the board" + back-pill flow intact · "Play again"
+      appended exactly ONE new mode_start in window.vaq · all 4 modes boot
+      zero console errors. **Checkpoint flag:** Duel game-over overlay
+      verified structurally (same fix class, tsc/build), not driven to a live
+      game-over this session — the played-game evidence is the Connections
+      daily. **NOT pulled (post-SEND backlog, §7·7b):** HUD/MeldShelf overlap
+      @667 · Domine ticking numerals · full keyboard operability.
 - [ ] W6 SEND (deploy = Buri)
 - [ ] **D1 Duel deep-cut reveal as a difficulty lever** (PARKED, concept
       approved 2026-07-06; §3·D1) — deepCast TMDB content pass (P2-adjacent) →

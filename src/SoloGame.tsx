@@ -164,6 +164,9 @@ export default function SoloGame({ onExit, start }: { onExit: () => void; start:
   }
 
   const resetGame = () => {
+    // a replay is a new game for analytics — the mount effect only covers the
+    // first deal, so re-fire here to keep mode_start ↔ mode_finish paired 1:1
+    track('mode_start', { mode: 'solo', kind: start.kind })
     window.clearTimeout(lowerTimer.current)
     setHand(puzzle.handMovieIds)
     setPile([puzzle.starterMovieId])

@@ -225,6 +225,9 @@ export default function ChronologyGame({ onExit, start }: { onExit: () => void; 
   }
 
   const resetGame = () => {
+    // a replay is a new game for analytics — the mount effect only covers the
+    // first deal, so re-fire here to keep mode_start ↔ mode_finish paired 1:1
+    track('mode_start', { mode: 'chronology', kind: start.kind })
     window.clearTimeout(flipTimer.current)
     // Practice gets a fresh random round; the daily replays today's fixed board
     // (a retry of the same puzzle, not a new one — the daily is the daily).
@@ -591,7 +594,7 @@ function ChronoResults({
 
   return (
     <motion.div
-      className="absolute inset-0 z-[100] flex flex-col items-center justify-center bg-stub-cream/95 px-8 text-center"
+      className="absolute inset-0 z-[100] flex flex-col items-center overflow-y-auto bg-stub-cream/95 px-8 text-center"
       style={{
         backgroundImage: 'radial-gradient(rgba(31,58,82,.06) 1px, transparent 1.2px)',
         backgroundSize: '7px 7px',
@@ -600,13 +603,15 @@ function ChronoResults({
       animate={{ opacity: 1 }}
       transition={{ delay: reduce ? 0.15 : 0.5, duration: reduce ? 0.15 : 0.35 }}
     >
+      {/* my-auto column (the App.tsx menu fix): centers when it fits, scrolls
+          instead of clipping when it doesn't (short viewports). */}
       <motion.div
         initial={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.85, y: 14 }}
         animate={reduce ? { opacity: 1 } : { opacity: 1, scale: 1, y: 0 }}
         transition={
           reduce ? { delay: 0.2, duration: 0.15 } : { delay: 0.6, type: 'spring', stiffness: 260, damping: 22 }
         }
-        className="flex w-full flex-col items-center"
+        className="my-auto flex w-full flex-col items-center py-6"
       >
         <h2 className="font-stub-display text-4xl font-bold text-stub-navy">Cleared!</h2>
         <p className="mt-3 font-stub-display text-lg font-bold tabular-nums text-stub-navy">

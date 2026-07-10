@@ -1210,6 +1210,9 @@ export default function DuelGame({
   }, [playerScore, cpuScore])
 
   const newGame = () => {
+    // a replay is a new game for analytics — the mount effect only covers the
+    // first deal, so re-fire here to keep mode_start ↔ mode_finish paired 1:1
+    track('mode_start', { mode: 'duel', difficulty })
     window.clearTimeout(lowerTimer.current)
     const d = dealDuel()
     setPiles([[d.starterId], [d.deck[0]]])
@@ -1950,88 +1953,95 @@ export default function DuelGame({
         <AnimatePresence>
           {gameOver && (
             <motion.div
-              className="absolute inset-0 z-[100] flex flex-col items-center justify-center bg-stub-cream/95 px-8 text-center"
+              className="absolute inset-0 z-[100] flex flex-col items-center overflow-y-auto bg-stub-cream/95 px-8 text-center"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: reduce ? 0.2 : 0.8, duration: reduce ? 0.15 : 0.35 }}
             >
-              <h2 className="font-stub-display text-4xl font-bold text-stub-navy" data-result>
-                {winner === 'player' && 'You win!'}
-                {winner === 'cpu' && 'CPU wins.'}
-                {winner === 'draw' && 'Dead heat.'}
-              </h2>
-              <p className="mt-2 font-stub-ui text-[14px] font-medium text-stub-slate">
-                {endReason === 'playerOut' && 'You played your last card.'}
-                {endReason === 'cpuOut' && 'CPU emptied its hand.'}
-                {endReason === 'stalemate' && 'Deck empty — both passed.'}
-                {endReason === 'target' &&
-                  `${racerLabel} hit ${TARGET_SCORE} — the show goes to the higher net.`}
-              </p>
-              <p className="mt-4 font-stub-label text-[11px] font-bold uppercase tracking-wider text-stub-slate">
-                Highest net wins · played − cards held
-              </p>
-              <div className="mt-2 w-full max-w-[260px] space-y-1.5">
-                {[
-                  { label: 'You', score: playerScore, held: playerHand.length, net: playerNet, win: winner === 'player' },
-                  { label: 'CPU', score: cpuScore, held: cpuHand.length, net: cpuNet, win: winner === 'cpu' },
-                ].map((row) => (
-                  <div
-                    key={row.label}
-                    className={`flex items-baseline justify-between rounded-stub-panel border px-4 py-2.5 ${
-                      row.win
-                        ? 'border-stub-navy bg-stub-navy text-stub-cream'
-                        : 'border-stub-navy/15 bg-stub-paper text-stub-navy'
-                    }`}
-                  >
-                    <span className="text-[13px] font-bold">{row.label}</span>
-                    <span
-                      className={`font-stub-ui text-[11px] font-medium tabular-nums ${
-                        row.win ? 'text-stub-cream/60' : 'text-stub-slate'
+              {/* Scroll column (the App.tsx menu fix): my-auto centers when the
+                  content fits and top-aligns + scrolls when it doesn't — plain
+                  justify-center clipped BOTH ends at 667 once the recap reel ran
+                  long (flex centering overflows both ways; the top half can
+                  never be scrolled to). */}
+              <div className="my-auto flex w-full flex-col items-center py-6">
+                <h2 className="font-stub-display text-4xl font-bold text-stub-navy" data-result>
+                  {winner === 'player' && 'You win!'}
+                  {winner === 'cpu' && 'CPU wins.'}
+                  {winner === 'draw' && 'Dead heat.'}
+                </h2>
+                <p className="mt-2 font-stub-ui text-[14px] font-medium text-stub-slate">
+                  {endReason === 'playerOut' && 'You played your last card.'}
+                  {endReason === 'cpuOut' && 'CPU emptied its hand.'}
+                  {endReason === 'stalemate' && 'Deck empty — both passed.'}
+                  {endReason === 'target' &&
+                    `${racerLabel} hit ${TARGET_SCORE} — the show goes to the higher net.`}
+                </p>
+                <p className="mt-4 font-stub-label text-[11px] font-bold uppercase tracking-wider text-stub-slate">
+                  Highest net wins · played − cards held
+                </p>
+                <div className="mt-2 w-full max-w-[260px] space-y-1.5">
+                  {[
+                    { label: 'You', score: playerScore, held: playerHand.length, net: playerNet, win: winner === 'player' },
+                    { label: 'CPU', score: cpuScore, held: cpuHand.length, net: cpuNet, win: winner === 'cpu' },
+                  ].map((row) => (
+                    <div
+                      key={row.label}
+                      className={`flex items-baseline justify-between rounded-stub-panel border px-4 py-2.5 ${
+                        row.win
+                          ? 'border-stub-navy bg-stub-navy text-stub-cream'
+                          : 'border-stub-navy/15 bg-stub-paper text-stub-navy'
                       }`}
                     >
-                      {row.score} played − {row.held} held
-                    </span>
-                    <span className="font-stub-display text-xl font-bold tabular-nums">
-                      {row.net}
-                    </span>
-                  </div>
-                ))}
-              </div>
+                      <span className="text-[13px] font-bold">{row.label}</span>
+                      <span
+                        className={`font-stub-ui text-[11px] font-medium tabular-nums ${
+                          row.win ? 'text-stub-cream/60' : 'text-stub-slate'
+                        }`}
+                      >
+                        {row.score} played − {row.held} held
+                      </span>
+                      <span className="font-stub-display text-xl font-bold tabular-nums">
+                        {row.net}
+                      </span>
+                    </div>
+                  ))}
+                </div>
 
-              {/* Recap reel (7d): the match in highlights — melds, super links,
-                  Final Cuts. Forged as a standalone Stub component; self-guards on
-                  an empty reel (returns null). */}
-              <div className="mt-4 w-full max-w-[280px]">
-                <RecapReel headline={recapHeadline} summary={recapSummary} items={recap} />
-              </div>
+                {/* Recap reel (7d): the match in highlights — melds, super links,
+                    Final Cuts. Forged as a standalone Stub component; self-guards on
+                    an empty reel (returns null). */}
+                <div className="mt-4 w-full max-w-[280px]">
+                  <RecapReel headline={recapHeadline} summary={recapSummary} items={recap} />
+                </div>
 
-              {/* Lifetime record at this difficulty (localStorage meta-state) */}
-              {duelMeta && (
-                <p
-                  className="mt-3 font-stub-label text-[11px] font-bold uppercase tracking-wider text-stub-slate tabular-nums"
-                  data-duel-record
+                {/* Lifetime record at this difficulty (localStorage meta-state) */}
+                {duelMeta && (
+                  <p
+                    className="mt-3 font-stub-label text-[11px] font-bold uppercase tracking-wider text-stub-slate tabular-nums"
+                    data-duel-record
+                  >
+                    {DIFFICULTY_META[difficulty].label} record · {duelMeta.plays} played ·{' '}
+                    {duelMeta.wins} won
+                  </p>
+                )}
+
+                <ShareCopy text={shareDuel} />
+
+                <button
+                  type="button"
+                  onClick={newGame}
+                  className="mt-3 min-h-12 rounded-stub-pill bg-stub-amber px-7 py-3 text-[15px] font-bold text-stub-navy shadow-stub-card-resting active:scale-95"
                 >
-                  {DIFFICULTY_META[difficulty].label} record · {duelMeta.plays} played ·{' '}
-                  {duelMeta.wins} won
-                </p>
-              )}
-
-              <ShareCopy text={shareDuel} />
-
-              <button
-                type="button"
-                onClick={newGame}
-                className="mt-3 min-h-12 rounded-stub-pill bg-stub-amber px-7 py-3 text-[15px] font-bold text-stub-navy shadow-stub-card-resting active:scale-95"
-              >
-                Deal again
-              </button>
-              <button
-                type="button"
-                onClick={onExit}
-                className="mt-3 min-h-12 rounded-stub-pill border-2 border-stub-navy bg-stub-paper px-7 py-3 text-[15px] font-bold text-stub-navy active:scale-95"
-              >
-                Menu
-              </button>
+                  Deal again
+                </button>
+                <button
+                  type="button"
+                  onClick={onExit}
+                  className="mt-3 min-h-12 rounded-stub-pill border-2 border-stub-navy bg-stub-paper px-7 py-3 text-[15px] font-bold text-stub-navy active:scale-95"
+                >
+                  Menu
+                </button>
+              </div>
             </motion.div>
           )}
         </AnimatePresence>

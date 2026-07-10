@@ -53,8 +53,11 @@ export default function Results({
   const text = matchCutShare('Daily Puzzle', shareLine, emoji)
 
   return (
+    // overflow-y-auto + my-auto on the card (the App.tsx menu fix): centers
+    // when the card fits, scrolls when the revealed solution makes it taller
+    // than a 667px viewport — plain justify-center clips both ends.
     <motion.div
-      className="absolute inset-0 z-[100] flex flex-col items-center justify-center bg-stub-scrim px-6 text-center"
+      className="absolute inset-0 z-[100] flex flex-col items-center overflow-y-auto bg-stub-scrim px-6 py-6 text-center"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ delay: reduce ? 0.2 : 0.9, duration: reduce ? 0.15 : 0.35 }}
@@ -67,7 +70,7 @@ export default function Results({
             ? { delay: 0.25, duration: 0.15 }
             : { delay: 1.0, type: 'spring', stiffness: 260, damping: 22 }
         }
-        className="flex w-full max-w-[340px] flex-col items-center rounded-stub-header bg-stub-cream px-6 py-7 shadow-stub-modal"
+        className="my-auto flex w-full max-w-[340px] flex-col items-center rounded-stub-header bg-stub-cream px-6 py-7 shadow-stub-modal"
       >
         {/* Amber dot row — the Stub's header flourish (7d). */}
         <div className="mb-3 flex gap-1.5" aria-hidden>
