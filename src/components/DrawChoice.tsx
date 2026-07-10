@@ -38,6 +38,10 @@ export interface DrawOption {
   id: string
   /** True → this card shares a person with a marquee pile top (the amber hint). */
   connects: boolean
+  /** True → a wild: always kept, never burned (RULESET §11). When any option is
+      wild it becomes the ONLY tappable card; the parent renders it face-up and
+      its playerPickDraw guard force-keeps it regardless. */
+  wild?: boolean
   /** The face-down card, rendered by the parent (StubCard faceUp={false} ticket back). */
   cardSlot: React.ReactNode
 }
@@ -63,12 +67,25 @@ function ConnectsPill() {
   )
 }
 
+// The wild's forced-keep pill. Navy/amber (the header pill's register, not the
+// CONNECTS hint's) because it states a RULE, not a tip — wilds are never burned.
+function WildPill() {
+  return (
+    <span className="absolute -top-2.5 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded-stub-pill bg-stub-navy px-2 py-0.5 font-stub-label text-[8.5px] font-bold uppercase tracking-[0.08em] text-stub-amber">
+      Wild — always kept
+    </span>
+  )
+}
+
 export default function DrawChoice({ options, onPick, reduce }: DrawChoiceProps) {
   // The parent already threads useReducedMotion, but read it here too so the
   // component is safe to preview/mount standalone. `reduce` prop wins the intent;
   // the hook is only a fallback for a naked mount.
   const hookReduce = useReducedMotion()
   const soft = reduce || hookReduce
+  // A revealed wild collapses the choice: it's the forced keep (RULESET §11),
+  // the other cards go non-interactive and the copy states the rule.
+  const hasWild = options.some((o) => o.wild)
 
   return (
     // Scrim + panel fill the parent's absolute inset-0 z-[85] slot. Navy scrim
@@ -119,9 +136,11 @@ export default function DrawChoice({ options, onPick, reduce }: DrawChoiceProps)
           <span className="rounded-stub-pill bg-stub-navy px-3.5 py-1.5 font-stub-label text-[9px] font-bold uppercase tracking-[0.18em] text-stub-amber">
             {options.length === 1
               ? 'One left — take it'
-              : options.length === 2
-                ? 'Draw 2 — keep one'
-                : 'Draw 3 — keep one'}
+              : hasWild
+                ? `Draw ${options.length} — wild is kept`
+                : options.length === 2
+                  ? 'Draw 2 — keep one'
+                  : 'Draw 3 — keep one'}
           </span>
 
           {/* Card row — up to three face-down wells, centered. gap tightens so
@@ -129,25 +148,41 @@ export default function DrawChoice({ options, onPick, reduce }: DrawChoiceProps)
               target ≥44px with an amber press/hover affordance (README:
               takeable → amber border + glow). */}
           <div className="mt-3.5 flex items-start justify-center gap-2">
-            {options.map((opt) => (
-              <button
-                key={opt.id}
-                type="button"
-                data-draw-choice={opt.id}
-                onClick={() => onPick(opt.id)}
-                aria-label={
-                  opt.connects ? 'Keep this card — it connects' : 'Keep this card'
-                }
-                // relative for the CONNECTS pill; min targets guarantee ≥44px
-                // even if a future cardSlot shrinks. The ring is the amber
-                // affordance — resting is a hairline navy, hover/press goes amber
-                // + glow (the Stub's "this is selectable/taken" language).
-                className="group relative min-h-[44px] min-w-[44px] rounded-stub-card outline-none ring-2 ring-stub-navy/15 transition-all duration-150 hover:ring-stub-amber hover:shadow-stub-glow-amber focus-visible:ring-stub-amber focus-visible:shadow-stub-glow-amber active:scale-95"
-              >
-                {opt.connects && <ConnectsPill />}
-                {opt.cardSlot}
-              </button>
-            ))}
+            {options.map((opt) => {
+              // With a wild on the table only the wild is tappable — the other
+              // cards are already gone in rules terms (never a legal keep).
+              const dead = hasWild && !opt.wild
+              return (
+                <button
+                  key={opt.id}
+                  type="button"
+                  data-draw-choice={opt.id}
+                  disabled={dead}
+                  onClick={() => onPick(opt.id)}
+                  aria-label={
+                    opt.wild
+                      ? 'Keep the wild — wilds are always kept'
+                      : dead
+                        ? 'Leaves the show — the wild is kept instead'
+                        : opt.connects
+                          ? 'Keep this card — it connects'
+                          : 'Keep this card'
+                  }
+                  // relative for the CONNECTS pill; min targets guarantee ≥44px
+                  // even if a future cardSlot shrinks. The ring is the amber
+                  // affordance — resting is a hairline navy, hover/press goes amber
+                  // + glow (the Stub's "this is selectable/taken" language).
+                  className={`group relative min-h-[44px] min-w-[44px] rounded-stub-card outline-none ring-2 transition-all duration-150 ${
+                    dead
+                      ? 'ring-stub-navy/10 opacity-55 saturate-50'
+                      : 'ring-stub-navy/15 hover:ring-stub-amber hover:shadow-stub-glow-amber focus-visible:ring-stub-amber focus-visible:shadow-stub-glow-amber active:scale-95'
+                  }`}
+                >
+                  {opt.wild ? <WildPill /> : opt.connects && <ConnectsPill />}
+                  {opt.cardSlot}
+                </button>
+              )
+            })}
           </div>
 
           {/* Footnote — mono slate caption in the comps' voice (7c's "YOUR
@@ -156,7 +191,9 @@ export default function DrawChoice({ options, onPick, reduce }: DrawChoiceProps)
           <span className="mt-3.5 font-stub-label text-[8.5px] font-semibold uppercase tracking-[0.06em] text-stub-slate">
             {options.length <= 1
               ? 'Tap to keep — then play, hold, or toss it'
-              : 'The rest leave the show — tap one to keep'}
+              : hasWild
+                ? 'A wild is never burned — tap it to keep it'
+                : 'The rest leave the show — tap one to keep'}
           </span>
         </div>
       </motion.div>

@@ -427,6 +427,7 @@ export default function ChronologyGame({ onExit, start }: { onExit: () => void; 
               log={playLog}
               daily={start.kind === 'daily' ? finishMeta : null}
               onReset={resetGame}
+              onMenu={onExit}
             />
           )}
         </AnimatePresence>
@@ -571,6 +572,7 @@ function ChronoResults({
   log,
   daily,
   onReset,
+  onMenu,
 }: {
   score: number
   strokes: number
@@ -578,6 +580,7 @@ function ChronoResults({
   log: LogEntry[]
   daily: DailyFinish | null // streak readout — null on practice rounds
   onReset: () => void
+  onMenu: () => void // back to the mode menu (W5d: every end screen routes home)
 }) {
   const reduce = useReducedMotion()
 
@@ -633,6 +636,13 @@ function ChronoResults({
           className="mt-3 min-h-12 rounded-stub-pill border-2 border-stub-navy bg-stub-paper px-7 py-3 font-stub-ui text-[15px] font-bold text-stub-navy shadow-stub-card-resting active:scale-95"
         >
           Play again
+        </button>
+        <button
+          type="button"
+          onClick={onMenu}
+          className="mt-3 min-h-12 rounded-stub-pill border-2 border-stub-navy bg-stub-paper px-7 py-3 font-stub-ui text-[15px] font-bold text-stub-navy active:scale-95"
+        >
+          Menu
         </button>
       </motion.div>
     </motion.div>

@@ -21,6 +21,7 @@ interface ResultsProps {
   solution: SolutionStep[]
   daily: DailyFinish | null // streak readout — null on practice rounds
   onReset: () => void
+  onMenu: () => void // back to the mode menu (W5d: every end screen routes home)
 }
 
 export default function Results({
@@ -35,6 +36,7 @@ export default function Results({
   solution,
   daily,
   onReset,
+  onMenu,
 }: ResultsProps) {
   const reduce = useReducedMotion()
   const [showSolution, setShowSolution] = useState(false)
@@ -128,6 +130,14 @@ export default function Results({
             Reveal one solution
           </button>
         )}
+
+        <button
+          type="button"
+          onClick={onMenu}
+          className="mt-3 min-h-12 rounded-stub-pill border-2 border-stub-navy bg-stub-paper px-7 py-3 font-stub-ui text-[15px] font-bold text-stub-navy active:scale-95"
+        >
+          Menu
+        </button>
 
         {showSolution && (
           <div className="mt-5 max-h-[300px] w-full max-w-[300px] overflow-y-auto rounded-stub-panel bg-stub-paper px-5 py-4 text-left shadow-stub-card-resting">

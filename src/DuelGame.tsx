@@ -621,17 +621,25 @@ export default function DuelGame({
 
   // Player keeps one of the revealed cards; the rest leave play. The kept card
   // comes up raised for the usual keep / toss / play decision.
+  // Wilds are kept, never burned (RULESET §11) — the sim and the CPU's draw3
+  // both force-keep a revealed wild, so the human path must too or parity (and
+  // the 3-wilds invariant the tuning rides on) breaks. DrawChoice disables the
+  // other cards when a wild shows; this guard is the rule's enforcement.
   const playerPickDraw = (id: string) => {
     if (drawChoice === null) return
+    const wildId = drawChoice.find(isWild)
+    const keep = wildId ?? id
     setDrawChoice(null)
-    setPlayerHand((h) => [...h, id])
-    setPendingDraw(id)
-    setRaisedId(id)
+    setPlayerHand((h) => [...h, keep])
+    setPendingDraw(keep)
+    setRaisedId(keep)
     say(
       'You',
-      tops.some((t) => sharedPeople(t, mv(id)!).length > 0)
-        ? 'kept it — it connects!'
-        : 'kept the card',
+      wildId !== undefined
+        ? 'kept the wild — never burned'
+        : tops.some((t) => sharedPeople(t, mv(keep)!).length > 0)
+          ? 'kept it — it connects!'
+          : 'kept the card',
     )
   }
 
@@ -1554,6 +1562,7 @@ export default function DuelGame({
                         size="pile"
                         reveal={{ credits: faceUp.has(tId) }}
                         deepCut={!!tMovie.deepCast?.length}
+                        flipHint
                       />
                     </motion.div>
                   </motion.div>
@@ -1902,10 +1911,14 @@ export default function DuelGame({
           <DrawChoice
             options={drawChoice.map((id) => {
               const dm = mv(id)!
+              const wild = isWild(id)
               return {
                 id,
                 connects: tops.some((t) => sharedPeople(t, dm).length > 0),
-                cardSlot: <StubCard movie={dm} size="hand" faceUp={false} />,
+                // A wild shows its face: it's kept regardless (RULESET §11), and
+                // the amber ★ WILD front IS the explanation for the forced pick.
+                wild,
+                cardSlot: <StubCard movie={dm} size="hand" faceUp={wild} />,
               }
             })}
             onPick={playerPickDraw}

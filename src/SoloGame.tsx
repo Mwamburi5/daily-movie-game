@@ -274,6 +274,7 @@ export default function SoloGame({ onExit, start }: { onExit: () => void; start:
                 size="pile"
                 reveal={{ credits: faceUp.has(topId) }}
                 deepCut={!!topMovie.deepCast?.length}
+                flipHint
               />
             </motion.div>
           </div>
@@ -343,6 +344,7 @@ export default function SoloGame({ onExit, start }: { onExit: () => void; start:
               solution={solutionSteps}
               daily={start.kind === 'daily' ? finishMeta : null}
               onReset={resetGame}
+              onMenu={onExit}
             />
           )}
         </AnimatePresence>

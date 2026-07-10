@@ -10,8 +10,10 @@
 import DrawChoice, { type DrawOption } from '../DrawChoice'
 import StubCard from '../StubCard.tsx'
 import { MOVIES } from '../../data/movies.ts'
+import { wildMovie } from '../../lib/duel.ts'
 
-const byId = (id: string) => MOVIES.find((m) => m.id === id)!
+// Wilds aren't pool entries — wildMovie() synthesizes them, same as DuelGame's mv().
+const byId = (id: string) => (wildMovie(id) ?? MOVIES.find((m) => m.id === id))!
 
 // Face-down card slot, exactly as DuelGame injects it (StubCard faceUp={false}
 // ticket back — CardView/Card.tsx retired W3 inc2).
@@ -35,6 +37,26 @@ export default function DrawChoicePreview() {
               options={[
                 opt('the-godfather', false),
                 opt('taxi-driver', true),
+                opt('the-dark-knight', false),
+              ]}
+              onPick={noop}
+              reduce={false}
+            />
+          </PhoneFrame>
+        </Section>
+
+        <Section label="W5d — WILD in the reveal: face-up, forced keep, others dead (390×700)">
+          <PhoneFrame width={390}>
+            <DrawChoice
+              options={[
+                opt('the-godfather', true),
+                {
+                  id: 'wild-casablanca',
+                  connects: false,
+                  wild: true,
+                  // exactly as DuelGame injects it: the wild shows its face
+                  cardSlot: <StubCard movie={byId('wild-casablanca')} faceUp size="hand" />,
+                },
                 opt('the-dark-knight', false),
               ]}
               onPick={noop}

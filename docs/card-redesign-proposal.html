@@ -1,0 +1,280 @@
+<meta charset="utf-8">
+<title>Match Cut — card redesign proposal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Domine:wght@400;700&family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#F0EBD8; --paper:#FCF9F8; --navy:#1F3A52; --navy-mid:#41586E;
+    --amber:#CF952A; --slate:#5B6B7A; --slate-lt:#8FA6BC; --slate-xlt:#B9C8D6;
+    --teal:#2C89A1; --red:#A02C2C; --plum:#58486C; --disabled:#9AA5AD;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--cream);color:var(--navy);font-family:Inter,system-ui,sans-serif;padding:28px 26px 60px;
+    background-image:radial-gradient(rgba(31,58,82,.06) 1px, transparent 1.2px);background-size:7px 7px}
+  h1{font-family:Domine,Georgia,serif;font-size:26px;margin-bottom:4px}
+  .sub{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;color:var(--slate);text-transform:uppercase;margin-bottom:26px}
+  h2{font-family:Domine,Georgia,serif;font-size:17px;margin:34px 0 4px}
+  .note{font-size:11.5px;color:var(--slate);max-width:640px;line-height:1.5;margin-bottom:14px}
+  .row{display:flex;gap:26px;align-items:flex-start;flex-wrap:wrap}
+  .slot{display:flex;flex-direction:column;gap:7px;align-items:center}
+  .cap{font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.12em;color:var(--slate);text-transform:uppercase;text-align:center;max-width:200px;line-height:1.6}
+  .cap b{color:var(--navy)}
+
+  /* ── shared card frame ── */
+  .card{position:relative;aspect-ratio:3/4;background:var(--paper);border:2px solid var(--navy);
+    box-shadow:0 5px 13px rgba(31,58,82,.28);overflow:hidden;display:flex}
+  .notch{position:absolute;left:50%;width:12px;height:12px;border-radius:50%;background:var(--cream);
+    border:2px solid var(--navy);z-index:10;pointer-events:none}
+  .notch.t{top:0;transform:translate(-50%,-50%)} .notch.b{bottom:0;transform:translate(-50%,50%)}
+  .rail{width:15px;flex:none;background:var(--cream);display:flex;flex-direction:column;align-items:center;padding:6px 0}
+  .pip{width:9px;height:9px;transform:rotate(45deg);flex:none}
+  .bar{flex:1;width:8px;border-radius:999px;margin:5px 0}
+  .admit{font-family:'JetBrains Mono',monospace;font-weight:600;font-size:7px;letter-spacing:.14em;
+    writing-mode:vertical-rl;transform:rotate(180deg);color:var(--navy);flex:none}
+  .perf{width:6px;flex:none;display:flex;justify-content:center}
+  .perf i{width:2px;height:100%;background-image:repeating-linear-gradient(var(--navy) 0 2px, transparent 2px 5px)}
+  .main{flex:1;min-width:0;display:flex;flex-direction:column;padding:9px 9px 9px 4px}
+  .yr{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:9.5px;letter-spacing:.1em;color:var(--slate)}
+  .ttl{font-family:Domine,Georgia,serif;font-weight:700;text-transform:uppercase;line-height:1.03;color:var(--navy);overflow-wrap:break-word}
+  .rule{height:1px;background:var(--navy);opacity:.9;margin-top:2px}
+
+  /* ── CURRENT (shipped) ── */
+  .strip{height:14px;border:1.5px solid var(--navy);border-radius:8px;background:var(--cream);
+    display:flex;align-items:center;gap:4px;padding:0 6px;margin-top:4px;position:relative;overflow:hidden}
+  .strip .dots{position:absolute;inset:0;background-image:radial-gradient(rgba(31,58,82,.06) 1px, transparent 1.2px);background-size:7px 7px}
+  .mono-sm{font-family:Domine,Georgia,serif;font-weight:700;font-size:11px;line-height:.9;flex:none;position:relative}
+  .gen-sm{font-family:'JetBrains Mono',monospace;font-weight:600;font-size:8px;letter-spacing:.16em;color:var(--slate);
+    flex:1;min-width:0;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;position:relative}
+  .dc-sm{flex:none;width:11px;height:11px;border-radius:50%;box-shadow:inset 0 0 0 1.5px var(--paper);position:relative;
+    color:var(--paper);font-family:'JetBrains Mono',monospace;font-weight:700;font-size:2.4px;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.05}
+
+  /* ── PROPOSAL A: poster panel ── */
+  .panel{flex:1;min-height:0;border:1.5px solid var(--navy);border-radius:8px;background:var(--cream);
+    margin-top:5px;position:relative;overflow:visible;display:flex;flex-direction:column;align-items:center;justify-content:center}
+  .panel .inner{position:absolute;inset:0;border-radius:6.5px;overflow:hidden}
+  .panel .dots{position:absolute;inset:0;background-image:radial-gradient(rgba(31,58,82,.07) 1px, transparent 1.2px);background-size:7px 7px}
+  .panel .wash{position:absolute;inset:0;opacity:.13}
+  .panel .band{position:absolute;left:-12%;right:-12%;height:22%;top:57%;transform:rotate(-7deg);opacity:.15}
+  .panel .mono{font-family:Domine,Georgia,serif;font-weight:700;position:relative;line-height:1}
+  .panel .gen{font-family:'JetBrains Mono',monospace;font-weight:600;letter-spacing:.22em;color:var(--slate);position:relative;margin-top:3px}
+  .panel .corner{position:absolute;width:5px;height:5px;transform:rotate(45deg);opacity:.5}
+  .panel .c1{top:5px;left:5px}.panel .c2{top:5px;right:5px}.panel .c3{bottom:5px;left:5px}.panel .c4{bottom:5px;right:5px}
+  .stamp{position:absolute;right:-6px;bottom:-7px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    text-align:center;color:var(--cream);font-family:'JetBrains Mono',monospace;font-weight:700;line-height:1.1;
+    box-shadow:inset 0 0 0 1.5px var(--cream), 0 1px 4px rgba(31,58,82,.35);transform:rotate(8deg);z-index:5}
+  .deeper{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:6.5px;letter-spacing:.1em;color:var(--red);
+    margin-top:4px;position:relative}
+  .flip-hint{display:flex;align-items:center;gap:5px;margin-top:5px;justify-content:center;
+    font-family:'JetBrains Mono',monospace;font-weight:600;font-size:7px;letter-spacing:.14em;color:var(--slate-lt)}
+  .flip-hint i{font-style:normal;font-size:9px}
+
+  /* ledger */
+  .led{display:flex;flex-direction:column;margin-top:5px}
+  .led .r{display:flex;align-items:center;gap:4px;padding:2.5px 0;border-top:1px solid rgba(31,58,82,.5)}
+  .led .r:first-child{border-top:none}
+  .led .m{width:9px;height:9px;flex:none;border-radius:50%;background:var(--slate)}
+  .led .m.dir{border-radius:2px;background:var(--amber)}
+  .led .n{flex:1;min-width:0;font-weight:700;font-size:9.5px;color:var(--navy);white-space:nowrap;overflow:hidden}
+  .led .c{font-family:Domine,Georgia,serif;font-weight:700;font-size:9.5px;flex:none}
+
+  /* ── connections tiles ── */
+  .tile-cur{width:87px;height:108px;border:2px solid var(--navy);border-radius:12px;background:var(--paper);
+    display:flex;align-items:center;justify-content:center;text-align:center;padding:0 4px;
+    font-family:Domine,Georgia,serif;font-weight:700;font-size:11px;text-transform:uppercase;box-shadow:0 4px 12px rgba(31,58,82,.18)}
+  .tile-new{width:87px;height:62px;border:2px solid var(--navy);border-radius:9px;background:var(--paper);position:relative;
+    display:flex;align-items:center;justify-content:center;text-align:center;padding:2px 5px;overflow:hidden;
+    font-family:Domine,Georgia,serif;font-weight:700;font-size:10.5px;text-transform:uppercase;box-shadow:0 3px 9px rgba(31,58,82,.2)}
+  .tile-new .perfTop{position:absolute;top:3px;left:8px;right:8px;height:2px;
+    background-image:repeating-linear-gradient(90deg,rgba(31,58,82,.55) 0 2px, transparent 2px 6px)}
+  .tile-new .sn{position:absolute;top:50%;width:9px;height:9px;border-radius:50%;background:var(--cream);border:2px solid var(--navy)}
+  .tile-new .sn.l{left:0;transform:translate(-60%,-50%)} .tile-new .sn.r{right:0;transform:translate(60%,-50%)}
+  .tile-new.sel{border-color:var(--amber);border-width:2.5px;box-shadow:0 0 14px rgba(207,149,42,.4)}
+  .band-solved{width:376px;border:2px solid var(--navy);border-radius:10px;background:var(--navy);color:var(--cream);
+    padding:7px 12px;display:flex;flex-direction:column;gap:1px}
+  .band-solved .k{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.16em;color:var(--amber)}
+  .band-solved .v{font-family:Domine,Georgia,serif;font-weight:700;font-size:12px;text-transform:uppercase}
+
+  /* ── menu card ── */
+  .menu-cur{width:300px;border-radius:16px;background:var(--paper);box-shadow:0 8px 22px rgba(31,58,82,.14);padding:18px}
+  .menu-new{width:300px;border-radius:14px;background:var(--paper);border:2px solid var(--navy);position:relative;
+    box-shadow:0 5px 14px rgba(31,58,82,.22);padding:16px 18px}
+  .menu-new .nl{position:absolute;top:50%;width:13px;height:13px;border-radius:50%;background:var(--cream);border:2px solid var(--navy)}
+  .menu-new .nl.l{left:0;transform:translate(-55%,-50%)} .menu-new .nl.r{right:0;transform:translate(55%,-50%)}
+  .mt{font-family:Domine,Georgia,serif;font-weight:700;font-size:19px}
+  .md{font-size:11.5px;color:var(--slate);line-height:1.45;margin-top:3px}
+  .mp{display:flex;gap:7px;margin-top:10px;align-items:center}
+  .pill{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:8.5px;letter-spacing:.1em;border-radius:999px;padding:6px 11px;white-space:nowrap}
+  .pill.grey{background:#ECEAE4;color:var(--slate)}
+  .pill.outline{background:var(--paper);color:var(--navy);border:2px solid var(--navy)}
+  .pill.lbl{padding-left:0;background:none;color:var(--slate);letter-spacing:.14em}
+  .divider{height:2px;background:var(--navy);opacity:.12;margin:38px 0 0}
+</style>
+
+<h1>Card faces: what shipped vs. what the Stub promised</h1>
+<div class="sub">proposal sheet · 2026-07-09 · all colors/type = shipped tokens · no rule changes anywhere</div>
+
+<h2>1 · Duel/Solo pile card (130px) — unflipped, the state you see 90% of the game</h2>
+<div class="note">Left: shipped. The NAME-IS-THE-HERO fix solved titles but left ~55% of the face as raw paper, the genre truncates in the 14px strip, and the DEEP CUT stamp shrank to an unreadable dot. Right: <b>Proposal A — bring back the comp's framed poster panel</b>, typographic-only this build. The panel absorbs the slack the invisible spacer eats today; the monogram + full genre word live inside it like a letterpress poster; DEEP CUT returns as the comp's corner stamp; "+N DEEPER CREDITS" (a real rule that still scores — it's in How-to-Play!) gets its chip back. When real scene art lands later, it drops into this exact frame with zero layout change.</div>
+<div class="row">
+  <div class="slot">
+    <div class="card" style="width:130px;border-radius:12px">
+      <div class="notch t"></div><div class="notch b"></div>
+      <div class="rail"><div class="pip" style="background:var(--red)"></div><div class="bar" style="background:var(--red)"></div><span class="admit">ADMIT ONE</span></div>
+      <div class="perf"><i></i></div>
+      <div class="main">
+        <div><span class="yr">2007</span>
+        <div class="ttl" style="font-size:13px">NO COUNTRY FOR OLD MEN</div>
+        <div class="rule"></div></div>
+        <div class="strip"><div class="dots"></div>
+          <span class="mono-sm" style="color:var(--red)">N</span>
+          <span class="gen-sm">CRIME</span>
+        </div>
+        <div style="flex:1"></div>
+      </div>
+    </div>
+    <div class="cap"><b>current</b> · blank field below the strip</div>
+  </div>
+
+  <div class="slot">
+    <div class="card" style="width:130px;border-radius:12px">
+      <div class="notch t"></div><div class="notch b"></div>
+      <div class="rail"><div class="pip" style="background:var(--red)"></div><div class="bar" style="background:var(--red)"></div><span class="admit">ADMIT ONE</span></div>
+      <div class="perf"><i></i></div>
+      <div class="main">
+        <div><span class="yr">2007</span>
+        <div class="ttl" style="font-size:13px">NO COUNTRY FOR OLD MEN</div>
+        <div class="rule"></div></div>
+        <div class="panel">
+          <div class="inner"><div class="dots"></div>
+            <div class="wash" style="background:var(--red)"></div>
+            <div class="band" style="background:var(--red)"></div>
+          </div>
+          <div class="corner c1" style="background:var(--red)"></div><div class="corner c2" style="background:var(--red)"></div>
+          <div class="corner c3" style="background:var(--red)"></div><div class="corner c4" style="background:var(--red)"></div>
+          <div class="mono" style="font-size:40px;color:var(--red)">N</div>
+          <div class="gen" style="font-size:7.5px">CRIME</div>
+          <div class="stamp" style="width:30px;height:30px;background:var(--red);font-size:6px">DEEP<br>CUT</div>
+        </div>
+        <div class="flip-hint"><i>⇄</i> FLIP FOR CREDITS</div>
+      </div>
+    </div>
+    <div class="cap"><b>proposal A</b> · poster panel fills the slack · full genre word · comp-style stamp</div>
+  </div>
+
+  <div class="slot">
+    <div class="card" style="width:130px;border-radius:12px">
+      <div class="notch t"></div><div class="notch b"></div>
+      <div class="rail"><div class="pip" style="background:var(--navy-mid)"></div><div class="bar" style="background:var(--navy-mid)"></div><span class="admit">ADMIT ONE</span></div>
+      <div class="perf"><i></i></div>
+      <div class="main">
+        <div><span class="yr">2023</span>
+        <div class="ttl" style="font-size:11.5px">OPPENHEIMER</div>
+        <div class="rule"></div></div>
+        <div class="panel">
+          <div class="inner"><div class="dots"></div>
+            <div class="wash" style="background:var(--navy-mid)"></div>
+            <div class="band" style="background:var(--navy-mid)"></div>
+          </div>
+          <div class="mono" style="font-size:20px;color:var(--navy-mid)">O</div>
+          <div class="gen" style="font-size:6.5px">DRAMA</div>
+          <div class="stamp" style="width:22px;height:22px;background:var(--navy-mid);font-size:4.5px;right:-4px;bottom:-5px">DEEP<br>CUT</div>
+        </div>
+        <div class="led" style="font-size:0">
+          <div class="r"><span class="m" style="width:7px;height:7px"></span><span class="n" style="font-size:8px">Cillian Murphy</span><span class="c" style="font-size:8px">+1</span></div>
+          <div class="r"><span class="m" style="width:7px;height:7px"></span><span class="n" style="font-size:8px">Emily Blunt</span><span class="c" style="font-size:8px">+1</span></div>
+          <div class="r"><span class="m dir" style="width:7px;height:7px"></span><span class="n" style="font-size:7.5px">Christopher Nolan</span><span class="c" style="font-size:8px">+2</span></div>
+        </div>
+        <div class="deeper" style="text-align:center;margin-top:2px">+2 DEEPER CREDITS</div>
+      </div>
+    </div>
+    <div class="cap"><b>proposal A · flipped</b> · panel shrinks, ledger returns · director name auto-fits, never "Christopher N…"</div>
+  </div>
+</div>
+
+<div class="divider"></div>
+<h2>2 · Hand card (96px) — the fan view</h2>
+<div class="note">Same recipe survives the small size: monogram + genre stay legible because the panel is tall, not a 14px letterbox. "ADVENTURE" fits at full width where the strip clipped it to "ADVENT…".</div>
+<div class="row">
+  <div class="slot">
+    <div class="card" style="width:96px;border-radius:11px">
+      <div class="rail" style="width:12px"><div class="pip" style="width:7px;height:7px;background:var(--slate)"></div><div class="bar" style="width:6px;background:var(--slate)"></div></div>
+      <div class="perf"><i></i></div>
+      <div class="main" style="padding:7px 7px 7px 3px">
+        <div><span class="yr" style="font-size:8.5px">1993</span>
+        <div class="ttl" style="font-size:10.5px">JURASSIC PARK</div>
+        <div class="rule"></div></div>
+        <div class="strip" style="height:12px"><div class="dots"></div>
+          <span class="mono-sm" style="font-size:9px;color:var(--slate)">J</span>
+          <span class="gen-sm" style="font-size:6.5px">ADVENT…</span>
+        </div>
+        <div style="flex:1"></div>
+      </div>
+    </div>
+    <div class="cap"><b>current</b> · "ADVENT…"</div>
+  </div>
+  <div class="slot">
+    <div class="card" style="width:96px;border-radius:11px">
+      <div class="rail" style="width:12px"><div class="pip" style="width:7px;height:7px;background:var(--slate)"></div><div class="bar" style="width:6px;background:var(--slate)"></div></div>
+      <div class="perf"><i></i></div>
+      <div class="main" style="padding:7px 7px 7px 3px">
+        <div><span class="yr" style="font-size:8.5px">1993</span>
+        <div class="ttl" style="font-size:10.5px">JURASSIC PARK</div>
+        <div class="rule"></div></div>
+        <div class="panel" style="border-radius:6px">
+          <div class="inner"><div class="dots"></div>
+            <div class="wash" style="background:var(--slate)"></div>
+            <div class="band" style="background:var(--slate)"></div>
+          </div>
+          <div class="mono" style="font-size:26px;color:var(--slate)">J</div>
+          <div class="gen" style="font-size:6.5px;letter-spacing:.18em">ADVENTURE</div>
+        </div>
+      </div>
+    </div>
+    <div class="cap"><b>proposal A</b> · whole word, poster feel</div>
+  </div>
+</div>
+
+<div class="divider"></div>
+<h2>3 · Connections tiles — from portrait slabs to punched ticket stubs</h2>
+<div class="note">Shipped tiles are 87×108 portrait rectangles — taller than wide, title floating in blank paper, ~250px of dead cream under the grid. Proposal: landscape 62px stubs with a perforation row and side notches (identical on every tile — nothing leaks the group), grid tightens by ~180px so the board + buttons sit together. Selection stays amber. Solved bands unchanged.</div>
+<div class="row" style="align-items:center">
+  <div class="slot">
+    <div class="row" style="gap:6px"><div class="tile-cur">SOUL</div><div class="tile-cur" style="font-size:9px">NO COUNTRY FOR OLD MEN</div></div>
+    <div class="cap"><b>current</b> · 87×108 portrait</div>
+  </div>
+  <div class="slot">
+    <div style="display:flex;flex-direction:column;gap:6px">
+      <div class="row" style="gap:6px">
+        <div class="tile-new"><div class="perfTop"></div><div class="sn l"></div><div class="sn r"></div>SOUL</div>
+        <div class="tile-new" style="font-size:7.5px"><div class="perfTop"></div><div class="sn l"></div><div class="sn r"></div>NO COUNTRY FOR OLD MEN</div>
+        <div class="tile-new sel"><div class="perfTop"></div><div class="sn l"></div><div class="sn r"></div>FARGO</div>
+        <div class="tile-new" style="font-size:8.5px"><div class="perfTop"></div><div class="sn l"></div><div class="sn r"></div>TOP GUN</div>
+      </div>
+      <div class="band-solved"><span class="k">DIRECTED BY THE COENS</span><span class="v">Fargo · True Grit · No Country · Lebowski</span></div>
+    </div>
+    <div class="cap"><b>proposal</b> · 62px ticket stubs (amber = selected) · solved band unchanged</div>
+  </div>
+</div>
+
+<div class="divider"></div>
+<h2>4 · Menu mode cards — "borders do the work"</h2>
+<div class="note">The token sheet's own rule. Shipped menu cards are borderless rounded rects with soft shadows — the one place the app drops the Stub's signature move. Proposal: 2px navy frame + punched side notches (the 7d score-stub treatment), practice pills go navy-outline instead of untokened grey, and the difficulty pill text never wraps.</div>
+<div class="row">
+  <div class="slot">
+    <div class="menu-cur">
+      <div class="mt">Chronology</div>
+      <div class="md">Today's lineup. Place the movies in release order. Golf — low score wins.</div>
+      <div class="mp"><span class="pill lbl">PRACTICE</span><span class="pill grey">Wide</span><span class="pill grey">Tight</span></div>
+    </div>
+    <div class="cap"><b>current</b> · no border, grey pills</div>
+  </div>
+  <div class="slot">
+    <div class="menu-new">
+      <div class="nl l"></div><div class="nl r"></div>
+      <div class="mt">Chronology</div>
+      <div class="md">Today's lineup. Place the movies in release order. Golf — low score wins.</div>
+      <div class="mp"><span class="pill lbl">PRACTICE</span><span class="pill outline">WIDE</span><span class="pill outline">TIGHT</span></div>
+    </div>
+    <div class="cap"><b>proposal</b> · navy frame + notches, tokened pills</div>
+  </div>
+</div>

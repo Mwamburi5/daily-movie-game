@@ -4,8 +4,8 @@
 > now*. Update it whenever a rule or mode changes, so the words here always match
 > the game. Written so anyone 12 and up can follow it.
 >
-> **Last updated:** 2026-07-03 — the **Daily Puzzle is now a real daily** (date-seeded, solver-guaranteed, computed par). Funpass Update LIVE (Meld Ladder · Genre Melds · Wild Cards · Take-to-Meld), on top of the Flow Update (Double Feature · Draw-3 · Race-to-20).
-> **Modes:** Daily Puzzle (live, daily), Duel vs Computer (live), Chronology (playable; public daily pending pool lock).
+> **Last updated:** 2026-07-10 — **The Stub card redesign** (poster-panel card faces, ticket-stub Connections tiles, framed menu cards) plus one rule alignment: a **wild in your draw-3 is kept automatically** (that was always the rule under the hood; the buttons now enforce it). Previous: Daily Puzzle real daily (2026-07-03), Funpass Update (Meld Ladder · Genre Melds · Wild Cards · Take-to-Meld), Flow Update (Double Feature · Draw-3 · Race-to-20).
+> **Modes:** Daily Puzzle (live, daily), Duel vs Computer (live), Chronology (live, daily — film pool still growing), Connections (live, daily).
 
 ---
 
@@ -108,12 +108,18 @@ scoring links, racing to a finish line.
   🎭 Meld                ◎ Hint    (bottom-left: powers + Meld · bottom-right: hint)
 ```
 
+**Peeking is free:** tap a marquee's top card — or your own raised card — to **flip it**
+and read its credits. It costs nothing and doesn't use your turn (that's a Daily Puzzle
+rule; here, study all you like).
+
 ### Your turn — pick ONE
 - **Play** — drag a card onto **either** marquee. It must share at least one person with that
   marquee's top card. (A **run** stays on the marquee it started — see Runs.)
 - **Draw** — tap the deck to **reveal 3 cards** and tap one to **keep** (the other two are
   gone for good). Then **Keep** it in hand, **Toss** it onto a marquee (no points — to unstick
-  yourself or hand the computer a dead card), or **play** it if it connects.
+  yourself or hand the computer a dead card), or **play** it if it connects. If a **wild**
+  turns up in the reveal, it is **always the keep** — wilds are never burned (the other
+  cards gray out; the computer follows the same rule).
 - **Meld** — bank **3+ films that share a link** (see Melds below) for points by **rung**.
 - **Lay off** — drag a matching card onto a melded row for that row's per-card points.
 - **Take** — when a marquee's top card would **finish a meld** for you, a
@@ -133,7 +139,7 @@ card is worth — **highest rung wins**:
 |---|---|---|
 | 🎬 **Auteur** | **+3** | the same **director or writer** |
 | ⭐ **Actor** | **+2** | the same **actor** |
-| 🎞️ **Series** | **+1** | the same **trilogy/franchise** |
+| 🎞️ **Series** | **+1** | the same **series/franchise** |
 | 🎟️ **Genre** | **+1** | **3+ of the same genre** (a rescue for stranded cards) |
 
 A meld is **named and scored by its top rung** the moment you bank it — a Cillian-Murphy-and-
@@ -145,7 +151,7 @@ earn that locked per-card amount.
 |---|---|---|
 | **Standard** | **+1** | one shared actor |
 | **Strong** | **+2** | a shared director/writer, or two shared people |
-| **Super** | **+4** *and a free extra play* | same trilogy, or 3+ shared people |
+| **Super** | **+4** *and a free extra play* | same series, or 3+ shared people |
 | **Meld / Lay off** | **+3 / +2 / +1** per card | by the meld's rung (above) |
 | **Final Cut** | **+1** | a wildcard play (see Powers) |
 | **Wild card** | **+0** | plays anywhere / fills a meld (see Wild Cards) |
@@ -178,10 +184,15 @@ can chain it — up to **3 cards in one turn**. A **Super** link gives you a bon
   first. Reaching 20 just **rings the bell**; **net** decides who actually wins, so holding a
   big hand at the end hurts.
 - Scores land around **20** (not ~60 like the old long games) — that's the race, not a bug.
+- **Watch the top bar:** when the computer is down to its **last card**, its hand counter
+  flags it — your cue to race for points or block the out.
+- After the final play, a **recap reel** replays the game's highlights — the big links,
+  melds, and super cuts from both sides — before the score card.
 
 ### Difficulty & hints
 - **Matinee** (easy, default) — plays casually, only reads the credits printed on the
-  cards. **Unlimited hints.**
+  cards. **Unlimited hints**, plus two beginner helpers: the take-glow (see Take) and a
+  **⇲ Sort** button that groups your hand so shared names sit side by side.
 - **Feature** (medium) — a fair fight. **3 hints per game.**
 - **Director's Cut** (hard) — sees *everything*, including hidden credits, and plays to
   block you. **No hints** — your memory is the game.

@@ -77,20 +77,30 @@ function prettyKey(cat: GroupCat, key: string): string {
 
 const titleOf = (id: string): string => movieById.get(id)?.title ?? id
 
-// Fit the LONGEST word in a tile title so proper-noun single words never
-// force-break into an orphan char ("GOODFELLA/S", "ANCHORMA/N:") — the W5c
-// polish (2026-07-08). CSS hyphenation can't help: the dictionary can't split
-// proper nouns, so break-word just chops them mid-word. Instead we shrink the
-// font on tiles with a long word until it fits the tile width. The divisor is
-// calibrated to the WORST case — the 71px inner tile at the 375px viewport (not
-// 75px at 390), so it holds at every supported width — against measured wide
-// Domine caps (~0.73px per char per px, e.g. "ANCHORMAN:"): ≤8-char words stay
-// 11px, 9 → 10px, GOODFELLAS/ANCHORMAN: (10) → 9px, 11 → 8px, floor 7. A pure
-// char-count avoids a canvas measureText that would race the web-font load and
-// mis-size the first paint. break-word stays as the final backstop.
+// Fit a tile title so proper-noun single words never force-break into an orphan
+// char ("GOODFELLA/S", "ANCHORMA/N:") — the W5c polish (2026-07-08), recalibrated
+// for the W5d landscape ticket stubs. CSS hyphenation can't help: the dictionary
+// can't split proper nouns, so break-word just chops them mid-word. Instead we
+// shrink the font until the LONGEST word fits the tile width AND the whole title
+// fits the 5-line clamp of the 62px stub. Width worst case: the 83px tile at the
+// 375px viewport minus borders and the 5px padding → ~69px of line width (the
+// 9px side notches protrude only 3.6px inward — they never reach the content
+// box, so they cost no width); against measured wide Domine caps (~0.73px per
+// char per px) that's the 91 divisor (69/0.73 with margin). The 460 line divisor
+// is ~5·69/0.73: total chars the five clamped lines can hold — five lines only
+// ever trigger on long titles whose fitted px is small, so the stack always
+// clears the 58px inner height (worst possible: 5 × 8px × 1.06 = 42). Splitting
+// on hyphens too: CSS wraps at a hyphen, so EXTRA-TERRESTRIAL's fit rides its
+// longest SEGMENT, not the whole compound. A pure char-count avoids a canvas
+// measureText that would race the web-font load and mis-size the first paint.
+// break-word stays as the final backstop.
 function tileFontSize(title: string): number {
-  const longest = title.split(/\s+/).reduce((a, w) => (w.length > a.length ? w : a), '')
-  return Math.max(7, Math.min(11, Math.floor(94 / longest.length)))
+  const longest = title
+    .split(/[\s-]+/)
+    .reduce((a, w) => (w.length > a.length ? w : a), '')
+  const totalLen = title.replace(/\s+/g, ' ').trim().length || 1
+  const raw = Math.min(91 / longest.length, 460 / totalLen)
+  return Math.max(7, Math.min(10.5, Math.floor(raw)))
 }
 
 // Seeded Fisher–Yates (same shape as daily/chronology) so a given board's tile
@@ -134,6 +144,10 @@ export default function ConnectionsGame({ onExit, start }: { onExit: () => void;
   const [shakeNonce, setShakeNonce] = useState(0)
   const [toast, setToast] = useState<{ key: number; text: string } | null>(null)
   const [finishMeta, setFinishMeta] = useState<DailyFinish | null>(null)
+  // "See the board" (W5d, review major): on a loss the results overlay used to
+  // land ~0.35s in and permanently cover the just-revealed groups the loss copy
+  // promises. Peeking hides the overlay; a floating pill brings it back.
+  const [peekBoard, setPeekBoard] = useState(false)
 
   // Display order of the 16 ids (groups shuffled apart so the deal never leaks).
   // Seed folds in shuffleNonce so the Shuffle button genuinely reorders; the
@@ -249,6 +263,7 @@ export default function ConnectionsGame({ onExit, start }: { onExit: () => void;
     setStatus('playing')
     setToast(null)
     setFinishMeta(null)
+    setPeekBoard(false)
   }
 
   const mistakesLeft = MAX_MISTAKES - mistakes
@@ -346,7 +361,9 @@ export default function ConnectionsGame({ onExit, start }: { onExit: () => void;
             })}
           </AnimatePresence>
 
-          {/* The remaining tiles — title-only Stub tickets, 4 across. */}
+          {/* The remaining tiles — landscape ticket stubs (W5d, comp §3): 62px
+              punched tickets with a perf-dot row + mid-height side notches. The
+              chrome is IDENTICAL on every tile — nothing may vary by group. */}
           {remaining.length > 0 && (
             <motion.div className="grid grid-cols-4 gap-[6px]" animate={shakeControls}>
               {remaining.map((id) => {
@@ -359,26 +376,58 @@ export default function ConnectionsGame({ onExit, start }: { onExit: () => void;
                     data-tile={id}
                     aria-pressed={on}
                     onClick={() => toggle(id)}
-                    className="flex min-h-[108px] items-center justify-center rounded-stub-card border-solid px-1 text-center transition-colors active:scale-[0.97]"
+                    className="relative flex h-[62px] items-center justify-center overflow-hidden border-solid text-center transition-colors active:scale-[0.97]"
                     style={{
+                      borderRadius: 9,
                       borderWidth: on ? 2.5 : 2,
                       borderColor: on ? 'var(--color-stub-amber)' : 'var(--color-stub-navy)',
                       background: on ? 'var(--color-stub-navy)' : 'var(--color-stub-paper)',
                       color: on ? 'var(--color-stub-cream)' : 'var(--color-stub-navy)',
                       boxShadow: on ? 'var(--shadow-stub-glow-amber)' : 'var(--shadow-stub-card-resting)',
+                      paddingInline: 5,
                     }}
                   >
+                    {/* perf-dot row — flips to cream on the navy selected fill
+                        (selection is player state, so this can't leak a group) */}
+                    <span
+                      className="pointer-events-none absolute"
+                      style={{
+                        top: 3,
+                        left: 8,
+                        right: 8,
+                        height: 2,
+                        backgroundImage: `repeating-linear-gradient(90deg, ${
+                          on ? 'rgba(240,235,216,.5)' : 'rgba(31,58,82,.55)'
+                        } 0 2px, transparent 2px 6px)`,
+                      }}
+                    />
+                    {/* side notches, half-punched by the tile's overflow-hidden */}
+                    {(['l', 'r'] as const).map((side) => (
+                      <span
+                        key={side}
+                        className="pointer-events-none absolute rounded-full"
+                        style={{
+                          top: '50%',
+                          [side === 'l' ? 'left' : 'right']: 0,
+                          transform: `translate(${side === 'l' ? '-60%' : '60%'}, -50%)`,
+                          width: 9,
+                          height: 9,
+                          background: 'var(--color-stub-cream)',
+                          border: '2px solid var(--color-stub-navy)',
+                        }}
+                      />
+                    ))}
                     <span
                       className="font-stub-display uppercase"
                       lang="en"
                       style={{
-                        fontSize: tileFontSize(title), // shrink long-word titles to fit (no mid-word break)
+                        fontSize: tileFontSize(title), // shrink long titles to fit (no mid-word break)
                         fontWeight: 700,
                         lineHeight: 1.06,
                         letterSpacing: '0.005em',
                         display: '-webkit-box',
                         WebkitBoxOrient: 'vertical',
-                        WebkitLineClamp: 5,
+                        WebkitLineClamp: 5, // ≥5 lines only at small px — see tileFontSize
                         overflow: 'hidden',
                         overflowWrap: 'break-word', // final backstop if a word overflows even at 7px
                       }}
@@ -390,37 +439,40 @@ export default function ConnectionsGame({ onExit, start }: { onExit: () => void;
               })}
             </motion.div>
           )}
-        </div>
 
-        {/* Controls: shuffle · deselect · submit. Submit is the primary. */}
-        <div className="flex flex-none items-center gap-2 px-3 pb-[max(12px,env(safe-area-inset-bottom))] pt-2">
-          <button
-            type="button"
-            data-action="shuffle"
-            disabled={status !== 'playing'}
-            onClick={() => setShuffleNonce((n) => n + 1)}
-            className="min-h-11 rounded-stub-pill border-2 border-stub-navy bg-stub-paper px-4 font-stub-label text-[11px] font-bold uppercase tracking-wider text-stub-navy shadow-stub-card-resting active:scale-95 disabled:opacity-40"
-          >
-            Shuffle
-          </button>
-          <button
-            type="button"
-            data-action="deselect"
-            disabled={status !== 'playing' || selected.length === 0}
-            onClick={() => setSelected([])}
-            className="min-h-11 rounded-stub-pill border-2 border-stub-navy bg-stub-paper px-4 font-stub-label text-[11px] font-bold uppercase tracking-wider text-stub-navy shadow-stub-card-resting active:scale-95 disabled:opacity-40"
-          >
-            Deselect
-          </button>
-          <button
-            type="button"
-            data-action="submit"
-            disabled={status !== 'playing' || selected.length !== 4}
-            onClick={submit}
-            className="min-h-11 flex-1 rounded-stub-pill bg-stub-navy px-4 font-stub-label text-[12px] font-bold uppercase tracking-wider text-stub-cream shadow-stub-card-resting active:scale-95 disabled:opacity-40"
-          >
-            Submit
-          </button>
+          {/* Controls: shuffle · deselect · submit. Submit is the primary.
+              Inside the board column (W5d layout tighten): the buttons sit
+              directly under the grid instead of pinned past ~250px of dead
+              cream at the screen foot. */}
+          <div className="flex flex-none items-center gap-2 pb-[max(12px,env(safe-area-inset-bottom))] pt-1">
+            <button
+              type="button"
+              data-action="shuffle"
+              disabled={status !== 'playing'}
+              onClick={() => setShuffleNonce((n) => n + 1)}
+              className="min-h-11 rounded-stub-pill border-2 border-stub-navy bg-stub-paper px-4 font-stub-label text-[11px] font-bold uppercase tracking-wider text-stub-navy shadow-stub-card-resting active:scale-95 disabled:opacity-40"
+            >
+              Shuffle
+            </button>
+            <button
+              type="button"
+              data-action="deselect"
+              disabled={status !== 'playing' || selected.length === 0}
+              onClick={() => setSelected([])}
+              className="min-h-11 rounded-stub-pill border-2 border-stub-navy bg-stub-paper px-4 font-stub-label text-[11px] font-bold uppercase tracking-wider text-stub-navy shadow-stub-card-resting active:scale-95 disabled:opacity-40"
+            >
+              Deselect
+            </button>
+            <button
+              type="button"
+              data-action="submit"
+              disabled={status !== 'playing' || selected.length !== 4}
+              onClick={submit}
+              className="min-h-11 flex-1 rounded-stub-pill bg-stub-navy px-4 font-stub-label text-[12px] font-bold uppercase tracking-wider text-stub-cream shadow-stub-card-resting active:scale-95 disabled:opacity-40"
+            >
+              Submit
+            </button>
+          </div>
         </div>
 
         {/* feedback toast */}
@@ -442,7 +494,7 @@ export default function ConnectionsGame({ onExit, start }: { onExit: () => void;
         </div>
 
         <AnimatePresence>
-          {status !== 'playing' && (
+          {status !== 'playing' && !peekBoard && (
             <ConnectionsResults
               won={status === 'won'}
               mistakes={mistakes}
@@ -450,9 +502,26 @@ export default function ConnectionsGame({ onExit, start }: { onExit: () => void;
               groupOf={groupOf}
               daily={start.kind === 'daily' ? finishMeta : null}
               onReset={resetGame}
+              onMenu={onExit}
+              onPeek={status === 'lost' ? () => setPeekBoard(true) : undefined}
             />
           )}
         </AnimatePresence>
+
+        {/* Board peek: the results step aside so the revealed groups can be
+            read; one floating pill returns to them. */}
+        {status !== 'playing' && peekBoard && (
+          <div className="pointer-events-none absolute inset-x-0 bottom-6 z-[100] flex justify-center">
+            <button
+              type="button"
+              data-action="back-to-results"
+              onClick={() => setPeekBoard(false)}
+              className="pointer-events-auto min-h-11 rounded-stub-pill bg-stub-navy px-5 font-stub-label text-[11px] font-bold uppercase tracking-wider text-stub-cream shadow-stub-card-raised active:scale-95"
+            >
+              ↩ Back to results
+            </button>
+          </div>
+        )}
       </div>
     </div>
   )
@@ -470,6 +539,8 @@ function ConnectionsResults({
   groupOf,
   daily,
   onReset,
+  onMenu,
+  onPeek,
 }: {
   won: boolean
   mistakes: number
@@ -477,6 +548,8 @@ function ConnectionsResults({
   groupOf: Map<string, number>
   daily: DailyFinish | null
   onReset: () => void
+  onMenu: () => void // back to the mode menu (W5d: every end screen routes home)
+  onPeek?: () => void // loss only: step aside so the revealed board can be read
 }) {
   const reduce = useReducedMotion()
 
@@ -534,12 +607,30 @@ function ConnectionsResults({
 
         <ShareCopy text={text} />
 
+        {onPeek && (
+          <button
+            type="button"
+            data-action="see-board"
+            onClick={onPeek}
+            className="mt-3 min-h-12 rounded-stub-pill border-2 border-stub-navy bg-stub-paper px-7 py-3 font-stub-ui text-[15px] font-bold text-stub-navy shadow-stub-card-resting active:scale-95"
+          >
+            See the board
+          </button>
+        )}
+
         <button
           type="button"
           onClick={onReset}
           className="mt-3 min-h-12 rounded-stub-pill border-2 border-stub-navy bg-stub-paper px-7 py-3 font-stub-ui text-[15px] font-bold text-stub-navy shadow-stub-card-resting active:scale-95"
         >
           Play again
+        </button>
+        <button
+          type="button"
+          onClick={onMenu}
+          className="mt-3 min-h-12 rounded-stub-pill border-2 border-stub-navy bg-stub-paper px-7 py-3 font-stub-ui text-[15px] font-bold text-stub-navy active:scale-95"
+        >
+          Menu
         </button>
       </motion.div>
     </motion.div>

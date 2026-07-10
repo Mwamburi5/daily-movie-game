@@ -79,11 +79,11 @@ export default function HowToPlay({ onClose }: { onClose: () => void }) {
         <Section title="Reading a card">
           <p>
             The front shows title, year, and genre — the color <B>is</B> the genre family (crime
-            reds, sci-fi navies, drama bronzes…).
+            reds, sci-fi navies, drama deep blues…).
           </p>
           <p>
-            <B>Tap any card to flip it.</B> The back lists the director, writers, and the
-            top-billed cast.
+            <B>Tap any card to flip it.</B> The credits list the top-billed cast (+1 each) and
+            the director (+2).
           </p>
           <p>
             <span className="font-stub-label text-[11px] font-bold uppercase tracking-wider text-stub-red">
@@ -104,7 +104,8 @@ export default function HowToPlay({ onClose }: { onClose: () => void }) {
             <B>Draw</B> · Tap the deck to <B>reveal 3 cards and keep 1</B> (the other two are gone
             for good). Then <B>Keep</B> it in hand, <B>Toss</B> it onto a marquee (no points —
             unstick yourself, or hand your opponent a brick), or drag it to a marquee to play it
-            if it connects.
+            if it connects. If a <B>wild</B> turns up in the reveal, it's automatically the keep —
+            a wild is never burned.
           </p>
           <p>
             <B>Meld</B> · Bank 3+ films that share a through-line — points per card by the{' '}
@@ -138,7 +139,7 @@ export default function HowToPlay({ onClose }: { onClose: () => void }) {
             <B>Strong +2</B> — a shared director or writer, or two shared people.
           </p>
           <p>
-            <B>Super +4</B> — same trilogy, or three+ shared people. A super link is an{' '}
+            <B>Super +4</B> — same series, or three+ shared people. A super link is an{' '}
             <B>encore</B>: you immediately play again.
           </p>
         </Section>
@@ -177,7 +178,7 @@ export default function HowToPlay({ onClose }: { onClose: () => void }) {
           <p>
             🎬 <B>Auteur +3</B> — the same director or writer.
             <br />⭐ <B>Actor +2</B> — the same actor.
-            <br />🎞️ <B>Series +1</B> — the same trilogy or franchise.
+            <br />🎞️ <B>Series +1</B> — the same series or franchise.
             <br />🎟️ <B>Genre +1</B> — 3+ of the same genre (a rescue for stranded cards).
           </p>
           <p>

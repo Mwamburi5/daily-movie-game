@@ -39,6 +39,11 @@ interface StubCardProps {
   hintLabel?: string
   /** DEEP CUT badge in the art region (genre-family colored, per uploads). */
   deepCut?: boolean
+  /** "⇄ FLIP FOR CREDITS" mono caption under the poster panel. OPT-IN: pass true
+      only where a tap really flips the card (Duel/Solo pile tops, the raised
+      card). Renders only at pile/raised with credits hidden — a fan card or a
+      revealed face never shows it. */
+  flipHint?: boolean
   className?: string
 }
 
@@ -118,6 +123,48 @@ function titleFit(
   return Math.max(floorPx, Math.min(basePx, widthCap, lineCap))
 }
 
+// ── Adaptive ledger-name fit (W5d) ────────────────────────────────────────────
+// Same char-count discipline as titleFit, tuned for Inter mixed-case: measured
+// real advance across the pool's credits runs ≈0.56–0.59em/char at weight 700;
+// 0.60 adds the margin (0.58 left "Adam McKay"/"Jonathan Demme" 1px over —
+// audit-caught). Below the 6.5px legibility floor we don't shrink further — we
+// go ticket-style instead: "Francis Ford Coppola" → "F. Ford Coppola" →
+// "F. Coppola" → "Coppola" → (hyphenated surnames) last segment. If no
+// candidate clears 6.5, a second pass accepts ≥5px: a small WHOLE name beats an
+// ellipsis (NAME IS THE HERO doctrine; ChronoCard's line size already floors at
+// 4). The +2 director row must NEVER truncate — the auteur name is the
+// information a player weighs. `truncate` stays as a backstop only.
+const NAME_ADVANCE = 0.6
+const NAME_FLOOR_PX = 6.5
+const NAME_LAST_RESORT_PX = 5
+function nameFit(
+  name: string,
+  boxW: number,
+  basePx: number,
+): { px: number; text: string } {
+  const fitPx = (t: string) => boxW / (NAME_ADVANCE * Math.max(t.length, 1))
+  const words = name.split(/\s+/).filter(Boolean)
+  const last = words[words.length - 1]
+  const candidates = [name]
+  if (words.length >= 2) {
+    candidates.push(`${words[0].charAt(0)}. ${words.slice(1).join(' ')}`)
+    if (words.length >= 3) candidates.push(`${words[0].charAt(0)}. ${last}`)
+    candidates.push(last)
+  }
+  // "Gordon-Levitt" → "Levitt": a hyphenated surname's final segment is the
+  // only step smaller than the whole surname.
+  const lastSegment = last.split('-').filter(Boolean).pop()
+  if (lastSegment && lastSegment !== last) candidates.push(lastSegment)
+  for (const floor of [NAME_FLOOR_PX, NAME_LAST_RESORT_PX]) {
+    for (const text of candidates) {
+      const px = Math.min(basePx, fitPx(text))
+      if (px >= floor) return { px, text }
+    }
+  }
+  // Nothing fits even fully abbreviated — floor + the truncate backstop.
+  return { px: NAME_LAST_RESORT_PX, text: candidates[candidates.length - 1] }
+}
+
 // ── +1 / +2 ledger mapping ───────────────────────────────────────────────────
 // The face carries the information a player weighs before peeking/playing: cast
 // and the director. deepCast is NEVER rendered (deep-cut discovery mechanic).
@@ -176,14 +223,21 @@ const SIZES = {
     rowPx: 0,
     chipPx: 0,
     admitPx: 0,
-    monoPx: 0,
-    badgePx: 0,
     notchPx: 0,
     gap: 0,
     titleBasePx: 0,
     titleFloorPx: 0,
     titleMaxLines: 0,
-    artH: 0,
+    panelRadius: '0px',
+    monoTallPx: 0,
+    monoShortPx: 0,
+    genPx: 0,
+    genShortPx: 0,
+    genTrack: '0em',
+    cornerPx: 0,
+    stampPx: 0,
+    deeperPx: 0,
+    hintPx: 0,
   },
   hand: {
     width: 96,
@@ -205,18 +259,26 @@ const SIZES = {
     rowPx: 8.5,
     chipPx: 8,
     admitPx: 6,
-    monoPx: 6.5,
-    badgePx: 8,
     notchPx: 0,
     gap: 3,
-    // NAME IS THE HERO: title owns the face; base bumped from the old 11, art
-    // strip demoted to a thin genre+monogram band (was flex-1 filling the card).
-    // maxLines 2 + a slim artH so title+art+full-ledger fit the tight frame with
+    // NAME IS THE HERO: title owns the face; base bumped from the old 11.
+    // maxLines 2 keeps title+panel+full-ledger inside the tight frame with
     // NO clip (verified across the whole pool via ?preview=StubTitleAudit).
     titleBasePx: 12,
     titleFloorPx: 6,
     titleMaxLines: 2,
-    artH: 14,
+    // Poster panel (W5d, comp docs/card-redesign-proposal.html §2): numbers read
+    // off the comp's 96px hand card; short-mode mono ≈ half the tall mono.
+    panelRadius: '6px',
+    monoTallPx: 26,
+    monoShortPx: 13,
+    genPx: 6.5,
+    genShortPx: 6.5,
+    genTrack: '0.18em', // comp tightens tracking at 96px (.18 vs .22)
+    cornerPx: 0, // corner diamonds are pile/raised chrome — omit at 96px
+    stampPx: 22,
+    deeperPx: 0, // +N DEEPER CREDITS is pile/raised only (queue ruling)
+    hintPx: 0, // flip hint is pile/raised only — fan taps raise, not flip
   },
   pile: {
     width: 130,
@@ -238,14 +300,22 @@ const SIZES = {
     rowPx: 10,
     chipPx: 9.5,
     admitPx: 7,
-    monoPx: 8,
-    badgePx: 9.5,
     notchPx: 12,
     gap: 4,
     titleBasePx: 14,
     titleFloorPx: 8,
     titleMaxLines: 2,
-    artH: 14,
+    // Poster panel — the comp's anchor size (130px card in the proposal §1).
+    panelRadius: '8px',
+    monoTallPx: 40,
+    monoShortPx: 20,
+    genPx: 7.5,
+    genShortPx: 6.5,
+    genTrack: '0.22em',
+    cornerPx: 5,
+    stampPx: 30,
+    deeperPx: 6.5,
+    hintPx: 6.5,
   },
   raised: {
     width: 184,
@@ -267,14 +337,22 @@ const SIZES = {
     rowPx: 12.5,
     chipPx: 11,
     admitPx: 9,
-    monoPx: 10,
-    badgePx: 12,
     notchPx: 14,
     gap: 5,
     titleBasePx: 20,
     titleFloorPx: 9,
     titleMaxLines: 2,
-    artH: 24,
+    // Poster panel scaled 184/130 from the comp's 130px anchor.
+    panelRadius: '10px',
+    monoTallPx: 56,
+    monoShortPx: 28,
+    genPx: 10.5,
+    genShortPx: 9,
+    genTrack: '0.22em',
+    cornerPx: 7,
+    stampPx: 42,
+    deeperPx: 9,
+    hintPx: 8.5,
   },
 } as const
 
@@ -287,6 +365,7 @@ export function StubCard({
   hint = false,
   hintLabel,
   deepCut = false,
+  flipHint = false,
   className,
 }: StubCardProps) {
   const s = SIZES[size]
@@ -397,6 +476,23 @@ export function StubCard({
     s.titleFloorPx,
     s.titleMaxLines,
   )
+
+  // Poster-panel mode (W5d): TALL when credits are hidden — big monogram over
+  // the genre word, a letterpress one-sheet — and SHORT when the ledger is up
+  // (small monogram BESIDE the genre in a row: a column at that height
+  // overflows the panel's slack and pushes the ledger past the frame). A wild
+  // never shows credits, so it is always the tall ★ WILD one-sheet.
+  const tall = wild || !showCredits
+  // Ledger name box: main column width minus the marker, the Domine point chip
+  // ("+1"/"+2" ≈ 0.7em/char → 1.4·rowPx), and the row's two gaps.
+  const nameBoxW = Math.max(
+    1,
+    titleBoxW - s.chipPx - 1.4 * s.rowPx - 2 * s.gap - 2,
+  )
+  // DEEP CUT stamp: comp geometry — tall panels wear the full-size stamp, short
+  // panels the 0.73× one (30px→22px at the comp's 130 anchor); the negative
+  // offsets scale with the diameter so the overlap reads the same at every size.
+  const stampD = tall ? s.stampPx : Math.round(s.stampPx * 0.73)
 
   return (
     <div className={`relative ${className ?? ''}`} style={{ width: s.width }}>
@@ -585,102 +681,184 @@ export function StubCard({
             />
           </div>
 
-          {/* ── Art strip → DEMOTED (Buri grill, 2026-07-08): a FIXED-height band
-              (was flex-1, which swelled the monogram whenever credits were hidden
-              — the reason cards didn't share one ratio). Holds a SMALL monogram
-              accent + the genre tag; the name is the hero now, this is a ticket
-              flourish. reveal.art is ignored (typographic-face ruling §2.6). DEEP
-              CUT rides the bottom-right as a circular double-ring stamp. ── */}
+          {/* ── Poster panel (W5d, Buri-approved comp docs/card-redesign-proposal.html):
+              a flex-1 FRAMED panel — navy border, cream + halftone, genre wash,
+              −7° diagonal band — replaces the 14px strip AND the old bottom
+              spacer: the slack the invisible spacer used to eat is now inside
+              the frame, so cards still share one ratio but the face reads as a
+              letterpress one-sheet instead of blank paper. Typographic-only this
+              build; when real scene art lands it drops into this exact frame
+              with zero layout change. reveal.art stays ignored (§2.6). ── */}
           {s.showArt && (
             <div
-              className="relative flex-none overflow-hidden"
+              className="relative flex min-h-0 flex-1 flex-col items-center justify-center"
               style={{
-                height: s.artH,
                 borderWidth: Math.max(1, s.borderPx - 0.5),
                 borderStyle: 'solid',
                 borderColor: 'var(--color-stub-navy)',
-                borderRadius: `calc(${s.radius} - 4px)`,
+                borderRadius: s.panelRadius,
                 background: 'var(--color-stub-cream)',
+                // short mode: never crush the mono+genre row out of legibility.
+                // Exactly the mono height — the +4 breathing room cost 3-line
+                // titles (THE TRUMAN SHOW at pile) their last ledger pixels.
+                minHeight: tall ? undefined : s.monoShortPx,
+                // overflow stays VISIBLE — the DEEP CUT stamp overlaps the edge
               }}
             >
-              {/* halftone texture, matching the board's cream field */}
+              {/* clipped inner: halftone + genre wash (.13) + −7° band (.15) */}
               <div
-                className="pointer-events-none absolute inset-0"
-                style={{
-                  backgroundImage:
-                    'radial-gradient(rgba(31,58,82,.06) 1px, transparent 1.2px)',
-                  backgroundSize: '7px 7px',
-                }}
-              />
-              {/* monogram · genre · deep-cut, laid out as a FLEX ROW so nothing
-                  overlaps in the thin strip. genre takes the middle and truncates;
-                  the stamp is an inline flex item on the right (the old absolute
-                  bottom-right stamp collided with the now vertically-centered
-                  content once the art slot shrank to a band). */}
-              <div
-                className="flex h-full w-full items-center"
-                style={{ paddingInline: s.pad, gap: s.gap }}
+                className="pointer-events-none absolute inset-0 overflow-hidden"
+                style={{ borderRadius: `calc(${s.panelRadius} - 1.5px)` }}
               >
-                {/* small monogram accent — title INITIAL (★ for a wild), spine
-                    hue; sized to the strip so it reads as a flourish, not a hero. */}
+                <div
+                  className="absolute inset-0"
+                  style={{
+                    backgroundImage:
+                      'radial-gradient(rgba(31,58,82,.07) 1px, transparent 1.2px)',
+                    backgroundSize: '7px 7px',
+                  }}
+                />
+                <div
+                  className="absolute inset-0"
+                  style={{ background: spine, opacity: 0.13 }}
+                />
+                <div
+                  className="absolute"
+                  style={{
+                    left: '-12%',
+                    right: '-12%',
+                    height: '22%',
+                    top: '57%',
+                    transform: 'rotate(-7deg)',
+                    background: spine,
+                    opacity: 0.15,
+                  }}
+                />
+              </div>
+
+              {/* corner diamonds — tall pile/raised chrome only (comp §1) */}
+              {tall &&
+                s.cornerPx > 0 &&
+                (
+                  [
+                    { top: 5, left: 5 },
+                    { top: 5, right: 5 },
+                    { bottom: 5, left: 5 },
+                    { bottom: 5, right: 5 },
+                  ] as const
+                ).map((pos, i) => (
+                  <div
+                    key={i}
+                    className="pointer-events-none absolute"
+                    style={{
+                      ...pos,
+                      width: s.cornerPx,
+                      height: s.cornerPx,
+                      background: spine,
+                      opacity: 0.5,
+                      transform: 'rotate(45deg)',
+                    }}
+                  />
+                ))}
+
+              {/* monogram + FULL genre word — the panel is wide enough that the
+                  longest genre (ADVENTURE/ANIMATION) fits untruncated at every
+                  size, which the 14px strip never could. TALL: poster column.
+                  SHORT: compact row beside the ledger. */}
+              <div
+                className={`relative flex min-w-0 items-center justify-center ${
+                  tall ? 'flex-col' : 'flex-row'
+                }`}
+                style={{ gap: tall ? 3 : s.gap, paddingInline: 2 }}
+              >
                 <span
                   className="flex-none font-stub-display"
                   style={{
-                    fontSize: Math.round(s.artH * 0.78),
+                    fontSize: tall ? s.monoTallPx : s.monoShortPx,
                     fontWeight: 700,
-                    lineHeight: 0.9,
+                    lineHeight: 1,
                     color: spine,
                   }}
                 >
                   {wild ? '★' : titleInitial(movie.title)}
                 </span>
                 <span
-                  className="min-w-0 flex-1 truncate text-center font-stub-label text-stub-slate"
+                  className="whitespace-nowrap font-stub-label text-stub-slate"
                   style={{
-                    fontSize: s.monoPx,
+                    fontSize: tall ? s.genPx : s.genShortPx,
                     fontWeight: 600,
-                    letterSpacing: '0.16em',
+                    letterSpacing: s.genTrack,
                   }}
                 >
                   {wild ? 'WILD' : movie.genre.toUpperCase()}
                 </span>
+              </div>
 
-                {deepCut && !wild && s.badgePx > 0 && (
-                  <div
-                    className="flex flex-none items-center justify-center rounded-full"
+              {/* DEEP CUT — the comp's corner stamp: genre-hue disc, inset cream
+                  ring, rotated 8°, overlapping the panel's bottom-right edge.
+                  Restored from the illegible 11.5px in-strip dot (review major). */}
+              {deepCut && !wild && stampD > 0 && (
+                <div
+                  className="absolute flex items-center justify-center rounded-full"
+                  style={{
+                    width: stampD,
+                    height: stampD,
+                    right: -Math.round(stampD * 0.2),
+                    bottom: -Math.round(stampD * 0.23),
+                    background: spine,
+                    boxShadow:
+                      'inset 0 0 0 1.5px var(--color-stub-cream), 0 1px 4px rgba(31,58,82,.35)',
+                    transform: 'rotate(8deg)',
+                    zIndex: 5,
+                  }}
+                >
+                  <span
+                    className="text-center font-stub-label"
                     style={{
-                      // capped to the strip height so it fits the band (comp's
-                      // filled genre-hue disc + thin cream inner ring look).
-                      width: Math.min(s.badgePx * 2.6, s.artH * 0.82),
-                      height: Math.min(s.badgePx * 2.6, s.artH * 0.82),
-                      background: spine,
-                      boxShadow: `inset 0 0 0 1.5px var(--color-stub-cream)`,
+                      color: 'var(--color-stub-cream)',
+                      fontSize: stampD * 0.2,
+                      fontWeight: 700,
+                      lineHeight: 1.1,
+                      letterSpacing: '0.04em',
                     }}
                   >
-                    <span
-                      className="text-center font-stub-label"
-                      style={{
-                        color: 'var(--color-stub-cream)',
-                        fontSize: Math.min(s.badgePx * 2.6, s.artH * 0.82) * 0.22,
-                        fontWeight: 700,
-                        lineHeight: 1.05,
-                        letterSpacing: '0.04em',
-                      }}
-                    >
-                      DEEP
-                      <br />
-                      CUT
-                    </span>
-                  </div>
-                )}
-              </div>
+                    DEEP
+                    <br />
+                    CUT
+                  </span>
+                </div>
+              )}
             </div>
           )}
 
-          {/* ── Credit ledger: marker + name + point chip, hairline-ruled ── */}
+          {/* "⇄ FLIP FOR CREDITS" — opt-in tap affordance under the panel.
+              Tall (unrevealed) pile/raised faces only: once the ledger is up
+              there is nothing left to flip for. */}
+          {flipHint && tall && !wild && s.hintPx > 0 && (
+            <div
+              className="flex flex-none items-center justify-center whitespace-nowrap font-stub-label"
+              style={{
+                gap: 4,
+                fontSize: s.hintPx,
+                fontWeight: 600,
+                letterSpacing: '0.1em', // .14em wraps the caption at pile width
+                color: 'var(--color-stub-slate-light)',
+              }}
+            >
+              <span style={{ fontSize: s.hintPx + 2 }}>⇄</span>
+              FLIP FOR CREDITS
+            </div>
+          )}
+
+          {/* ── Credit ledger: marker + name + point chip, hairline-ruled.
+              Names ride nameFit: shrink to the 6.5px floor, then fall back to
+              the ticket-style initial ("C. Nolan") — the +2 director never
+              truncates (W5d; truncate class is a backstop only). ── */}
           {s.showLedger && ledger.length > 0 && (
             <div className="flex flex-none flex-col">
-              {ledger.map((row, i) => (
+              {ledger.map((row, i) => {
+                const fitted = nameFit(row.name, nameBoxW, s.rowPx)
+                return (
                 <div
                   key={`${row.kind}-${row.name}`}
                   className="flex items-center"
@@ -716,9 +894,9 @@ export function StubCard({
                   )}
                   <span
                     className="min-w-0 flex-1 truncate font-stub-ui text-stub-navy"
-                    style={{ fontSize: s.rowPx, fontWeight: 700, lineHeight: 1.1 }}
+                    style={{ fontSize: fitted.px, fontWeight: 700, lineHeight: 1.1 }}
                   >
-                    {row.name}
+                    {fitted.text}
                   </span>
                   <span
                     className="flex-none font-stub-display text-stub-navy"
@@ -726,20 +904,44 @@ export function StubCard({
                       fontSize: s.rowPx,
                       fontWeight: 700,
                       fontVariantNumeric: 'tabular-nums',
+                      // Domine's default line box is taller than the Inter name's
+                      // — pin it or every row grows and the pile frame overflows.
+                      lineHeight: 1.1,
                     }}
                   >
                     {row.chip}
                   </span>
                 </div>
-              ))}
+                )
+              })}
             </div>
           )}
 
-          {/* Bottom spacer — absorbs slack so the title + art zones stay pinned to
-              the top at a constant size whether or not the ledger is present (an
-              unflipped, credits-hidden card looks proportionally identical to a
-              revealed one). This is what locks the "one ratio across every card". */}
-          <div style={{ flex: 1 }} />
+          {/* ── "+N DEEPER CREDITS" — the deep-cut tease (W5d restore): the rule
+              HowToPlay/RULEBOOK document — N hidden names that still score on a
+              link. Red mono, comp §1 flipped card. Pile/raised, revealed faces
+              with a deep roster only; the names themselves stay off-face (the
+              discovery mechanic is the point). ── */}
+          {s.deeperPx > 0 &&
+            deepCut &&
+            !wild &&
+            showCredits &&
+            (movie.deepCast?.length ?? 0) > 0 && (
+              <div
+                className="flex-none text-center font-stub-label"
+                style={{
+                  fontSize: s.deeperPx,
+                  fontWeight: 700,
+                  letterSpacing: '0.1em',
+                  lineHeight: 1,
+                  color: 'var(--color-stub-red)',
+                }}
+              >
+                +{movie.deepCast!.length} DEEPER CREDITS
+              </div>
+            )}
+          {/* No bottom spacer anymore — the flex-1 poster panel absorbs the
+              slack, which is what keeps every card at one shared ratio. */}
         </div>
       </div>
     </div>

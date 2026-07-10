@@ -21,7 +21,17 @@ const CHRONO_PRACTICE: { id: 'easy' | 'hard'; label: string }[] = [
 ]
 
 export default function App() {
-  const [mode, setMode] = useState<Mode>('menu')
+  // Dev-only boot param (?mode=duel|solo|chronology|connections): lands straight
+  // in a mode with its daily start — for the capture/verify tooling, which gets
+  // a fresh page per screenshot and can't click through the menu first. Same
+  // DEV gate as main.tsx's ?preview harness; tree-shaken out of prod.
+  const [mode, setMode] = useState<Mode>(() => {
+    if (import.meta.env.DEV) {
+      const m = new URLSearchParams(window.location.search).get('mode')
+      if (m === 'solo' || m === 'duel' || m === 'chronology' || m === 'connections') return m
+    }
+    return 'menu'
+  })
   const [difficulty, setDifficulty] = useState<Difficulty>('matinee')
   const [chronoStart, setChronoStart] = useState<ChronoStart>({ kind: 'daily' })
   const [connStart, setConnStart] = useState<ConnectionsStart>({ kind: 'daily' })
@@ -92,14 +102,24 @@ export default function App() {
         </button>
       </header>
 
-      <div className="flex w-full flex-1 flex-col items-center justify-center gap-8 px-8">
+      {/* Scroll container: `my-auto` on the inner column centers the cards when
+          they fit (tall phones) and top-aligns + scrolls when they don't — with
+          plain justify-center, a 667px viewport clipped the Connections card
+          UNREACHABLY (flex centering overflows both ends; the top half can
+          never be scrolled to). */}
+      <div className="flex w-full min-h-0 flex-1 flex-col items-center overflow-y-auto px-8">
+        <div className="my-auto flex w-full flex-col items-center gap-8 py-6">
         <p className="text-center font-stub-ui text-sm text-stub-slate">
           Connect movies by the people who made them.
         </p>
         <div className="flex w-full max-w-[300px] flex-col gap-3">
           {/* Hero card: the navy panel echoing the 7a board header — one clear
-              primary for the menu (EXTRAPOLATED; menu has no reference PNG). */}
-          <div className="rounded-stub-panel bg-stub-navy px-6 py-4 shadow-stub-card-resting">
+              primary for the menu (EXTRAPOLATED; menu has no reference PNG).
+              W5d (comp §4 "borders do the work"): punched side notches — the 7d
+              score-stub treatment — land on every menu card; the hero keeps its
+              navy fill (notches only, no frame — it IS the ink). */}
+          <div className="relative rounded-stub-panel bg-stub-navy px-6 py-4 shadow-stub-card-resting">
+            <MenuNotches />
             <button
               type="button"
               data-mode="duel"
@@ -132,7 +152,7 @@ export default function App() {
                   data-difficulty={d}
                   aria-pressed={difficulty === d}
                   onClick={() => setDifficulty(d)}
-                  className={`flex-1 rounded-stub-pill px-2 py-1.5 font-stub-label text-[10px] font-bold uppercase tracking-[0.06em] transition-colors ${
+                  className={`flex-1 whitespace-nowrap rounded-stub-pill px-2 py-1.5 font-stub-label text-[10px] font-bold uppercase tracking-[0.06em] transition-colors ${
                     difficulty === d
                       ? 'bg-stub-amber text-stub-navy shadow-sm'
                       : 'text-stub-cream/55 active:text-stub-cream/80'
@@ -146,7 +166,8 @@ export default function App() {
               {DIFFICULTY_META[difficulty].blurb}
             </p>
           </div>
-          <div className="rounded-stub-panel bg-stub-paper px-6 py-4 shadow-stub-card-resting">
+          <div className="relative rounded-stub-panel border-2 border-stub-navy bg-stub-paper px-6 py-4 shadow-stub-card-resting">
+            <MenuNotches />
             <button
               type="button"
               data-mode="solo"
@@ -173,13 +194,14 @@ export default function App() {
                 type="button"
                 data-solo-practice
                 onClick={() => startSolo({ kind: 'practice' })}
-                className="flex-1 rounded-stub-pill bg-stub-navy/[0.06] px-2 py-1.5 font-stub-label text-[11px] font-bold text-stub-slate transition-colors active:bg-stub-navy/10 active:text-stub-navy"
+                className="flex-1 rounded-stub-pill border-2 border-stub-navy bg-stub-paper px-2 py-1 font-stub-label text-[10px] font-bold uppercase tracking-[0.08em] text-stub-navy transition-colors active:bg-stub-navy/10"
               >
                 The original hand
               </button>
             </div>
           </div>
-          <div className="rounded-stub-panel bg-stub-paper px-6 py-4 shadow-stub-card-resting">
+          <div className="relative rounded-stub-panel border-2 border-stub-navy bg-stub-paper px-6 py-4 shadow-stub-card-resting">
+            <MenuNotches />
             <button
               type="button"
               data-mode="chronology"
@@ -202,14 +224,14 @@ export default function App() {
               <span className="font-stub-label text-[11px] font-semibold uppercase tracking-[0.08em] text-stub-slate">
                 practice
               </span>
-              <div className="flex flex-1 gap-1 rounded-stub-pill bg-stub-navy/[0.06] p-0.5">
+              <div className="flex flex-1 gap-1.5">
                 {CHRONO_PRACTICE.map((p) => (
                   <button
                     key={p.id}
                     type="button"
                     data-chrono-practice={p.id}
                     onClick={() => startChronology({ kind: 'practice', difficulty: p.id })}
-                    className="flex-1 rounded-stub-pill px-2 py-1.5 font-stub-label text-[11px] font-bold text-stub-slate transition-colors active:bg-stub-navy/10 active:text-stub-navy"
+                    className="flex-1 rounded-stub-pill border-2 border-stub-navy bg-stub-paper px-2 py-1 font-stub-label text-[10px] font-bold uppercase tracking-[0.08em] text-stub-navy transition-colors active:bg-stub-navy/10"
                   >
                     {p.label}
                   </button>
@@ -219,7 +241,8 @@ export default function App() {
           </div>
           {/* Connections (Mode 4) — EXTRAPOLATED, composed from the same paper
               panel as the other daily cards (cohesion ruling). */}
-          <div className="rounded-stub-panel bg-stub-paper px-6 py-4 shadow-stub-card-resting">
+          <div className="relative rounded-stub-panel border-2 border-stub-navy bg-stub-paper px-6 py-4 shadow-stub-card-resting">
+            <MenuNotches />
             <button
               type="button"
               data-mode="connections"
@@ -245,12 +268,13 @@ export default function App() {
                 type="button"
                 data-connections-practice
                 onClick={() => startConnections({ kind: 'practice' })}
-                className="flex-1 rounded-stub-pill bg-stub-navy/[0.06] px-2 py-1.5 font-stub-label text-[11px] font-bold text-stub-slate transition-colors active:bg-stub-navy/10 active:text-stub-navy"
+                className="flex-1 rounded-stub-pill border-2 border-stub-navy bg-stub-paper px-2 py-1 font-stub-label text-[10px] font-bold uppercase tracking-[0.08em] text-stub-navy transition-colors active:bg-stub-navy/10"
               >
                 Random grid
               </button>
             </div>
           </div>
+        </div>
         </div>
       </div>
       <AnimatePresence>
@@ -312,6 +336,30 @@ function IntroOverlay({ onDismiss }: { onDismiss: () => void }) {
         </p>
       </motion.div>
     </motion.div>
+  )
+}
+
+// Punched side notches for a menu card (comp §4, the 7d score-stub treatment):
+// cream circles ringed navy, floating half off each edge at mid-height. No
+// clipping needed — the outer half sits cream-on-cream over the dotted page, so
+// the ring reads as a punched hole. Identical on every card.
+function MenuNotches() {
+  return (
+    <>
+      {(['l', 'r'] as const).map((side) => (
+        <span
+          key={side}
+          className="pointer-events-none absolute rounded-full border-2 border-stub-navy bg-stub-cream"
+          style={{
+            top: '50%',
+            [side === 'l' ? 'left' : 'right']: 0,
+            transform: `translate(${side === 'l' ? '-55%' : '55%'}, -50%)`,
+            width: 13,
+            height: 13,
+          }}
+        />
+      ))}
+    </>
   )
 }
 

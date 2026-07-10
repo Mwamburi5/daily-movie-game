@@ -35,6 +35,9 @@ function HandCardFace({
       deepCut={!!movie.deepCast?.length}
       hint={hint}
       hintLabel={hintLabel}
+      // The raised card really flips on tap (plus its ⇄ button); fan cards
+      // don't (tap raises), and StubCard ignores the hint at hand size anyway.
+      flipHint={size === 'raised'}
     />
   )
 }

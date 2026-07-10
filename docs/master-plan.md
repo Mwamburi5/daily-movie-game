@@ -605,6 +605,74 @@ what's ready-to-review per sitting.
       14/14; browser-verified Duel @390×844+@375×667, Solo @390, Chronology @390.
       **PARKED (§7·6): difficulty-as-personas — NOT built.** Two throwaway audit
       harnesses kept as P2 pool-merge regression guards (flag: remove if unwanted).
+- [ ] **W5d CARD/UI REDESIGN BUILD (UI, checkpointed) — SHIPPED 2026-07-10
+      ⛔ AWAITING BURI CHECKPOINT** (Buri approved all four proposals 2026-07-09;
+      comp = `docs/card-redesign-proposal.html`, committed with this wave).
+      **Ruled fixes first (Buri, 2026-07-10, in-session):** (1) **BLOCKER
+      Chronology year-in-DOM leak FIXED** — BackFace (which prints `card.year`)
+      was always mounted (3D + reduced-motion paths); now mounts only on
+      `faceUp || showYear`. Verified structurally: ChronoTitleAudit page = 486
+      pre-placement cards, **0 four-digit years in the DOM** (was 486). (2)
+      **Decade rail ruled a BUG → neutralized**: unplaced fronts ride the slate
+      accent; decade color only once `showYear` (placed line keeps the colored-
+      timeline read; 0 decade-colored elements measured on 486 unplaced cards).
+      (3) **Duel draw-3 wild ruled AUTO-KEEP (match sim)**: `playerPickDraw`
+      force-keeps a revealed wild (RULESET §11 parity with sim + CPU `draw3`);
+      DrawChoice renders the wild FACE-UP with a "WILD — ALWAYS KEPT" navy/amber
+      pill, other cards disabled+dimmed, header/footer copy states the rule;
+      preview harness gained the wild section (`?preview=DrawChoice`).
+      **The four approved builds:** (a) **StubCard POSTER PANEL** — flex-1 framed
+      panel (navy border, cream+halftone, genre wash .13, −7° band .15, corner
+      diamonds tall pile/raised) replaces the 14px strip AND the invisible bottom
+      spacer; TALL mode (credits hidden: big mono over FULL genre word) / SHORT
+      mode (credits shown: mono+genre row) keyed on `showCredits`; wild = amber
+      ★ WILD one-sheet; comp-style DEEP CUT stamp (rotate 8°, inset cream ring)
+      overlapping panel bottom-right, scaled per size (fixes the illegible
+      11.5px disc major); **"+N DEEPER CREDITS"** red mono footer restored
+      (pile/raised, N=deepCast.length — the rule HowToPlay documents); ledger
+      **nameFit** (Inter advance 0.60, ticket-style abbreviation chain
+      "Francis Ford Coppola"→"F. Ford Coppola"→"F. Coppola"→"Coppola"→hyphen
+      segment, two-pass floor 6.5→5) — the +2 director never truncates; opt-in
+      `flipHint` ("⇄ FLIP FOR CREDITS") passed only where a tap really flips
+      (Duel/Solo pile tops + raised). Title band + titleFit UNTOUCHED. (b)
+      **Connections landscape ticket stubs** — 62px tiles, radius 9, perf-dot
+      row + side notches IDENTICAL on every tile (no group leak; perf dots flip
+      cream on the navy selected fill — player state, not group state);
+      `tileFontSize` recalibrated (91/longest ∧ 460/total, hyphen-aware,
+      clamp 5 lines) — audited **0 overflows across all 236 grid titles**;
+      controls moved INSIDE the board column (the ~250px dead band is gone).
+      (c) **Menu card frames** — 2px navy border + punched side notches on the
+      paper cards (`MenuNotches`), notches-only on the navy hero, practice pills
+      → paper w/ 2px navy outline (uppercase mono), difficulty pills
+      `whitespace-nowrap`; PLUS a real fix the capture surfaced: the menu
+      overflowed 749px in a 667px viewport with NO scroll (Connections card
+      unreachable on SE-class) → scroll container with `my-auto` centering
+      (centers when short, scrolls when tall). (d) **End-screen UX + docs sync
+      (Buri scoped in):** Connections loss gains **"See the board"** (results
+      step aside; floating "↩ Back to results" pill returns) — the promised
+      reveal is finally visible; **Menu button on all three** solo-mode end
+      screens (Results/ChronoResults/ConnectionsResults, Duel's pattern);
+      HowToPlay drift fixed (back lists cast+director — no "writers"; "drama
+      deep blues" not the fictional bronzes; series not "trilogy" ×2; wild
+      auto-keep sentence added); RULEBOOK updated (Modes line gains Connections;
+      Last updated 2026-07-10; wild auto-keep; free-peek, Matinee ⇲ Sort, CPU
+      last-card warn, recap reel documented; series wording); README → four
+      modes + verify:connections + master-plan pointer; ui-contracts §DrawChoice
+      wild contract. Also: dev-only `?mode=` boot param (DEV-gated like
+      ?preview, tree-shaken) for capture tooling. **Gates GREEN:** full verify
+      **64/64** · solo 8/8 · chrono 42/42 · connections 14/14 · tsc+build clean ·
+      `?preview=StubTitleAudit` 267 cards **0 breaks/0 clips/0 name-truncs/0
+      genre overflows** (audit caught + fixed: Domine chip line-height overflow
+      at pile, nameFit advance 0.58→0.60, panel min-height) · ChronoTitleAudit
+      486 **0 breaks + 0 year leaks** · captures @390×844 + @375×667 (menu,
+      Duel, Solo, Connections; Chronology @390). **2026-07-10 REVIEW COMPLETION:**
+      the 5 unrun areas (tokens-typography · layout-spacing · a11y · ledger-audit
+      · process-retro) ran as a fresh 19-agent workflow (worktree-isolated,
+      adversarially verified) — results in §7·7 + the fix docket. **FLAGS for
+      Buri (§7·7):** (a) Connections selected tile keeps the shipped navy fill
+      (comp sheet showed paper-bg selection — ruled "amber selection stays" as
+      keep-shipped; confirm); (b) new majors from the review (Domine has NO
+      tabular figures — tabular-nums on scores is a silent no-op — et al).
 - [ ] W6 SEND (deploy = Buri)
 - [ ] **D1 Duel deep-cut reveal as a difficulty lever** (PARKED, concept
       approved 2026-07-06; §3·D1) — deepCast TMDB content pass (P2-adjacent) →
@@ -713,6 +781,52 @@ what's ready-to-review per sitting.
    - (iii) **Intro copy → STAY HIGH-LEVEL (ruled, CLOSED).** No change — the menu
      cards already blurb each mode; naming them in the overlay would duplicate and
      edge toward the declined funnel.
+7. **W5d checkpoint + post-review docket (2026-07-10).** The 2026-07-09 deep
+   review's 5 unrun areas COMPLETED 2026-07-10 (19-agent workflow, worktree-
+   isolated, adversarial verify; results `subagents/workflows/wf_0bf27745-f84/
+   journal.jsonl` in session 1cba6766). Everything it re-confirmed from the
+   known docket is FIXED in W5d (year-leak blocker · decade rail · wild burn ·
+   Connections loss reveal · genre truncation · menu 667 overflow — the last
+   found independently at blocker severity by the layout agent AND caught live
+   during W5d captures). **AWAITING BURI:**
+   - **(a) W5d checkpoint approval** — side-by-sides @390×844 + @375×667 shown
+     in-session; one judgment call to confirm: Connections SELECTED tile kept
+     the shipped navy fill + amber border (the proposal sheet's minimal `.sel`
+     css showed paper-bg selection; read "amber selection stays" as
+     keep-shipped).
+   - **(b) NEW CONFIRMED MAJORS (not yet fixed — rule fix-now vs post-SEND):**
+     1. **Domine has no tabular figures** — every `tabular-nums` on
+        font-stub-display is a silent no-op; scores/deck count/end totals/
+        strokes reflow as they tick (ScoreRace.tsx:224 et al; the shipped woff2
+        and upstream Domine both lack `tnum`, unfixable by subsetting). Options:
+        Inter numerals for ticking values · fixed-width digit spans · pin
+        containers; README line 28 over-promises either way.
+     2. **A11y cluster** (verified ×2 agents): no keyboard path for the
+        Duel/Solo/Chrono play loop (drag-only); overlays lack focus
+        trap/Escape/role=dialog and the background stays tabbable; StubCard has
+        no aria-label at hand/pile/raised; no aria-live anywhere
+        (say()/LastPlayLine/toasts); `user-scalable=no` in index.html:7 blocks
+        pinch-zoom (WCAG 1.4.4 — one-line fix, recommend now given 6-9px type).
+     3. **Duel HUD/MeldShelf overlap** — bottom-pinned chips overlap the shelf
+        band whenever ≥1 meld is banked at 667 (DuelGame.tsx:1790).
+     4. **End-screen overlays can clip at 667** — same class as the fixed menu
+        bug: `absolute inset-0 justify-center` + no scroll; Duel game-over
+        worst case (recap reel + record line) is the risk (DuelGame.tsx:1940).
+     Recommendation: fix 2's pinch-zoom line + 4 (mechanical, small) pre-SEND;
+     1 + 3 pre-SEND if cheap after inspection; full keyboard operability =
+     post-SEND backlog.
+   - **(c) Deferred by Buri's W5d scope ruling:** analytics replay desync
+     (mode_start/finish, all 4 modes) + the minors sweep (favicon, Solo blurb
+     two-win-conditions, MeldShelf legacy posterColor spine, difficulty reset
+     on load, race-to-20 mid-turn timing, stale design_handoff RULEBOOK dupe,
+     practice-vs-daily share ambiguity, Chrono "Play again" re-deals identical
+     daily).
+   - **(d) Process-retro highlights** (full narrative in the journal): WELL —
+     sim-first parity, pin discipline, byte-identical gates, single-writer
+     rule; CHURN — the invisible-inventory reset, StubCard comp-anatomy
+     bounce; RISKS — 2,000-line DuelGame single-writer bottleneck, tuning
+     fragility on pool growth, checkpoint latency on a solo owner;
+     recommendation: archive bannered docs post-launch.
 
 ## 8. Master Prompt (paste this to boot any future build session)
 

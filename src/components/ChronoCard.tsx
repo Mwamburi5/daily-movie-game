@@ -17,7 +17,9 @@
 //
 // STRUCTURAL RULE (load-bearing): pre-placement the front prints "year ?" and the
 // year is OMITTED from the DOM entirely — no-year-leak is the whole point of the
-// mode. `showYear` gates the front; the BackFace year only mounts on the flip.
+// mode. `showYear` gates the front; the BackFace (which prints the year) must not
+// MOUNT until faceUp/showYear — a hidden-but-mounted back face is still ⌘F- and
+// screen-reader-readable, which hands out every answer.
 
 import { motion, useReducedMotion } from 'framer-motion'
 import type { ChronologyCard } from '../lib/chronology.ts'
@@ -52,8 +54,9 @@ function fitTitlePx(title: string, boxW: number, basePx: number, floorPx: number
 }
 
 // Decade -> a saturated accent, used as the ticket's left EDGE + diamond pip (not
-// a full body fill — the Stub body is always paper). A coarse era cue, and it
-// still makes a filled line read as a colored timeline at a glance. The hues are
+// a full body fill — the Stub body is always paper). Worn only AFTER the year is
+// public (showYear/faceUp) — pre-placement it would be a 6-bucket era cheat sheet.
+// A filled line still reads as a colored timeline at a glance. The hues are
 // nudged toward the Stub navy/plum/slate family so the accents sit on-brand.
 const DECADE_COLOR: Record<number, string> = {
   1970: '#8a5a2b', // sienna
@@ -102,7 +105,11 @@ function EdgeRail({ accent, size }: { accent: string; size: ChronoCardSize }) {
 
 function FrontFace({ card, size, showYear, flat }: FaceProps) {
   const d = DIMS[size]
-  const accent = decadeColor(card.decade)
+  // Decade color IS a year readout (6 era buckets), so the front only wears it
+  // once the year is public. Unplaced cards ride the neutral slate — the colored
+  // timeline-at-a-glance still emerges as cards settle onto the line (Buri ruled
+  // the pre-placement color a leak, not an assist, 2026-07-10).
+  const accent = showYear ? decadeColor(card.decade) : 'var(--color-stub-slate)'
   // Title box = card − edge rail − 3px perf − the body's left/right padding
   // − a 4px safety buffer (the measured render width runs a touch under the raw
   // arithmetic; the buffer keeps the longest word inside the real box).
@@ -219,14 +226,16 @@ export function ChronoCardView({
         >
           <FrontFace card={card} size={size} showYear={showYear} flat />
         </motion.div>
-        <motion.div
-          className="absolute inset-0"
-          initial={false}
-          animate={{ opacity: faceUp ? 1 : 0 }}
-          transition={{ duration: 0.15 }}
-        >
-          <BackFace card={card} size={size} flat />
-        </motion.div>
+        {(faceUp || showYear) && (
+          <motion.div
+            className="absolute inset-0"
+            initial={false}
+            animate={{ opacity: faceUp ? 1 : 0 }}
+            transition={{ duration: 0.15 }}
+          >
+            <BackFace card={card} size={size} flat />
+          </motion.div>
+        )}
       </div>
     )
   }
@@ -241,7 +250,10 @@ export function ChronoCardView({
         transition={{ type: 'spring', stiffness: 280, damping: 24 }}
       >
         <FrontFace card={card} size={size} showYear={showYear} />
-        <BackFace card={card} size={size} />
+        {/* no-year-leak: mount the year-bearing face only once the truth is out.
+            Mounting happens the same render the flip starts, so the reveal spin
+            still has its back face the whole rotation. */}
+        {(faceUp || showYear) && <BackFace card={card} size={size} />}
       </motion.div>
     </div>
   )

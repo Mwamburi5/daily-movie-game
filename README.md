@@ -1,14 +1,16 @@
 # Match Cut (Daily Movie Game)
 
-A movie-trivia card game built as three modes, all sharing one idea: every card
-is a movie, every mode is scored like golf (low score wins), and every mode ends
-with a shareable emoji recap.
+A movie-trivia card game built as four modes, all sharing one idea: every card
+is a movie, movies connect through the people who made them, and every mode
+ends with a shareable emoji recap.
 
 - **Daily Puzzle** (solo) — connect a hand of linked films in as few moves as
   possible. Date-seeded, one real puzzle per day, solver-guaranteed.
 - **Duel vs Computer** — head-to-head, take turns scoring links to outscore the
   CPU. Includes Matinee / Feature / Director's Cut difficulty tiers.
 - **Chronology** — solo, no links: put movies in the order they were released.
+- **Connections** — solo, NYT-style: sixteen titles hide four groups of four
+  (same director, actor, series, or genre), dealt daily from a verified baked set.
 
 Movies connect through the people who made them (shared actor, director, or
 writer) or by being in the same series — see [`RULEBOOK.md`](./RULEBOOK.md)
@@ -36,6 +38,7 @@ npm run dev
 | `npm run verify` | Run the Duel simulation contract check |
 | `npm run verify:chronology` | Run the Chronology simulation contract check |
 | `npm run verify:solo` | Run the Daily Puzzle simulation contract check |
+| `npm run verify:connections` | Run the Connections grid contract check |
 | `npm run sim` | Run the Duel gameplay simulator |
 | `npm run eval` | Evaluate Duel difficulty tuning |
 | `npm run eval:chronology` | Evaluate Chronology difficulty tuning |
@@ -48,9 +51,9 @@ npm run dev
 - `design/` — card art production specs and reference renders
 - `docs/` — supporting design/reference docs
 - `RULEBOOK.md` — living plain-English rules guide for players
-- `PLAN.md` — project planning notes
+- `docs/master-plan.md` — the live build plan (PLAN.md is bannered history)
 
 ## Status
 
-Live and actively developed. Daily Puzzle and Duel are shipped; Chronology is
-playable with a growing content pool ahead of its own public daily.
+Live and actively developed. All four modes are shipped with daily deals;
+Chronology's film pool is still growing ahead of a wider content push.

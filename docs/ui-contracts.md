@@ -317,6 +317,14 @@ either pile top, then a "Tap to keep…" footer line.
   immediately enters the keep/toss/play flow), and emits a `say()` banner
   ("kept it — it connects!" or "kept the card").
 
+**Wild force-keep (W5d, Buri-ruled 2026-07-10)**: a wild among the revealed
+cards is ALWAYS the keep (RULESET §11 "kept, never burned" — the sim and the
+CPU's `draw3` already force-keep). Enforcement is layered: `playerPickDraw`
+substitutes the wild id no matter which id is tapped (the rule), and
+DrawChoice renders the wild face-up with a "WILD — ALWAYS KEPT" pill while
+disabling the other cards (the courtesy). Header/footer copy switches to
+"wild is kept" / "a wild is never burned".
+
 **Behavior notes**: the other 1–2 unpicked cards are simply never referenced
 again — they were already spliced out of `deck` at draw time
 (`playerDraw`, `:567`) and are NOT tracked anywhere (per decision D1: burned
