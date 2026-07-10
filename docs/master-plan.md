@@ -22,7 +22,7 @@
 > amendment; noindex + URL-less shares still hold). The project is now in the
 > **post-SEND phase**: circle feedback → interviews (~2026-07-24) pick the
 > front door; build tracks = P2 Stage B strikes → LOCK docket (§7·4b) +
-> post-SEND fix backlog (§7·7b) + personas (§7·6).
+> post-SEND fix backlog (§7·7b) + personas (§7·6) + UI-overhaul intake (§7·8).
 
 All four modes — **Solo, Duel, Chronology, Connections** — playable on the Stub UI ·
 one unified TMDB-audited movie pool feeding all modes · per-mode sims/verifies
@@ -887,6 +887,44 @@ what's ready-to-review per sitting.
      bounce; RISKS — 2,000-line DuelGame single-writer bottleneck, tuning
      fragility on pool growth, checkpoint latency on a solo owner;
      recommendation: archive bannered docs post-launch.
+8. **UI-overhaul intake — Buri's 2026 design-guide review (RULED 2026-07-10:
+   all five lines approved + the guiding filter).** Source: Buri's "2026
+   Strategic App Design" guide, reviewed against the live codebase (emoji
+   sweep) and the 7f token gaps (§1). These are **OVERHAUL-ERA** items — they
+   ride the next UI overhaul wave, not the §7·7b post-SEND fix slice, except
+   (4) which rides the launch switch:
+   - **(1) Icon pass:** replace emoji-icons with a **local zero-dep SVG icon
+     set** — copy the ~10 needed SVGs from Phosphor or Lucide (MIT/ISC) into a
+     local `Icon` component; **no new package** (deps stay locked). Fills the
+     7f "no icon set" token gap. Known instances: `HowToPlay.tsx:179-182`
+     meld-ladder 🎬⭐🎞️🎟️ · `Results.tsx` 🧱-in-UI. Also convert FUNCTIONAL
+     text glyphs on interactive elements (⇄ ↔ ✓ — some codepoints carry
+     emoji-presentation variants and can render as color emoji on iOS); keep
+     decorative ★/→ in-font. Comp Phosphor vs Lucide on a real StubCard before
+     committing (Phosphor fill/duotone = the hunch, unverified).
+   - **(2) Share-emoji exemption (standing note):** the 🎬🟩🟥🧱 clipboard rows
+     (`share.ts`, `DuelGame.tsx:1315`, `SoloGame.tsx:89`,
+     `ChronologyGame.tsx:592`) are the daily-game share convention —
+     **permanently exempt** from icon cleanup; they live in text messages, not
+     UI chrome.
+   - **(3) Interaction-polish pass:** Framer Motion micro-animations on
+     meld/score/card transitions. Explicitly **no GSAP** (redundant with the
+     locked Framer dep).
+   - **(4) Launch-switch rider:** when URL-in-share flips at real launch, the
+     front-door screen gets a landing-page-quality presentation pass — a shared
+     link makes the menu the de-facto landing page; presentation = trust.
+   - **(5) Recorded skips (don't relitigate at overhaul):** glassmorphism
+     (fights the Stub's solid print aesthetic; the guide itself flags the a11y
+     criticism) · PostHog (Vercel Analytics suffices; revisit only if the
+     interviews demand funnels) · haptics (`navigator.vibrate` is a no-op on
+     iOS Safari; the circle is iPhone-heavy) · GSAP (see 3). Guide points
+     already covered elsewhere: personas → §7·6 · custom illustrations → the
+     parked card-art track · real-device testing → the standing checkpoint
+     protocol.
+   - **Guiding filter (Buri-endorsed, applies to every item above):** per
+     glyph/element ask **"does this carry the ticket-stub voice or fight
+     it?"** — not "is it an emoji?". Match Cut is a game; over-cleaning into a
+     productivity-app look is as much a failure as emoji clutter.
 
 ## 8. Master Prompt (paste this to boot any future build session)
 
