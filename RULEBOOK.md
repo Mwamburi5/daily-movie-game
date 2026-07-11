@@ -232,6 +232,10 @@ and your sense of *when*.
          [ your hand of cards ]          (tap to lift, drag into a gap)
 ```
 
+Once the line grows wider than your screen, it **scrolls sideways** — swipe it, or
+hold your lifted card at either edge of the screen and the line glides under it
+until the gap you want comes into view.
+
 ### Scoring (golf, so LOW is good)
 - **Clean placement** (right gap): **+0**.
 - **Misfire** (wrong gap): **+1 stroke**, and the card reveals its year and corrects itself.

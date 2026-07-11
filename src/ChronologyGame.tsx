@@ -70,6 +70,14 @@ function shareText(score: number, strokes: number, credits: number, emoji: strin
   return matchCutShare('Chronology', `score ${score} (${tally})`, emoji)
 }
 
+// ── LINE band interaction geometry ─────────────────────────────────────────────
+// Shared by the drop hit-test, the drag auto-scroll, and the ambiguous-edge
+// guard — all three must agree on what "near the line" and "at the edge" mean,
+// or a drop the auto-scroll treats as "pushing past the end" could still score.
+const BAND_MARGIN = 90 // vertical "on or near the line" tolerance (px)
+const EDGE_ZONE = 48 // px from a band edge that reads as reaching past the visible line
+const EDGE_SCROLL_STEP = 12 // max px/frame the band glides during an edge hold
+
 export default function ChronologyGame({ onExit, start }: { onExit: () => void; start: ChronoStart }) {
   const reduce = useReducedMotion()
 
@@ -109,10 +117,49 @@ export default function ChronologyGame({ onExit, start }: { onExit: () => void; 
   const lineBandRef = useRef<HTMLDivElement>(null)
   const gapRefs = useRef<(HTMLDivElement | null)[]>([])
   const flipTimer = useRef<number | undefined>(undefined)
+  const dragPoint = useRef<{ x: number; y: number } | null>(null) // latest drag pointer, page coords
+  const autoScrollRaf = useRef<number | undefined>(undefined)
 
   const score = strokes - credits // golf: lower is better
 
-  useEffect(() => () => window.clearTimeout(flipTimer.current), [])
+  useEffect(
+    () => () => {
+      window.clearTimeout(flipTimer.current)
+      if (autoScrollRaf.current !== undefined) cancelAnimationFrame(autoScrollRaf.current)
+    },
+    [],
+  )
+
+  // ── drag auto-scroll: hold a card near a band edge and the line glides under
+  // it. rAF-driven, not per-pointer-event: pointer events stop the moment the
+  // finger holds still, which is exactly when the player commits to the edge.
+  const onDragActive = (active: boolean) => {
+    if (!active) {
+      if (autoScrollRaf.current !== undefined) cancelAnimationFrame(autoScrollRaf.current)
+      autoScrollRaf.current = undefined
+      dragPoint.current = null
+      return
+    }
+    if (autoScrollRaf.current !== undefined) return
+    const tick = () => {
+      const bandEl = lineBandRef.current
+      const p = dragPoint.current
+      if (bandEl && p) {
+        const r = bandEl.getBoundingClientRect()
+        // Only glide while the card is actually up at the line — dragging
+        // around the hand shouldn't shift the board.
+        if (p.y >= r.top - BAND_MARGIN && p.y <= r.bottom + BAND_MARGIN) {
+          if (p.x < r.left + EDGE_ZONE) {
+            bandEl.scrollLeft -= EDGE_SCROLL_STEP * Math.min(1, (r.left + EDGE_ZONE - p.x) / EDGE_ZONE)
+          } else if (p.x > r.right - EDGE_ZONE) {
+            bandEl.scrollLeft += EDGE_SCROLL_STEP * Math.min(1, (p.x - (r.right - EDGE_ZONE)) / EDGE_ZONE)
+          }
+        }
+      }
+      autoScrollRaf.current = requestAnimationFrame(tick)
+    }
+    autoScrollRaf.current = requestAnimationFrame(tick)
+  }
 
   // Badge + toast auto-dismiss.
   useEffect(() => {
@@ -180,6 +227,21 @@ export default function ChronologyGame({ onExit, start }: { onExit: () => void; 
       say(outcome.badge ? `streak ×${STREAK_TARGET} — stroke back` : tight <= 3 ? `nice — tight call` : `clean`)
     }
 
+    // Keep the player oriented: glide the band so the settled card is on
+    // screen — a misfire's correct slot can be scrolled out of view, and the
+    // card must never vanish to a spot the player never saw. offsetLeft (not
+    // getBoundingClientRect) because the layoutId flight is mid-transform when
+    // this runs; layout position is the truth about where the card lands.
+    requestAnimationFrame(() => {
+      const bandEl = lineBandRef.current
+      const el = bandEl?.querySelector<HTMLElement>(`[data-line-card="${CSS.escape(card.id)}"]`)
+      if (!bandEl || !el) return
+      bandEl.scrollTo({
+        left: el.offsetLeft + el.offsetWidth / 2 - bandEl.clientWidth / 2,
+        behavior: reduce ? 'auto' : 'smooth',
+      })
+    })
+
     if (nextHand.length === 0) setStatus('cleared')
   }
 
@@ -188,10 +250,22 @@ export default function ChronologyGame({ onExit, start }: { onExit: () => void; 
     if (status !== 'playing' || placing) return
     const band = lineBandRef.current?.getBoundingClientRect()
     if (!band) return
-    const m = 90 // "on or near the line"
-    const nearBand = point.y >= band.top - m && point.y <= band.bottom + m
+    const nearBand = point.y >= band.top - BAND_MARGIN && point.y <= band.bottom + BAND_MARGIN
     if (!nearBand) {
       setInvalidNonce((n) => n + 1) // out of the line — shake, spring back
+      return
+    }
+    // Ambiguity guard: a drop in the edge zone while more line is scrolled off
+    // that side can't be trusted — the nearest *visible* gap is not what the
+    // player was reaching for. Shake and coach instead of scoring a guess; a
+    // stroke must never come from a slot the player couldn't see.
+    const firstGap = gapRefs.current[0]?.getBoundingClientRect()
+    const lastGap = gapRefs.current[line.length]?.getBoundingClientRect()
+    const offLeft = !!firstGap && firstGap.right < band.left
+    const offRight = !!lastGap && lastGap.left > band.right
+    if ((offLeft && point.x < band.left + EDGE_ZONE) || (offRight && point.x > band.right - EDGE_ZONE)) {
+      setInvalidNonce((n) => n + 1)
+      say('more line that way — hold your card at the edge to scroll')
       return
     }
     // Map the drop X to the nearest gap (line.length + 1 of them, ends included).
@@ -324,11 +398,13 @@ export default function ChronologyGame({ onExit, start }: { onExit: () => void; 
         </header>
 
         {/* The LINE — placed cards with insertable gaps (ends included). Older
-            left, newer right. Horizontally scrollable as it fills. */}
+            left, newer right. Horizontally scrollable as it fills. Sits ABOVE
+            the tap-to-lower backdrop (z-30 > z-20) so a swipe here scrolls the
+            band even while a card is raised, instead of dropping the card. */}
         <section
           ref={lineBandRef}
           data-line
-          className="absolute inset-x-0 top-20 z-10 overflow-x-auto px-4 py-3"
+          className="absolute inset-x-0 top-20 z-30 overflow-x-auto px-4 py-3"
         >
           <div className="mx-auto flex min-h-[124px] w-max items-center">
             {Array.from({ length: line.length + 1 }).map((_, i) => (
@@ -392,7 +468,8 @@ export default function ChronologyGame({ onExit, start }: { onExit: () => void; 
           </AnimatePresence>
         </div>
 
-        {/* Tap-elsewhere-to-lower backdrop (under the hand, over the line) */}
+        {/* Tap-elsewhere-to-lower backdrop (under the hand AND under the line,
+            so the band keeps its swipe-to-scroll while a card is raised) */}
         {raisedId !== null && !placing && (
           <div className="absolute inset-0 z-20" onPointerDown={() => setRaisedId(null)} />
         )}
@@ -411,6 +488,10 @@ export default function ChronologyGame({ onExit, start }: { onExit: () => void; 
               invalidNonce={invalidNonce}
               reduce={!!reduce}
               onDrop={onDrop}
+              onDragMove={(p) => {
+                dragPoint.current = p
+              }}
+              onDragActive={onDragActive}
             />
           )}
         </div>
@@ -473,6 +554,8 @@ function RaisedCard({
   invalidNonce,
   reduce,
   onDrop,
+  onDragMove,
+  onDragActive,
 }: {
   card: ChronologyCard
   faceUp: boolean
@@ -480,6 +563,8 @@ function RaisedCard({
   invalidNonce: number
   reduce: boolean
   onDrop: (id: string, point: { x: number; y: number }) => void
+  onDragMove: (point: { x: number; y: number }) => void
+  onDragActive: (active: boolean) => void
 }) {
   const controls = useAnimationControls()
   const firstRender = useRef(true)
@@ -510,7 +595,15 @@ function RaisedCard({
       dragElastic={0.7}
       whileDrag={{ scale: 1.04 }}
       transition={reduce ? { duration: 0.15 } : { type: 'spring', stiffness: 380, damping: 30 }}
-      onDragEnd={(_, info) => onDrop(card.id, info.point)}
+      onDragStart={(_, info) => {
+        onDragActive(true)
+        onDragMove(info.point)
+      }}
+      onDrag={(_, info) => onDragMove(info.point)}
+      onDragEnd={(_, info) => {
+        onDragActive(false)
+        onDrop(card.id, info.point)
+      }}
     >
       <motion.div animate={controls}>
         <ChronoCardView card={card} faceUp={faceUp} size="raised" />

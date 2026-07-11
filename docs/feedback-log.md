@@ -19,3 +19,4 @@ from playing — §2.11 exception (a): blockers may deploy mid-window.
 ---
 
 <!-- entries below; do not edit or reorder earlier lines -->
+2026-07-10 · Buri · chronology · unspecified · line overflows at 4–5 cards; can't scroll while a card is raised (backdrop) or mid-drag (pointer capture), so edge gaps are unreachable and the nearest-visible-gap hit-test scores unintended misfires ("got a bunch wrong") · bug
