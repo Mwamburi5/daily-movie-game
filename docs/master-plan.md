@@ -168,6 +168,13 @@ dead) · the Wave-D "double-tap Allow It guard" already exists
     fixes build+commit+push freely during the window but batch into **ONE
     deploy at window close**. Deploys stay Buri's button, always — and pushes
     never auto-deploy (`npx vercel deploy --prod` is the only path to prod).
+    **Exception (a) invoked 2026-07-10 (Buri, in-session):** the Chronology
+    line-overflow fix (267a8be — the band's edge gaps were unreachable at 4–5
+    cards and the hit-test scored unintended misfires, corrupting daily
+    scores) deployed same-day as `dpl_7tUmeLkVxnTVBmZQ7RJUHz8Uq8gK`;
+    matchcutdaily.com verified serving `index-Dx1DBI7v.js` with the fix,
+    noindex intact. Circle feedback on Chronology maps to pre/post this
+    deploy; pre-fix chronology finishes are polluted difficulty signal.
 
 ## 3. Waves (fresh numbering W0–W6; old "Wave 0/A–D" and content "waves 1/2" vocabularies are retired)
 
@@ -751,6 +758,22 @@ what's ready-to-review per sitting.
       mode_start (W5e pairing holds); Duel boot live, finish/share
       structural (W5e precedent); console clean. **Buri: deploy receipt +
       dashboard custom-events check = §7·9.**
+- [x] **POST-SEND · Chronology line-overflow fix — SHIPPED + DEPLOYED
+      2026-07-10** (commit 267a8be; feedback-log entry #1, Buri's own report;
+      §2.11 exception a, ruled in-session): at 4–5 line cards the band
+      overflowed and edge gaps became unreachable — no scroll while a card
+      was raised (backdrop z-order), no auto-scroll mid-drag, and the
+      nearest-visible-gap hit-test silently scored misfires the player never
+      chose. Fix (UI-only, sim/scoring untouched): drag auto-scroll at band
+      edges (rAF hold-to-glide, 48px zone) · line band z-30 above the
+      tap-to-lower backdrop · ambiguous-edge drop guard (shake + coach toast;
+      a stroke can never come from an off-screen slot) · settle-into-view
+      after every placement (offsetLeft, not rect — layoutId flight is
+      mid-transform). RULEBOOK Mode 3 gains the scroll line. Gates: verify
+      64/64 · solo 8/8 · chrono 42/42 · connections 14/14 · tsc · build;
+      driven live in-browser @390×844 (edge-hold scrolled 140px to clamp,
+      guard toast fired, misfire auto-corrected into view). Deploy
+      `dpl_7tUmeLkVxnTVBmZQ7RJUHz8Uq8gK` verified live on matchcutdaily.com.
 - [ ] **POST-SEND · fix slice (§7·7b + §7·7c minors)** — Domine ticking
       numerals · Duel HUD/MeldShelf overlap @667 · full keyboard operability ·
       minors sweep (favicon, Solo blurb, MeldShelf legacy spine, difficulty
