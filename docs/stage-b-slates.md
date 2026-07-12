@@ -7,6 +7,7 @@ Step 1 of `docs/stage-b-plan.md`: an era-stratified candidate shortlist per deca
 - **Years are for identification only.** The pool's canonical date comes later from the US-theatrical policy filter, not from the year shown here.
 - **Pipeline after keeps:** date-draft tool (`tmdb-date-draft.ts`, policy date + evidence → review file) → `/tmdb-check dates` audit → Buri arbitration → append-only merge → `verify:chronology`.
 - Every title below is confirmed absent from the current 162-film pool. Chronological within each decade.
+- **STRIKE PASS EXECUTED 2026-07-12** (Buri, via triage artifact): 278/352 kept, 74 struck, 0 ⚡ vetoes → projected dated pool **440**. Note: the ⚡ marks below count **111**, not the 112 claimed above — the marks are authoritative. Decade landings: 1970s **35 (under the 50 floor — mini-slate follow-up needed)** · 1980s 59 · 1990s 91 · 2000s 98 · 2010s 104 · 2020s 53.
 
 ### 1970s — 27 in pool → target 50–80
 - [ ] The Last Picture Show (1971)
@@ -16,39 +17,39 @@ Step 1 of `docs/stage-b-plan.md`: an era-stratified candidate shortlist per deca
 - [ ] Cabaret (1972)
 - [ ] The Poseidon Adventure (1972)
 - [ ] American Graffiti (1973)
-- [ ] The Sting (1973)
-- [ ] Serpico (1973)
+- [x] The Sting (1973)
+- [x] Serpico (1973)
 - [ ] Enter the Dragon (1973)
 - [ ] Papillon (1973)
 - [ ] The Towering Inferno (1974)
 - [ ] The Texas Chain Saw Massacre (1974)
 - [ ] Murder on the Orient Express (1974)
 - [ ] Nashville (1975)
-- [ ] Dog Day Afternoon (1975)
+- [x] Dog Day Afternoon (1975)
 - [ ] Monty Python and the Holy Grail (1975)
 - [ ] Barry Lyndon (1975)
 - [ ] The Rocky Horror Picture Show (1975)
-- [ ] The Omen (1976)
+- [x] The Omen (1976)
 - [ ] The Outlaw Josey Wales (1976)
-- [ ] Marathon Man (1976)
+- [x] Marathon Man (1976)
 - [ ] Smokey and the Bandit (1977)
 - [ ] Suspiria (1977)
 - [ ] Midnight Express (1978)
 - [ ] Dawn of the Dead (1978)
-- [ ] National Lampoon's Animal House (1978)
+- [x] National Lampoon's Animal House (1978)
 - [ ] The Amityville Horror (1979)
 - [ ] Manhattan (1979)
-- [ ] Mad Max (1979)
-- [ ] Rocky II (1979)
+- [x] Mad Max (1979)
+- [x] Rocky II (1979)
 - [ ] Monty Python's Life of Brian (1979)
 - [ ] The Muppet Movie (1979)
 - [ ] Being There (1979)
 
 ### 1980s — 28 in pool → target 50–80
-- [ ] The Blues Brothers (1980)
+- [x] The Blues Brothers (1980)
 - [ ] Airplane! (1980)
 - [ ] Friday the 13th (1980)
-- [ ] Caddyshack (1980)
+- [x] Caddyshack (1980)
 - [ ] Ordinary People (1980)
 - [ ] The Elephant Man (1980)
 - [ ] Nine to Five (1980)
@@ -56,318 +57,318 @@ Step 1 of `docs/stage-b-plan.md`: an era-stratified candidate shortlist per deca
 - [ ] On Golden Pond (1981)
 - [ ] Chariots of Fire (1981)
 - [ ] An American Werewolf in London (1981)
-- [ ] Escape from New York (1981)
+- [x] Escape from New York (1981)
 - [ ] Poltergeist (1982)
-- [ ] Rocky III (1982)
-- [ ] First Blood (1982)
+- [x] Rocky III (1982)
+- [x] First Blood (1982)
 - [ ] Tootsie (1982)
-- [ ] Gandhi (1982)
+- [x] Gandhi (1982)
 - [ ] A Christmas Story (1983)
-- [ ] Trading Places (1983)
-- [ ] WarGames (1983)
+- [x] Trading Places (1983)
+- [x] WarGames (1983)
 - [ ] Terms of Endearment (1983)
 - [ ] Flashdance (1983)
-- [ ] The Karate Kid (1984)
-- [ ] Amadeus (1984)
-- [ ] Beverly Hills Cop (1984)
+- [x] The Karate Kid (1984)
+- [x] Amadeus (1984)
+- [x] Beverly Hills Cop (1984)
 - [ ] The NeverEnding Story (1984)
 - [ ] A Nightmare on Elm Street (1984)
-- [ ] Footloose (1984)
-- [ ] Purple Rain (1984)
-- [ ] The Color Purple (1985)
-- [ ] Rambo: First Blood Part II (1985)
-- [ ] Witness (1985) ⚡
-- [ ] The Goonies (1985) ⚡
-- [ ] Out of Africa (1985)
+- [x] Footloose (1984)
+- [x] Purple Rain (1984)
+- [x] The Color Purple (1985)
+- [x] Rambo: First Blood Part II (1985)
+- [x] Witness (1985) ⚡
+- [x] The Goonies (1985) ⚡
+- [x] Out of Africa (1985)
 - [ ] Stand by Me (1986)
 - [ ] Labyrinth (1986)
 - [ ] Dirty Dancing (1987)
-- [ ] The Princess Bride (1987) ⚡
-- [ ] Lethal Weapon (1987)
+- [x] The Princess Bride (1987) ⚡
+- [x] Lethal Weapon (1987)
 - [ ] RoboCop (1987)
-- [ ] Wall Street (1987)
-- [ ] Good Morning, Vietnam (1987)
-- [ ] Big (1988)
-- [ ] Who Framed Roger Rabbit (1988)
-- [ ] Coming to America (1988)
-- [ ] A Fish Called Wanda (1988)
+- [x] Wall Street (1987)
+- [x] Good Morning, Vietnam (1987)
+- [x] Big (1988)
+- [x] Who Framed Roger Rabbit (1988)
+- [x] Coming to America (1988)
+- [x] A Fish Called Wanda (1988)
 - [ ] The Land Before Time (1988)
-- [ ] Do the Right Thing (1989)
-- [ ] Field of Dreams (1989)
-- [ ] The Little Mermaid (1989)
+- [x] Do the Right Thing (1989)
+- [x] Field of Dreams (1989)
+- [x] The Little Mermaid (1989)
 - [ ] Driving Miss Daisy (1989)
-- [ ] Ghostbusters II (1989)
-- [ ] Born on the Fourth of July (1989)
+- [x] Ghostbusters II (1989)
+- [x] Born on the Fourth of July (1989)
 
 ### 1990s — 30 in pool → target 50–80
-- [ ] Home Alone (1990) ⚡
-- [ ] Pretty Woman (1990) ⚡
-- [ ] Ghost (1990)
-- [ ] Dances with Wolves (1990)
-- [ ] Total Recall (1990)
-- [ ] Edward Scissorhands (1990)
-- [ ] Days of Thunder (1990) ⚡
-- [ ] Terminator 2: Judgment Day (1991) ⚡
-- [ ] Beauty and the Beast (1991)
-- [ ] Thelma & Louise (1991)
-- [ ] Point Break (1991)
-- [ ] The Doors (1991) ⚡
-- [ ] Father of the Bride (1991) ⚡
-- [ ] Aladdin (1992)
-- [ ] Basic Instinct (1992)
+- [x] Home Alone (1990) ⚡
+- [x] Pretty Woman (1990) ⚡
+- [x] Ghost (1990)
+- [x] Dances with Wolves (1990)
+- [x] Total Recall (1990)
+- [x] Edward Scissorhands (1990)
+- [x] Days of Thunder (1990) ⚡
+- [x] Terminator 2: Judgment Day (1991) ⚡
+- [x] Beauty and the Beast (1991)
+- [x] Thelma & Louise (1991)
+- [x] Point Break (1991)
+- [x] The Doors (1991) ⚡
+- [x] Father of the Bride (1991) ⚡
+- [x] Aladdin (1992)
+- [x] Basic Instinct (1992)
 - [ ] A League of Their Own (1992)
-- [ ] Wayne's World (1992)
-- [ ] The Bodyguard (1992)
-- [ ] Groundhog Day (1993)
-- [ ] The Fugitive (1993) ⚡
-- [ ] Mrs. Doubtfire (1993) ⚡
-- [ ] Sleepless in Seattle (1993) ⚡
-- [ ] Tombstone (1993) ⚡
-- [ ] Carlito's Way (1993) ⚡
-- [ ] The Lion King (1994) ⚡
-- [ ] The Mask (1994) ⚡
-- [ ] Speed (1994)
-- [ ] Dumb and Dumber (1994)
+- [x] Wayne's World (1992)
+- [x] The Bodyguard (1992)
+- [x] Groundhog Day (1993)
+- [x] The Fugitive (1993) ⚡
+- [x] Mrs. Doubtfire (1993) ⚡
+- [x] Sleepless in Seattle (1993) ⚡
+- [x] Tombstone (1993) ⚡
+- [x] Carlito's Way (1993) ⚡
+- [x] The Lion King (1994) ⚡
+- [x] The Mask (1994) ⚡
+- [x] Speed (1994)
+- [x] Dumb and Dumber (1994)
 - [ ] Interview with the Vampire (1994)
-- [ ] True Lies (1994)
-- [ ] Braveheart (1995)
-- [ ] Jumanji (1995) ⚡
-- [ ] 12 Monkeys (1995) ⚡
-- [ ] Crimson Tide (1995) ⚡
-- [ ] GoldenEye (1995)
-- [ ] The Usual Suspects (1995)
-- [ ] Independence Day (1996)
-- [ ] Scream (1996) ⚡
-- [ ] Jerry Maguire (1996) ⚡
-- [ ] Twister (1996)
-- [ ] The Rock (1996)
-- [ ] Space Jam (1996)
-- [ ] Men in Black (1997) ⚡
-- [ ] The Fifth Element (1997) ⚡
-- [ ] Boogie Nights (1997) ⚡
-- [ ] Gattaca (1997) ⚡
-- [ ] L.A. Confidential (1997)
-- [ ] Air Force One (1997)
-- [ ] Armageddon (1998) ⚡
-- [ ] American History X (1998) ⚡
-- [ ] Enemy of the State (1998) ⚡
-- [ ] There's Something About Mary (1998)
-- [ ] The Waterboy (1998)
-- [ ] Rush Hour (1998)
+- [x] True Lies (1994)
+- [x] Braveheart (1995)
+- [x] Jumanji (1995) ⚡
+- [x] 12 Monkeys (1995) ⚡
+- [x] Crimson Tide (1995) ⚡
+- [x] GoldenEye (1995)
+- [x] The Usual Suspects (1995)
+- [x] Independence Day (1996)
+- [x] Scream (1996) ⚡
+- [x] Jerry Maguire (1996) ⚡
+- [x] Twister (1996)
+- [x] The Rock (1996)
+- [x] Space Jam (1996)
+- [x] Men in Black (1997) ⚡
+- [x] The Fifth Element (1997) ⚡
+- [x] Boogie Nights (1997) ⚡
+- [x] Gattaca (1997) ⚡
+- [x] L.A. Confidential (1997)
+- [x] Air Force One (1997)
+- [x] Armageddon (1998) ⚡
+- [x] American History X (1998) ⚡
+- [x] Enemy of the State (1998) ⚡
+- [x] There's Something About Mary (1998)
+- [x] The Waterboy (1998)
+- [x] Rush Hour (1998)
 - [ ] American Beauty (1999)
-- [ ] The Blair Witch Project (1999)
-- [ ] Notting Hill (1999) ⚡
-- [ ] Magnolia (1999) ⚡
-- [ ] The Insider (1999) ⚡
-- [ ] Being John Malkovich (1999) ⚡
-- [ ] Office Space (1999)
-- [ ] American Pie (1999)
-- [ ] Star Wars: Episode I – The Phantom Menace (1999)
-- [ ] The Mummy (1999)
+- [x] The Blair Witch Project (1999)
+- [x] Notting Hill (1999) ⚡
+- [x] Magnolia (1999) ⚡
+- [x] The Insider (1999) ⚡
+- [x] Being John Malkovich (1999) ⚡
+- [x] Office Space (1999)
+- [x] American Pie (1999)
+- [x] Star Wars: Episode I – The Phantom Menace (1999)
+- [x] The Mummy (1999)
 
 ### 2000s — 27 in pool → target 50–80
-- [ ] Cast Away (2000) ⚡
-- [ ] Remember the Titans (2000) ⚡
-- [ ] Crouching Tiger, Hidden Dragon (2000) ⚡
-- [ ] Almost Famous (2000)
-- [ ] Meet the Parents (2000)
-- [ ] X-Men (2000)
-- [ ] Requiem for a Dream (2000)
-- [ ] O Brother, Where Art Thou? (2000)
-- [ ] Shrek (2001) ⚡
-- [ ] Spirited Away (2001) ⚡
-- [ ] Harry Potter and the Sorcerer's Stone (2001) ⚡
-- [ ] A Beautiful Mind (2001) ⚡
-- [ ] The Royal Tenenbaums (2001) ⚡
-- [ ] Donnie Darko (2001) ⚡
-- [ ] Ali (2001) ⚡
-- [ ] Moulin Rouge! (2001)
-- [ ] Spider-Man (2002) ⚡
-- [ ] The Bourne Identity (2002) ⚡
-- [ ] Chicago (2002) ⚡
-- [ ] Panic Room (2002) ⚡
-- [ ] Harry Potter and the Chamber of Secrets (2002) ⚡
+- [x] Cast Away (2000) ⚡
+- [x] Remember the Titans (2000) ⚡
+- [x] Crouching Tiger, Hidden Dragon (2000) ⚡
+- [x] Almost Famous (2000)
+- [x] Meet the Parents (2000)
+- [x] X-Men (2000)
+- [x] Requiem for a Dream (2000)
+- [x] O Brother, Where Art Thou? (2000)
+- [x] Shrek (2001) ⚡
+- [x] Spirited Away (2001) ⚡
+- [x] Harry Potter and the Sorcerer's Stone (2001) ⚡
+- [x] A Beautiful Mind (2001) ⚡
+- [x] The Royal Tenenbaums (2001) ⚡
+- [x] Donnie Darko (2001) ⚡
+- [x] Ali (2001) ⚡
+- [x] Moulin Rouge! (2001)
+- [x] Spider-Man (2002) ⚡
+- [x] The Bourne Identity (2002) ⚡
+- [x] Chicago (2002) ⚡
+- [x] Panic Room (2002) ⚡
+- [x] Harry Potter and the Chamber of Secrets (2002) ⚡
 - [ ] My Big Fat Greek Wedding (2002)
-- [ ] 8 Mile (2002)
-- [ ] Signs (2002)
-- [ ] Finding Nemo (2003) ⚡
-- [ ] Pirates of the Caribbean: The Curse of the Black Pearl (2003) ⚡
-- [ ] Kill Bill: Vol. 1 (2003) ⚡
-- [ ] Elf (2003) ⚡
-- [ ] The Italian Job (2003) ⚡
-- [ ] Mystic River (2003) ⚡
-- [ ] Master and Commander: The Far Side of the World (2003) ⚡
-- [ ] Bruce Almighty (2003) ⚡
-- [ ] The Incredibles (2004) ⚡
-- [ ] Kill Bill: Vol. 2 (2004) ⚡
-- [ ] Ray (2004) ⚡
-- [ ] Million Dollar Baby (2004) ⚡
-- [ ] The Notebook (2004) ⚡
-- [ ] Anchorman: The Legend of Ron Burgundy (2004) ⚡
-- [ ] Hotel Rwanda (2004) ⚡
-- [ ] Ocean's Twelve (2004) ⚡
-- [ ] Shaun of the Dead (2004)
-- [ ] Napoleon Dynamite (2004)
+- [x] 8 Mile (2002)
+- [x] Signs (2002)
+- [x] Finding Nemo (2003) ⚡
+- [x] Pirates of the Caribbean: The Curse of the Black Pearl (2003) ⚡
+- [x] Kill Bill: Vol. 1 (2003) ⚡
+- [x] Elf (2003) ⚡
+- [x] The Italian Job (2003) ⚡
+- [x] Mystic River (2003) ⚡
+- [x] Master and Commander: The Far Side of the World (2003) ⚡
+- [x] Bruce Almighty (2003) ⚡
+- [x] The Incredibles (2004) ⚡
+- [x] Kill Bill: Vol. 2 (2004) ⚡
+- [x] Ray (2004) ⚡
+- [x] Million Dollar Baby (2004) ⚡
+- [x] The Notebook (2004) ⚡
+- [x] Anchorman: The Legend of Ron Burgundy (2004) ⚡
+- [x] Hotel Rwanda (2004) ⚡
+- [x] Ocean's Twelve (2004) ⚡
+- [x] Shaun of the Dead (2004)
+- [x] Napoleon Dynamite (2004)
 - [ ] Crash (2004)
-- [ ] King Kong (2005)
-- [ ] Brokeback Mountain (2005)
-- [ ] Walk the Line (2005)
+- [x] King Kong (2005)
+- [x] Brokeback Mountain (2005)
+- [x] Walk the Line (2005)
 - [ ] Sin City (2005)
-- [ ] Charlie and the Chocolate Factory (2005)
-- [ ] Wedding Crashers (2005)
+- [x] Charlie and the Chocolate Factory (2005)
+- [x] Wedding Crashers (2005)
 - [ ] Pride & Prejudice (2005)
-- [ ] Casino Royale (2006)
-- [ ] The Devil Wears Prada (2006) ⚡
+- [x] Casino Royale (2006)
+- [x] The Devil Wears Prada (2006) ⚡
 - [ ] Little Miss Sunshine (2006)
-- [ ] Pan's Labyrinth (2006)
-- [ ] Cars (2006)
-- [ ] 300 (2006)
-- [ ] Ratatouille (2007) ⚡
-- [ ] Superbad (2007) ⚡
-- [ ] I Am Legend (2007) ⚡
-- [ ] Ocean's Thirteen (2007) ⚡
+- [x] Pan's Labyrinth (2006)
+- [x] Cars (2006)
+- [x] 300 (2006)
+- [x] Ratatouille (2007) ⚡
+- [x] Superbad (2007) ⚡
+- [x] I Am Legend (2007) ⚡
+- [x] Ocean's Thirteen (2007) ⚡
 - [ ] Juno (2007)
-- [ ] Transformers (2007)
-- [ ] WALL-E (2008) ⚡
-- [ ] Slumdog Millionaire (2008) ⚡
-- [ ] The Hurt Locker (2008) ⚡
-- [ ] Taken (2008) ⚡
-- [ ] Step Brothers (2008) ⚡
-- [ ] The Curious Case of Benjamin Button (2008)
-- [ ] Kung Fu Panda (2008)
-- [ ] Up (2009) ⚡
-- [ ] Fantastic Mr. Fox (2009) ⚡
-- [ ] Avatar (2009)
-- [ ] The Hangover (2009)
-- [ ] Star Trek (2009)
-- [ ] District 9 (2009)
-- [ ] Sherlock Holmes (2009)
-- [ ] Up in the Air (2009)
+- [x] Transformers (2007)
+- [x] WALL-E (2008) ⚡
+- [x] Slumdog Millionaire (2008) ⚡
+- [x] The Hurt Locker (2008) ⚡
+- [x] Taken (2008) ⚡
+- [x] Step Brothers (2008) ⚡
+- [x] The Curious Case of Benjamin Button (2008)
+- [x] Kung Fu Panda (2008)
+- [x] Up (2009) ⚡
+- [x] Fantastic Mr. Fox (2009) ⚡
+- [x] Avatar (2009)
+- [x] The Hangover (2009)
+- [x] Star Trek (2009)
+- [x] District 9 (2009)
+- [x] Sherlock Holmes (2009)
+- [x] Up in the Air (2009)
 
 ### 2010s — 25 in pool → target 50–80
-- [ ] True Grit (2010) ⚡
-- [ ] Black Swan (2010)
-- [ ] The King's Speech (2010)
-- [ ] Despicable Me (2010)
-- [ ] How to Train Your Dragon (2010)
-- [ ] Tangled (2010)
-- [ ] Mission: Impossible — Ghost Protocol (2011) ⚡
-- [ ] The Help (2011) ⚡
-- [ ] Contagion (2011) ⚡
-- [ ] Crazy, Stupid, Love (2011) ⚡
-- [ ] Bridesmaids (2011)
-- [ ] Harry Potter and the Deathly Hallows – Part 2 (2011)
-- [ ] Drive (2011)
-- [ ] The Avengers (2012) ⚡
-- [ ] Zero Dark Thirty (2012) ⚡
-- [ ] Looper (2012) ⚡
-- [ ] Moonrise Kingdom (2012) ⚡
-- [ ] Cloud Atlas (2012) ⚡
-- [ ] The Hunger Games (2012)
-- [ ] Skyfall (2012)
-- [ ] Silver Linings Playbook (2012)
-- [ ] Life of Pi (2012)
-- [ ] Wreck-It Ralph (2012)
-- [ ] 12 Years a Slave (2013) ⚡
-- [ ] Gravity (2013)
-- [ ] Frozen (2013)
-- [ ] Her (2013)
-- [ ] Rush (2013)
-- [ ] Pacific Rim (2013)
-- [ ] Man of Steel (2013)
-- [ ] The Grand Budapest Hotel (2014) ⚡
-- [ ] Birdman (2014) ⚡
-- [ ] Gone Girl (2014) ⚡
-- [ ] Whiplash (2014) ⚡
-- [ ] Nightcrawler (2014) ⚡
-- [ ] Edge of Tomorrow (2014) ⚡
-- [ ] Guardians of the Galaxy (2014)
-- [ ] The Imitation Game (2014)
-- [ ] Boyhood (2014)
-- [ ] John Wick (2014)
-- [ ] Mad Max: Fury Road (2015) ⚡
-- [ ] Inside Out (2015) ⚡
-- [ ] Star Wars: The Force Awakens (2015) ⚡
-- [ ] The Revenant (2015) ⚡
-- [ ] Spotlight (2015) ⚡
-- [ ] The Hateful Eight (2015) ⚡
-- [ ] Steve Jobs (2015) ⚡
-- [ ] Mission: Impossible — Rogue Nation (2015) ⚡
+- [x] True Grit (2010) ⚡
+- [x] Black Swan (2010)
+- [x] The King's Speech (2010)
+- [x] Despicable Me (2010)
+- [x] How to Train Your Dragon (2010)
+- [x] Tangled (2010)
+- [x] Mission: Impossible — Ghost Protocol (2011) ⚡
+- [x] The Help (2011) ⚡
+- [x] Contagion (2011) ⚡
+- [x] Crazy, Stupid, Love (2011) ⚡
+- [x] Bridesmaids (2011)
+- [x] Harry Potter and the Deathly Hallows – Part 2 (2011)
+- [x] Drive (2011)
+- [x] The Avengers (2012) ⚡
+- [x] Zero Dark Thirty (2012) ⚡
+- [x] Looper (2012) ⚡
+- [x] Moonrise Kingdom (2012) ⚡
+- [x] Cloud Atlas (2012) ⚡
+- [x] The Hunger Games (2012)
+- [x] Skyfall (2012)
+- [x] Silver Linings Playbook (2012)
+- [x] Life of Pi (2012)
+- [x] Wreck-It Ralph (2012)
+- [x] 12 Years a Slave (2013) ⚡
+- [x] Gravity (2013)
+- [x] Frozen (2013)
+- [x] Her (2013)
+- [x] Rush (2013)
+- [x] Pacific Rim (2013)
+- [x] Man of Steel (2013)
+- [x] The Grand Budapest Hotel (2014) ⚡
+- [x] Birdman (2014) ⚡
+- [x] Gone Girl (2014) ⚡
+- [x] Whiplash (2014) ⚡
+- [x] Nightcrawler (2014) ⚡
+- [x] Edge of Tomorrow (2014) ⚡
+- [x] Guardians of the Galaxy (2014)
+- [x] The Imitation Game (2014)
+- [x] Boyhood (2014)
+- [x] John Wick (2014)
+- [x] Mad Max: Fury Road (2015) ⚡
+- [x] Inside Out (2015) ⚡
+- [x] Star Wars: The Force Awakens (2015) ⚡
+- [x] The Revenant (2015) ⚡
+- [x] Spotlight (2015) ⚡
+- [x] The Hateful Eight (2015) ⚡
+- [x] Steve Jobs (2015) ⚡
+- [x] Mission: Impossible — Rogue Nation (2015) ⚡
 - [ ] Room (2015)
-- [ ] La La Land (2016) ⚡
-- [ ] Moonlight (2016)
-- [ ] Zootopia (2016)
-- [ ] Deadpool (2016)
-- [ ] Rogue One: A Star Wars Story (2016)
-- [ ] Hidden Figures (2016)
-- [ ] Manchester by the Sea (2016)
-- [ ] Get Out (2017) ⚡
-- [ ] Phantom Thread (2017) ⚡
-- [ ] Star Wars: The Last Jedi (2017) ⚡
-- [ ] Coco (2017)
-- [ ] Wonder Woman (2017)
-- [ ] The Shape of Water (2017)
-- [ ] Call Me by Your Name (2017)
-- [ ] It (2017)
-- [ ] Green Book (2018) ⚡
-- [ ] A Quiet Place (2018) ⚡
-- [ ] Ocean's 8 (2018) ⚡
-- [ ] Black Panther (2018)
-- [ ] A Star Is Born (2018)
-- [ ] Avengers: Infinity War (2018)
-- [ ] Bohemian Rhapsody (2018)
-- [ ] Spider-Man: Into the Spider-Verse (2018)
-- [ ] Roma (2018)
-- [ ] Knives Out (2019) ⚡
-- [ ] Toy Story 4 (2019) ⚡
-- [ ] Avengers: Endgame (2019)
-- [ ] 1917 (2019)
-- [ ] Jojo Rabbit (2019)
-- [ ] Marriage Story (2019)
-- [ ] Us (2019)
+- [x] La La Land (2016) ⚡
+- [x] Moonlight (2016)
+- [x] Zootopia (2016)
+- [x] Deadpool (2016)
+- [x] Rogue One: A Star Wars Story (2016)
+- [x] Hidden Figures (2016)
+- [x] Manchester by the Sea (2016)
+- [x] Get Out (2017) ⚡
+- [x] Phantom Thread (2017) ⚡
+- [x] Star Wars: The Last Jedi (2017) ⚡
+- [x] Coco (2017)
+- [x] Wonder Woman (2017)
+- [x] The Shape of Water (2017)
+- [x] Call Me by Your Name (2017)
+- [x] It (2017)
+- [x] Green Book (2018) ⚡
+- [x] A Quiet Place (2018) ⚡
+- [x] Ocean's 8 (2018) ⚡
+- [x] Black Panther (2018)
+- [x] A Star Is Born (2018)
+- [x] Avengers: Infinity War (2018)
+- [x] Bohemian Rhapsody (2018)
+- [x] Spider-Man: Into the Spider-Verse (2018)
+- [x] Roma (2018)
+- [x] Knives Out (2019) ⚡
+- [x] Toy Story 4 (2019) ⚡
+- [x] Avengers: Endgame (2019)
+- [x] 1917 (2019)
+- [x] Jojo Rabbit (2019)
+- [x] Marriage Story (2019)
+- [x] Us (2019)
 
 ### 2020s — 25 in pool → target 50–80
-- [ ] Soul (2020) ⚡
-- [ ] Nomadland (2020)
+- [x] Soul (2020) ⚡
+- [x] Nomadland (2020)
 - [ ] The Trial of the Chicago 7 (2020)
 - [ ] Hamilton (2020)
-- [ ] Wonder Woman 1984 (2020)
+- [x] Wonder Woman 1984 (2020)
 - [ ] Onward (2020)
-- [ ] The Matrix Resurrections (2021) ⚡
+- [x] The Matrix Resurrections (2021) ⚡
 - [ ] CODA (2021)
 - [ ] The Power of the Dog (2021)
 - [ ] Shang-Chi and the Legend of the Ten Rings (2021)
-- [ ] Luca (2021)
+- [x] Luca (2021)
 - [ ] Free Guy (2021)
-- [ ] King Richard (2021)
-- [ ] Black Widow (2021)
-- [ ] The French Dispatch (2021)
+- [x] King Richard (2021)
+- [x] Black Widow (2021)
+- [x] The French Dispatch (2021)
 - [ ] Turning Red (2022)
-- [ ] The Fabelmans (2022)
+- [x] The Fabelmans (2022)
 - [ ] The Whale (2022)
-- [ ] Black Panther: Wakanda Forever (2022)
+- [x] Black Panther: Wakanda Forever (2022)
 - [ ] The Banshees of Inisherin (2022)
-- [ ] Doctor Strange in the Multiverse of Madness (2022)
-- [ ] Puss in Boots: The Last Wish (2022)
-- [ ] Guillermo del Toro's Pinocchio (2022)
-- [ ] Spider-Man: Across the Spider-Verse (2023)
-- [ ] Guardians of the Galaxy Vol. 3 (2023)
-- [ ] Mission: Impossible — Dead Reckoning Part One (2023)
-- [ ] The Little Mermaid (2023)
-- [ ] Poor Things (2023)
+- [x] Doctor Strange in the Multiverse of Madness (2022)
+- [x] Puss in Boots: The Last Wish (2022)
+- [x] Guillermo del Toro's Pinocchio (2022)
+- [x] Spider-Man: Across the Spider-Verse (2023)
+- [x] Guardians of the Galaxy Vol. 3 (2023)
+- [x] Mission: Impossible — Dead Reckoning Part One (2023)
+- [x] The Little Mermaid (2023)
+- [x] Poor Things (2023)
 - [ ] Anatomy of a Fall (2023)
 - [ ] The Holdovers (2023)
 - [ ] Elemental (2023)
 - [ ] Migration (2023)
-- [ ] Furiosa: A Mad Max Saga (2024)
-- [ ] Moana 2 (2024)
+- [x] Furiosa: A Mad Max Saga (2024)
+- [x] Moana 2 (2024)
 - [ ] The Wild Robot (2024)
-- [ ] Beetlejuice Beetlejuice (2024)
-- [ ] Anora (2024)
-- [ ] Kingdom of the Planet of the Apes (2024)
-- [ ] Sinners (2025)
-- [ ] Mickey 17 (2025)
+- [x] Beetlejuice Beetlejuice (2024)
+- [x] Anora (2024)
+- [x] Kingdom of the Planet of the Apes (2024)
+- [x] Sinners (2025)
+- [x] Mickey 17 (2025)
 - [ ] Thunderbolts (2025)
-- [ ] Lilo & Stitch (2025)
-- [ ] Superman (2025)
-- [ ] F1 (2025)
+- [x] Lilo & Stitch (2025)
+- [x] Superman (2025)
+- [x] F1 (2025)
