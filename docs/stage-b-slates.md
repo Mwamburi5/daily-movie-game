@@ -7,7 +7,7 @@ Step 1 of `docs/stage-b-plan.md`: an era-stratified candidate shortlist per deca
 - **Years are for identification only.** The pool's canonical date comes later from the US-theatrical policy filter, not from the year shown here.
 - **Pipeline after keeps:** date-draft tool (`tmdb-date-draft.ts`, policy date + evidence → review file) → `/tmdb-check dates` audit → Buri arbitration → append-only merge → `verify:chronology`.
 - Every title below is confirmed absent from the current 162-film pool. Chronological within each decade.
-- **STRIKE PASS EXECUTED 2026-07-12** (Buri, via triage artifact): 278/352 kept, 74 struck, 0 ⚡ vetoes → projected dated pool **440**. Note: the ⚡ marks below count **111**, not the 112 claimed above — the marks are authoritative. Decade landings: 1970s **35 (under the 50 floor — mini-slate follow-up needed)** · 1980s 59 · 1990s 91 · 2000s 98 · 2010s 104 · 2020s 53.
+- **STRIKE PASS EXECUTED 2026-07-12** (Buri, via triage artifact): 278/352 kept, 74 struck, 0 ⚡ vetoes → projected dated pool **440**. Note: the ⚡ marks below count **111**, not the 112 claimed above — the marks are authoritative. Decade landings: 1970s **35 (under the 50 floor — mini-slate follow-up needed)** · 1980s 59 · 1990s 91 · 2000s 98 · 2010s 104 · 2020s 53. **Arbitration 2026-07-12:** 47 draft flags → 45 auto-resolved (see `stage-b-arbitration-docket.md`), Spirited Away RULED 2002-09-20 per policy, 300 RULED struck (wrong-film match; year-label correction declined) → **277 kept, projected 439, 2000s lands 97**.
 
 ### 1970s — 27 in pool → target 50–80
 - [ ] The Last Picture Show (1971)
@@ -222,7 +222,7 @@ Step 1 of `docs/stage-b-plan.md`: an era-stratified candidate shortlist per deca
 - [ ] Little Miss Sunshine (2006)
 - [x] Pan's Labyrinth (2006)
 - [x] Cars (2006)
-- [x] 300 (2006)
+- [ ] 300 (2006)
 - [x] Ratatouille (2007) ⚡
 - [x] Superbad (2007) ⚡
 - [x] I Am Legend (2007) ⚡

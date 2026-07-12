@@ -38,6 +38,8 @@ fixed directly in `src/data/movies.ts` and the flag disappears on its own.
 - grease · topCast order: ours Travolta 1st vs TMDB Newton-John 1st — RULED ours-correct 2026-07-05, poster billing
 - jerry-maguire · topCast order: ours Gooding Jr. 2nd vs TMDB Zellweger 2nd — RULED ours-correct 2026-07-05, billing block
 - back-to-the-future · topCast order: ours Thompson 3rd vs TMDB Glover 3rd — RULED ours-correct 2026-07-05, billing block
+- spirited-away · releaseDate: policy 2002-09-20 (first US theatrical, Disney limited; SFIFF t1 excluded) vs origin year 2001 — RULED policy-date 2026-07-12, US-theatrical convention wins over origin-country year; card year follows the policy date (2002)
+- 300 · wrong-film match: auto-matcher grabbed Rob-B-Hood (tmdb 25676) with its 2007-12-26 date; intended 300 (tmdb 1271) @ 2007-03-09 would move card year to 2007 — RULED struck 2026-07-12, dropped from Stage B batch 2 at Buri's call; slate updated to 277 kept
 
 ## Standing policies (cover whole flag classes; do not re-present matches)
 
@@ -50,3 +52,7 @@ fixed directly in `src/data/movies.ts` and the flag disappears on its own.
   story/novel/characters/adaptation/lyrics jobs are expected diffs, not flags.
 - deepCast names TMDB "lacks" via a performer's later legal name change are
   settled by the credited-at-the-time rule.
+- international films date to their first US theatrical run (types 2+3,
+  earliest), never the origin-country year; the card year follows the policy
+  date (Spirited Away precedent, RULED 2026-07-12). Pre-cleared for future
+  intl adds — do not re-present this class.

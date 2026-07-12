@@ -7,9 +7,13 @@ spot-checked against the review files); **every resolution below is still
 Buri-vetoable** — curation-first holds. Rulings land in `docs/tmdb-rulings.md`
 as usual; this file records the triage reasoning.
 
-**Outcome: 45 auto-resolved · 2 OPEN for Buri.**
+**Outcome: 45 auto-resolved · 2 OPEN for Buri — BOTH RULED in-session 2026-07-12:**
+Spirited Away → **2002-09-20 per policy** (new standing policy: international
+films date to first US theatrical, never origin year — ledgered in
+`tmdb-rulings.md`) · 300 → **STRUCK** (slate updated to 277 kept, projected 439).
+**Arbitration complete — both batches are merge-ready.**
 
-## OPEN — needs a ruling
+## OPEN — needs a ruling (RULED, kept for the record)
 
 1. **Spirited Away (2001)** ⚡ — correct film (tmdb 129), but the earliest
    policy-qualifying US theatrical is **2002-09-20** (Disney limited; the 2002-04-02
