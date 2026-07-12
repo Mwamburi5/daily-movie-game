@@ -17,14 +17,14 @@
 //
 // STRUCTURAL RULE (load-bearing): pre-placement the front prints "year ?" and the
 // year is OMITTED from the DOM entirely — no-year-leak is the whole point of the
-// mode. `showYear` gates the front; the BackFace (which prints the year) must not
-// MOUNT until faceUp/showYear — a hidden-but-mounted back face is still ⌘F- and
+// mode. `showYear` gates the settled front; the BackFace (which prints the year)
+// must not MOUNT until faceUp — a hidden-but-mounted back face is still ⌘F- and
 // screen-reader-readable, which hands out every answer.
 
 import { motion, useReducedMotion } from 'framer-motion'
 import type { ChronologyCard } from '../lib/chronology.ts'
 
-export type ChronoCardSize = 'hand' | 'raised' | 'line'
+export type ChronoCardSize = 'hand' | 'handCompact' | 'raised' | 'raisedCompact' | 'line' | 'reel' | 'reelCompact'
 
 // Per-size internal scale. `edge` = the cream/decade accent rail on the left; the
 // diamond pip sizes off it. Kept width-relative to StubCard's proportions so the
@@ -35,8 +35,12 @@ export type ChronoCardSize = 'hand' | 'raised' | 'line'
 // reveal YEAR stays the hero (Chronology's whole point), untouched.
 const DIMS = {
   hand: { w: 78, h: 110, titleBasePx: 12, titleFloorPx: 5, year: 'text-[30px]', pad: 6, edge: 9, radius: '11px', border: 2 },
-  raised: { w: 150, h: 210, titleBasePx: 19, titleFloorPx: 10, year: 'text-[64px]', pad: 11, edge: 16, radius: 'var(--radius-stub-panel)', border: 2.5 },
+  handCompact: { w: 68, h: 96, titleBasePx: 10.5, titleFloorPx: 4.5, year: 'text-[26px]', pad: 5, edge: 8, radius: '10px', border: 2 },
+  raised: { w: 112, h: 168, titleBasePx: 16, titleFloorPx: 8, year: 'text-[50px]', pad: 9, edge: 13, radius: 'var(--radius-stub-panel)', border: 2.5 },
+  raisedCompact: { w: 96, h: 144, titleBasePx: 14, titleFloorPx: 7, year: 'text-[42px]', pad: 7, edge: 11, radius: 'var(--radius-stub-panel)', border: 2.5 },
   line: { w: 64, h: 90, titleBasePx: 10, titleFloorPx: 4, year: 'text-[22px]', pad: 5, edge: 7, radius: 'var(--radius-stub-card)', border: 2 },
+  reel: { w: 100, h: 142, titleBasePx: 14, titleFloorPx: 7, year: 'text-[34px]', pad: 7, edge: 10, radius: 'var(--radius-stub-card)', border: 2 },
+  reelCompact: { w: 88, h: 126, titleBasePx: 12.5, titleFloorPx: 6, year: 'text-[30px]', pad: 6, edge: 9, radius: 'var(--radius-stub-card)', border: 2 },
 } as const
 
 // Adaptive title fit — mirrors StubCard.titleFit (kept local: ChronoCard is
@@ -226,7 +230,7 @@ export function ChronoCardView({
         >
           <FrontFace card={card} size={size} showYear={showYear} flat />
         </motion.div>
-        {(faceUp || showYear) && (
+        {faceUp && (
           <motion.div
             className="absolute inset-0"
             initial={false}
@@ -253,7 +257,7 @@ export function ChronoCardView({
         {/* no-year-leak: mount the year-bearing face only once the truth is out.
             Mounting happens the same render the flip starts, so the reveal spin
             still has its back face the whole rotation. */}
-        {(faceUp || showYear) && <BackFace card={card} size={size} />}
+        {faceUp && <BackFace card={card} size={size} />}
       </motion.div>
     </div>
   )

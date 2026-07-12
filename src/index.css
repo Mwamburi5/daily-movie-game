@@ -50,6 +50,42 @@ body {
   padding-bottom: env(safe-area-inset-bottom);
 }
 
+/* Chronology reel geometry. The rail remains native overflow; these fixed
+   vertical relationships keep feedback tied to its bottom at both acceptance
+   heights without leaking presentation transforms into measurement. */
+.chrono-reel-nav { top: 92px; }
+.chrono-header-title { font-size: 26px; line-height: 1; }
+.chrono-strokes-value { font-size: 18px; }
+.chrono-reel-band {
+  top: 126px;
+  padding-block: 8px;
+  scrollbar-width: none;
+  overscroll-behavior-x: contain;
+}
+.chrono-reel-band::-webkit-scrollbar { display: none; }
+.chrono-reel-feedback { top: 290px; }
+.chrono-raised { bottom: 230px; }
+.chrono-reel-instruction { bottom: 190px; }
+.chrono-hand { height: 158px; }
+
+@media (max-height: 720px) {
+  .chrono-header-title { font-size: 22px; }
+  .chrono-strokes-value { font-size: 15px; }
+  .chrono-reel-nav { top: 76px; }
+  .chrono-reel-band {
+    top: 108px;
+    padding-block: 4px;
+  }
+  .chrono-reel-feedback { top: 246px; }
+  .chrono-raised { bottom: 142px; }
+  .chrono-reel-instruction {
+    bottom: 124px;
+    font-size: 8px;
+    letter-spacing: .07em;
+  }
+  .chrono-hand { height: 116px; }
+}
+
 /* ============================================================
    The Stub — design tokens (design_handoff_the_stub/README.md,
    screen 7f checksum)

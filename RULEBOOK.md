@@ -225,16 +225,19 @@ and your sense of *when*.
 ```
    Strokes · Streak                      (top bar)
 
- 1979      1994             2016         (the LINE, left = older)
+       SWIPE THE REEL · OLDER ← → NEWER
+ 1979      1994             2016         (the REEL, left = older)
  ┌────┐   ┌────┐           ┌────┐
  │ ●  │ … │ ●  │    ⌄?⌄    │ ●  │         (drop a card into any gap)
  └────┘   └────┘           └────┘
          [ your hand of cards ]          (tap to lift, drag into a gap)
 ```
 
-Once the line grows wider than your screen, it **scrolls sideways** — swipe it, or
+Once the reel grows wider than your screen, it **scrolls sideways** — swipe it, or
 hold your lifted card at either edge of the screen and the line glides under it
-until the gap you want comes into view.
+until the gap you want comes into view. The dots above the reel show how far
+through the full line you have travelled. Dragging to the amber gap is still the
+main move, but after lifting a card you can also **tap a gap** to place it.
 
 ### Scoring (golf, so LOW is good)
 - **Clean placement** (right gap): **+0**.

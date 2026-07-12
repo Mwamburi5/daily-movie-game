@@ -774,6 +774,31 @@ what's ready-to-review per sitting.
       driven live in-browser @390×844 (edge-hold scrolled 140px to clamp,
       guard toast fired, misfire auto-corrected into view). Deploy
       `dpl_7tUmeLkVxnTVBmZQ7RJUHz8Uq8gK` verified live on matchcutdaily.com.
+- [x] **POST-SEND · Chronology Reel redesign — BUILT + Buri approved ✅
+      2026-07-12** (branch `codex/chronology-reel`; production freeze HOLDS —
+      no merge/deploy): approved acceptance references committed at 390×844 +
+      a separately derived 375×667 compact composition. UI-only redesign;
+      `src/lib/`, sim, scoring, dealing, difficulty, and pool data untouched.
+      Native momentum overflow now presents a three-card flat plateau with
+      clipped outer slivers; seven normalized progress markers + accessible
+      centered-film position; settled cards split into flat measurement rail →
+      layoutId flight → visual reel-transform wrapper. One shared `GapTarget`
+      resolver drives highlight, edge-blocked/outside release, tap fallback,
+      and scoring entry; only the nearest valid gap goes amber, all other
+      available gaps stay slate, and every visual gap owns a 44×44 labeled tap
+      target without widening pitch. Edge auto-scroll re-resolves every frame;
+      snapping disables during drag. Raised card gains restrained teal glow;
+      toast/streak positioning is reel-relative with tall/compact offsets;
+      compact numeric card sizes are 88×126 with zero collisions/overflows.
+      BackFace now mounts only for an actual flip (settled front already prints
+      its public year), removing a nested-transform compositor defect while
+      strengthening the pre-placement no-year-in-DOM gate. Browser evidence:
+      390×844 + 375×667 reference/app side-by-sides; one-card, three-card,
+      full reel left/center/right, raised/valid/moving/edge-blocked targets,
+      edge-hold, clean + misfire correction, toast, tap-gap, reduced motion,
+      and final-card flows; console clean; 0 hidden-year leaks; compact DOM
+      audit 0 off-viewport cards. `design-qa.md`: passed. Gates: build/tsc
+      clean · verify 64/64 · solo 8/8 · chrono 42/42 · connections 14/14.
 - [x] **POST-SEND · Stage B pool merge + DEPLOY — EXECUTED 2026-07-12** (one
       session, full pipeline; §2.11 exception ruled in-session: **catalog live
       BEFORE Buri widens the circle** — new recipients onboard onto the big

@@ -13,7 +13,7 @@
 // imported directly.
 
 import { Fragment, useEffect, useRef, useState } from 'react'
-import { AnimatePresence, motion, useAnimationControls, useReducedMotion } from 'framer-motion'
+import { AnimatePresence, MotionConfig, motion, useAnimationControls, useReducedMotion } from 'framer-motion'
 import {
   type ChronologyCard,
   type ChronoDifficulty,
@@ -60,6 +60,11 @@ interface LogEntry {
   result: 'clean' | 'misfire'
 }
 
+type GapTarget =
+  | { kind: 'gap'; index: number }
+  | { kind: 'edge-blocked'; direction: 'older' | 'newer' }
+  | { kind: 'outside' }
+
 // ── share text (family format, now via the shared helper) ─────────────────────
 // The three modes read as one family: a brand line, the golf score (low wins),
 // and a 🎬-led emoji row (🟩 clean, 🟥 misfire). The clipboard plumbing that
@@ -78,8 +83,22 @@ const BAND_MARGIN = 90 // vertical "on or near the line" tolerance (px)
 const EDGE_ZONE = 48 // px from a band edge that reads as reaching past the visible line
 const EDGE_SCROLL_STEP = 12 // max px/frame the band glides during an edge hold
 
+function reelVisualStyle(offset: number) {
+  const distance = Math.abs(offset)
+  if (distance <= 1) return { transform: 'translateY(0) scale(1) rotate(0deg)', opacity: 1 }
+  const direction = offset < 0 ? -1 : 1
+  if (distance === 2) {
+    return { transform: `translateY(6px) scale(.88) rotate(${direction * 5}deg)`, opacity: 0.76 }
+  }
+  return { transform: `translateY(10px) scale(.78) rotate(${direction * 8}deg)`, opacity: 0.54 }
+}
+
 export default function ChronologyGame({ onExit, start }: { onExit: () => void; start: ChronoStart }) {
-  const reduce = useReducedMotion()
+  const systemReduce = useReducedMotion()
+  // DEV-only capture hook for the standing reduced-motion visual gate. The
+  // production build keeps following the player's OS preference exclusively.
+  const forceReduce = import.meta.env.DEV && new URLSearchParams(window.location.search).get('reduce') === '1'
+  const reduce = systemReduce || forceReduce
 
   // The daily seed is fixed to today's local date (deterministic, shared). The
   // practice base is a one-off random token so each practice round is a fresh
@@ -113,6 +132,11 @@ export default function ChronologyGame({ onExit, start }: { onExit: () => void; 
   const [invalidNonce, setInvalidNonce] = useState(0) // shake the raised card
   const [badgeNonce, setBadgeNonce] = useState(0) // pop the Streak ×3 badge
   const [toast, setToast] = useState<{ key: number; text: string } | null>(null)
+  const [compact, setCompact] = useState(() => window.matchMedia('(max-height: 720px)').matches)
+  const [centeredIndex, setCenteredIndex] = useState(0)
+  const [progressSegment, setProgressSegment] = useState(0)
+  const [activeTarget, setActiveTarget] = useState<GapTarget>({ kind: 'outside' })
+  const [dragging, setDragging] = useState(false)
 
   const lineBandRef = useRef<HTMLDivElement>(null)
   const gapRefs = useRef<(HTMLDivElement | null)[]>([])
@@ -121,6 +145,62 @@ export default function ChronologyGame({ onExit, start }: { onExit: () => void; 
   const autoScrollRaf = useRef<number | undefined>(undefined)
 
   const score = strokes - credits // golf: lower is better
+
+  useEffect(() => {
+    const query = window.matchMedia('(max-height: 720px)')
+    const sync = () => setCompact(query.matches)
+    query.addEventListener('change', sync)
+    return () => query.removeEventListener('change', sync)
+  }, [])
+
+  const updateReelPosition = () => {
+    const band = lineBandRef.current
+    if (!band) return
+    const cards = Array.from(band.querySelectorAll<HTMLElement>('[data-line-card]'))
+    const center = band.getBoundingClientRect().left + band.clientWidth / 2
+    let nearest = 0
+    let distance = Infinity
+    cards.forEach((card, index) => {
+      const rect = card.getBoundingClientRect()
+      const next = Math.abs(rect.left + rect.width / 2 - center)
+      if (next < distance) {
+        distance = next
+        nearest = index
+      }
+    })
+    setCenteredIndex(nearest)
+    const max = band.scrollWidth - band.clientWidth
+    setProgressSegment(max <= 0 ? 0 : Math.round((band.scrollLeft / max) * 6))
+  }
+
+  const resolveGapTarget = (point: { x: number; y: number }): GapTarget => {
+    const band = lineBandRef.current?.getBoundingClientRect()
+    if (!band) return { kind: 'outside' }
+    if (point.y < band.top - BAND_MARGIN || point.y > band.bottom + BAND_MARGIN) {
+      return { kind: 'outside' }
+    }
+
+    const firstGap = gapRefs.current[0]?.getBoundingClientRect()
+    const lastGap = gapRefs.current[line.length]?.getBoundingClientRect()
+    const offLeft = !!firstGap && firstGap.right < band.left
+    const offRight = !!lastGap && lastGap.left > band.right
+    if (offLeft && point.x < band.left + EDGE_ZONE) return { kind: 'edge-blocked', direction: 'older' }
+    if (offRight && point.x > band.right - EDGE_ZONE) return { kind: 'edge-blocked', direction: 'newer' }
+    if (point.x < band.left - EDGE_ZONE || point.x > band.right + EDGE_ZONE) return { kind: 'outside' }
+
+    let chosen = -1
+    let bestDist = Infinity
+    for (let i = 0; i < line.length + 1; i++) {
+      const rect = gapRefs.current[i]?.getBoundingClientRect()
+      if (!rect || rect.right < band.left || rect.left > band.right) continue
+      const dist = Math.abs(point.x - (rect.left + rect.width / 2))
+      if (dist < bestDist) {
+        bestDist = dist
+        chosen = i
+      }
+    }
+    return chosen >= 0 ? { kind: 'gap', index: chosen } : { kind: 'outside' }
+  }
 
   useEffect(
     () => () => {
@@ -134,6 +214,7 @@ export default function ChronologyGame({ onExit, start }: { onExit: () => void; 
   // it. rAF-driven, not per-pointer-event: pointer events stop the moment the
   // finger holds still, which is exactly when the player commits to the edge.
   const onDragActive = (active: boolean) => {
+    setDragging(active)
     if (!active) {
       if (autoScrollRaf.current !== undefined) cancelAnimationFrame(autoScrollRaf.current)
       autoScrollRaf.current = undefined
@@ -154,12 +235,30 @@ export default function ChronologyGame({ onExit, start }: { onExit: () => void; 
           } else if (p.x > r.right - EDGE_ZONE) {
             bandEl.scrollLeft += EDGE_SCROLL_STEP * Math.min(1, (p.x - (r.right - EDGE_ZONE)) / EDGE_ZONE)
           }
+          updateReelPosition()
+          setActiveTarget(resolveGapTarget(p))
         }
       }
       autoScrollRaf.current = requestAnimationFrame(tick)
     }
     autoScrollRaf.current = requestAnimationFrame(tick)
   }
+
+  useEffect(() => {
+    const frame = requestAnimationFrame(() => {
+      updateReelPosition()
+      if (!raisedId || placing) {
+        setActiveTarget({ kind: 'outside' })
+        return
+      }
+      const band = lineBandRef.current?.getBoundingClientRect()
+      if (band) setActiveTarget(resolveGapTarget({ x: band.left + band.width / 2, y: band.top + band.height / 2 }))
+    })
+    return () => cancelAnimationFrame(frame)
+    // line/viewport changes are the moments when the centered card and default
+    // target must be recomputed from flat layout geometry.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [line, raisedId, placing, compact])
 
   // Badge + toast auto-dismiss.
   useEffect(() => {
@@ -245,46 +344,20 @@ export default function ChronologyGame({ onExit, start }: { onExit: () => void; 
     if (nextHand.length === 0) setStatus('cleared')
   }
 
-  // ── drop hit-test: nearest gap to the drop point, within the line's band ─────
-  const onDrop = (id: string, point: { x: number; y: number }) => {
+  // Highlight, tap, and release all converge here after using the same resolver.
+  // A blocked edge or outside release never reaches scorePlacement, so it can
+  // never manufacture a stroke for a slot the player did not choose.
+  const placeAtTarget = (id: string, target: GapTarget) => {
     if (status !== 'playing' || placing) return
-    const band = lineBandRef.current?.getBoundingClientRect()
-    if (!band) return
-    const nearBand = point.y >= band.top - BAND_MARGIN && point.y <= band.bottom + BAND_MARGIN
-    if (!nearBand) {
-      setInvalidNonce((n) => n + 1) // out of the line — shake, spring back
-      return
-    }
-    // Ambiguity guard: a drop in the edge zone while more line is scrolled off
-    // that side can't be trusted — the nearest *visible* gap is not what the
-    // player was reaching for. Shake and coach instead of scoring a guess; a
-    // stroke must never come from a slot the player couldn't see.
-    const firstGap = gapRefs.current[0]?.getBoundingClientRect()
-    const lastGap = gapRefs.current[line.length]?.getBoundingClientRect()
-    const offLeft = !!firstGap && firstGap.right < band.left
-    const offRight = !!lastGap && lastGap.left > band.right
-    if ((offLeft && point.x < band.left + EDGE_ZONE) || (offRight && point.x > band.right - EDGE_ZONE)) {
+    if (target.kind !== 'gap') {
       setInvalidNonce((n) => n + 1)
-      say('more line that way — hold your card at the edge to scroll')
+      if (target.kind === 'edge-blocked') say('more line that way — hold your card at the edge to scroll')
       return
-    }
-    // Map the drop X to the nearest gap (line.length + 1 of them, ends included).
-    let chosen = 0
-    let bestDist = Infinity
-    for (let i = 0; i < line.length + 1; i++) {
-      const el = gapRefs.current[i]
-      if (!el) continue
-      const r = el.getBoundingClientRect()
-      const dist = Math.abs(point.x - (r.left + r.width / 2))
-      if (dist < bestDist) {
-        bestDist = dist
-        chosen = i
-      }
     }
 
     const card = hand.find((h) => h.id === id)
     if (!card) return
-    const placement = scorePlacement(card, line, chosen)
+    const placement = scorePlacement(card, line, target.index)
     const tight = gapTightness(line, placement.correctSlot)
 
     if (placement.result === 'clean') {
@@ -298,6 +371,21 @@ export default function ChronologyGame({ onExit, start }: { onExit: () => void; 
       () => applyPlacement(card, placement, tight),
       reduce ? 500 : 700,
     )
+  }
+
+  const onDrop = (id: string, point: { x: number; y: number }) => {
+    const target = resolveGapTarget(point)
+    setActiveTarget(target)
+    placeAtTarget(id, target)
+  }
+
+  const onTapGap = (index: number) => {
+    if (!raisedId || placing) return
+    const rect = gapRefs.current[index]?.getBoundingClientRect()
+    if (!rect) return
+    const target = resolveGapTarget({ x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 })
+    setActiveTarget(target)
+    placeAtTarget(raisedId, target)
   }
 
   const resetGame = () => {
@@ -319,20 +407,25 @@ export default function ChronologyGame({ onExit, start }: { onExit: () => void; 
     setPlayLog([])
     setPlacing(null)
     setToast(null)
+    setActiveTarget({ kind: 'outside' })
+    setDragging(false)
     setStatus('playing')
   }
 
   const raised = hand.find((h) => h.id === raisedId) ?? null
   const flippingRaised = placing !== null && raised?.id === placing.card.id
+  const centeredCard = line[Math.min(centeredIndex, line.length - 1)] ?? line[0]
+  const reelSize = compact ? 'reelCompact' : 'reel'
 
   return (
-    <div
-      className="h-full overflow-hidden bg-stub-cream"
-      style={{
-        backgroundImage: 'radial-gradient(rgba(31,58,82,.06) 1px, transparent 1.2px)',
-        backgroundSize: '7px 7px',
-      }}
-    >
+    <MotionConfig reducedMotion={forceReduce ? 'always' : 'user'}>
+      <div
+        className="h-full overflow-hidden bg-stub-cream"
+        style={{
+          backgroundImage: 'radial-gradient(rgba(31,58,82,.06) 1px, transparent 1.2px)',
+          backgroundSize: '7px 7px',
+        }}
+      >
       <div className="relative mx-auto h-full w-full max-w-[420px]">
         {/* 7a navy Stub header: nav row + a strokes/streak tally, bottom corners
             only per the token sheet. Cream ink on navy, with the header's cream
@@ -358,7 +451,7 @@ export default function ChronologyGame({ onExit, start }: { onExit: () => void; 
               ‹
             </button>
             <div className="flex flex-col leading-none">
-              <span className="font-stub-display text-lg font-bold tracking-tight text-stub-cream">Chronology</span>
+              <span className="chrono-header-title font-stub-display font-bold tracking-tight text-stub-cream">Chronology</span>
               <span className="mt-1 font-stub-label text-[9px] uppercase tracking-wider text-stub-amber">
                 {start.kind === 'daily' ? 'daily' : `practice · ${start.difficulty === 'easy' ? 'wide' : 'tight'}`}
               </span>
@@ -367,7 +460,7 @@ export default function ChronologyGame({ onExit, start }: { onExit: () => void; 
           <div className="relative flex items-center gap-2">
             <div className="text-right tabular-nums">
               <div className="font-stub-label text-[11px] uppercase tracking-wide text-stub-cream">
-                Strokes <span className="font-stub-display text-[13px] font-bold">{strokes}</span>
+                Strokes <span className="chrono-strokes-value font-stub-display font-bold">{strokes}</span>
                 {credits > 0 && <span className="text-stub-amber"> · −{credits}</span>}
               </div>
               <div className="mt-1 flex items-center justify-end gap-1" aria-label="Streak">
@@ -397,38 +490,85 @@ export default function ChronologyGame({ onExit, start }: { onExit: () => void; 
           </div>
         </header>
 
-        {/* The LINE — placed cards with insertable gaps (ends included). Older
-            left, newer right. Horizontally scrollable as it fills. Sits ABOVE
-            the tap-to-lower backdrop (z-30 > z-20) so a swipe here scrolls the
-            band even while a card is raised, instead of dropping the card. */}
+        <div className="chrono-reel-nav absolute inset-x-0 z-30 px-5 text-center">
+          <p className="font-stub-label text-[10px] font-bold uppercase tracking-[0.12em] text-stub-navy">
+            SWIPE THE REEL · OLDER ← → NEWER
+          </p>
+          <div className="mt-2 flex items-center gap-3" aria-hidden="true">
+            <span className="h-px flex-1 bg-stub-slate-light/55" />
+            <span className="flex items-center gap-1.5">
+              {Array.from({ length: 7 }).map((_, index) => (
+                <span
+                  key={index}
+                  className={`h-2 rounded-full transition-[width,background-color] ${
+                    index === progressSegment ? 'w-5 bg-stub-amber' : 'w-2 bg-stub-slate/70'
+                  }`}
+                />
+              ))}
+            </span>
+            <span className="h-px flex-1 bg-stub-slate-light/55" />
+          </div>
+          {centeredCard && (
+            <span className="sr-only" aria-live="polite">
+              {centeredCard.title}, movie {centeredIndex + 1} of {line.length}
+            </span>
+          )}
+        </div>
+
+        {/* Native momentum scrolling stays on the flat rail. layoutId owns only
+            the raised-to-line flight; reel perspective lives one wrapper lower. */}
         <section
           ref={lineBandRef}
           data-line
-          className="absolute inset-x-0 top-20 z-30 overflow-x-auto px-4 py-3"
+          aria-label="Chronology reel"
+          onScroll={() => {
+            updateReelPosition()
+            if (dragPoint.current) setActiveTarget(resolveGapTarget(dragPoint.current))
+          }}
+          className="chrono-reel-band absolute inset-x-0 z-30 overflow-x-auto px-4"
+          style={{
+            WebkitOverflowScrolling: 'touch',
+            scrollSnapType: dragging ? 'none' : 'x proximity',
+          }}
         >
-          <div className="mx-auto flex min-h-[124px] w-max items-center">
+          <div className="mx-auto flex w-max items-center">
             {Array.from({ length: line.length + 1 }).map((_, i) => (
               <Fragment key={`slot-${i}`}>
                 <Gap
                   setRef={(el) => {
                     gapRefs.current[i] = el
                   }}
-                  active={raisedId !== null && !placing}
+                  visible={raisedId !== null && !placing}
+                  selected={activeTarget.kind === 'gap' && activeTarget.index === i}
+                  label={
+                    i === 0
+                      ? `Place before ${line[0].title}`
+                      : i === line.length
+                        ? `Place after ${line[line.length - 1].title}`
+                        : `Place between ${line[i - 1].title} and ${line[i].title}`
+                  }
+                  onPlace={() => onTapGap(i)}
                 />
                 {i < line.length && (
-                  <motion.div
-                    layoutId={line[i].id}
+                  <div
                     data-line-card={line[i].id}
-                    className="flex flex-col items-center"
-                    transition={
-                      reduce ? { duration: 0.15 } : { type: 'spring', stiffness: 360, damping: 30 }
-                    }
+                    className="shrink-0"
+                    style={{ scrollSnapAlign: 'center' }}
                   >
-                    <span className="mb-1 font-stub-display text-[11px] font-bold tabular-nums text-stub-navy">
-                      {line[i].year}
-                    </span>
-                    <ChronoCardView card={line[i]} faceUp={false} size="line" showYear />
-                  </motion.div>
+                    <motion.div
+                      layoutId={line[i].id}
+                      transition={
+                        reduce ? { duration: 0.15 } : { type: 'spring', stiffness: 360, damping: 30 }
+                      }
+                    >
+                      <div
+                        className="origin-center transition-[transform,opacity] duration-200"
+                        style={reelVisualStyle(i - centeredIndex)}
+                      >
+                        <ChronoCardView card={line[i]} faceUp={false} size={reelSize} showYear />
+                      </div>
+                    </motion.div>
+                  </div>
                 )}
               </Fragment>
             ))}
@@ -436,7 +576,7 @@ export default function ChronologyGame({ onExit, start }: { onExit: () => void; 
         </section>
 
         {/* Streak badge + toast */}
-        <div className="pointer-events-none absolute inset-x-0 top-[252px] z-40 flex flex-col items-center gap-1.5 px-4">
+        <div className="chrono-reel-feedback pointer-events-none absolute inset-x-0 z-40 flex flex-col items-center gap-1.5 px-4">
           <AnimatePresence>
             {badgeNonce > 0 && (
               <motion.div
@@ -476,8 +616,7 @@ export default function ChronologyGame({ onExit, start }: { onExit: () => void; 
 
         {/* Raised card — the one lifted card, draggable into a gap */}
         <div
-          className="pointer-events-none absolute inset-x-0 z-50 flex justify-center"
-          style={{ bottom: 188 }}
+          className="chrono-raised pointer-events-none absolute inset-x-0 z-50 flex justify-center"
         >
           {raised && (
             <RaisedCard
@@ -487,20 +626,27 @@ export default function ChronologyGame({ onExit, start }: { onExit: () => void; 
               draggable={!placing}
               invalidNonce={invalidNonce}
               reduce={!!reduce}
+              compact={compact}
               onDrop={onDrop}
               onDragMove={(p) => {
                 dragPoint.current = p
+                setActiveTarget(resolveGapTarget(p))
               }}
               onDragActive={onDragActive}
             />
           )}
         </div>
 
+        <p className="chrono-reel-instruction pointer-events-none absolute inset-x-0 z-40 text-center font-stub-label text-[9px] font-bold uppercase tracking-[0.1em] text-stub-navy">
+          DRAG TO THE AMBER LINE · RELEASE TO PLACE
+        </p>
+
         {/* Hand fan — tap a title to lift it */}
         <ChronoHand
           cards={hand}
           raisedId={raisedId}
           reduce={!!reduce}
+          compact={compact}
           onRaise={(id) => status === 'playing' && !placing && setRaisedId(id)}
         />
 
@@ -519,7 +665,8 @@ export default function ChronologyGame({ onExit, start }: { onExit: () => void; 
           )}
         </AnimatePresence>
       </div>
-    </div>
+      </div>
+    </MotionConfig>
   )
 }
 
@@ -527,24 +674,65 @@ export default function ChronologyGame({ onExit, start }: { onExit: () => void; 
 // A thin slot that widens and shows a dashed insert bar while a card is raised, so
 // every legal drop target is visible (a line of n cards shows n+1 of these).
 const Gap = ({
-  active,
+  visible,
+  selected,
+  label,
+  onPlace,
   setRef,
 }: {
-  active: boolean
+  visible: boolean
+  selected: boolean
+  label: string
+  onPlace: () => void
   setRef: (el: HTMLDivElement | null) => void
-}) => (
-  <div
-    ref={setRef}
-    data-gap
-    className="flex h-[112px] shrink-0 items-center justify-center transition-all"
-    style={{ width: active ? 30 : 12 }}
-  >
+}) => {
+  const gesture = useRef<{ x: number; y: number; moved: boolean } | null>(null)
+  return (
     <div
-      className="h-full w-[3px] rounded-full transition-colors"
-      style={{ background: active ? 'var(--color-stub-amber)' : 'transparent' }}
-    />
-  </div>
-)
+      ref={setRef}
+      data-gap
+      data-gap-selected={selected || undefined}
+      className="relative flex h-[142px] w-[14px] shrink-0 items-center justify-center"
+    >
+      <div
+        className={`relative h-[88%] rounded-full transition-[width,background-color,opacity] ${
+          selected ? 'w-[3px] bg-stub-amber opacity-100' : 'w-px bg-stub-slate-light opacity-70'
+        } ${visible ? '' : '!opacity-0'}`}
+      >
+        {selected && (
+          <>
+            <span className="absolute -top-2 left-1/2 h-0 w-0 -translate-x-1/2 border-x-[5px] border-t-[7px] border-x-transparent border-t-stub-amber" />
+            <span className="absolute -bottom-2 left-1/2 h-0 w-0 -translate-x-1/2 border-x-[5px] border-b-[7px] border-x-transparent border-b-stub-amber" />
+          </>
+        )}
+      </div>
+      {visible && (
+        <button
+          type="button"
+          aria-label={label}
+          className="absolute left-1/2 top-1/2 h-11 w-11 -translate-x-1/2 -translate-y-1/2"
+          onPointerDown={(event) => {
+            gesture.current = { x: event.clientX, y: event.clientY, moved: false }
+          }}
+          onPointerMove={(event) => {
+            if (!gesture.current) return
+            if (Math.hypot(event.clientX - gesture.current.x, event.clientY - gesture.current.y) > 8) {
+              gesture.current.moved = true
+            }
+          }}
+          onPointerCancel={() => {
+            gesture.current = null
+          }}
+          onPointerUp={() => {
+            const tap = gesture.current && !gesture.current.moved
+            gesture.current = null
+            if (tap) onPlace()
+          }}
+        />
+      )}
+    </div>
+  )
+}
 
 // ── raised, draggable card (drag-to-place primitive, copied from Hand.tsx) ──────
 function RaisedCard({
@@ -553,6 +741,7 @@ function RaisedCard({
   draggable,
   invalidNonce,
   reduce,
+  compact,
   onDrop,
   onDragMove,
   onDragActive,
@@ -562,6 +751,7 @@ function RaisedCard({
   draggable: boolean
   invalidNonce: number
   reduce: boolean
+  compact: boolean
   onDrop: (id: string, point: { x: number; y: number }) => void
   onDragMove: (point: { x: number; y: number }) => void
   onDragActive: (active: boolean) => void
@@ -606,7 +796,9 @@ function RaisedCard({
       }}
     >
       <motion.div animate={controls}>
-        <ChronoCardView card={card} faceUp={faceUp} size="raised" />
+        <div className="rounded-stub-panel shadow-stub-glow-teal">
+          <ChronoCardView card={card} faceUp={faceUp} size={compact ? 'raisedCompact' : 'raised'} />
+        </div>
       </motion.div>
     </motion.div>
   )
@@ -618,22 +810,25 @@ function ChronoHand({
   cards,
   raisedId,
   reduce,
+  compact,
   onRaise,
 }: {
   cards: ChronologyCard[]
   raisedId: string | null
   reduce: boolean
+  compact: boolean
   onRaise: (id: string) => void
 }) {
   const spring = reduce
     ? ({ duration: 0.15 } as const)
     : ({ type: 'spring', stiffness: 380, damping: 30 } as const)
   const n = cards.length
-  const spacing = Math.min(42, (360 - FAN_CARD_W) / Math.max(n - 1, 1))
+  const cardWidth = compact ? 68 : FAN_CARD_W
+  const spacing = Math.min(compact ? 36 : 42, (360 - cardWidth) / Math.max(n - 1, 1))
 
   return (
     <div
-      className="absolute inset-x-0 bottom-0 z-30 h-[200px]"
+      className="chrono-hand absolute inset-x-0 bottom-0 z-30"
       style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
     >
       {cards.map((c, i) => {
@@ -644,14 +839,17 @@ function ChronoHand({
             key={c.id}
             layoutId={c.id}
             data-card={c.id}
-            className="absolute left-1/2 top-6"
-            style={{ marginLeft: -FAN_CARD_W / 2, zIndex: 10 + i, touchAction: 'none' }}
-            animate={{ x: off * spacing, y: Math.abs(off) ** 1.7 * 5 }}
+            className="absolute left-1/2"
+            style={{ marginLeft: -cardWidth / 2, top: compact ? 2 : 10, zIndex: 10 + i, touchAction: 'none' }}
+            animate={{
+              x: off * spacing,
+              y: Math.min(compact ? 8 : 26, Math.abs(off) ** 1.45 * (compact ? 2.2 : 3.5)),
+            }}
             transition={spring}
             onTap={() => onRaise(c.id)}
           >
             <motion.div animate={{ rotate: off * 5 }} transition={spring}>
-              <ChronoCardView card={c} faceUp={false} size="hand" />
+              <ChronoCardView card={c} faceUp={false} size={compact ? 'handCompact' : 'hand'} />
             </motion.div>
           </motion.div>
         )
