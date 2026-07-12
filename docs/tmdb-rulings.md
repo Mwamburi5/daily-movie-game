@@ -40,6 +40,9 @@ fixed directly in `src/data/movies.ts` and the flag disappears on its own.
 - back-to-the-future · topCast order: ours Thompson 3rd vs TMDB Glover 3rd — RULED ours-correct 2026-07-05, billing block
 - spirited-away · releaseDate: policy 2002-09-20 (first US theatrical, Disney limited; SFIFF t1 excluded) vs origin year 2001 — RULED policy-date 2026-07-12, US-theatrical convention wins over origin-country year; card year follows the policy date (2002)
 - 300 · wrong-film match: auto-matcher grabbed Rob-B-Hood (tmdb 25676) with its 2007-12-26 date; intended 300 (tmdb 1271) @ 2007-03-09 would move card year to 2007 — RULED struck 2026-07-12, dropped from Stage B batch 2 at Buri's call; slate updated to 277 kept
+- the-hurt-locker · releaseDate 2009-06-25 + year 2008→2009 — RULED 2026-07-12, Venice 2008 is a festival premiere (excluded); card year follows the policy date per the Spirited Away convention
+- taken · releaseDate 2009-01-30 + year 2008→2009 — RULED 2026-07-12, the 2008 label is the France origin year; intl standing policy (first US theatrical) applies
+- soul · RULED dropped-from-Chronology 2026-07-12: no qualifying US theatrical near origin (Disney+ 2020-12-25 is t4 digital; first theatrical entry is the 2024-01-12 re-release, a trick-question placement). Stays a credited, undated Duel film. Revisit only if a streaming-era exception class gets its own grill — this class will recur (day-and-date and straight-to-streaming titles)
 
 ## Standing policies (cover whole flag classes; do not re-present matches)
 

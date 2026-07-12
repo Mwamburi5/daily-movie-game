@@ -73,6 +73,9 @@ const CHRONO_TITLE_OVERRIDES: Record<string, string> = {
   'the-two-towers': 'The Lord of the Rings: The Two Towers',
   'the-return-of-the-king': 'The Lord of the Rings: The Return of the King',
   'mission-impossible-fallout': 'Mission: Impossible - Fallout',
+  // Stage B 2026-07-12: card face keeps the Duel short form; the timeline needs
+  // the franchise prefix to be placeable at a glance. Same ratified class.
+  'the-force-awakens': 'Star Wars: The Force Awakens',
 }
 
 // Era window: films released on or after this date only. Pre-1970 is parked.

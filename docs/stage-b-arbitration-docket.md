@@ -13,6 +13,20 @@ films date to first US theatrical, never origin year — ledgered in
 `tmdb-rulings.md`) · 300 → **STRUCK** (slate updated to 277 kept, projected 439).
 **Arbitration complete — both batches are merge-ready.**
 
+**MERGE EXECUTED 2026-07-12 (same session).** The merge script's year-vs-date
+scan caught 3 cases the CLEAN drafts hid, all RULED in-session (ledgered in
+`tmdb-rulings.md`): The Hurt Locker + Taken dated 2009 with card years
+2008→2009 (Spirited Away convention) · **Soul DROPPED from Chronology** (no
+qualifying US theatrical near origin; ⚡ merge = 110 of 111). Mechanical notes:
+3 slate-vs-card-face title aliases (Crazy, Stupid, Love. · The Force Awakens ·
+Ocean's 8 stored double-quoted) · `the-force-awakens` added to
+CHRONO_TITLE_OVERRIDES (ratified class) · slug collisions → `superman-2025`,
+`the-little-mermaid-2023`. **Pool: 438 films** (110 ⚡ dates + 166 stubs, array
+now 212), decade spread 34/60/91/97/104/52 — Mad Max slid 1979→1980s via its
+US date, the policy working as designed. Gates: tsc · build · verify 64/64 ·
+solo 8/8 · chronology 42/42 · connections 14/14. Driven live in-browser:
+today's daily deals the new pool (Hurt Locker anchor @ 2009).
+
 ## OPEN — needs a ruling (RULED, kept for the record)
 
 1. **Spirited Away (2001)** ⚡ — correct film (tmdb 129), but the earliest
