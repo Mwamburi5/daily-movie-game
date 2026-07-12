@@ -774,6 +774,27 @@ what's ready-to-review per sitting.
       driven live in-browser @390×844 (edge-hold scrolled 140px to clamp,
       guard toast fired, misfire auto-corrected into view). Deploy
       `dpl_7tUmeLkVxnTVBmZQ7RJUHz8Uq8gK` verified live on matchcutdaily.com.
+- [x] **POST-SEND · Stage B pool merge + DEPLOY — EXECUTED 2026-07-12** (one
+      session, full pipeline; §2.11 exception ruled in-session: **catalog live
+      BEFORE Buri widens the circle** — new recipients onboard onto the big
+      pool instead of a build about to change under them). Strikes: Buri via
+      tap-to-strike artifact, 277/352 kept (74+300 struck, 0 ⚡ vetoes).
+      Drafts: `tmdb:draft` ×2 (⚡ 111 · new-stub 167), 47 CHECK / 0 NOT-FOUND.
+      Arbitration (docs/stage-b-arbitration-docket.md): 45 auto-resolved via
+      two parallel Opus triage passes + 5 Buri rulings ledgered
+      (tmdb-rulings.md): Spirited Away 2002-09-20 + **standing policy: intl
+      films = first US theatrical, card year follows** · 300 struck
+      (wrong-film match) · Hurt Locker + Taken → 2009 (faces 2008→2009) ·
+      Soul dropped from Chronology (streaming class parked). Merge 2fccdcf:
+      110 ⚡ releaseDates + 166 DATED_STUBS (array 46→212) → **chronology pool
+      162→438**, spread 34/60/91/97/104/52 (70s mini-slate owed). Gates green
+      (tsc · build · 64/64 · 8/8 · 42/42 · 14/14); daily driven live with the
+      new pool (Hurt Locker anchor @2009). Deploy
+      `dpl_2YrXPFMDWjZujapDznvoNH65jBYZ` — matchcutdaily.com serves
+      index-CjEFO-7t.js with the 438 pool (superman-2025 present), noindex
+      HOLDS. **Carry-forward: chronology feedback/analytics now split across
+      THREE builds (pre-overflow-fix / post-fix-162-pool / 438-pool) — tag at
+      the ~07-24 read. Today's chrono daily reshuffled at deploy.**
 - [ ] **POST-SEND · fix slice (§7·7b + §7·7c minors)** — Domine ticking
       numerals · Duel HUD/MeldShelf overlap @667 · full keyboard operability ·
       minors sweep (favicon, Solo blurb, MeldShelf legacy spine, difficulty
