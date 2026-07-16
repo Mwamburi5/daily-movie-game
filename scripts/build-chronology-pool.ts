@@ -172,6 +172,17 @@ export function validate(entries: DatedEntry[]): void {
     seen.add(e.id)
   }
 
+  // titles unique (post-override): two pool films sharing a bare title make an
+  // undecidable card — the player cannot know which film they drew (remake trap,
+  // ruled 2026-07-16). Disambiguate with a tag that never leaks the year.
+  const byTitle = new Map<string, string[]>()
+  for (const e of entries) {
+    byTitle.set(e.title, [...(byTitle.get(e.title) ?? []), e.id])
+  }
+  for (const [title, ids] of byTitle) {
+    if (ids.length > 1) errors.push(`duplicate title "${title}" (${ids.join(', ')}) — undecidable card; add a year-free disambiguating tag`)
+  }
+
   // every date valid + inside the era window
   for (const e of entries) {
     if (!isValidIsoDate(e.releaseDate)) {

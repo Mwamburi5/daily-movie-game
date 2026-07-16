@@ -306,6 +306,19 @@ export default function DuelGame({
   }
   const selectedMovies = [...selected].map((id) => mv(id)!)
   const selectionValid = isValidMeld(selectedMovies)
+  // A 2-card same-genre pick with no person/series link is the "genre doesn't
+  // connect" trap (feedback batch 1): the generic pick-more pill reads as a
+  // rejection, so players conclude genre never links. Name the real blocker —
+  // the genre floor (locked rule 2.3) — instead. Display-only; rule untouched.
+  const selectedPairCommon =
+    selectedMovies.length === 2 && !selectedMovies.some((c) => isWild(c.id))
+      ? meldCommon(selectedMovies)
+      : null
+  const genrePairStuck =
+    selectedPairCommon !== null &&
+    selectedPairCommon.people.length === 0 &&
+    selectedPairCommon.series === null &&
+    selectedMovies[0].genre === selectedMovies[1].genre
   // Meld-mode discovery path: after tapping Meld and selecting 2 linked cards, a
   // marquee whose top would complete them into a valid 3-meld lights up — the
   // "pick two, the card glows, pick it up" flow. SAME take-to-meld rule (the card
@@ -1772,7 +1785,9 @@ export default function DuelGame({
           <div className="absolute inset-x-0 bottom-[96px] z-[var(--z-contextual)] flex flex-col items-center gap-2">
             <span className="rounded-full bg-[#23211c] px-3 py-1 text-[11px] font-bold text-white shadow-sm">
               {selected.size < 3
-                ? `Pick ${3 - selected.size} more — a person, series, or ${GENRE_FLOOR}+ of a genre`
+                ? genrePairStuck
+                  ? `Genre melds need ${GENRE_FLOOR} — add a third ${selectedMovies[0].genre} film`
+                  : `Pick ${3 - selected.size} more — a person, series, or ${GENRE_FLOOR}+ of a genre`
                 : selectionMeld
                   ? `${selectionMeld.rungName} ×${selected.size}`
                   : 'No shared link — adjust your picks'}

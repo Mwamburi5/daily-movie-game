@@ -233,7 +233,7 @@
   },
   {
     "id": "superman",
-    "title": "Superman",
+    "title": "Superman (Christopher Reeve)",
     "year": 1978,
     "releaseDate": "1978-12-15",
     "decade": 1970,
@@ -737,7 +737,7 @@
   },
   {
     "id": "the-little-mermaid",
-    "title": "The Little Mermaid",
+    "title": "The Little Mermaid (Animated)",
     "year": 1989,
     "releaseDate": "1989-11-17",
     "decade": 1980,
@@ -3313,7 +3313,7 @@
   },
   {
     "id": "the-little-mermaid-2023",
-    "title": "The Little Mermaid",
+    "title": "The Little Mermaid (Live-Action)",
     "year": 2023,
     "releaseDate": "2023-05-26",
     "decade": 2020,
@@ -3497,7 +3497,7 @@
   },
   {
     "id": "superman-2025",
-    "title": "Superman",
+    "title": "Superman (David Corenswet)",
     "year": 2025,
     "releaseDate": "2025-07-11",
     "decade": 2020,

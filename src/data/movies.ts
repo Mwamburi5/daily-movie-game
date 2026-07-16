@@ -2872,7 +2872,10 @@ export const DATED_STUBS: DatedStub[] = [
   { id: 'national-lampoons-animal-house', title: 'National Lampoon\'s Animal House', releaseDate: '1978-07-28' },
   { id: 'halloween', title: 'Halloween', releaseDate: '1978-10-25' },
   { id: 'the-deer-hunter', title: 'The Deer Hunter', releaseDate: '1978-12-08' },
-  { id: 'superman', title: 'Superman', releaseDate: '1978-12-15' },
+  // Remake-collision tags (ruled 2026-07-16): a bare title shared by two pool
+  // films is an undecidable card. Tags must never contain or hint the year —
+  // the year IS the hidden answer. The pool builder asserts no duplicates.
+  { id: 'superman', title: 'Superman (Christopher Reeve)', releaseDate: '1978-12-15' },
   { id: 'rocky-ii', title: 'Rocky II', releaseDate: '1979-06-15' },
   { id: 'kramer-vs-kramer', title: 'Kramer vs. Kramer', releaseDate: '1979-12-19' },
   { id: 'mad-max', title: 'Mad Max', releaseDate: '1980-03-21' },
@@ -2911,7 +2914,7 @@ export const DATED_STUBS: DatedStub[] = [
   { id: 'field-of-dreams', title: 'Field of Dreams', releaseDate: '1989-04-21' },
   { id: 'ghostbusters-ii', title: 'Ghostbusters II', releaseDate: '1989-06-16' },
   { id: 'do-the-right-thing', title: 'Do the Right Thing', releaseDate: '1989-06-30' },
-  { id: 'the-little-mermaid', title: 'The Little Mermaid', releaseDate: '1989-11-17' },
+  { id: 'the-little-mermaid', title: 'The Little Mermaid (Animated)', releaseDate: '1989-11-17' },
   { id: 'born-on-the-fourth-of-july', title: 'Born on the Fourth of July', releaseDate: '1989-12-20' },
   { id: 'total-recall', title: 'Total Recall', releaseDate: '1990-06-01' },
   { id: 'ghost', title: 'Ghost', releaseDate: '1990-07-13' },
@@ -3043,7 +3046,7 @@ export const DATED_STUBS: DatedStub[] = [
   { id: 'john-wick-chapter-4', title: 'John Wick: Chapter 4', releaseDate: '2023-03-24' },
   { id: 'the-super-mario-bros-movie', title: 'The Super Mario Bros. Movie', releaseDate: '2023-04-05' },
   { id: 'guardians-of-the-galaxy-vol-3', title: 'Guardians of the Galaxy Vol. 3', releaseDate: '2023-05-05' },
-  { id: 'the-little-mermaid-2023', title: 'The Little Mermaid', releaseDate: '2023-05-26' },
+  { id: 'the-little-mermaid-2023', title: 'The Little Mermaid (Live-Action)', releaseDate: '2023-05-26' },
   { id: 'spider-man-across-the-spider-verse', title: 'Spider-Man: Across the Spider-Verse', releaseDate: '2023-06-02' },
   { id: 'mission-impossible-dead-reckoning-part-one', title: 'Mission: Impossible — Dead Reckoning Part One', releaseDate: '2023-07-10' },
   { id: 'killers-of-the-flower-moon', title: 'Killers of the Flower Moon', releaseDate: '2023-10-20' },
@@ -3064,5 +3067,5 @@ export const DATED_STUBS: DatedStub[] = [
   { id: 'sinners', title: 'Sinners', releaseDate: '2025-04-18' },
   { id: 'lilo-and-stitch', title: 'Lilo & Stitch', releaseDate: '2025-05-23' },
   { id: 'f1', title: 'F1', releaseDate: '2025-06-27' },
-  { id: 'superman-2025', title: 'Superman', releaseDate: '2025-07-11' },
+  { id: 'superman-2025', title: 'Superman (David Corenswet)', releaseDate: '2025-07-11' },
 ]

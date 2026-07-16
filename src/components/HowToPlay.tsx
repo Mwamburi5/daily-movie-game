@@ -152,6 +152,11 @@ export default function HowToPlay({ onClose }: { onClose: () => void }) {
             A link that runs <B>only through hidden credits</B> — the pile glows teal. Same
             points, eternal respect.
           </p>
+          <p>
+            The round <B>DEEP CUT</B> stamp on a card face marks a film that <B>carries hidden
+            credits</B> — more notable names than the card prints (the <B>+N deeper credits</B>{' '}
+            line on its flip side).
+          </p>
         </Section>
 
         <Section title="Runs">
@@ -265,9 +270,10 @@ export default function HowToPlay({ onClose }: { onClose: () => void }) {
 
         <Section title="Daily puzzle (solo)">
           <p>
-            One hand, golf scoring — <B>low wins</B>: every card you flip costs <B>+1</B>, invalid
-            plays cost <B>+2</B>, and chaining through the same person earns strokes back. Clear
-            the whole hand and beat par.
+            One hand, golf scoring — <B>low wins</B>. Peeking isn't free: a card's{' '}
+            <B>first flip costs +1</B> (flipping it again later is free), an invalid play costs{' '}
+            <B>+2</B>, and chaining through the same person earns strokes back. Clear the whole
+            hand and beat par.
           </p>
           <p>
             It's a true daily: everyone gets the <B>same hand on the same day</B> (your day rolls
@@ -295,8 +301,9 @@ export default function HowToPlay({ onClose }: { onClose: () => void }) {
         <Section title="Connections (solo)">
           <p>
             Sixteen movies, <B>four hidden groups of four</B>. Every group is joined by one thing —
-            a shared <B>director</B>, <B>actor</B>, <B>series</B>, or <B>genre</B>. Tap four you
-            think belong together, then <B>Submit</B>.
+            a shared <B>director</B>, <B>actor</B>, <B>series</B>, or <B>genre</B>. The four groups
+            can <B>repeat a type</B> (two director groups happens), and <B>at most one</B> group is
+            ever a genre. Tap four you think belong together, then <B>Submit</B>.
           </p>
           <p>
             Right, the group locks in and reveals its connection. Wrong, you lose one of your{' '}

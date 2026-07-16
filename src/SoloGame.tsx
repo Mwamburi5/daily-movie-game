@@ -57,6 +57,10 @@ export default function SoloGame({ onExit, start }: { onExit: () => void; start:
   const [playLog, setPlayLog] = useState<{ id: string; flipped: boolean }[]>([])
   const [raisedId, setRaisedId] = useState<string | null>(null)
   const [invalidNonce, setInvalidNonce] = useState(0)
+  // Nonce for the header's "+1" pulse — first flips are the scored move players
+  // miss (feedback batch 1: the counter ticked silently), so the cost announces
+  // itself at the moment it's paid.
+  const [flipPulse, setFlipPulse] = useState(0)
   const [status, setStatus] = useState<Status>('playing')
   const [showRules, setShowRules] = useState(false)
   // Streak/best readout for the end screen — set by the finish effect below.
@@ -94,6 +98,7 @@ export default function SoloGame({ onExit, start }: { onExit: () => void; start:
     if (status !== 'playing') return
     if (!faceUp.has(id) && !flippedEver.has(id)) {
       setFlippedEver((prev) => new Set(prev).add(id))
+      setFlipPulse((n) => n + 1)
     }
     setFaceUp((prev) => {
       const next = new Set(prev)
@@ -172,6 +177,7 @@ export default function SoloGame({ onExit, start }: { onExit: () => void; start:
     setPile([puzzle.starterMovieId])
     setFaceUp(new Set())
     setFlippedEver(new Set())
+    setFlipPulse(0)
     setInvalids(0)
     setCombo(null)
     setComboBonus(0)
@@ -238,8 +244,23 @@ export default function SoloGame({ onExit, start }: { onExit: () => void; start:
             </span>
           </div>
           <div className="flex items-center gap-1.5">
-            <div className="font-stub-label text-[11px] font-semibold uppercase tracking-wider tabular-nums text-stub-slate-light">
+            <div className="relative font-stub-label text-[11px] font-semibold uppercase tracking-wider tabular-nums text-stub-slate-light">
               Flips {flips} · Score {score} · Par {puzzle.par}
+              {/* "+1" pops off the counter on each first flip (re-flips are free,
+                  so no pulse) — the flip cost teaches itself. Keyed remount per
+                  flip; the spent span sits invisible until the next one. */}
+              {flipPulse > 0 && (
+                <motion.span
+                  key={flipPulse}
+                  aria-hidden="true"
+                  initial={{ opacity: 1, y: reduce ? 0 : 3 }}
+                  animate={{ opacity: 0, y: reduce ? 0 : -13 }}
+                  transition={{ duration: reduce ? 0.6 : 0.9, ease: 'easeOut' }}
+                  className="pointer-events-none absolute -top-4 left-1 text-[12px] font-extrabold text-stub-amber"
+                >
+                  +1
+                </motion.span>
+              )}
             </div>
             <button
               type="button"

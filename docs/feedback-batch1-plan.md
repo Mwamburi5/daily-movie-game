@@ -62,17 +62,18 @@ never folded into an unrelated edit (CLAUDE.md).
   untouched · RULEBOOK Mode-3 line in the same pass.
 - **Effort:** S.
 
-### A3 · Overflow/scroll affordance — rides the reel decision — [checkpoint]
+### A3 · Overflow/scroll affordance — ✅ RESOLVED (reel approved 2026-07-12)
 - **Evidence:** Uzair screenshot — tight practice runs off-screen; "display all
   on one screen or show a prompt that you can scroll." Scroll exists post-
   267a8be but is undiscoverable. Note item 10 asks for a vertical timeline —
   same direction.
-- **Fix:** don't patch the old layout — **evaluate the swipeable-reel redesign
-  already sitting on `codex/chronology-reel` (bdd4812)** as the answer to both
-  reports; its checkpoint is the decision point. Fallback if the reel is
-  rejected: edge-fade + one-shot "swipe ⟷" pill on first overflow (localStorage
-  meta-state — allowed).
-- **Effort:** review session (branch already built).
+- **Resolution (docket correction 2026-07-16):** the swipeable-reel redesign
+  on `codex/chronology-reel` (bdd4812) was already **BUILT + Buri approved ✅
+  2026-07-12** — ledgered on the branch itself (gates green, design-qa passed,
+  both widths evidenced). No evaluation session needed; the branch waits for
+  the window-close batch deploy (~07-24) per §2.11. The fallback (edge-fade +
+  one-shot "swipe ⟷" pill) is moot.
+- **Effort:** none remaining — merge+deploy rides the batch.
 
 ### A4 · Chronology scoring suggestions — [interviews] [⚠ rule-change]
 - **Evidence:** note items 9 (batch submit, then reveal misplacements) and 11
@@ -215,7 +216,7 @@ never folded into an unrelated edit (CLAUDE.md).
    deploy (batches to ~07-24).
 3. **Checkpoint wave (serialized on DuelGame/SoloGame):** C-slice UI (C1, C3,
    C4) + A2 + D2 → side-by-sides both widths → STOP for Buri.
-4. **Reel decision (A3):** review `codex/chronology-reel` against Uzair's
-   screenshot + note item 10 as acceptance evidence.
+4. ~~**Reel decision (A3)**~~ — RESOLVED: reel was approved 2026-07-12
+   (ledgered on the branch); it rides the window-close batch deploy.
 5. **Interviews docket additions (~07-24):** A4 ⚠ · B2 (→§7·6 grill) · B3 ·
    C6 · C7 · B1-escalation-if-copy-fails.

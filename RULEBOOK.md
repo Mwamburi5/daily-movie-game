@@ -200,7 +200,8 @@ can chain it — up to **3 cards in one turn**. A **Super** link gives you a bon
 ### Deep cuts
 Some cards say **"+N deeper credits"** — extra famous names that aren't printed on the
 card but still count *if you know them*. A link that works **only** through hidden names
-is a **deep cut**: the pile glows teal. Same points, extra bragging rights.
+is a **deep cut**: the pile glows teal. Same points, extra bragging rights. The round
+**DEEP CUT stamp** on a card face is the tell: that film carries hidden credits.
 
 ---
 
@@ -281,7 +282,8 @@ game, you know the shape — here the connection is always about the *movies*.
 ### How to play in 30 seconds
 1. You see a **4×4 grid** of sixteen movie titles. Hidden inside are **four groups of
    four**, each joined by one thing: the same **director**, **actor**, **series**, or
-   **genre**.
+   **genre**. It is *not* one group of each kind — types can **repeat** (two director
+   groups happens), and **at most one** group is ever a genre.
 2. **Tap four** titles you think belong together, then tap **Submit**.
 3. **Right** — the group locks in and reveals its connection (e.g. *Director · Martin
    Scorsese*).
