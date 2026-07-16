@@ -85,8 +85,11 @@ export default function Hand({
     ? ({ duration: 0.15 } as const)
     : ({ type: 'spring', stiffness: 380, damping: 30 } as const)
   const n = cards.length
-  // Fan tightens as the hand grows (duel draws can exceed 7 cards)
-  const spacing = Math.min(45, (360 - CARD_W) / Math.max(n - 1, 1))
+  // Fan tightens as the hand grows (duel draws can exceed 7 cards). Width 372
+  // (was 360) + cap 47: at 7 cards each covered card's visible sliver gains
+  // ~2px of title — part of the C4 readability pass (feedback batch 1); still
+  // clears the 375px viewport with margin at the outer cards' tilt.
+  const spacing = Math.min(47, (372 - CARD_W) / Math.max(n - 1, 1))
   const raised = cards.find((c) => c.id === raisedId)
 
   // ── Long-press drag-to-reorder ───────────────────────────────────────────
@@ -217,7 +220,9 @@ export default function Hand({
               onPointerCancel={() => cancelPress(m.id)}
             >
               <motion.div
-                animate={{ rotate: grabbed ? 0 : off * 5, scale: grabbed ? 1.06 : 1 }}
+                // Tilt 3.5°/slot (was 5): the flatter fan keeps neighboring
+                // title bands parallel enough to scan (C4 readability pass).
+                animate={{ rotate: grabbed ? 0 : off * 3.5, scale: grabbed ? 1.06 : 1 }}
                 transition={spring}
                 className="relative"
               >

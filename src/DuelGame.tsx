@@ -44,7 +44,7 @@ import {
   pickPlay,
   whiffs,
 } from './lib/difficulty.ts'
-import { recordDuelFinish, type DuelMeta } from './lib/progress.ts'
+import { hasSeenDragPlay, markDragPlaySeen, recordDuelFinish, type DuelMeta } from './lib/progress.ts'
 import { track } from './lib/analytics.ts'
 
 // Resolve a card id to its Movie — wild or canonical (the deck holds 3 wilds).
@@ -245,6 +245,9 @@ export default function DuelGame({
   const [hintMeldId, setHintMeldId] = useState<number | null>(null)
   const [hintsLeft, setHintsLeft] = useState(hintBudget)
   const [invalidNonce, setInvalidNonce] = useState(0)
+  // One-shot drag-to-play nudge (feedback batch 1): live until this device's
+  // first drag lands on a target, then persisted off via markDragPlaySeen.
+  const [dragNudge, setDragNudge] = useState(() => !hasSeenDragPlay())
   const [banner, setBanner] = useState<DuelBanner | null>(null)
   // Taz's last say() line, persisted for the booth nameplate — the banner
   // auto-nulls at 2400ms but the quote stays readable until his next line.
@@ -448,6 +451,14 @@ export default function DuelGame({
     return hit
   }
 
+  // A drag reached a target zone — the gesture is learned; retire the nudge
+  // for good (even if the link itself misfires; C3 teaches the drag, not links).
+  const dismissDragNudge = () => {
+    if (!dragNudge) return
+    setDragNudge(false)
+    markDragPlaySeen()
+  }
+
   const invalidShake = () => {
     setInvalidNonce((n) => n + 1)
     window.clearTimeout(lowerTimer.current)
@@ -468,6 +479,7 @@ export default function DuelGame({
     if (isWild(id) && runState === null) {
       const landedWild = pileAt(point)
       if (landedWild === null) return
+      dismissDragNudge()
       const newHand = playerHand.filter((h) => h !== id)
       setPiles((ps) => ps.map((p, i) => (i === landedWild ? [...p, id] : p)))
       setFxPile(landedWild)
@@ -487,6 +499,7 @@ export default function DuelGame({
     const meldHit = findMeldAt(point)
     if (meldHit && pendingDraw === null && runState === null) {
       if (canLayOff(card, meldHit)) {
+        dismissDragNudge()
         const newHand = playerHand.filter((h) => h !== id)
         setMelds((ms) =>
           ms.map((m) =>
@@ -519,6 +532,7 @@ export default function DuelGame({
     // stays on the pile the run is building (a run can't hop marquees).
     const landed = pileAt(point)
     if (landed === null) return
+    dismissDragNudge()
     const pileIdx = runState !== null ? runState.pileIdx : landed
     const top = tops[pileIdx]
 
@@ -1698,6 +1712,7 @@ export default function DuelGame({
             reduce={reduce}
           />
         </div>
+
         </div>
 
         {/* Banked melds — open to lay-offs from both sides */}
@@ -1903,6 +1918,33 @@ export default function DuelGame({
             </button>
           </div>
         )}
+
+        {/* One-shot drag nudge (C3, feedback batch 1): a raised card on a
+            fresh device is the "now what?" moment. Root-level absolute like
+            Hand's own raised slot; floats just above the raised card's top
+            (bottom = raisedBottom 190 + raised height ~245 + gap — bottom-
+            anchored so 844 and 667 both work). Same floating-pill pattern as
+            the fan's HINT pill. Retired forever by dismissDragNudge on the
+            first drag that reaches a target. */}
+        {dragNudge &&
+          status === 'playerTurn' &&
+          raisedId !== null &&
+          pendingDraw === null &&
+          !meldSelect &&
+          !gameOver && (
+            <div
+              className="pointer-events-none absolute inset-x-0 z-[60] flex justify-center px-6"
+              style={{ bottom: 443 }}
+            >
+              <motion.span
+                animate={reduce ? undefined : { opacity: [0.7, 1, 0.7] }}
+                transition={reduce ? undefined : { duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
+                className="rounded-stub-pill border-2 border-stub-amber bg-stub-navy px-3 py-1 font-stub-label text-[10px] font-bold uppercase tracking-[.1em] text-stub-amber"
+              >
+                drag it onto a marquee to play
+              </motion.span>
+            </div>
+          )}
 
         <Hand
           cards={playerHandMovies}

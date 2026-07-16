@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
 import type { ReactNode } from 'react'
 
@@ -36,8 +37,12 @@ const TokenPill = ({ children }: { children: ReactNode }) => (
 
 // Full-screen scrollable rules. Opaque on purpose: it can sit over a live
 // duel without losing any game state underneath.
+// Summary-first (feedback batch 1): a short per-mode card up top, the full
+// sections behind one tap — same content, layered. Distinct from the menu's
+// intro overlay, which stays high-level per the §7·5(iii) ruling.
 export default function HowToPlay({ onClose }: { onClose: () => void }) {
   const reduce = useReducedMotion()
+  const [expanded, setExpanded] = useState(false)
   return (
     <motion.div
       className="absolute inset-0 z-[120] overflow-y-auto overscroll-contain bg-stub-cream"
@@ -63,6 +68,42 @@ export default function HowToPlay({ onClose }: { onClose: () => void }) {
           </button>
         </header>
 
+        <Section title="The short version">
+          <p>
+            <B>Movies connect through the people who made them</B> — the actors, directors, and
+            writers they share. Four ways to play with those links:
+          </p>
+          <p>
+            <B>Duel vs Computer</B> · Take turns playing connected cards and banking melds. Race
+            to 20 — highest net score wins.
+          </p>
+          <p>
+            <B>Daily Puzzle</B> · One hand; chain every card onto the pile. Golf — low wins, and
+            peeking at credits costs +1.
+          </p>
+          <p>
+            <B>Chronology</B> · Slot each movie into the timeline where it belongs. Golf — misses
+            cost strokes.
+          </p>
+          <p>
+            <B>Connections</B> · Sixteen movies, four hidden groups of four. Four mistakes
+            allowed.
+          </p>
+        </Section>
+
+        {!expanded && (
+          <button
+            type="button"
+            data-rules-expand
+            onClick={() => setExpanded(true)}
+            className="mb-7 min-h-12 w-full rounded-stub-pill border-2 border-stub-navy bg-stub-paper px-7 py-3 text-[14px] font-bold text-stub-navy shadow-stub-card-resting active:scale-95"
+          >
+            Read the full rules
+          </button>
+        )}
+
+        {expanded && (
+          <>
         <Section title="The goal">
           <p>
             Connect movies through the people who made them — actors, directors, writers. Links
@@ -316,9 +357,12 @@ export default function HowToPlay({ onClose }: { onClose: () => void }) {
             on the same day. <B>Random grid</B> on the menu deals a fresh board any time.
           </p>
         </Section>
+          </>
+        )}
 
         {/* TMDB free-tier attribution — required alongside any TMDB-derived
-            data in the pool (docs/tmdb-plan.md "Obligations"). */}
+            data in the pool (docs/tmdb-plan.md "Obligations"). Sits OUTSIDE the
+            expand gate on purpose: the obligation holds even in summary view. */}
         <section className="mb-7 border-t border-stub-slate-light/40 pt-5" data-tmdb-attribution>
           <h3 className="mb-2 font-stub-label text-[11px] font-bold uppercase tracking-wider text-stub-slate">
             About the data

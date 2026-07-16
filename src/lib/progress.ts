@@ -44,6 +44,9 @@ interface ProgressV1 {
   // read by a rule. Optional/additive: a pre-intro blob lacks it → treated as
   // unseen (shows once, then persists). Same additive pattern as `connections`.
   seenIntro?: boolean
+  // Duel drag-to-play nudge dismissed (feedback batch 1: "drag it to play took
+  // me a sec"). META ONLY, same one-shot additive pattern as seenIntro.
+  seenDragPlay?: boolean
 }
 
 export type DailyMode = 'solo' | 'chronology' | 'connections'
@@ -61,6 +64,7 @@ const fresh = (): ProgressV1 => ({
     directors: { plays: 0, wins: 0 },
   },
   seenIntro: false,
+  seenDragPlay: false,
 })
 
 // localStorage can be absent or throwing (Safari private mode, storage full).
@@ -187,5 +191,21 @@ export function markIntroSeen(): void {
   const p = loadProgress()
   if (p.seenIntro) return
   p.seenIntro = true
+  save(p)
+}
+
+// ── drag-to-play nudge ────────────────────────────────────────────────────────
+// One-shot Duel hint (feedback batch 1): a raised card on a fresh device shows
+// "drag it onto a marquee to play" until the player's first drag lands on a
+// target, then never again. UI gate only, never a rule input.
+
+export function hasSeenDragPlay(): boolean {
+  return loadProgress().seenDragPlay === true
+}
+
+export function markDragPlaySeen(): void {
+  const p = loadProgress()
+  if (p.seenDragPlay) return
+  p.seenDragPlay = true
   save(p)
 }

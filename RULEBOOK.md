@@ -259,8 +259,9 @@ until the gap you want comes into view.
 - **Daily:** the Chronology card's main button. Everyone playing on the same calendar day
   gets the **same** anchor and hand, so you can compare runs. (Your day rolls over at your
   own local midnight, not a global clock.)
-- **Practice:** the `Wide` and `Tight` pills under it start a fresh **random** round any
-  time. They only change how the 10 cards are **spread in time**, never a rule or the score:
+- **Practice:** the `Wide · decades apart` and `Tight · same era` pills under it start a
+  fresh **random** round any time. They only change how the 10 cards are **spread in
+  time**, never a rule or the score:
   - **Wide** (easier) spreads the hand across the decades, so the gaps are roomy.
   - **Tight** (harder) bunches the hand into one narrow window (say, a single decade), so
     the gaps are small and the calls are close.

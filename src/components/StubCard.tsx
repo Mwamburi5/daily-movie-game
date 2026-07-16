@@ -244,8 +244,12 @@ const SIZES = {
     radius: '11px', // README: 10–11 at hand size
     borderPx: 2,
     spineW: 0, // no separate spine; the rail's bar is the genre marker
-    railW: 12, // cream rail column (pip + inset bar; no ADMIT ONE at this size)
-    perfW: 6, // dotted perforation strip
+    // C4 readability pass (feedback batch 1) — ⚠ token deviation, checkpoint
+    // flag: rail 12→9 + perf 6→5 at hand size only. In the fan each covered
+    // card shows a ~46px sliver; every px the chrome gives back is a px of
+    // title. Pile/raised keep README values.
+    railW: 9, // cream rail column (pip + inset bar; no ADMIT ONE at this size)
+    perfW: 5, // dotted perforation strip
     showChrome: true,
     showAdmit: false, // ADMIT ONE too small to read at 96px — omit
     showNotch: false, // notches too small at 96px — omit

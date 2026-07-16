@@ -795,6 +795,28 @@ what's ready-to-review per sitting.
       HOLDS. **Carry-forward: chronology feedback/analytics now split across
       THREE builds (pre-overflow-fix / post-fix-162-pool / 438-pool) — tag at
       the ~07-24 read. Today's chrono daily reshuffled at deploy.**
+- [x] **POST-SEND · Feedback batch-1 ship slice — EXECUTED 2026-07-16**
+      (3d84a15; rulings in-session: A1 = Mermaid (Animated)/(Live-Action) +
+      Superman lead-actor tags · all five greenlit · §7·7b minors ship
+      separately): A1 four stub titles + duplicate-bare-title builder assert
+      (pool JSON: exactly 4 lines) · B1 connections type-repeat copy · C2 flip
+      +1 pulse (premise browser-verified first) + how-to line · C5 DEEP CUT
+      stamp line · D1 genre-floor message in the meld pill (say() swapped out —
+      it would clobber the LAST-play strip). Docket correction: A3 RESOLVED
+      (reel approved 07-12). Gates green ×6. NO DEPLOY (§2.11).
+- [ ] **POST-SEND · Feedback batch-1 checkpoint wave — work-complete ⛔
+      AWAITING BURI CHECKPOINT (2026-07-16)** — C1 summary-first HowToPlay
+      (short card + "Read the full rules" expand; TMDB attribution stays
+      outside the gate) · C3 one-shot drag nudge (seenDragPlay meta-flag,
+      pill floats above the raised card, retired on first landed drag) · C4
+      fan readability pass (pitch 372/47, tilt 3.5°, ⚠ hand-rail token
+      deviation 12→9/6→5 — flag list in session summary; structural options
+      = narrower hand cards or two-row fan, Buri's call) · D2 Wide/Tight
+      pills subtitled "decades apart"/"same era" + RULEBOOK sync. **A2
+      same-year month reveal DEFERRED to post-reel-merge** — the approved
+      reel branch rewrote ChronoCard/ChronologyGame (bdd4812); building on
+      main's layout = guaranteed conflict. Side-by-sides captured in-session
+      @390×844 + 375×667; tsc/build green, verify ×4 green (sim untouched).
 - [ ] **POST-SEND · fix slice (§7·7b + §7·7c minors)** — Domine ticking
       numerals · Duel HUD/MeldShelf overlap @667 · full keyboard operability ·
       minors sweep (favicon, Solo blurb, MeldShelf legacy spine, difficulty

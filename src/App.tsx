@@ -15,9 +15,11 @@ type Mode = 'menu' | 'solo' | 'duel' | 'chronology' | 'connections'
 // engine tuned). House voice borrows film-distribution words: a "wide" release is
 // spread across the calendar (wide gaps), a "tight" run bunches into one window.
 // These flavor the random practice round only; the daily always deals 'standard'.
-const CHRONO_PRACTICE: { id: 'easy' | 'hard'; label: string }[] = [
-  { id: 'easy', label: 'Wide' },
-  { id: 'hard', label: 'Tight' },
+// Subtitles gloss the deal shape (feedback batch 1: bare "wide/tight" read as
+// jargon) — spreadDeal spans the whole era, clusterDeal bunches one window.
+const CHRONO_PRACTICE: { id: 'easy' | 'hard'; label: string; sub: string }[] = [
+  { id: 'easy', label: 'Wide', sub: 'decades apart' },
+  { id: 'hard', label: 'Tight', sub: 'same era' },
 ]
 
 export default function App() {
@@ -234,6 +236,9 @@ export default function App() {
                     className="flex-1 rounded-stub-pill border-2 border-stub-navy bg-stub-paper px-2 py-1 font-stub-label text-[10px] font-bold uppercase tracking-[0.08em] text-stub-navy transition-colors active:bg-stub-navy/10"
                   >
                     {p.label}
+                    <span className="block text-[8px] font-semibold normal-case tracking-normal text-stub-slate">
+                      {p.sub}
+                    </span>
                   </button>
                 ))}
               </div>
