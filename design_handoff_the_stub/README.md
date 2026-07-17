@@ -25,7 +25,10 @@ Colors
 - overlay scrim: rgba(31,58,82,.62–.66)
 
 Type
-- Display: **Domine** 700 (titles, scores; scores use `font-variant-numeric: tabular-nums`)
+- Display: **Domine** 700 (titles, scores; ⚠ AMENDED 2026-07-17 §7·7b — Domine ships no
+  `tnum`, so `tabular-nums` is a silent no-op on this face. Ticking scores get stability
+  from per-digit 1ch boxes instead: `src/components/FixedDigits.tsx`. Token-sheet
+  deviation, checkpoint-flagged)
 - UI: **Inter** 400–800
 - Labels: **JetBrains Mono** 600–700, ALL CAPS, letter-spacing .06–.18em
 

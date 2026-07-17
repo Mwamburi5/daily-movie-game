@@ -35,6 +35,7 @@ import { localDateSeed } from './lib/daily.ts'
 import { recordDailyFinish, type DailyFinish } from './lib/progress.ts'
 import { track, type EventData } from './lib/analytics.ts'
 import ShareCopy from './components/ShareCopy.tsx'
+import FixedDigits from './components/FixedDigits.tsx'
 
 // How a round was started (chosen at the menu, App.tsx). The DAILY rides the
 // standard uniform deal keyed to the player's local calendar date, so everyone
@@ -370,7 +371,13 @@ export default function ChronologyGame({ onExit, start }: { onExit: () => void; 
           <div className="relative flex items-center gap-2">
             <div className="text-right tabular-nums">
               <div className="font-stub-label text-[11px] uppercase tracking-wide text-stub-cream">
-                Strokes <span className="font-stub-display text-[13px] font-bold">{strokes}</span>
+                {/* FixedDigits: the strokes tally ticks in Domine, which has no
+                    tnum — 1ch digit boxes stop the row nudging left per stroke
+                    (§7·7b). The mono label + credits tail are tabular already. */}
+                Strokes{' '}
+                <span className="font-stub-display text-[13px] font-bold">
+                  <FixedDigits value={strokes} />
+                </span>
                 {credits > 0 && <span className="text-stub-amber"> · −{credits}</span>}
               </div>
               <div className="mt-1 flex items-center justify-end gap-1" aria-label="Streak">

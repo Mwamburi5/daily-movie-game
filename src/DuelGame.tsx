@@ -75,6 +75,7 @@ function ladderMeld(cards: Movie[], deep: boolean): { perCard: number; pts: numb
 import StubCard from './components/StubCard.tsx'
 import RecapReel from './components/RecapReel.tsx'
 import DrawChoice from './components/DrawChoice.tsx'
+import FixedDigits from './components/FixedDigits.tsx'
 import Hand from './components/Hand.tsx'
 import HowToPlay from './components/HowToPlay.tsx'
 import IdleCue from './components/IdleCue.tsx'
@@ -1536,8 +1537,10 @@ export default function DuelGame({
                     >
                       DECK
                     </span>
-                    <span className="font-stub-display text-[22px] font-bold leading-none tabular-nums text-stub-cream">
-                      {deck.length}
+                    {/* FixedDigits: the countdown ticks in Domine (no tnum) —
+                        1ch digit boxes keep the DECK pair steady (§7·7b). */}
+                    <span className="font-stub-display text-[22px] font-bold leading-none text-stub-cream">
+                      <FixedDigits value={deck.length} />
                     </span>
                   </div>
                 </div>
