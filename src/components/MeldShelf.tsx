@@ -1,6 +1,7 @@
 import { motion, useReducedMotion } from 'framer-motion'
 import { movieById } from '../data/movies.ts'
 import { isWild, wildMovie, type Meld } from '../lib/duel.ts'
+import { spineColor as genreSpine } from './StubCard.tsx'
 
 // The Stub replacement for MeldZone. Two faces, same chip DNA:
 //   • MeldShelf   — the 7a/7e horizontal shelf strip of banked marquee rows
@@ -17,13 +18,13 @@ import { isWild, wildMovie, type Meld } from '../lib/duel.ts'
 export const meldLabel = (m: Meld) =>
   m.rungName ?? (m.series ? m.series.split('-').join(' ') : m.people[0] ?? 'meld')
 
-// One 30px card thumbnail. Minimal inline frame this wave (StubCard is forged in
-// parallel and not importable): paper bg + navy border, with the movie's legacy
-// posterColor as a thin genre spine down the left edge — the ticket-stub spine
-// motif at thumb scale. `layoutId={cid}` is the SHARED FLIP namespace (hand /
-// pile / shelf); dropping it silently kills the fly-to-shelf animation. Wild ids
-// aren't in movieById, so callers branch on isWild BEFORE rendering a Thumb.
-// `spineColor` lets ineligible picker rows dim the border to slate to match 7b.
+// One 30px card thumbnail: paper bg + navy border, with the GENRE-family spine
+// down the left edge (StubCard's exported map — §7·7c retired the legacy
+// posterColor here, the last per-movie-color consumer in the UI). `layoutId=
+// {cid}` is the SHARED FLIP namespace (hand / pile / shelf); dropping it
+// silently kills the fly-to-shelf animation. Wild ids aren't in movieById, so
+// callers branch on isWild BEFORE rendering a Thumb. `spineColor` (the prop)
+// lets ineligible picker rows dim the border to slate to match 7b.
 function Thumb({ cid, spineColor }: { cid: string; spineColor: string }) {
   const m = movieById.get(cid)!
   return (
@@ -34,7 +35,7 @@ function Thumb({ cid, spineColor }: { cid: string; spineColor: string }) {
     >
       <div
         className="absolute inset-y-0 left-0 w-1"
-        style={{ background: m.posterColor }}
+        style={{ background: genreSpine(m.genre) }}
       />
     </motion.div>
   )

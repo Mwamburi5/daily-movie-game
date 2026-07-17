@@ -7,7 +7,15 @@ import ConnectionsGame, { type ConnectionsStart } from './ConnectionsGame.tsx'
 import HowToPlay from './components/HowToPlay.tsx'
 import { type Difficulty, DIFFICULTIES, DIFFICULTY_META } from './lib/difficulty.ts'
 import { localDateSeed } from './lib/daily.ts'
-import { dailyStatus, duelRecord, hasSeenIntro, markIntroSeen, type DailyStatus } from './lib/progress.ts'
+import {
+  dailyStatus,
+  duelRecord,
+  hasSeenIntro,
+  markIntroSeen,
+  lastDifficulty,
+  recordDifficultyPick,
+  type DailyStatus,
+} from './lib/progress.ts'
 
 type Mode = 'menu' | 'solo' | 'duel' | 'chronology' | 'connections'
 
@@ -34,7 +42,10 @@ export default function App() {
     }
     return 'menu'
   })
-  const [difficulty, setDifficulty] = useState<Difficulty>('matinee')
+  // Lazy init from the picker memory (§7·7c): a reload keeps the last-picked
+  // tier instead of snapping back to Matinee. Meta-state only — the value still
+  // flows into DuelGame as a prop, exactly as a tap would set it.
+  const [difficulty, setDifficulty] = useState<Difficulty>(() => lastDifficulty())
   const [chronoStart, setChronoStart] = useState<ChronoStart>({ kind: 'daily' })
   const [connStart, setConnStart] = useState<ConnectionsStart>({ kind: 'daily' })
   const [soloStart, setSoloStart] = useState<SoloStart>({ kind: 'daily' })
@@ -153,7 +164,10 @@ export default function App() {
                   type="button"
                   data-difficulty={d}
                   aria-pressed={difficulty === d}
-                  onClick={() => setDifficulty(d)}
+                  onClick={() => {
+                    setDifficulty(d)
+                    recordDifficultyPick(d)
+                  }}
                   className={`flex-1 whitespace-nowrap rounded-stub-pill px-2 py-1.5 font-stub-label text-[10px] font-bold uppercase tracking-[0.06em] transition-colors ${
                     difficulty === d
                       ? 'bg-stub-amber text-stub-navy shadow-sm'
@@ -183,7 +197,7 @@ export default function App() {
                 <StreakChip mode="solo" status={soloChip} />
               </span>
               <span className="mt-0.5 block font-stub-ui text-[12px] text-stub-slate">
-                Today's hand — same for everyone. Fewest flips wins. Golf — low score wins.
+                Today's hand — same for everyone. Play out every card. Golf — low score wins.
               </span>
             </button>
             {/* The daily is the button above; the original hand-designed puzzle

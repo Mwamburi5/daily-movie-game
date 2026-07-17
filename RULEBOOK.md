@@ -62,6 +62,9 @@ A quiet brain-teaser. No computer, no clock. Just you and one hand of cards.
   because a sharp player could earn more strokes back. Pars run about **7–12**.
 - **Practice:** the small button under it replays the **original hand-designed puzzle**
   (the Scorsese-clique hand, par 9) any time, as a fixed warm-up.
+- **Replay today's hand** on the end screen re-deals the **same** daily board — a retry,
+  not a new puzzle. And a practice share says `practice ·` before the score, so only the
+  daily shares as the daily.
 
 ### What's on screen
 ```
@@ -265,6 +268,9 @@ until the gap you want comes into view.
   - **Wide** (easier) spreads the hand across the decades, so the gaps are roomy.
   - **Tight** (harder) bunches the hand into one narrow window (say, a single decade), so
     the gaps are small and the calls are close.
+- **Replay today's line** on the end screen re-deals the **same** daily board — a retry,
+  not a new puzzle; practice's **New round** deals fresh. And a practice share says
+  `practice ·` before the score, so only the daily shares as the daily.
 
 **The twist:** every card you place makes the next one harder, because the gaps get
 smaller. The first card is a gimme. The last one might be threading 1997 between 1995
@@ -324,6 +330,9 @@ scenes the game checks this for a whole year of boards before any of them ship.)
 - **Daily:** the Connections card's main button. Everyone on the same calendar day gets
   the **same sixteen**, so you can compare. (Your day rolls over at your own local midnight.)
 - **Practice:** the **Random grid** pill deals a fresh, already-checked board any time.
+- **Replay today's grid** on the end screen re-deals the **same** daily board — a retry,
+  not a new puzzle; practice's **New grid** deals fresh. And a practice share says
+  `practice ·` before the score, so only the daily shares as the daily.
 
 ---
 

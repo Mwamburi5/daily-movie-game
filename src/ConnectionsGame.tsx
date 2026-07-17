@@ -504,6 +504,7 @@ export default function ConnectionsGame({ onExit, start }: { onExit: () => void;
               guesses={guesses}
               groupOf={groupOf}
               daily={start.kind === 'daily' ? finishMeta : null}
+              practice={start.kind === 'practice'}
               analytics={{ mode: 'connections', kind: start.kind }}
               onReset={resetGame}
               onMenu={onExit}
@@ -542,6 +543,7 @@ function ConnectionsResults({
   guesses,
   groupOf,
   daily,
+  practice,
   analytics,
   onReset,
   onMenu,
@@ -552,6 +554,7 @@ function ConnectionsResults({
   guesses: string[][]
   groupOf: Map<string, number>
   daily: DailyFinish | null
+  practice: boolean // practice grid: marks the share line, relabels replay
   analytics: EventData // mode identity for the share event (parent owns kind)
   onReset: () => void
   onMenu: () => void // back to the mode menu (W5d: every end screen routes home)
@@ -567,7 +570,9 @@ function ConnectionsResults({
       ? 'solved · clean'
       : `solved · ${mistakes} mistake${mistakes === 1 ? '' : 's'}`
     : 'missed it'
-  const text = matchCutShare('Connections', scoreLine, emojiGrid)
+  // Practice grids carry a marker (§7·7c) so a practice result can't pass for
+  // the daily in a group chat; the brand line stays byte-identical for dailies.
+  const text = matchCutShare('Connections', `${practice ? 'practice · ' : ''}${scoreLine}`, emojiGrid)
 
   return (
     <motion.div
@@ -631,7 +636,9 @@ function ConnectionsResults({
           onClick={onReset}
           className="mt-3 min-h-12 rounded-stub-pill border-2 border-stub-navy bg-stub-paper px-7 py-3 font-stub-ui text-[15px] font-bold text-stub-navy shadow-stub-card-resting active:scale-95"
         >
-          Play again
+          {/* Honest replay labels (§7·7c): the daily re-deals the SAME grid by
+              design; only practice deals a fresh one. */}
+          {practice ? 'New grid' : "Replay today's grid"}
         </button>
         <button
           type="button"

@@ -64,10 +64,13 @@ interface LogEntry {
 // The three modes read as one family: a brand line, the golf score (low wins),
 // and a 🎬-led emoji row (🟩 clean, 🟥 misfire). The clipboard plumbing that
 // debuted here now lives in src/lib/share.ts + ShareCopy, used by all three modes.
-function shareText(score: number, strokes: number, credits: number, emoji: string): string {
+function shareText(score: number, strokes: number, credits: number, emoji: string, practice: boolean): string {
   const tally =
     `${strokes} ${strokes === 1 ? 'stroke' : 'strokes'}` + (credits > 0 ? `, ${credits} back` : '')
-  return matchCutShare('Chronology', `score ${score} (${tally})`, emoji)
+  // Practice rounds carry a marker (§7·7c): without it a practice score is
+  // indistinguishable from the daily in a group chat. The brand line stays
+  // byte-identical for dailies.
+  return matchCutShare('Chronology', `${practice ? 'practice · ' : ''}score ${score} (${tally})`, emoji)
 }
 
 // ── LINE band interaction geometry ─────────────────────────────────────────────
@@ -512,6 +515,7 @@ export default function ChronologyGame({ onExit, start }: { onExit: () => void; 
               credits={credits}
               log={playLog}
               daily={start.kind === 'daily' ? finishMeta : null}
+              practice={start.kind === 'practice'}
               analytics={{ mode: 'chronology', kind: start.kind }}
               onReset={resetGame}
               onMenu={onExit}
@@ -670,6 +674,7 @@ function ChronoResults({
   credits,
   log,
   daily,
+  practice,
   analytics,
   onReset,
   onMenu,
@@ -679,6 +684,7 @@ function ChronoResults({
   credits: number
   log: LogEntry[]
   daily: DailyFinish | null // streak readout — null on practice rounds
+  practice: boolean // practice round: marks the share line, relabels replay
   analytics: EventData // mode identity for the share event (parent owns kind)
   onReset: () => void
   onMenu: () => void // back to the mode menu (W5d: every end screen routes home)
@@ -688,7 +694,7 @@ function ChronoResults({
   // Family share format: one glyph per placement, in placement order (clean 🟩 /
   // misfire 🟥), led by 🎬 like the other two modes.
   const emoji = '🎬' + log.map((p) => (p.result === 'misfire' ? '🟥' : '🟩')).join('')
-  const text = shareText(score, strokes, credits, emoji)
+  const text = shareText(score, strokes, credits, emoji, practice)
 
   return (
     <motion.div
@@ -738,7 +744,9 @@ function ChronoResults({
           onClick={onReset}
           className="mt-3 min-h-12 rounded-stub-pill border-2 border-stub-navy bg-stub-paper px-7 py-3 font-stub-ui text-[15px] font-bold text-stub-navy shadow-stub-card-resting active:scale-95"
         >
-          Play again
+          {/* Honest replay labels (§7·7c): the daily re-deals the SAME board by
+              design ("the daily is the daily"), so don't promise a new one. */}
+          {practice ? 'New round' : "Replay today's line"}
         </button>
         <button
           type="button"

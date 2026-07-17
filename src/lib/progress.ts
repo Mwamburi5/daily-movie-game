@@ -47,6 +47,11 @@ interface ProgressV1 {
   // Duel drag-to-play nudge dismissed (feedback batch 1: "drag it to play took
   // me a sec"). META ONLY, same one-shot additive pattern as seenIntro.
   seenDragPlay?: boolean
+  // Last difficulty picked on the menu (§7·7c "difficulty reset on load").
+  // META ONLY — a picker default, never a rule input: App still hands the value
+  // to DuelGame as a prop exactly as if the chip had been tapped. Additive:
+  // absent → 'matinee', same as a fresh device.
+  lastDifficulty?: Difficulty
 }
 
 export type DailyMode = 'solo' | 'chronology' | 'connections'
@@ -207,5 +212,22 @@ export function markDragPlaySeen(): void {
   const p = loadProgress()
   if (p.seenDragPlay) return
   p.seenDragPlay = true
+  save(p)
+}
+
+// ── difficulty picker memory ──────────────────────────────────────────────────
+// The menu's difficulty chips read this as their initial selection so a reload
+// doesn't silently drop a Director's Cut player back to Matinee. Guarded against
+// junk blobs: anything but a known difficulty falls back to the fresh default.
+
+export function lastDifficulty(): Difficulty {
+  const d = loadProgress().lastDifficulty
+  return d === 'matinee' || d === 'feature' || d === 'directors' ? d : 'matinee'
+}
+
+export function recordDifficultyPick(d: Difficulty): void {
+  const p = loadProgress()
+  if (p.lastDifficulty === d) return
+  p.lastDifficulty = d
   save(p)
 }

@@ -21,6 +21,7 @@ interface ResultsProps {
   emoji: string
   solution: SolutionStep[]
   daily: DailyFinish | null // streak readout — null on practice rounds
+  practice: boolean // practice hand: marks the share line, relabels replay
   analytics: EventData // mode identity for the share event (SoloGame owns kind)
   onReset: () => void
   onMenu: () => void // back to the mode menu (W5d: every end screen routes home)
@@ -37,6 +38,7 @@ export default function Results({
   emoji,
   solution,
   daily,
+  practice,
   analytics,
   onReset,
   onMenu,
@@ -49,11 +51,13 @@ export default function Results({
 
   // Family share format (see lib/share.ts): mode line, golf score line, emoji row.
   // A stuck run is still shareable — the 🧱 already ends the emoji row.
+  // Practice hands carry a marker (§7·7c) so they can't pass for the daily;
+  // the brand line stays byte-identical for dailies.
   const shareLine =
     status === 'won'
       ? `score ${score}, par ${par} (${golf})`
       : `stuck — ${cardsLeft} left in hand, par ${par}`
-  const text = matchCutShare('Daily Puzzle', shareLine, emoji)
+  const text = matchCutShare('Daily Puzzle', `${practice ? 'practice · ' : ''}${shareLine}`, emoji)
 
   return (
     // overflow-y-auto + my-auto on the card (the App.tsx menu fix): centers
@@ -124,7 +128,9 @@ export default function Results({
           onClick={onReset}
           className="mt-3 min-h-12 rounded-stub-pill bg-stub-amber px-7 py-3 font-stub-ui text-[15px] font-bold text-stub-navy shadow-stub-card-resting active:scale-95"
         >
-          Play again
+          {/* Honest replay labels (§7·7c): both Solo kinds replay the SAME board
+              (daily = today's deal, practice = the fixed original hand). */}
+          {practice ? 'Replay this hand' : "Replay today's hand"}
         </button>
 
         {status === 'stuck' && !showSolution && (

@@ -73,7 +73,8 @@ const GENRE_SPINE: Record<string, string> = {
   Western: 'var(--color-stub-slate)', //      dusty slate
 }
 // Any genre added later without a mapping falls back to navy (a safe, on-brand ink).
-function spineColor(genre: string): string {
+// Exported for the shelf/picker thumbs (MeldShelf) — one spine system, no drift.
+export function spineColor(genre: string): string {
   return GENRE_SPINE[genre] ?? 'var(--color-stub-navy)'
 }
 

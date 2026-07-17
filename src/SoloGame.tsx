@@ -376,6 +376,7 @@ export default function SoloGame({ onExit, start }: { onExit: () => void; start:
               emoji={emoji}
               solution={solutionSteps}
               daily={start.kind === 'daily' ? finishMeta : null}
+              practice={start.kind === 'practice'}
               analytics={{ mode: 'solo', kind: start.kind }}
               onReset={resetGame}
               onMenu={onExit}
