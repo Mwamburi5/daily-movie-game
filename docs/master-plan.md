@@ -804,13 +804,14 @@ what's ready-to-review per sitting.
       stamp line · D1 genre-floor message in the meld pill (say() swapped out —
       it would clobber the LAST-play strip). Docket correction: A3 RESOLVED
       (reel approved 07-12). Gates green ×6. NO DEPLOY (§2.11).
-- [ ] **POST-SEND · Feedback batch-1 checkpoint wave — PARTIALLY RULED
-      2026-07-17 (Buri, in-session): C3 APPROVED as-is (all difficulties,
-      667 overlap accepted) · C4 KEPT as built — hand-rail token deviation
-      RATIFIED (rail 9/perf 5 at hand size only; README values stand for
-      pile/raised; structural escalations stay parked) · A2 deferral
-      CONFIRMED (build post-reel-merge) · D2 unobjected · C1 PENDING Buri's
-      hands-on play-through (dev server handed over).** Original wave scope:
+- [x] **POST-SEND · Feedback batch-1 checkpoint wave — FULLY APPROVED
+      2026-07-17 (Buri, in-session, after hands-on play-through:
+      "everything looks good"): C1 summary-first rules ✓ · C3 drag nudge ✓
+      as-is (all difficulties, 667 overlap accepted) · C4 fan pass ✓ —
+      hand-rail token deviation RATIFIED (rail 9/perf 5 at hand size only;
+      README values stand for pile/raised; structural escalations stay
+      parked) · D2 pill subtitles ✓ · A2 deferral CONFIRMED (build
+      post-reel-merge).** Original wave scope:
       C1 summary-first HowToPlay
       (short card + "Read the full rules" expand; TMDB attribution stays
       outside the gate) · C3 one-shot drag nudge (seenDragPlay meta-flag,
