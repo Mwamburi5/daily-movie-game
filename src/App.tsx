@@ -5,6 +5,7 @@ import DuelGame from './DuelGame.tsx'
 import ChronologyGame, { type ChronoStart } from './ChronologyGame.tsx'
 import ConnectionsGame, { type ConnectionsStart } from './ConnectionsGame.tsx'
 import HowToPlay from './components/HowToPlay.tsx'
+import { useDialogA11y } from './components/useDialogA11y.ts'
 import { type Difficulty, DIFFICULTIES, DIFFICULTY_META } from './lib/difficulty.ts'
 import { localDateSeed } from './lib/daily.ts'
 import {
@@ -126,62 +127,11 @@ export default function App() {
           Connect movies by the people who made them.
         </p>
         <div className="flex w-full max-w-[300px] flex-col gap-3">
-          {/* Hero card: the navy panel echoing the 7a board header — one clear
-              primary for the menu (EXTRAPOLATED; menu has no reference PNG).
-              W5d (comp §4 "borders do the work"): punched side notches — the 7d
-              score-stub treatment — land on every menu card; the hero keeps its
-              navy fill (notches only, no frame — it IS the ink). */}
-          <div className="relative rounded-stub-panel bg-stub-navy px-6 py-4 shadow-stub-card-resting">
-            <MenuNotches />
-            <button
-              type="button"
-              data-mode="duel"
-              onClick={() => setMode('duel')}
-              className="block w-full text-left active:scale-[0.98]"
-            >
-              <span className="flex items-baseline justify-between">
-                <span className="font-stub-display text-[17px] font-bold text-stub-cream">
-                  Duel vs Computer
-                </span>
-                {duelChip.plays > 0 && (
-                  <span
-                    data-record-chip="duel"
-                    className="rounded-stub-pill bg-stub-cream/10 px-2 py-0.5 font-stub-label text-[10px] font-bold tabular-nums text-stub-cream/75"
-                  >
-                    {duelChip.wins}/{duelChip.plays} won
-                  </span>
-                )}
-              </span>
-              <span className="mt-0.5 block font-stub-ui text-[12px] text-stub-cream/60">
-                Take turns scoring links. Race to 20 — high score wins.
-              </span>
-            </button>
-            {/* Difficulty segmented control → Stub pill group: amber-active. */}
-            <div className="mt-3 flex gap-1 rounded-stub-pill bg-black/25 p-0.5">
-              {DIFFICULTIES.map((d) => (
-                <button
-                  key={d}
-                  type="button"
-                  data-difficulty={d}
-                  aria-pressed={difficulty === d}
-                  onClick={() => {
-                    setDifficulty(d)
-                    recordDifficultyPick(d)
-                  }}
-                  className={`flex-1 whitespace-nowrap rounded-stub-pill px-2 py-1.5 font-stub-label text-[10px] font-bold uppercase tracking-[0.06em] transition-colors ${
-                    difficulty === d
-                      ? 'bg-stub-amber text-stub-navy shadow-sm'
-                      : 'text-stub-cream/55 active:text-stub-cream/80'
-                  }`}
-                >
-                  {DIFFICULTY_META[d].label}
-                </button>
-              ))}
-            </div>
-            <p className="mt-1.5 text-center font-stub-ui text-[11px] text-stub-cream/45">
-              {DIFFICULTY_META[difficulty].blurb}
-            </p>
-          </div>
+          {/* Card order (Buri, 2026-08-07): dailies lead, Duel demoted to LAST —
+              batch-1 feedback had duel comprehension failing across 3 sources and
+              zero would-return votes; the deepest mode can't be the front door.
+              The old navy hero fill went with it (see the Duel card below) — no
+              card is "the" primary now. W5d punched notches stay on every card. */}
           <div className="relative rounded-stub-panel border-2 border-stub-navy bg-stub-paper px-6 py-4 shadow-stub-card-resting">
             <MenuNotches />
             <button
@@ -293,6 +243,61 @@ export default function App() {
               </button>
             </div>
           </div>
+          {/* Duel — the deep-strategy mode, deliberately last and on the same
+              paper panel as the dailies (demoted from the navy hero it launched
+              with; Buri, 2026-08-07). Its difficulty picker rides along. */}
+          <div className="relative rounded-stub-panel border-2 border-stub-navy bg-stub-paper px-6 py-4 shadow-stub-card-resting">
+            <MenuNotches />
+            <button
+              type="button"
+              data-mode="duel"
+              onClick={() => setMode('duel')}
+              className="block w-full text-left active:scale-[0.98]"
+            >
+              <span className="flex items-baseline justify-between">
+                <span className="font-stub-display text-[17px] font-bold text-stub-navy">
+                  Duel vs Computer
+                </span>
+                {duelChip.plays > 0 && (
+                  <span
+                    data-record-chip="duel"
+                    className="rounded-stub-pill bg-stub-navy/10 px-2 py-0.5 font-stub-label text-[10px] font-bold tabular-nums text-stub-navy/70"
+                  >
+                    {duelChip.wins}/{duelChip.plays} won
+                  </span>
+                )}
+              </span>
+              <span className="mt-0.5 block font-stub-ui text-[12px] text-stub-slate">
+                Take turns scoring links. Race to 20 — high score wins.
+              </span>
+            </button>
+            {/* Difficulty segmented control → Stub pill group: amber-active,
+                recolored for the paper panel (was black/25 on navy). */}
+            <div className="mt-3 flex gap-1 rounded-stub-pill bg-stub-navy/10 p-0.5">
+              {DIFFICULTIES.map((d) => (
+                <button
+                  key={d}
+                  type="button"
+                  data-difficulty={d}
+                  aria-pressed={difficulty === d}
+                  onClick={() => {
+                    setDifficulty(d)
+                    recordDifficultyPick(d)
+                  }}
+                  className={`flex-1 whitespace-nowrap rounded-stub-pill px-2 py-1.5 font-stub-label text-[10px] font-bold uppercase tracking-[0.06em] transition-colors ${
+                    difficulty === d
+                      ? 'bg-stub-amber text-stub-navy shadow-sm'
+                      : 'text-stub-slate active:text-stub-navy'
+                  }`}
+                >
+                  {DIFFICULTY_META[d].label}
+                </button>
+              ))}
+            </div>
+            <p className="mt-1.5 text-center font-stub-ui text-[11px] text-stub-slate">
+              {DIFFICULTY_META[difficulty].blurb}
+            </p>
+          </div>
         </div>
         </div>
       </div>
@@ -312,8 +317,15 @@ export default function App() {
 // or Play both dismiss; the card stops propagation so an inside tap doesn't.
 function IntroOverlay({ onDismiss }: { onDismiss: () => void }) {
   const reduce = useReducedMotion()
+  // Dialog contract (§7·7b a11y): focus enters, Tab cycles inside, Esc dismisses.
+  const dialogRef = useDialogA11y(onDismiss)
   return (
     <motion.div
+      ref={dialogRef}
+      role="dialog"
+      aria-modal="true"
+      aria-label="Welcome to Match Cut"
+      tabIndex={-1}
       className="absolute inset-0 z-[130] flex items-center justify-center bg-stub-navy/40 px-8 backdrop-blur-sm"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}

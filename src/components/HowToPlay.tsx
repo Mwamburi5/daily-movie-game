@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
 import type { ReactNode } from 'react'
+import { useDialogA11y } from './useDialogA11y.ts'
 
 const Section = ({ title, children }: { title: string; children: ReactNode }) => (
   <section className="mb-7">
@@ -43,8 +44,15 @@ const TokenPill = ({ children }: { children: ReactNode }) => (
 export default function HowToPlay({ onClose }: { onClose: () => void }) {
   const reduce = useReducedMotion()
   const [expanded, setExpanded] = useState(false)
+  // Dialog contract (§7·7b a11y): focus enters, Tab cycles inside, Esc closes.
+  const dialogRef = useDialogA11y(onClose)
   return (
     <motion.div
+      ref={dialogRef}
+      role="dialog"
+      aria-modal="true"
+      aria-label="How to play"
+      tabIndex={-1}
       className="absolute inset-0 z-[120] overflow-y-auto overscroll-contain bg-stub-cream"
       initial={{ opacity: 0, y: reduce ? 0 : 24 }}
       animate={{ opacity: 1, y: 0 }}
@@ -73,10 +81,8 @@ export default function HowToPlay({ onClose }: { onClose: () => void }) {
             <B>Movies connect through the people who made them</B> — the actors, directors, and
             writers they share. Four ways to play with those links:
           </p>
-          <p>
-            <B>Duel vs Computer</B> · Take turns playing connected cards and banking melds. Race
-            to 20 — highest net score wins.
-          </p>
+          {/* Same order as the menu cards (Buri, 2026-08-07): dailies first,
+              the duel last. */}
           <p>
             <B>Daily Puzzle</B> · One hand; chain every card onto the pile. Golf — low wins, and
             peeking at credits costs +1.
@@ -88,6 +94,10 @@ export default function HowToPlay({ onClose }: { onClose: () => void }) {
           <p>
             <B>Connections</B> · Sixteen movies, four hidden groups of four. Four mistakes
             allowed.
+          </p>
+          <p>
+            <B>Duel vs Computer</B> · Take turns playing connected cards and banking melds. Race
+            to 20 — highest net score wins.
           </p>
         </Section>
 

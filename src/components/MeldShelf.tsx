@@ -64,10 +64,14 @@ export default function MeldShelf({
   melds,
   highlightIds,
   setRowRef,
+  onRowActivate,
 }: {
   melds: Meld[]
   highlightIds: ReadonlySet<number>
   setRowRef: (id: number, el: HTMLDivElement | null) => void
+  // Keyboard path (§7·7b a11y): Enter/Space on a row asks the parent to lay
+  // the held card off here — the tap-free route to the drag's drop target.
+  onRowActivate?: (meldId: number) => void
 }) {
   // No empty-state shelf — return null when there's nothing banked (contract).
   if (melds.length === 0) return null
@@ -86,6 +90,17 @@ export default function MeldShelf({
               key={meld.id}
               ref={(el) => setRowRef(meld.id, el)}
               data-meld-row={meld.id}
+              role="button"
+              tabIndex={0}
+              aria-label={`${meldLabel(meld)} meld, ${meld.cardIds.length} cards${
+                lit ? ' — accepts the raised card, press Enter to lay off' : ''
+              }`}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault()
+                  onRowActivate?.(meld.id)
+                }
+              }}
               className={`flex-none rounded-stub-card border-2 bg-stub-paper px-2 py-[5px] ${
                 lit
                   ? 'border-stub-amber shadow-stub-glow-amber'

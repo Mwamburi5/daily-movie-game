@@ -841,6 +841,29 @@ what's ready-to-review per sitting.
 - [ ] **POST-SEND · P2-LOCK docket grill (§7·4b, at LOCK)** — chrono pin ·
       Solo cutover · Duel cutover+re-tune · Connections diversity floor ·
       bundle intern; convene as a grill-me session with real feedback in hand.
+- [x] **PRE-LAUNCH POLISH · direction lock (§9·P0) — SELECTED + BUILT
+      2026-08-07:** Premiere Reel (concept 2) selected. Real 390×844 + 375×667
+      Chronology checkpoint uses a 25KB filmstrip asset, native momentum rail,
+      shared Stub card anatomy, tap/keyboard gaps, and the existing scoring
+      core; `design-qa.md` passed. Cross-mode contract is now
+      `docs/ui-contracts.md` Appendix B. Next visual wave = Daily Puzzle +
+      Connections tokens, not a literal reel transplant.
+- [ ] **PRE-LAUNCH POLISH · foundations (§9·P1)** — route-level code/data
+      splitting · asset manifest and budgets · CI + browser smoke tests · shared
+      spacing/type/motion/icon tokens. No new dependency; no rule change.
+- [ ] **PRE-LAUNCH POLISH · mode waves (§9·P2–P4)** — Chronology first, then
+      menu + Solo/Connections, Duel last; each wave includes icon + Framer +
+      accessibility + both phone sizes and stops for Buri's visual approval.
+- [ ] **PRE-LAUNCH POLISH · card-art pilot (§9·P5)** — 18–24 original,
+      posterless cards across eras/genres/title lengths; approve the system and
+      production pipeline before generating the 438-card pool.
+- [ ] **PRE-LAUNCH SCALE · measurement + leaderboard (§9·P6–P7)** — verify
+      event receipt and funnel first; then anonymous casual daily leaderboard
+      with server-validated receipts, rate limits, moderation, and no accounts.
+- [ ] **PRE-LAUNCH SCALE · launch gate (§9·P8)** — real-device/accessibility,
+      performance, rollback, spend alerts, privacy/credits, TMDB commercial-use
+      decision, and URL-in-share/front-door cutover. Further movie expansion
+      stays paused until this gate is green.
 - [ ] **D1 Duel deep-cut reveal as a difficulty lever** (PARKED, concept
       approved 2026-07-06; §3·D1) — deepCast TMDB content pass (P2-adjacent) →
       deep-cut flip face (W3) → difficulty knob + re-tune (W5); needs its own
@@ -1102,7 +1125,263 @@ push freely, deploys batch to window close. Circle feedback lands in
 docs/feedback-log.md as it arrives.
 ```
 
-## 9. Amendment log
+## 9. Pre-launch polish and scale plan (2026-08-07)
+
+### The decision
+
+Pause further movie expansion after the current 438-film pool. The next constraint
+is not content volume; it is presentation, comprehension, delivery weight, and
+launch operations. The game can keep the ticket-stub/movie-house identity while
+feeling materially more modern by sharpening hierarchy, making empty space
+intentional, enlarging the active object, and giving every state change a single
+clear motion beat. This is a polish program, not a visual rebrand and not a rules
+rewrite.
+
+The 2026-08-07 concept set holds the palette, typography, paper texture, navy
+borders, ticket notches, and physical-card metaphor constant while testing three
+different Chronology compositions. The selected direction becomes a reusable
+system for all four modes. It must first survive implementation on real screens;
+the generated image is a direction reference, not a pixel contract.
+
+### What exists now
+
+| Track | Current state | Launch implication |
+|---|---|---|
+| Core game | Four playable modes; all four verification suites green in the 2026-08-07 audit | Rules are stable enough to polish around; avoid casual mechanic changes |
+| Content | 438 films live in the unified pool | Enough for launch validation; more films add QA and bundle weight before they add meaningful readiness |
+| Visual system | Strong Stub ingredients, but no complete spacing/type/icon system; density and hierarchy vary by mode | The motif is good; composition and finish are the problem |
+| Chronology | Most repeated feedback target: horizontal overflow/scroll discovery, card sizing, Wide/Tight language, same-year ambiguity; an approved reel branch is not integrated | First mode to redesign and the system's hardest responsive test |
+| Solo | Drag/flip onboarding and hand-title readability were improved in the dirty feedback wave | Preserve those gains while increasing card presence and state clarity |
+| Connections | A favorite in feedback, but non-buffs hit a difficulty/comprehension wall | Polish feedback/reveal states before considering rule or hint changes |
+| Duel | Most complex surface; one tester reported total comprehension failure | Do last, after the component system is proven elsewhere; do not refactor the state architecture during polish |
+| Icons and motion | Icon and Framer passes are already approved but unbuilt | Zero new dependency: local SVGs plus the Framer dependency already in the app |
+| Personas | Not built; existing difficulty presets already provide three mechanical profiles | Start as character/voice skins over unchanged knobs; re-tune only if knobs change |
+| Tracking | `mode_start`, `mode_finish`, and `share` hooks exist; dashboard receipt remains an explicit open check | Not yet enough to make launch decisions confidently |
+| Leaderboards | No backend and no leaderboard | Add only after score receipts can be validated server-side; accounts are not a prerequisite |
+
+### Design rules for the polish pass
+
+1. **Bigger active object, fewer competing objects.** In Chronology the anchor,
+   raised card, and legal gaps must dominate. Secondary help, score, and deck
+   information step back.
+2. **Empty space must explain the interaction.** Reserve the center as a
+   projection stage/reel lane; do not leave an undifferentiated cream void.
+3. **One visual grammar.** The same card frame, icon weight, borders, shadows,
+   radii, labels, and motion curves appear in every mode.
+4. **Modern means precise, not glossy.** Crisp typography, disciplined alignment,
+   restrained depth, responsive card scales, and clean motion preserve the print
+   identity better than gradients or glass effects.
+5. **Motion communicates state.** Every animation answers what moved, why, and
+   where it landed. Decoration never delays input.
+6. **Accessibility is part of polish.** Keyboard paths, dialog focus, readable
+   labels, 200% zoom, reduced motion, and the 44px touch target are acceptance
+   criteria, not a later cleanup.
+
+### P0 — Choose and prove the direction (1–2 days)
+
+- Choose one of the three Chronology concepts or request a narrow refinement.
+- Translate it into real Stub tokens: spacing scale, type scale, card sizes at
+  375/390/768/1440 widths, icon weight, shadow levels, and motion durations.
+- Build only one static/playable Chronology slice first: idle, raised card,
+  legal-gap hover, correct placement, incorrect placement, and reduced motion.
+- Acceptance: side-by-sides at 390×844 and 375×667; no clipped controls, no
+  hidden legal gap, title legible at the worst-case length, 60fps target on a
+  real iPhone. Stop for visual approval.
+
+### P1 — Delivery foundation before art (3–5 days)
+
+- Split the four mode routes and their data so the menu does not eagerly load the
+  whole game. The audit bundle is about 711KB raw / 177KB gzip before card art;
+  the goal is a small menu shell and on-demand mode chunks.
+- Move card art behind a versioned manifest with immutable hashed filenames,
+  explicit dimensions, local fallbacks, and a `contentVersion` that can roll back.
+- Budget the first mode load at **≤250KB compressed JS**, the menu shell at
+  **≤100KB**, and a typical played session at **≤2MB transferred after cold
+  cache**. Treat these as initial budgets to measure, not claims already met.
+- Add CI for build + all four verification suites and browser smoke coverage for
+  menu → start → one action → finish/share in each mode.
+- Add Web Vitals/error monitoring, a spend ceiling, and a documented one-command
+  rollback. Keep daily deals seed-derived and game-rule state out of persistence.
+
+### P2 — Shared visual system: card, icon, and motion (4–7 days)
+
+**Card anatomy**
+
+- Preserve the Stub frame, perforation, credit rail, genre spine, and ticket
+  notch, but define `compact`, `hand`, `board`, and `hero` sizes instead of
+  allowing each mode to invent dimensions.
+- Lock title clamping, credit priority, focus/selected/disabled states, and art
+  crop behavior. Every variant must work without art as a fallback.
+
+**Icon pass**
+
+- Create one local zero-dependency SVG `Icon` component and copy only the roughly
+  ten approved Phosphor or Lucide paths into the repo. Choose the family against
+  a real StubCard, then replace functional emoji/text glyphs. Daily share emoji
+  remain intentionally untouched.
+- Define 16/20/24px optical sizes, 2px or visually equivalent stroke weight, and
+  semantic labels for icon-only buttons.
+
+**Framer polish**
+
+- Use the existing Framer dependency; incremental software cost is $0.
+- Standardize four beats: press (80–120ms), deal/stagger (up to 60ms between
+  cards), place/settle (roughly 320ms spring), and result/reveal (250–400ms).
+- Animate transforms and opacity first; avoid layout-thrashing height/width
+  sequences. Input remains available as soon as the rule state permits.
+- Reduced motion collapses movement to a ≤150ms crossfade and never removes
+  meaning.
+
+### P3 — Mode-by-mode polish waves (7–12 days)
+
+1. **Chronology:** integrate the approved reel work only after reconciling it
+   with the selected direction; enlarge cards; make scroll/reel position
+   explicit; preserve every legal gap; design same-year month disclosure without
+   leaking answers or altering scoring; rename/clarify practice controls.
+2. **Menu + launch surface:** landing-page-quality hierarchy, immediate four-mode
+   comprehension, streak/played-today states, credits/privacy, and a clear daily
+   call to action. This becomes mandatory when URL-in-share turns on.
+3. **Solo + Connections:** make the hand/grid the hero; retain the approved drag
+   nudge and title readability; clarify genre floor and Connections group logic;
+   polish one-away, solve, loss, and share transitions.
+4. **Duel:** reuse the proven system, then fix HUD/shelf collisions, draw and
+   deep-cut comprehension, keyboard play, and 667px end-screen behavior. Keep
+   edits surgical in `DuelGame.tsx`.
+
+Every wave: 390×844 + 375×667 + desktop, keyboard, reduced motion, VoiceOver
+spot-check, played-through end state, build and all applicable verification
+gates, then Buri's visual checkpoint. A rule/scoring change leaves this track and
+requires RULEBOOK sync, parity verification, and re-tuning.
+
+### P4 — Personas without destabilizing difficulty (2–4 days)
+
+- Map the three existing difficulty presets to memorable projectionist/opponent
+  personas first. Give each a name, portrait/mark, booth treatment, two or three
+  tone rules, and restrained reaction animation.
+- Do not change AI knobs in the first pass. This makes personas a presentation
+  layer with no re-tune and no backend cost.
+- Test whether players can predict the difference between personas from the
+  selection screen. Only if feedback says the personalities do not match the
+  play should mechanics change; that becomes a separate tuning wave.
+
+### P5 — Card-art pilot, then production (pilot 5–8 days; full pool 2–6 weeks)
+
+- Do **not** generate 438 images in one batch. Pick 18–24 films covering every
+  decade, light/dark scenes, long/short titles, animation/live action, genres,
+  duplicate/remake titles, and mobile crop stress.
+- Use original, posterless editorial art: symbolic objects, locations, lighting,
+  texture, and color language. Do not reproduce posters, actor likenesses, logos,
+  or film stills. The title/credits remain HTML, never baked into the image.
+- Develop 6–10 reusable art-direction families so the pool feels authored but
+  not mechanically templated. Export responsive AVIF/WebP, roughly 35–70KB for
+  the common mobile card, with a lightweight placeholder.
+- Keep a provenance manifest per asset: prompt/source, generation date, reviewer,
+  crop focal point, rights note, and approved/rejected status.
+- Gate the pilot on recognition without copyrighted key art, crop survival,
+  title contrast, era/genre variety, and a blind “which version?” test for remakes.
+- Planning estimate: **$150–$500 one-time generation/regeneration spend plus
+  30–80 hours of art direction and QA** for a generated 438-card set. A bespoke
+  illustrator-led set is more plausibly **$5,000–$25,000+**. Labor and review,
+  not file hosting, are the dominant cost; validate quotes before committing.
+
+### P6 — Tracking that answers launch questions (2–3 days)
+
+First verify that the three existing events arrive in the production dashboard.
+Then use one small, documented taxonomy:
+
+`app_open` · `mode_impression` · `mode_start` · `tutorial_open` · `first_action`
+· `mode_abandon` · `mode_finish` · `replay` · `share` · `leaderboard_view`
+
+- Required dimensions only: build/content version, mode, daily/practice, device
+  class, completion outcome, and coarse duration bucket. No movie-choice trail,
+  free text, exact IP, or advertising profile.
+- Success dashboard: menu → start → first action → finish → next-day return,
+  split by mode and build version. This directly answers front-door choice,
+  onboarding failure, and retention.
+- Add a privacy/retention note and a manual receipt test in the release checklist.
+  Never treat client queueing as proof that an event reached the dashboard.
+
+### P7 — Casual leaderboard, not an account system (4–7 days)
+
+- V1 is anonymous and daily: optional display name, per-mode score, percentile,
+  and top results. Existing local streaks/personal bests remain local.
+- The server derives the valid daily seed/content version, validates the submitted
+  result envelope, accepts one best submission per anonymous installation and
+  mode/day, rate-limits abuse, and stores a signed receipt. Never trust a raw
+  client score. This deters casual cheating; it does not promise esports-grade
+  integrity.
+- Add nickname length/character rules, a reserved-word/filter list, report/hide
+  controls, and an operator delete path before public names appear.
+- Defer email/social auth, profiles, friends, seasons, and prizes until retention
+  proves they are worth the privacy, support, and anti-cheat burden.
+
+### P8 — Launch gate (4–7 days)
+
+- Full gate matrix green: build; Duel 64/64; Solo 8/8; Chronology 42/42;
+  Connections 14/14; browser smoke suite.
+- Real iPhone and Android play-throughs at small and modern phone sizes; keyboard,
+  focus order/dialog trap, screen-reader labels/live regions, 200% zoom, contrast,
+  and reduced motion.
+- Performance budgets met on cold 4G and warm repeat visit; art lazy-load verified;
+  no mode downloads another mode's pool.
+- Analytics receipt, error reporting, database backup/restore, leaderboard delete,
+  rate-limit, spend-alert/hard-limit, and rollback drills completed.
+- Credits/privacy ready. TMDB attribution is present; if Match Cut's primary
+  purpose becomes revenue, obtain commercial terms before monetizing. TMDB says
+  non-commercial API use is free with attribution, while commercial use requires
+  contacting sales: [TMDB API FAQ](https://developer.themoviedb.org/docs/faq).
+- Buri approves production deploy and URL-in-share. Only after this gate should
+  the movie pool grow again.
+
+### 1,000-player cost model
+
+Use **1,000 daily players**, not 1,000 total users, as the conservative planning
+case. At 1.3 sessions per player per day that is about **39,000 sessions/month**.
+
+| Resource assumption | Monthly load | Capacity/cost implication |
+|---|---:|---|
+| Static delivery at 1–2MB/session | 39–78GB | Well below Vercel Pro's current 1TB included transfer; the current Pro base is $20/month with $20 usage credit ([Vercel pricing](https://vercel.com/pricing)) |
+| Edge requests at ~20/session | ~780,000 | Below Vercel Pro's current 10M included |
+| Product analytics at 4 events/session | ~156,000 events | 50K included, then $3/100K; roughly **$3.18 overage/month** at today's posted rate ([Vercel pricing](https://vercel.com/pricing)) |
+| Leaderboard at 1 write + 2 indexed reads/session | 39K writes + 78K reads | Tiny: Cloudflare D1 Free allows 100K rows written/day and 5M read/day ([D1 pricing](https://developers.cloudflare.com/d1/platform/pricing/)); Supabase Free also covers 50K MAU ([Supabase pricing](https://supabase.com/pricing)) |
+| Card images | Included in 1–2MB session target | Hash/cache locally served art; load only visible/nearby cards, never all 438 |
+
+**Expected monthly run rate at 1,000 DAU**
+
+- **Private/non-commercial beta:** potentially $0 incremental, but Vercel Hobby is
+  explicitly for personal/non-commercial use and has hard caps.
+- **Lean public launch:** about **$20–$30/month** — Vercel Pro, free-tier
+  leaderboard database, small analytics overage, and normal margin.
+- **Managed production backend:** about **$45–$55/month** — Vercel Pro plus
+  Supabase Pro at $25/month (100K MAU, 8GB database, 250GB egress) and analytics
+  margin ([Supabase pricing](https://supabase.com/pricing)).
+- **Unknown outside the infrastructure model:** TMDB commercial licensing if the
+  game's primary purpose becomes revenue, commissioned illustration, legal/privacy
+  review, and the value of development/QA time.
+
+Bottom line: **1,000 daily players will not make hosting expensive.** At this
+scale the financial risk is art production, QA time, and an unpriced commercial
+data license—not CDN or leaderboard traffic. Start with a $20–$30/month ceiling,
+hard spend alerts, and the anonymous leaderboard; upgrade the database only when
+backups/support or measured usage justify it.
+
+### Recommended sequence and calendar
+
+| Week | Outcome | Ship gate |
+|---|---|---|
+| 1 | P0 direction lock + P1 budgets/CI/code split | Approved Chronology slice and measurable cold-load baseline |
+| 2 | P2 card/icon/motion system + Chronology | Both phone sizes, reduced motion, no hidden gap, all gates green |
+| 3 | Menu, Solo, Connections | Front door coherent; feedback states and onboarding verified |
+| 4 | Duel + personas | Comprehensible Duel, no 667px collision, unchanged difficulty knobs |
+| 5 | Card-art pilot + tracking | 18–24 approved cards; production funnel receiving events |
+| 6 | Anonymous leaderboard + launch QA | Abuse/privacy/rollback/spend tests; Buri launch approval |
+| After launch gate | Scale art to 438, then resume movie additions | Asset QA and content gates remain green |
+
+This is approximately **4–6 focused solo-development weeks before full art
+production**, assuming no scoring/rule change. Card-art production can overlap
+after the pilot is approved, but further movie additions should not.
+
+## 10. Amendment log
 
 - v1 (2026-07-06): created from the six-auditor recon + Buri's four rulings
   (finish line · one live plan · keep-and-wire-visibly · gate-split autonomy).
@@ -1122,3 +1401,7 @@ docs/feedback-log.md as it arrives.
   Stage B long-pole) · `docs/feedback-log.md` created (append-only circle
   ledger, pointed from §0) · CLAUDE.md gate line gains verify:connections
   14/14 + DuelGame stats refreshed (~2,060 ln / 39 useState).
+- v4 (2026-08-07): added the pre-launch polish/scale ledger and §9 execution
+  plan after the full status audit and three-direction Chronology concept pass.
+  Further movie expansion pauses behind the visual, delivery, measurement,
+  leaderboard, rights, and launch gates. Cost model assumes 1,000 daily players.

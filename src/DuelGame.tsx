@@ -76,6 +76,7 @@ import StubCard from './components/StubCard.tsx'
 import RecapReel from './components/RecapReel.tsx'
 import DrawChoice from './components/DrawChoice.tsx'
 import FixedDigits from './components/FixedDigits.tsx'
+import { useDialogA11y } from './components/useDialogA11y.ts'
 import Hand from './components/Hand.tsx'
 import HowToPlay from './components/HowToPlay.tsx'
 import IdleCue from './components/IdleCue.tsx'
@@ -283,6 +284,9 @@ export default function DuelGame({
   // pile; the real card beneath shows through). index 0 = starter pile, 1 = second.
   const tops = piles.map((p) => topForLinking(p.map(mv)))
   const gameOver = status === 'over'
+  // Game-over dialog behavior (§7·7b a11y): the overlay is inline-conditional,
+  // so the hook keys off gameOver instead of mount. Trap-only — no Esc close.
+  const gameOverDialogRef = useDialogA11y(undefined, gameOver)
   const drawnConnects =
     pendingDraw !== null &&
     tops.some((t) => sharedPeople(t, mv(pendingDraw)!).length > 0)
@@ -469,7 +473,50 @@ export default function DuelGame({
     )
   }
 
-  const playerPlay = (id: string, point: { x: number; y: number }) => {
+  // ── Play cores (§7·7b a11y): geometry-free ─────────────────────────────────
+  // playerPlay (further below) is the DRAG resolver — it hit-tests the drop
+  // point, then lands here. The keyboard paths (pile-top / shelf-row Enter)
+  // call these cores directly with explicit targets, so both input methods
+  // share one rules path by construction.
+
+  const playerLayOff = (id: string, meldHit: Meld) => {
+    if (status !== 'playerTurn' || meldSelect) return
+    // Lay-offs are barred mid-draw and mid-run (same conditions as the drop path)
+    if (pendingDraw !== null || runState !== null) return
+    const card = mv(id)!
+    if (!canLayOff(card, meldHit)) {
+      // Keyboard-only feedback: the drag path never routes an ineligible row
+      // here (it falls through to the pile hit-test instead).
+      invalidShake()
+      return
+    }
+    dismissDragNudge()
+    const newHand = playerHand.filter((h) => h !== id)
+    setMelds((ms) =>
+      ms.map((m) =>
+        m.id === meldHit.id
+          ? {
+              ...m,
+              cardIds: [...m.cardIds, id],
+              people: m.people.filter((p) => creditNames(card).has(p)),
+              series: card.series === m.series ? m.series : null,
+            }
+          : m,
+      ),
+    )
+    const layoffPts = meldHit.rungPts ?? MELD_POINTS_PER_CARD // locked rung
+    setPlayerHand(newHand)
+    setPlayerScore((s) => s + layoffPts)
+    setRaisedId(null)
+    removeFaceUp(id)
+    setPassStreak(0)
+    setFcArmed(false)
+    say('You', `added ${card.title} to the ${meldLabel(meldHit)} meld`, null, layoffPts)
+    if (newHand.length === 0) endGame('playerOut')
+    else setStatus('cpuTurn')
+  }
+
+  const playerPlayPile = (id: string, landed: number) => {
     if (status !== 'playerTurn' || meldSelect) return
     // After a draw, only the drawn card may be played (UNO rule)
     if (pendingDraw !== null && id !== pendingDraw) return
@@ -478,8 +525,7 @@ export default function DuelGame({
     // A wild plays on any pile for +0 — the universal shed/unstick. It lands face
     // up but transparent (the real card beneath still links), no run, no lay-off.
     if (isWild(id) && runState === null) {
-      const landedWild = pileAt(point)
-      if (landedWild === null) return
+      const landedWild = landed
       dismissDragNudge()
       const newHand = playerHand.filter((h) => h !== id)
       setPiles((ps) => ps.map((p, i) => (i === landedWild ? [...p, id] : p)))
@@ -496,43 +542,9 @@ export default function DuelGame({
       return
     }
 
-    // Lay-off: dropped onto a meld row (not mid-draw, not mid-run)
-    const meldHit = findMeldAt(point)
-    if (meldHit && pendingDraw === null && runState === null) {
-      if (canLayOff(card, meldHit)) {
-        dismissDragNudge()
-        const newHand = playerHand.filter((h) => h !== id)
-        setMelds((ms) =>
-          ms.map((m) =>
-            m.id === meldHit.id
-              ? {
-                  ...m,
-                  cardIds: [...m.cardIds, id],
-                  people: m.people.filter((p) => creditNames(card).has(p)),
-                  series: card.series === m.series ? m.series : null,
-                }
-              : m,
-          ),
-        )
-        const layoffPts = meldHit.rungPts ?? MELD_POINTS_PER_CARD // locked rung
-        setPlayerHand(newHand)
-        setPlayerScore((s) => s + layoffPts)
-        setRaisedId(null)
-        removeFaceUp(id)
-        setPassStreak(0)
-        setFcArmed(false)
-        say('You', `added ${card.title} to the ${meldLabel(meldHit)} meld`, null, layoffPts)
-        if (newHand.length === 0) endGame('playerOut')
-        else setStatus('cpuTurn')
-        return
-      }
-      // No match — maybe they meant the pile just above; fall through
-    }
-
-    // Route the drop to the Double Feature pile it landed on. Mid-run, the play
-    // stays on the pile the run is building (a run can't hop marquees).
-    const landed = pileAt(point)
-    if (landed === null) return
+    // Route the play to the pile it targeted. Mid-run, the play stays on the
+    // pile the run is building (a run can't hop marquees). The nudge retires on
+    // reaching a target even if the link misfires (C3 teaches the gesture).
     dismissDragNudge()
     const pileIdx = runState !== null ? runState.pileIdx : landed
     const top = tops[pileIdx]
@@ -629,6 +641,33 @@ export default function DuelGame({
     }
   }
 
+  // The DRAG resolver: map the drop point to a target, then run the shared
+  // cores above. Semantics preserved verbatim from the pre-§7·7b single
+  // function: wilds only land on piles; a drop on an ineligible meld row falls
+  // through to the pile hit-test ("maybe they meant the pile just above").
+  const playerPlay = (id: string, point: { x: number; y: number }) => {
+    if (status !== 'playerTurn' || meldSelect) return
+    if (pendingDraw !== null && id !== pendingDraw) return
+    const card = mv(id)!
+
+    if (isWild(id) && runState === null) {
+      const landedWild = pileAt(point)
+      if (landedWild === null) return
+      playerPlayPile(id, landedWild)
+      return
+    }
+
+    const meldHit = findMeldAt(point)
+    if (meldHit && pendingDraw === null && runState === null && canLayOff(card, meldHit)) {
+      playerLayOff(id, meldHit)
+      return
+    }
+
+    const landed = pileAt(point)
+    if (landed === null) return
+    playerPlayPile(id, landed)
+  }
+
   // Draw-3-keep-1: drawing reveals the top 3; the player taps one to keep (the
   // other 2 are burned, invisible per D1), then it enters the keep/toss/play flow.
   const playerDraw = () => {
@@ -699,6 +738,20 @@ export default function DuelGame({
     say('You', 'kept the card')
     setStatus('cpuTurn')
   }
+
+  // Escape = the keyboard's tap-elsewhere (§7·7b a11y): lowers the raised card,
+  // or keeps a pending draw — exactly the backdrop's onPointerDown. The ref
+  // keeps the handler fresh without re-subscribing every render; dialogs
+  // (rules/recast/draw picker) capture Escape first and stop propagation.
+  const escActionRef = useRef<() => void>(() => {})
+  escActionRef.current = () => (pendingDraw !== null ? playerKeep() : setRaisedId(null))
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') escActionRef.current()
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [])
 
   // Toss: the drawn card becomes the new pile top — no points, no connection
   // needed. The unstick mechanism, and a tactical brick for the opponent.
@@ -1586,6 +1639,25 @@ export default function DuelGame({
                     layoutId={tId}
                     data-card={`pile-top-${idx}`}
                     onTap={() => flipCard(tId)}
+                    // Keyboard path (§7·7b a11y): with a card raised (or a kept
+                    // draw pending), Enter plays it onto THIS marquee — the
+                    // tap-free route to the drag's drop. Otherwise Enter peeks
+                    // the top card, same as tap. Touch behavior is untouched.
+                    role="button"
+                    tabIndex={0}
+                    aria-label={
+                      raisedId !== null || pendingDraw !== null
+                        ? `Play ${mv((raisedId ?? pendingDraw)!)!.title} on marquee ${idx + 1} — top card ${tMovie.title}`
+                        : `Marquee ${idx + 1}: ${tMovie.title}, ${tMovie.year} — flip for credits`
+                    }
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault()
+                        const held = raisedId ?? pendingDraw
+                        if (held !== null) playerPlayPile(held, idx)
+                        else flipCard(tId)
+                      }
+                    }}
                   >
                     <motion.div
                       key={reduce ? 'static' : `${idx}-${superKey}`}
@@ -1691,6 +1763,13 @@ export default function DuelGame({
         >
           <PlayBanner banner={banner} reduce={reduce} />
         </div>
+        {/* SR live mirror (§7·7b a11y): the say() narration is the game's one
+            commentary channel — announce it. Always mounted (a live region
+            that unmounts never speaks); banner text only, so a play isn't
+            read twice via LastPlayLine too. */}
+        <div className="sr-only" role="status" aria-live="polite">
+          {banner ? `${banner.who === 'You' ? 'You' : 'CPU'}: ${banner.text}` : ''}
+        </div>
 
         {/* One-move-per-turn cue: sits in the empty mid-board band, idle turns
             only. The wrapper owns the pin (IdleCue renders in flow, W0d); the
@@ -1725,6 +1804,14 @@ export default function DuelGame({
           setRowRef={(id, el) => {
             if (el) meldRowRefs.current.set(id, el)
             else meldRowRefs.current.delete(id)
+          }}
+          // Keyboard lay-off (§7·7b a11y): Enter on a row lays the raised card
+          // off there via the same core as the drag drop; ineligible rows
+          // shake. Lay-offs stay barred mid-draw (core guard), matching drag.
+          onRowActivate={(meldId) => {
+            if (raisedId === null) return
+            const meld = melds.find((m) => m.id === meldId)
+            if (meld) playerLayOff(raisedId, meld)
           }}
         />
 
@@ -2019,6 +2106,11 @@ export default function DuelGame({
         <AnimatePresence>
           {gameOver && (
             <motion.div
+              ref={gameOverDialogRef}
+              role="dialog"
+              aria-modal="true"
+              aria-label="Game over — results"
+              tabIndex={-1}
               className="absolute inset-0 z-[100] flex flex-col items-center overflow-y-auto bg-stub-cream/95 px-8 text-center"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}

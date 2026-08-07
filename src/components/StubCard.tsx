@@ -419,6 +419,7 @@ export function StubCard({
         className={`box-border overflow-hidden border-solid ${className ?? ''}`}
         style={{ ...frameStyle, background: 'var(--color-stub-navy)' }}
         data-stub-card="back"
+        aria-label="Face-down card"
       >
         <div
           className="flex h-full w-full items-center justify-center"
@@ -523,6 +524,9 @@ export function StubCard({
         className="relative box-border flex overflow-hidden border-solid"
         style={frameStyle}
         data-stub-card="front"
+        // Accessible name (§7·7b a11y): title + year + genre — exactly what the
+        // face already shows visually, so nothing leaks that sight doesn't get.
+        aria-label={wild ? `${movie.title} — wild card` : `${movie.title}, ${movie.year}, ${movie.genre}`}
       >
         {/* ── Ticket notches (comp): cream circles w/ navy border punched into the
             top-center + bottom-center edges. Positioned so the header row clears

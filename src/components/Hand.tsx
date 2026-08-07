@@ -194,6 +194,26 @@ export default function Hand({
               layoutId={m.id}
               data-card={m.id}
               className="absolute left-1/2 top-6"
+              // Keyboard path (§7·7b a11y): each fan card is a real tab stop.
+              // Enter/Space mirrors the tap branch of upPress exactly — raise,
+              // or toggle membership in meld-select mode. Reorder stays a
+              // pointer gesture (a keyboard hand order is a follow-up, not a
+              // blocker — plays don't depend on slot order).
+              role="button"
+              tabIndex={0}
+              aria-label={
+                selectMode
+                  ? `${m.title} — ${selected ? 'selected for meld' : 'select for meld'}`
+                  : `${m.title}, ${m.year} — raise`
+              }
+              aria-pressed={selectMode ? selected : undefined}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault()
+                  if (selectMode) onToggleSelect?.(m.id)
+                  else onRaise(m.id)
+                }
+              }}
               style={{
                 marginLeft: -CARD_W / 2,
                 zIndex: grabbed ? 60 : hinted ? 40 : 10 + i,

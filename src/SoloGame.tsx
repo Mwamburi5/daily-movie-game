@@ -72,6 +72,16 @@ export default function SoloGame({ onExit, start }: { onExit: () => void; start:
   const flips = flippedEver.size + invalids * 2
   const score = flips - comboBonus
 
+  // Escape lowers the raised card (§7·7b a11y) — the keyboard's tap-elsewhere.
+  // Dialogs (rules/results) capture Escape first and stop propagation.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setRaisedId(null)
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [])
+
   const topId = pile[pile.length - 1]
   const topMovie = movieById.get(topId)!
   const underlays = pile.slice(0, -1).slice(-2)
@@ -108,18 +118,10 @@ export default function SoloGame({ onExit, start }: { onExit: () => void; start:
     })
   }
 
-  const attemptPlay = (id: string, point: { x: number; y: number }) => {
+  // Geometry-free play core (§7·7b a11y): the drag resolver and the keyboard
+  // pile-top activation both land here, so the two paths can't drift.
+  const playCard = (id: string) => {
     if (status !== 'playing') return
-    const zone = pileZoneRef.current?.getBoundingClientRect()
-    if (!zone) return
-    const m = 60 // "on or near the pile"
-    const inZone =
-      point.x >= zone.left - m &&
-      point.x <= zone.right + m &&
-      point.y >= zone.top - m &&
-      point.y <= zone.bottom + m
-    if (!inZone) return // springs back to raised slot
-
     const card = movieById.get(id)!
     const shared = sharedPeople(topMovie, card)
 
@@ -166,6 +168,21 @@ export default function SoloGame({ onExit, start }: { onExit: () => void; start:
     } else if (!hasAnyPlay(card, newHand.map((h) => movieById.get(h)!))) {
       setStatus('stuck')
     }
+  }
+
+  // Drag resolver: hit-test the drop point against the pile zone, then play.
+  const attemptPlay = (id: string, point: { x: number; y: number }) => {
+    if (status !== 'playing') return
+    const zone = pileZoneRef.current?.getBoundingClientRect()
+    if (!zone) return
+    const m = 60 // "on or near the pile"
+    const inZone =
+      point.x >= zone.left - m &&
+      point.x <= zone.right + m &&
+      point.y >= zone.top - m &&
+      point.y <= zone.bottom + m
+    if (!inZone) return // springs back to raised slot
+    playCard(id)
   }
 
   const resetGame = () => {
@@ -229,7 +246,7 @@ export default function SoloGame({ onExit, start }: { onExit: () => void; start:
       }}
     >
       <div className="relative mx-auto h-full w-full max-w-[420px]">
-        <header className="flex items-center justify-between rounded-b-stub-header bg-stub-navy px-3 pb-3 pt-4">
+        <header className="daily-mode-header flex items-center justify-between rounded-b-stub-header bg-stub-navy px-3 pb-3 pt-4">
           <div className="flex items-center">
             <button
               type="button"
@@ -301,7 +318,28 @@ export default function SoloGame({ onExit, start }: { onExit: () => void; start:
                 }}
               />
             ))}
-            <motion.div layoutId={topId} data-card="pile-top" onTap={() => flipCard(topId)}>
+            <motion.div
+              layoutId={topId}
+              data-card="pile-top"
+              onTap={() => flipCard(topId)}
+              // Keyboard path (§7·7b a11y): with a card raised, Enter plays it
+              // here (the tap-free route to the drag's drop); otherwise Enter
+              // peeks the top card's credits, same as tap. Touch is untouched.
+              role="button"
+              tabIndex={0}
+              aria-label={
+                raisedId !== null
+                  ? `Play ${movieById.get(raisedId)!.title} onto the pile — top card ${topMovie.title}`
+                  : `Pile top: ${topMovie.title}, ${topMovie.year} — flip for credits`
+              }
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault()
+                  if (raisedId !== null) playCard(raisedId)
+                  else flipCard(topId)
+                }
+              }}
+            >
               <StubCard
                 movie={topMovie}
                 size="pile"
@@ -312,6 +350,15 @@ export default function SoloGame({ onExit, start }: { onExit: () => void; start:
             </motion.div>
           </div>
         </section>
+
+        {/* SR live mirror (§7·7b a11y): announce each landed connection —
+            always mounted, unlike the AnimatePresence banner below. */}
+        <div className="sr-only" role="status" aria-live="polite">
+          {connection
+            ? `Connected via ${connection.name} (${connection.role})` +
+              (connection.comboCount >= 3 ? ` — combo ×${connection.comboCount}` : '')
+            : ''}
+        </div>
 
         {/* Connection banner + combo badge */}
         <div className="pointer-events-none absolute inset-x-0 top-[306px] z-40 flex flex-col items-center gap-1.5 px-4">

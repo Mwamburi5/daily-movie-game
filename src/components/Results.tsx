@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
+import { useDialogA11y } from './useDialogA11y.ts'
 import { matchCutShare } from '../lib/share.ts'
 import type { EventData } from '../lib/analytics.ts'
 import type { DailyFinish } from '../lib/progress.ts'
@@ -45,6 +46,8 @@ export default function Results({
 }: ResultsProps) {
   const reduce = useReducedMotion()
   const [showSolution, setShowSolution] = useState(false)
+  // Trap-only dialog (§7·7b a11y): terminal screen, routes via its buttons.
+  const dialogRef = useDialogA11y()
 
   const diff = score - par
   const golf = diff === 0 ? 'even par' : diff < 0 ? `${-diff} under par` : `${diff} over par`
@@ -64,6 +67,11 @@ export default function Results({
     // when the card fits, scrolls when the revealed solution makes it taller
     // than a 667px viewport — plain justify-center clips both ends.
     <motion.div
+      ref={dialogRef}
+      role="dialog"
+      aria-modal="true"
+      aria-label={status === 'won' ? 'Solved — results' : 'Stuck — results'}
+      tabIndex={-1}
       className="absolute inset-0 z-[100] flex flex-col items-center overflow-y-auto bg-stub-scrim px-6 py-6 text-center"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}

@@ -4,7 +4,12 @@
 > now*. Update it whenever a rule or mode changes, so the words here always match
 > the game. Written so anyone 12 and up can follow it.
 >
-> **Last updated:** 2026-07-10 — **The Stub card redesign** (poster-panel card faces, ticket-stub Connections tiles, framed menu cards) plus one rule alignment: a **wild in your draw-3 is kept automatically** (that was always the rule under the hood; the buttons now enforce it). Previous: Daily Puzzle real daily (2026-07-03), Funpass Update (Meld Ladder · Genre Melds · Wild Cards · Take-to-Meld), Flow Update (Double Feature · Draw-3 · Race-to-20).
+> **Last updated:** 2026-07-17 — **Keyboard play + housekeeping** (§7·7b/c): every mode
+> is now fully playable by keyboard — no rule changed. Plus honest replay labels, a
+> `practice ·` marker on practice shares, and a difficulty picker that remembers your
+> last pick. Previous: The Stub card redesign (2026-07-10), Daily Puzzle real daily
+> (2026-07-03), Funpass Update (Meld Ladder · Genre Melds · Wild Cards · Take-to-Meld),
+> Flow Update (Double Feature · Draw-3 · Race-to-20).
 > **Modes:** Daily Puzzle (live, daily), Duel vs Computer (live), Chronology (live, daily — film pool still growing), Connections (live, daily).
 
 ---
@@ -14,6 +19,11 @@
 Every card is a **movie**, doing **more with less** is always the goal (fewest
 moves, fewest mistakes), and every mode ends with a little **emoji row** you can
 share. That is the family bond that ties all four together.
+
+**Playing by keyboard:** everything works without a mouse or touch. **Tab** moves
+between cards and targets, **Enter** (or Space) acts — raise a card, then Enter on
+a marquee / the pile / a gap plays it there — and **Esc** puts a raised card back
+down. Overlays keep your focus inside them until you choose a button.
 
 There are **four ways to play**:
 

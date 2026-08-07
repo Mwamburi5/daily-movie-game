@@ -24,7 +24,14 @@
 import { motion, useReducedMotion } from 'framer-motion'
 import type { ChronologyCard } from '../lib/chronology.ts'
 
-export type ChronoCardSize = 'hand' | 'raised' | 'line'
+export type ChronoCardSize =
+  | 'hand'
+  | 'handCompact'
+  | 'raised'
+  | 'raisedCompact'
+  | 'line'
+  | 'reel'
+  | 'reelCompact'
 
 // Per-size internal scale. `edge` = the cream/decade accent rail on the left; the
 // diamond pip sizes off it. Kept width-relative to StubCard's proportions so the
@@ -34,10 +41,21 @@ export type ChronoCardSize = 'hand' | 'raised' | 'line'
 // break mid-glyph — the same class of bug the StubCard redesign fixed. The big
 // reveal YEAR stays the hero (Chronology's whole point), untouched.
 const DIMS = {
-  hand: { w: 78, h: 110, titleBasePx: 12, titleFloorPx: 5, year: 'text-[30px]', pad: 6, edge: 9, radius: '11px', border: 2 },
-  raised: { w: 150, h: 210, titleBasePx: 19, titleFloorPx: 10, year: 'text-[64px]', pad: 11, edge: 16, radius: 'var(--radius-stub-panel)', border: 2.5 },
+  // The primary hand/raised widths intentionally match StubCard's production
+  // hand (96) and raised (184) variants. Chronology owns different information,
+  // but it must never look like a different deck.
+  hand: { w: 96, h: 128, titleBasePx: 13, titleFloorPx: 6, year: 'text-[32px]', pad: 7, edge: 9, radius: '11px', border: 2 },
+  handCompact: { w: 78, h: 104, titleBasePx: 11, titleFloorPx: 5, year: 'text-[27px]', pad: 6, edge: 8, radius: '10px', border: 2 },
+  raised: { w: 184, h: 245, titleBasePx: 20, titleFloorPx: 10, year: 'text-[68px]', pad: 12, edge: 20, radius: 'var(--radius-stub-panel)', border: 2.5 },
+  raisedCompact: { w: 156, h: 208, titleBasePx: 18, titleFloorPx: 9, year: 'text-[58px]', pad: 10, edge: 16, radius: 'var(--radius-stub-panel)', border: 2.5 },
   line: { w: 64, h: 90, titleBasePx: 10, titleFloorPx: 4, year: 'text-[22px]', pad: 5, edge: 7, radius: 'var(--radius-stub-card)', border: 2 },
+  reel: { w: 100, h: 133, titleBasePx: 13, titleFloorPx: 6, year: 'text-[32px]', pad: 7, edge: 10, radius: 'var(--radius-stub-card)', border: 2 },
+  reelCompact: { w: 88, h: 117, titleBasePx: 12, titleFloorPx: 5, year: 'text-[28px]', pad: 6, edge: 9, radius: '11px', border: 2 },
 } as const
+
+function isRaisedSize(size: ChronoCardSize): boolean {
+  return size === 'raised' || size === 'raisedCompact'
+}
 
 // Adaptive title fit — mirrors StubCard.titleFit (kept local: ChronoCard is
 // deliberately decoupled from StubCard, see file header). Shrink so the longest
@@ -51,6 +69,11 @@ function fitTitlePx(title: string, boxW: number, basePx: number, floorPx: number
   const widthCap = boxW / (CHRONO_CAPS_ADVANCE * longestLen)
   const lineCap = (boxW * 3) / (CHRONO_CAPS_ADVANCE * totalLen) // up to 3 lines
   return Math.max(floorPx, Math.min(basePx, widthCap, lineCap))
+}
+
+function titleInitial(title: string): string {
+  const stripped = title.replace(/^(the|a|an)\s+/i, '').trim()
+  return (stripped || title).trim().charAt(0).toUpperCase() || '?'
 }
 
 // Decade -> a saturated accent, used as the ticket's left EDGE + diamond pip (not
@@ -115,6 +138,8 @@ function FrontFace({ card, size, showYear, flat }: FaceProps) {
   // arithmetic; the buffer keeps the longest word inside the real box).
   const titleBoxW = Math.max(1, d.w - d.edge - 3 - d.pad * 0.6 - d.pad - 4)
   const titlePx = fitTitlePx(card.title, titleBoxW, d.titleBasePx, d.titleFloorPx)
+  const raised = isRaisedSize(size)
+  const notched = raised || size === 'reel' || size === 'reelCompact'
   return (
     <div
       className="absolute inset-0 box-border flex overflow-hidden border-solid"
@@ -123,11 +148,23 @@ function FrontFace({ card, size, showYear, flat }: FaceProps) {
         borderWidth: d.border,
         borderColor: 'var(--color-stub-navy)',
         borderRadius: d.radius,
-        boxShadow: size === 'raised' ? 'var(--shadow-stub-card-raised)' : 'var(--shadow-stub-card-resting)',
+        boxShadow: isRaisedSize(size) ? 'var(--shadow-stub-card-raised)' : 'var(--shadow-stub-card-resting)',
         backfaceVisibility: flat ? undefined : 'hidden',
         WebkitBackfaceVisibility: flat ? undefined : 'hidden',
       }}
     >
+      {notched && (
+        <>
+          <span
+            className="pointer-events-none absolute left-1/2 top-0 z-10 -translate-x-1/2 -translate-y-1/2 rounded-full border-solid bg-stub-cream"
+            style={{ width: raised ? 14 : 10, height: raised ? 14 : 10, borderWidth: d.border, borderColor: 'var(--color-stub-navy)' }}
+          />
+          <span
+            className="pointer-events-none absolute bottom-0 left-1/2 z-10 -translate-x-1/2 translate-y-1/2 rounded-full border-solid bg-stub-cream"
+            style={{ width: raised ? 14 : 10, height: raised ? 14 : 10, borderWidth: d.border, borderColor: 'var(--color-stub-navy)' }}
+          />
+        </>
+      )}
       <EdgeRail accent={accent} size={size} />
       {/* dotted navy perforation — the rail↔body seam, echoing StubCard */}
       <div className="flex-none self-stretch" style={{ width: 3, display: 'flex', justifyContent: 'center' }}>
@@ -139,18 +176,56 @@ function FrontFace({ card, size, showYear, flat }: FaceProps) {
           }}
         />
       </div>
-      <div className="flex min-w-0 flex-1 flex-col justify-between" style={{ padding: d.pad, paddingLeft: d.pad * 0.6 }}>
-        <span
-          className="min-w-0 break-words font-stub-display uppercase leading-[1.05] text-stub-navy"
-          style={{ fontSize: titlePx, fontWeight: 700, hyphens: 'manual' }}
+      <div
+        className="flex min-w-0 flex-1 flex-col"
+        style={{ padding: d.pad, paddingLeft: d.pad * 0.6, gap: Math.max(2, d.pad * 0.45) }}
+      >
+        <div className="flex-none">
+          <span
+            className="block min-w-0 break-words font-stub-display uppercase leading-[1.03] text-stub-navy"
+            style={{ fontSize: titlePx, fontWeight: 700, hyphens: 'manual' }}
+          >
+            {card.title}
+          </span>
+          <div className="mt-0.5 h-px bg-stub-navy/90" />
+        </div>
+
+        {/* Same reserved poster slot as StubCard: typographic for now, ready for
+            card art later without changing the frame or the game layout. */}
+        <div
+          className="relative flex min-h-0 flex-1 items-center justify-center overflow-hidden border-solid"
+          style={{
+            borderWidth: Math.max(1, d.border - 0.5),
+            borderColor: 'var(--color-stub-navy)',
+            borderRadius: Math.max(5, d.w * 0.06),
+            background: 'var(--color-stub-cream)',
+          }}
         >
-          {card.title}
-        </span>
+          <div
+            className="pointer-events-none absolute inset-0"
+            style={{
+              backgroundImage: 'radial-gradient(rgba(31,58,82,.08) 1px, transparent 1.2px)',
+              backgroundSize: '6px 6px',
+            }}
+          />
+          <div className="pointer-events-none absolute inset-0" style={{ background: accent, opacity: 0.12 }} />
+          <span
+            className="relative font-stub-display font-bold leading-none"
+            style={{ color: accent, fontSize: Math.max(18, d.w * (raised ? 0.38 : 0.34)), opacity: 0.86 }}
+          >
+            {titleInitial(card.title)}
+          </span>
+        </div>
+
         {/* year row — pre-placement prints the mono placeholder; the year itself
             is OMITTED from the DOM unless showYear (no-year-leak, structural). */}
         <span
-          className="mt-auto font-stub-label uppercase tracking-wider text-stub-slate text-[9px]"
-          style={{ fontWeight: 600, fontVariantNumeric: showYear ? 'tabular-nums' : undefined }}
+          className="flex-none font-stub-label uppercase tracking-wider text-stub-slate"
+          style={{
+            fontSize: Math.max(6, d.w * 0.075),
+            fontWeight: 700,
+            fontVariantNumeric: showYear ? 'tabular-nums' : undefined,
+          }}
         >
           {showYear ? card.year : 'year ?'}
         </span>
@@ -168,7 +243,7 @@ function BackFace({ card, size, flat }: FaceProps) {
   return (
     <div
       className={`absolute inset-0 flex flex-col items-center justify-center overflow-hidden text-center ${
-        size === 'line' ? 'p-1.5' : 'p-2'
+        size === 'line' || size === 'reel' || size === 'reelCompact' ? 'p-1.5' : 'p-2'
       }`}
       style={{
         background: 'var(--color-stub-paper)',
@@ -176,9 +251,9 @@ function BackFace({ card, size, flat }: FaceProps) {
         borderColor: 'var(--color-stub-navy)',
         borderStyle: 'solid',
         borderRadius: d.radius,
-        borderTopWidth: size === 'raised' ? 6 : 5,
+        borderTopWidth: isRaisedSize(size) ? 6 : 5,
         borderTopColor: accent,
-        boxShadow: size === 'raised' ? 'var(--shadow-stub-card-raised)' : 'var(--shadow-stub-card-resting)',
+        boxShadow: isRaisedSize(size) ? 'var(--shadow-stub-card-raised)' : 'var(--shadow-stub-card-resting)',
         transform: flat ? undefined : 'rotateY(180deg)',
         backfaceVisibility: flat ? undefined : 'hidden',
         WebkitBackfaceVisibility: flat ? undefined : 'hidden',

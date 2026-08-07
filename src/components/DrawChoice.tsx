@@ -1,4 +1,5 @@
 import { motion, useReducedMotion } from 'framer-motion'
+import { useDialogA11y } from './useDialogA11y.ts'
 
 // DrawChoice — the draw-3-keep-1 modal ("The Stub" design language).
 //
@@ -86,12 +87,21 @@ export default function DrawChoice({ options, onPick, reduce }: DrawChoiceProps)
   // A revealed wild collapses the choice: it's the forced keep (RULESET §11),
   // the other cards go non-interactive and the copy states the rule.
   const hasWild = options.some((o) => o.wild)
+  // Trap-only dialog (§7·7b a11y): a forced pick has no dismiss, so no onClose.
+  const dialogRef = useDialogA11y()
 
   return (
     // Scrim + panel fill the parent's absolute inset-0 z-[85] slot. Navy scrim
     // at .64 (README .62–.66, matching 7c's blocking dim) + the soft amber
     // radial glow behind the panel that 7c uses to spotlight the modal.
-    <div className="absolute inset-0 z-[85] flex items-center justify-center px-3">
+    <div
+      ref={dialogRef}
+      role="dialog"
+      aria-modal="true"
+      aria-label="Drew three — keep one"
+      tabIndex={-1}
+      className="absolute inset-0 z-[85] flex items-center justify-center px-3"
+    >
       <div className="absolute inset-0 bg-stub-scrim" />
       {/* Amber spotlight glow, centered a touch high like 7c's (top ~46%). */}
       <div

@@ -41,6 +41,15 @@ body {
   font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 
+/* Keyboard focus ring (§7·7b a11y slice). :focus-visible only — pointer taps
+   never paint it, so the touch experience is untouched. Amber is THE action
+   color; the offset keeps it legible over navy chrome and cream paper alike. */
+:focus-visible {
+  outline: 2px solid var(--color-stub-amber);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
 #root {
   height: 100vh;
   height: 100dvh;
@@ -48,6 +57,50 @@ body {
      iPhone home indicator — the viewport meta already sets viewport-fit=cover,
      so the inset is real on notched phones and 0 elsewhere. */
   padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Chronology's selected Premiere Reel composition. The real cards and gaps sit
+   above a 25KB raster filmstrip surface; native horizontal overflow owns swipe
+   momentum and hit-testing, so presentation never changes the rules. */
+.daily-mode-header { border-bottom: 2px solid var(--color-stub-amber); }
+.chrono-header-title {
+  font-size: 32px;
+  line-height: 1;
+}
+.chrono-strokes-value { font-size: 18px; }
+.chrono-reel-nav { top: 94px; }
+.chrono-reel-band {
+  top: 174px;
+  min-height: 174px;
+  padding-block: 20px;
+  scrollbar-width: none;
+  overscroll-behavior-x: contain;
+}
+.chrono-reel-band::-webkit-scrollbar { display: none; }
+.chrono-gap { height: 133px; }
+.chrono-reel-feedback { top: 350px; }
+.chrono-raised { bottom: 300px; }
+.chrono-reel-instruction { bottom: 272px; }
+.chrono-hand { height: 270px; }
+
+@media (max-height: 720px) {
+  .chrono-header-title { font-size: 26px; }
+  .chrono-strokes-value { font-size: 15px; }
+  .chrono-reel-nav { top: 76px; }
+  .chrono-reel-band {
+    top: 118px;
+    min-height: 145px;
+    padding-block: 14px;
+  }
+  .chrono-gap { height: 117px; }
+  .chrono-reel-feedback { top: 266px; }
+  .chrono-raised { bottom: 180px; }
+  .chrono-reel-instruction {
+    bottom: 140px;
+    font-size: 8px;
+    letter-spacing: .07em;
+  }
+  .chrono-hand { height: 128px; }
 }
 
 /* ============================================================

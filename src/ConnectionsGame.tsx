@@ -30,6 +30,7 @@ import { makeRng } from './lib/rng.ts'
 import { recordDailyFinish, type DailyFinish } from './lib/progress.ts'
 import { track, type EventData } from './lib/analytics.ts'
 import ShareCopy from './components/ShareCopy.tsx'
+import { useDialogA11y } from './components/useDialogA11y.ts'
 
 // How a round was started (chosen at the menu, App.tsx). The DAILY rides today's
 // baked grid keyed to the player's local calendar date, so everyone sees the same
@@ -282,7 +283,7 @@ export default function ConnectionsGame({ onExit, start }: { onExit: () => void;
       <div className="relative mx-auto flex h-full w-full max-w-[420px] flex-col">
         {/* 7a navy Stub header — same shape as Chronology's: back, title, mode
             eyebrow; right side carries the mistakes tally as dots. */}
-        <header className="relative flex flex-none items-center justify-between overflow-hidden rounded-b-stub-header bg-stub-navy px-3 pb-2.5 pt-4">
+        <header className="daily-mode-header relative flex flex-none items-center justify-between overflow-hidden rounded-b-stub-header bg-stub-navy px-3 pb-2.5 pt-4">
           <div
             className="pointer-events-none absolute inset-0"
             style={{
@@ -478,6 +479,11 @@ export default function ConnectionsGame({ onExit, start }: { onExit: () => void;
           </div>
         </div>
 
+        {/* SR live mirror (§7·7b a11y): the say() feedback line, always mounted. */}
+        <div className="sr-only" role="status" aria-live="polite">
+          {toast?.text ?? ''}
+        </div>
+
         {/* feedback toast */}
         <div className="pointer-events-none absolute inset-x-0 bottom-20 z-40 flex justify-center px-4">
           <AnimatePresence>
@@ -574,8 +580,16 @@ function ConnectionsResults({
   // the daily in a group chat; the brand line stays byte-identical for dailies.
   const text = matchCutShare('Connections', `${practice ? 'practice · ' : ''}${scoreLine}`, emojiGrid)
 
+  // Trap-only dialog (§7·7b a11y): terminal screen, routes via its buttons.
+  const dialogRef = useDialogA11y()
+
   return (
     <motion.div
+      ref={dialogRef}
+      role="dialog"
+      aria-modal="true"
+      aria-label={won ? 'Solved — results' : 'Missed it — results'}
+      tabIndex={-1}
       className="absolute inset-0 z-[100] flex flex-col items-center overflow-y-auto bg-stub-cream/95 px-8 text-center"
       style={{
         backgroundImage: 'radial-gradient(rgba(31,58,82,.06) 1px, transparent 1.2px)',

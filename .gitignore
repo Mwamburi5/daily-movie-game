@@ -7,3 +7,9 @@ memory
 .env
 .env.local
 .env.*.local
+
+# Local tooling credentials and private review evidence.
+.codex/
+Feedback Screenshots*/
+audit/
+design-qa.md
