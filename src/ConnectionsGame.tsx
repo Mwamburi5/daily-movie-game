@@ -31,6 +31,7 @@ import { recordDailyFinish, type DailyFinish } from './lib/progress.ts'
 import { track, type EventData } from './lib/analytics.ts'
 import ShareCopy from './components/ShareCopy.tsx'
 import { useDialogA11y } from './components/useDialogA11y.ts'
+import DailyModeHeader from './components/DailyModeHeader.tsx'
 
 // How a round was started (chosen at the menu, App.tsx). The DAILY rides today's
 // baked grid keyed to the player's local calendar date, so everyone sees the same
@@ -280,34 +281,15 @@ export default function ConnectionsGame({ onExit, start }: { onExit: () => void;
         backgroundSize: '7px 7px',
       }}
     >
-      <div className="relative mx-auto flex h-full w-full max-w-[420px] flex-col">
+      <div className="daily-mode-shell relative mx-auto flex h-full w-full flex-col" data-mode-stage="connections">
         {/* 7a navy Stub header — same shape as Chronology's: back, title, mode
             eyebrow; right side carries the mistakes tally as dots. */}
-        <header className="daily-mode-header relative flex flex-none items-center justify-between overflow-hidden rounded-b-stub-header bg-stub-navy px-3 pb-2.5 pt-4">
-          <div
-            className="pointer-events-none absolute inset-0"
-            style={{
-              backgroundImage: 'radial-gradient(rgba(240,235,216,.10) 1px, transparent 1.2px)',
-              backgroundSize: '6px 6px',
-            }}
-          />
-          <div className="relative flex items-center">
-            <button
-              type="button"
-              aria-label="Back to menu"
-              onClick={onExit}
-              className="flex h-11 w-9 items-center justify-center text-2xl text-stub-amber active:scale-90"
-            >
-              ‹
-            </button>
-            <div className="flex flex-col leading-none">
-              <span className="font-stub-display text-lg font-bold tracking-tight text-stub-cream">Connections</span>
-              <span className="mt-1 font-stub-label text-[9px] uppercase tracking-wider text-stub-amber">
-                {start.kind === 'daily' ? 'daily' : 'practice'}
-              </span>
-            </div>
-          </div>
-          <div className="relative flex items-center gap-2">
+        <DailyModeHeader
+          title="Connections"
+          eyebrow={start.kind === 'daily' ? 'daily' : 'practice'}
+          onBack={onExit}
+          right={
+            <div className="flex items-center gap-2">
             <div className="text-right">
               <div className="font-stub-label text-[10px] uppercase tracking-wide text-stub-cream/85">Mistakes left</div>
               <div className="mt-1 flex items-center justify-end gap-1" aria-label={`${mistakesLeft} mistakes left`}>
@@ -329,11 +311,12 @@ export default function ConnectionsGame({ onExit, start }: { onExit: () => void;
                 ↺
               </button>
             )}
-          </div>
-        </header>
+            </div>
+          }
+        />
 
         {/* Board: solved bands stack on top, remaining tiles reflow below. */}
-        <div className="flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto px-3 py-3">
+        <div className="connections-board flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto px-3 py-4">
           <p className="text-center font-stub-ui text-[12px] text-stub-slate">
             Find four groups of four — same director, actor, series, or genre.
           </p>
@@ -365,22 +348,22 @@ export default function ConnectionsGame({ onExit, start }: { onExit: () => void;
             })}
           </AnimatePresence>
 
-          {/* The remaining tiles — landscape ticket stubs (W5d, comp §3): 62px
+          {/* The remaining tiles — near-square ticket stubs (W5d, comp §3): 72px
               punched tickets with a perf-dot row + mid-height side notches. The
               chrome is IDENTICAL on every tile — nothing may vary by group. */}
           {remaining.length > 0 && (
-            <motion.div className="grid grid-cols-4 gap-[6px]" animate={shakeControls}>
-              {remaining.map((id) => {
+            <motion.div className="connections-grid grid grid-cols-4 gap-[6px]" animate={shakeControls}>
+              {remaining.map((id, tileIndex) => {
                 const on = selected.includes(id)
                 const title = titleOf(id)
                 return (
-                  <button
+                  <motion.button
                     key={id}
                     type="button"
                     data-tile={id}
                     aria-pressed={on}
                     onClick={() => toggle(id)}
-                    className="relative flex h-[62px] items-center justify-center overflow-hidden border-solid text-center transition-colors active:scale-[0.97]"
+                    className="connections-tile relative flex h-[72px] items-center justify-center overflow-hidden border-solid text-center transition-colors active:scale-[0.97]"
                     style={{
                       borderRadius: 9,
                       borderWidth: on ? 2.5 : 2,
@@ -390,6 +373,13 @@ export default function ConnectionsGame({ onExit, start }: { onExit: () => void;
                       boxShadow: on ? 'var(--shadow-stub-glow-amber)' : 'var(--shadow-stub-card-resting)',
                       paddingInline: 5,
                     }}
+                    initial={reduce ? { opacity: 0 } : { opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={
+                      reduce
+                        ? { duration: 0.15 }
+                        : { type: 'spring', stiffness: 340, damping: 27, delay: tileIndex * 0.025 }
+                    }
                   >
                     {/* perf-dot row — flips to cream on the navy selected fill
                         (selection is player state, so this can't leak a group) */}
@@ -425,7 +415,7 @@ export default function ConnectionsGame({ onExit, start }: { onExit: () => void;
                       className="font-stub-display uppercase"
                       lang="en"
                       style={{
-                        fontSize: tileFontSize(title), // shrink long titles to fit (no mid-word break)
+                        fontSize: `clamp(${tileFontSize(title)}px, 1.2vw, ${tileFontSize(title) + 4}px)`,
                         fontWeight: 700,
                         lineHeight: 1.06,
                         letterSpacing: '0.005em',
@@ -438,7 +428,7 @@ export default function ConnectionsGame({ onExit, start }: { onExit: () => void;
                     >
                       {title}
                     </span>
-                  </button>
+                  </motion.button>
                 )
               })}
             </motion.div>
@@ -448,7 +438,7 @@ export default function ConnectionsGame({ onExit, start }: { onExit: () => void;
               Inside the board column (W5d layout tighten): the buttons sit
               directly under the grid instead of pinned past ~250px of dead
               cream at the screen foot. */}
-          <div className="flex flex-none items-center gap-2 pb-[max(12px,env(safe-area-inset-bottom))] pt-1">
+          <div className="connections-actions flex flex-none items-center gap-2 pb-[max(12px,env(safe-area-inset-bottom))] pt-1">
             <button
               type="button"
               data-action="shuffle"

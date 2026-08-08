@@ -846,8 +846,19 @@ what's ready-to-review per sitting.
       Chronology checkpoint uses a 25KB filmstrip asset, native momentum rail,
       shared Stub card anatomy, tap/keyboard gaps, and the existing scoring
       core; `design-qa.md` passed. Cross-mode contract is now
-      `docs/ui-contracts.md` Appendix B. Next visual wave = Daily Puzzle +
-      Connections tokens, not a literal reel transplant.
+      `docs/ui-contracts.md` Appendix B.
+- [x] **PRE-LAUNCH POLISH · daily-mode consistency wave — BUILT + VERIFIED
+      2026-08-07:** one shared marquee header now owns the navy texture, Domine
+      title scale, amber daily label/keyline, center ticket tab, and back target
+      across Daily Puzzle, Chronology, and Connections. Daily Puzzle gains a
+      staged pile, explanatory center beat, responsive fan scale, compact mobile
+      tally/actions, and entry motion. Connections gains 72px phone / 90px
+      desktop near-square tickets, a 760px desktop canvas, and staggered deal
+      motion. QA fixed one real 390px title collision and increased the first
+      grid scale before passing 390×844, 375×667, desktop, selected, and raised
+      states. Local console is clean; build + 64/64 + 8/8 + 42/42 + 14/14.
+      Next visual slice = local icon family and shared motion tokens, then menu;
+      no rule/scoring change entered this wave.
 - [ ] **PRE-LAUNCH POLISH · foundations (§9·P1)** — route-level code/data
       splitting · asset manifest and budgets · CI + browser smoke tests · shared
       spacing/type/motion/icon tokens. No new dependency; no rule change.

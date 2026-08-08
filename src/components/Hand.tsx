@@ -53,6 +53,8 @@ interface HandProps {
   faceUp: ReadonlySet<string>
   invalidNonce: number
   raisedBottom?: number
+  fanClassName?: string
+  raisedClassName?: string
   // Meld selection mode: taps toggle membership instead of raising
   selectMode?: boolean
   selectedIds?: ReadonlySet<string>
@@ -72,6 +74,8 @@ export default function Hand({
   faceUp,
   invalidNonce,
   raisedBottom = 238,
+  fanClassName = '',
+  raisedClassName = '',
   selectMode = false,
   selectedIds,
   onToggleSelect,
@@ -159,7 +163,7 @@ export default function Hand({
     <>
       {/* Raised card slot — only the raised card is draggable/playable */}
       <div
-        className="pointer-events-none absolute inset-x-0 z-50 flex justify-center"
+        className={`pointer-events-none absolute inset-x-0 z-50 flex justify-center ${raisedClassName}`}
         style={{ bottom: raisedBottom }}
       >
         {raised && (
@@ -178,7 +182,7 @@ export default function Hand({
       {/* Fan — raised card keeps its slot as a gap until played or lowered */}
       <div
         ref={fanRef}
-        className="absolute inset-x-0 bottom-0 z-30 h-[225px]"
+        className={`absolute inset-x-0 bottom-0 z-30 h-[225px] ${fanClassName}`}
         style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
       >
         {cards.map((m, i) => {

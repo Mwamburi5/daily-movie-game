@@ -36,6 +36,7 @@ import { recordDailyFinish, type DailyFinish } from './lib/progress.ts'
 import { track, type EventData } from './lib/analytics.ts'
 import ShareCopy from './components/ShareCopy.tsx'
 import FixedDigits from './components/FixedDigits.tsx'
+import DailyModeHeader from './components/DailyModeHeader.tsx'
 import { useDialogA11y } from './components/useDialogA11y.ts'
 import filmstripSurface from './assets/chronology-filmstrip.webp'
 
@@ -435,38 +436,17 @@ export default function ChronologyGame({ onExit, start }: { onExit: () => void; 
           backgroundSize: '7px 7px',
         }}
       >
-      <div className="relative mx-auto h-full w-full max-w-[420px]">
+      <div className="daily-mode-shell relative mx-auto h-full w-full">
         {/* 7a navy Stub header: nav row + a strokes/streak tally, bottom corners
             only per the token sheet. Cream ink on navy, with the header's cream
             dot texture. Title in Domine; the tally reads in the same value shape
             as Duel's HUD (mono eyebrows, tabular numerals). */}
-        <header
-          className="daily-mode-header relative flex items-center justify-between overflow-hidden rounded-b-stub-header bg-stub-navy px-3 pb-2.5 pt-4"
-        >
-          <div
-            className="pointer-events-none absolute inset-0"
-            style={{
-              backgroundImage: 'radial-gradient(rgba(240,235,216,.10) 1px, transparent 1.2px)',
-              backgroundSize: '6px 6px',
-            }}
-          />
-          <div className="relative flex items-center">
-            <button
-              type="button"
-              aria-label="Back to menu"
-              onClick={onExit}
-              className="flex h-11 w-9 items-center justify-center text-2xl text-stub-amber active:scale-90"
-            >
-              ‹
-            </button>
-            <div className="flex flex-col leading-none">
-              <span className="chrono-header-title font-stub-display font-bold tracking-tight text-stub-cream">Chronology</span>
-              <span className="mt-1 font-stub-label text-[9px] uppercase tracking-wider text-stub-amber">
-                {start.kind === 'daily' ? 'daily' : `practice · ${start.difficulty === 'easy' ? 'wide' : 'tight'}`}
-              </span>
-            </div>
-          </div>
-          <div className="relative flex items-center gap-2">
+        <DailyModeHeader
+          title="Chronology"
+          eyebrow={start.kind === 'daily' ? 'daily' : `practice · ${start.difficulty === 'easy' ? 'wide' : 'tight'}`}
+          onBack={onExit}
+          right={
+            <div className="flex items-center gap-2">
             <div className="text-right tabular-nums">
               <div className="font-stub-label text-[11px] uppercase tracking-wide text-stub-cream">
                 {/* FixedDigits: the strokes tally ticks in Domine, which has no
@@ -502,8 +482,9 @@ export default function ChronologyGame({ onExit, start }: { onExit: () => void; 
                 ↺
               </button>
             )}
-          </div>
-        </header>
+            </div>
+          }
+        />
 
         <div className="chrono-reel-nav absolute inset-x-0 z-30 px-5 text-center">
           <p className="font-stub-label text-[9px] font-bold uppercase tracking-[0.12em] text-stub-navy">

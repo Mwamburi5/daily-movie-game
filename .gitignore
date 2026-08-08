@@ -13,3 +13,5 @@ memory
 Feedback Screenshots*/
 audit/
 design-qa.md
+output/playwright/
+.playwright-cli/

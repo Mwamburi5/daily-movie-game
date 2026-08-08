@@ -10,6 +10,7 @@ import { track } from './lib/analytics.ts'
 import StubCard from './components/StubCard.tsx'
 import Hand from './components/Hand.tsx'
 import HowToPlay from './components/HowToPlay.tsx'
+import DailyModeHeader from './components/DailyModeHeader.tsx'
 import Results from './components/Results.tsx'
 
 // How a round was started (chosen at the menu, App.tsx), mirroring Chronology's
@@ -245,62 +246,72 @@ export default function SoloGame({ onExit, start }: { onExit: () => void; start:
         backgroundSize: '7px 7px',
       }}
     >
-      <div className="relative mx-auto h-full w-full max-w-[420px]">
-        <header className="daily-mode-header flex items-center justify-between rounded-b-stub-header bg-stub-navy px-3 pb-3 pt-4">
-          <div className="flex items-center">
-            <button
-              type="button"
-              aria-label="Back to menu"
-              onClick={onExit}
-              className="flex h-11 w-9 items-center justify-center text-2xl text-stub-cream/80 active:scale-90"
-            >
-              ‹
-            </button>
-            <span className="font-stub-display text-lg font-bold tracking-tight text-stub-cream">
-              {start.kind === 'daily' ? 'Daily' : 'Practice'}
-            </span>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <div className="relative font-stub-label text-[11px] font-semibold uppercase tracking-wider tabular-nums text-stub-slate-light">
-              Flips {flips} · Score {score} · Par {puzzle.par}
-              {/* "+1" pops off the counter on each first flip (re-flips are free,
-                  so no pulse) — the flip cost teaches itself. Keyed remount per
-                  flip; the spent span sits invisible until the next one. */}
-              {flipPulse > 0 && (
-                <motion.span
-                  key={flipPulse}
-                  aria-hidden="true"
-                  initial={{ opacity: 1, y: reduce ? 0 : 3 }}
-                  animate={{ opacity: 0, y: reduce ? 0 : -13 }}
-                  transition={{ duration: reduce ? 0.6 : 0.9, ease: 'easeOut' }}
-                  className="pointer-events-none absolute -top-4 left-1 text-[12px] font-extrabold text-stub-amber"
+      <div className="daily-mode-shell relative mx-auto h-full w-full" data-mode-stage="solo">
+        <DailyModeHeader
+          title="Daily Puzzle"
+          eyebrow={start.kind === 'daily' ? 'daily' : 'practice'}
+          onBack={onExit}
+          className="daily-mode-header--solo"
+          right={
+            <div className="solo-header-right flex items-center gap-1.5">
+              <div
+                className="grid grid-cols-3 gap-1 text-center tabular-nums"
+                role="text"
+                aria-label={`Flips ${flips}, score ${score}, par ${puzzle.par}`}
+              >
+                <span className="relative flex min-w-7 flex-col items-center leading-none">
+                  <span className="font-stub-display text-[14px] font-bold text-stub-cream">{flips}</span>
+                  <span className="mt-0.5 font-stub-label text-[6px] font-bold uppercase tracking-[0.08em] text-stub-slate-light">Flips</span>
+                  {/* "+1" pops off the counter on each first flip (re-flips are free,
+                      so no pulse) — the flip cost teaches itself. Keyed remount per
+                      flip; the spent span sits invisible until the next one. */}
+                  {flipPulse > 0 && (
+                    <motion.span
+                      key={flipPulse}
+                      aria-hidden="true"
+                      initial={{ opacity: 1, y: reduce ? 0 : 3 }}
+                      animate={{ opacity: 0, y: reduce ? 0 : -13 }}
+                      transition={{ duration: reduce ? 0.6 : 0.9, ease: 'easeOut' }}
+                      className="pointer-events-none absolute -top-4 left-1/2 -translate-x-1/2 text-[12px] font-extrabold text-stub-amber"
+                    >
+                      +1
+                    </motion.span>
+                  )}
+                </span>
+                <span className="flex min-w-7 flex-col items-center leading-none">
+                  <span className="font-stub-display text-[14px] font-bold text-stub-cream">{score}</span>
+                  <span className="mt-0.5 font-stub-label text-[6px] font-bold uppercase tracking-[0.08em] text-stub-slate-light">Score</span>
+                </span>
+                <span className="flex min-w-7 flex-col items-center leading-none">
+                  <span className="font-stub-display text-[14px] font-bold text-stub-cream">{puzzle.par}</span>
+                  <span className="mt-0.5 font-stub-label text-[6px] font-bold uppercase tracking-[0.08em] text-stub-slate-light">Par</span>
+                </span>
+              </div>
+              <div className="solo-header-actions flex items-center gap-1">
+                <button
+                  type="button"
+                  aria-label="How to play"
+                  data-rules-open
+                  onClick={() => setShowRules(true)}
+                  className="flex h-7 w-7 items-center justify-center rounded-stub-pill text-[12px] font-extrabold text-stub-cream/80 ring-1 ring-inset ring-stub-slate-light/50 active:scale-90"
                 >
-                  +1
-                </motion.span>
-              )}
+                  ?
+                </button>
+                <button
+                  type="button"
+                  aria-label="Restart game"
+                  onClick={resetGame}
+                  className="flex h-9 w-9 items-center justify-center rounded-stub-pill text-xl text-stub-cream/80 active:scale-90 active:text-stub-amber"
+                >
+                  ↺
+                </button>
+              </div>
             </div>
-            <button
-              type="button"
-              aria-label="How to play"
-              data-rules-open
-              onClick={() => setShowRules(true)}
-              className="flex h-7 w-7 items-center justify-center rounded-stub-pill text-[12px] font-extrabold text-stub-cream/80 ring-1 ring-inset ring-stub-slate-light/50 active:scale-90"
-            >
-              ?
-            </button>
-            <button
-              type="button"
-              aria-label="Restart game"
-              onClick={resetGame}
-              className="flex h-9 w-9 items-center justify-center rounded-stub-pill text-xl text-stub-cream/80 active:scale-90 active:text-stub-amber"
-            >
-              ↺
-            </button>
-          </div>
-        </header>
+          }
+        />
 
         {/* Discard pile */}
-        <section className="absolute inset-x-0 top-16 z-10 flex justify-center">
+        <section className="solo-pile-stage absolute inset-x-0 z-10 flex justify-center">
           <div ref={pileZoneRef} className="relative">
             {/* Underlay stack: thin navy-edged paper ticket slabs, so the pile
                 reads as a stack of stubs rather than colored rectangles. Faint
@@ -339,6 +350,9 @@ export default function SoloGame({ onExit, start }: { onExit: () => void; start:
                   else flipCard(topId)
                 }
               }}
+              initial={reduce ? { opacity: 0 } : { opacity: 0, y: -12, rotate: -1.5 }}
+              animate={{ opacity: 1, y: 0, rotate: 0 }}
+              transition={reduce ? { duration: 0.15 } : { type: 'spring', stiffness: 340, damping: 26 }}
             >
               <StubCard
                 movie={topMovie}
@@ -351,6 +365,20 @@ export default function SoloGame({ onExit, start }: { onExit: () => void; start:
           </div>
         </section>
 
+        <AnimatePresence>
+          {raisedId === null && !connection && status === 'playing' && (
+            <motion.p
+              className="solo-stage-instruction pointer-events-none absolute inset-x-0 z-10 text-center font-stub-label text-[9px] font-bold uppercase tracking-[0.11em] text-stub-navy"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: reduce ? 0.15 : 0.25 }}
+            >
+              Flip for credits · raise a card to play
+            </motion.p>
+          )}
+        </AnimatePresence>
+
         {/* SR live mirror (§7·7b a11y): announce each landed connection —
             always mounted, unlike the AnimatePresence banner below. */}
         <div className="sr-only" role="status" aria-live="polite">
@@ -361,7 +389,7 @@ export default function SoloGame({ onExit, start }: { onExit: () => void; start:
         </div>
 
         {/* Connection banner + combo badge */}
-        <div className="pointer-events-none absolute inset-x-0 top-[306px] z-40 flex flex-col items-center gap-1.5 px-4">
+        <div className="solo-feedback pointer-events-none absolute inset-x-0 z-40 flex flex-col items-center gap-1.5 px-4">
           <AnimatePresence>
             {connection && (
               <motion.div
@@ -408,6 +436,8 @@ export default function SoloGame({ onExit, start }: { onExit: () => void; start:
           onRaise={(id) => status === 'playing' && setRaisedId(id)}
           onFlip={flipCard}
           onDrop={attemptPlay}
+          fanClassName="daily-solo-hand"
+          raisedClassName="daily-solo-raised"
         />
 
         <AnimatePresence>
