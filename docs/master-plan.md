@@ -859,6 +859,20 @@ what's ready-to-review per sitting.
       states. Local console is clean; build + 64/64 + 8/8 + 42/42 + 14/14.
       Next visual slice = local icon family and shared motion tokens, then menu;
       no rule/scoring change entered this wave.
+- [x] **PRE-LAUNCH POLISH · Daily Puzzle ticket-rack refinement — BUILT +
+      VERIFIED 2026-08-07:** Buri selected the Cinematic Spotlight direction,
+      then replaced the squeezed fan with a larger equal-proportion 4+3 cinema
+      rack. `Hand` gains a Solo-only `rack` presentation while Duel's fan stays
+      byte-behavior equivalent; seven cards render 4+3, six render 3+3, and
+      smaller hands reflow without horizontal compression. A raised ticket keeps
+      its visible slot, scales modestly between pile and rack, and retains tap,
+      drag, flip, Escape, and keyboard-pile play. Added optimized real assets:
+      63KB paper/projector background + 17KB alpha ticket ledges. QA caught and
+      fixed compact double-scaling, oversized raised overlap, desktop spacing,
+      and a repeat motion delay that could mis-target a rapid second tap.
+      Browser-verified at 390×844, 375×667, and 1280×720; no overflow or console
+      warnings; build + Solo 8/8 green. `design-qa.md` passes. No rule, scoring,
+      deal, persistence, or content change.
 - [ ] **PRE-LAUNCH POLISH · foundations (§9·P1)** — route-level code/data
       splitting · asset manifest and budgets · CI + browser smoke tests · shared
       spacing/type/motion/icon tokens. No new dependency; no rule change.

@@ -12,6 +12,7 @@ import Hand from './components/Hand.tsx'
 import HowToPlay from './components/HowToPlay.tsx'
 import DailyModeHeader from './components/DailyModeHeader.tsx'
 import Results from './components/Results.tsx'
+import soloSpotlightUrl from './assets/solo-spotlight.webp'
 
 // How a round was started (chosen at the menu, App.tsx), mirroring Chronology's
 // ChronoStart. The DAILY is a date-seeded generated deal — solver-guaranteed
@@ -241,12 +242,17 @@ export default function SoloGame({ onExit, start }: { onExit: () => void; start:
   return (
     <div
       className="h-full overflow-hidden bg-stub-cream"
-      style={{
-        backgroundImage: 'radial-gradient(rgba(31,58,82,.06) 1px, transparent 1.2px)',
-        backgroundSize: '7px 7px',
-      }}
     >
-      <div className="daily-mode-shell relative mx-auto h-full w-full" data-mode-stage="solo">
+      <div
+        className="daily-mode-shell relative mx-auto h-full w-full bg-stub-cream"
+        data-mode-stage="solo"
+        style={{
+          backgroundImage: `url(${soloSpotlightUrl})`,
+          backgroundPosition: 'center top',
+          backgroundRepeat: 'no-repeat',
+          backgroundSize: 'cover',
+        }}
+      >
         <DailyModeHeader
           title="Daily Puzzle"
           eyebrow={start.kind === 'daily' ? 'daily' : 'practice'}
@@ -433,11 +439,13 @@ export default function SoloGame({ onExit, start }: { onExit: () => void; start:
           raisedId={raisedId}
           faceUp={faceUp}
           invalidNonce={invalidNonce}
+          raisedBottom={256}
           onRaise={(id) => status === 'playing' && setRaisedId(id)}
           onFlip={flipCard}
           onDrop={attemptPlay}
           fanClassName="daily-solo-hand"
           raisedClassName="daily-solo-raised"
+          layout="rack"
         />
 
         <AnimatePresence>

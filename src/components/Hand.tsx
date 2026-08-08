@@ -4,6 +4,9 @@ import type { Movie } from '../data/types.ts'
 import StubCard from './StubCard.tsx'
 
 const CARD_W = 96
+const RACK_SCALE = 0.9
+const RACK_SLOT = 90
+const RACK_ROW_GAP = 132
 
 // The hand wears the Stub ticket frame. Every card renders as a StubCard —
 // including wilds, which StubCard now paints as its own amber-accented wild
@@ -55,6 +58,7 @@ interface HandProps {
   raisedBottom?: number
   fanClassName?: string
   raisedClassName?: string
+  layout?: 'fan' | 'rack'
   // Meld selection mode: taps toggle membership instead of raising
   selectMode?: boolean
   selectedIds?: ReadonlySet<string>
@@ -76,6 +80,7 @@ export default function Hand({
   raisedBottom = 238,
   fanClassName = '',
   raisedClassName = '',
+  layout = 'fan',
   selectMode = false,
   selectedIds,
   onToggleSelect,
@@ -89,6 +94,7 @@ export default function Hand({
     ? ({ duration: 0.15 } as const)
     : ({ type: 'spring', stiffness: 380, damping: 30 } as const)
   const n = cards.length
+  const rack = layout === 'rack'
   // Fan tightens as the hand grows (duel draws can exceed 7 cards). Width 372
   // (was 360) + cap 47: at 7 cards each covered card's visible sliver gains
   // ~2px of title — part of the C4 readability pass (feedback batch 1); still
@@ -182,12 +188,19 @@ export default function Hand({
       {/* Fan — raised card keeps its slot as a gap until played or lowered */}
       <div
         ref={fanRef}
+        data-hand-layout={layout}
         className={`absolute inset-x-0 bottom-0 z-30 h-[225px] ${fanClassName}`}
         style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
       >
         {cards.map((m, i) => {
           if (m.id === raisedId) return null
           const off = i - (n - 1) / 2
+          const topCount = n <= 4 ? n : Math.ceil(n / 2)
+          const rackRow = i < topCount ? 0 : 1
+          const rackRowCount = rackRow === 0 ? topCount : n - topCount
+          const rackColumn = rackRow === 0 ? i : i - topCount
+          const rackX = (rackColumn - (rackRowCount - 1) / 2) * RACK_SLOT
+          const rackY = n <= 4 ? RACK_ROW_GAP : 8 + rackRow * RACK_ROW_GAP
           const selected = selectMode && !!selectedIds?.has(m.id)
           const hinted = m.id === hintId
           const grabbed = m.id === grabbedId
@@ -197,7 +210,7 @@ export default function Hand({
               key={m.id}
               layoutId={m.id}
               data-card={m.id}
-              className="absolute left-1/2 top-6"
+              className={`absolute left-1/2 ${rack ? 'top-0' : 'top-6'}`}
               // Keyboard path (§7·7b a11y): each fan card is a real tab stop.
               // Enter/Space mirrors the tap branch of upPress exactly — raise,
               // or toggle membership in meld-select mode. Reorder stays a
@@ -223,12 +236,21 @@ export default function Hand({
                 zIndex: grabbed ? 60 : hinted ? 40 : 10 + i,
                 touchAction: 'none',
               }}
+              initial={rack && !reduce ? { opacity: 0, y: rackY + 28 } : undefined}
               animate={
                 grabbed
-                  ? { x: grabX - grabCenter.current, y: -48 }
-                  : { x: off * spacing, y: Math.abs(off) ** 1.7 * 5 - lift }
+                  ? { opacity: 1, x: grabX - grabCenter.current, y: -48 }
+                  : rack
+                    ? { opacity: 1, x: rackX, y: rackY - lift }
+                    : { x: off * spacing, y: Math.abs(off) ** 1.7 * 5 - lift }
               }
-              transition={grabbed ? { type: 'spring', stiffness: 700, damping: 42 } : spring}
+              transition={
+                grabbed
+                  ? { type: 'spring', stiffness: 700, damping: 42 }
+                  : rack && !reduce
+                    ? { type: 'spring', stiffness: 360, damping: 28 }
+                    : spring
+              }
               onPointerDown={(e) => {
                 if (reorderable) {
                   try {
@@ -246,7 +268,10 @@ export default function Hand({
               <motion.div
                 // Tilt 3.5°/slot (was 5): the flatter fan keeps neighboring
                 // title bands parallel enough to scan (C4 readability pass).
-                animate={{ rotate: grabbed ? 0 : off * 3.5, scale: grabbed ? 1.06 : 1 }}
+                animate={{
+                  rotate: rack || grabbed ? 0 : off * 3.5,
+                  scale: rack ? RACK_SCALE * (grabbed ? 1.06 : 1) : grabbed ? 1.06 : 1,
+                }}
                 transition={spring}
                 className="relative"
               >
