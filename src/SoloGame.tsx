@@ -7,6 +7,7 @@ import { dailySoloPuzzle, localDateSeed } from './lib/daily.ts'
 import { hasAnyPlay, isSolvable, sharedPeople, type Role } from './lib/solver.ts'
 import { recordDailyFinish, type DailyFinish } from './lib/progress.ts'
 import { track } from './lib/analytics.ts'
+import { MOTION } from './lib/motion.ts'
 import StubCard from './components/StubCard.tsx'
 import Hand from './components/Hand.tsx'
 import HowToPlay from './components/HowToPlay.tsx'
@@ -358,7 +359,7 @@ export default function SoloGame({ onExit, start }: { onExit: () => void; start:
               }}
               initial={reduce ? { opacity: 0 } : { opacity: 0, y: -12, rotate: -1.5 }}
               animate={{ opacity: 1, y: 0, rotate: 0 }}
-              transition={reduce ? { duration: 0.15 } : { type: 'spring', stiffness: 340, damping: 26 }}
+              transition={reduce ? { duration: MOTION.duration.reduced } : MOTION.spring.raised}
             >
               <StubCard
                 movie={topMovie}
@@ -403,7 +404,7 @@ export default function SoloGame({ onExit, start }: { onExit: () => void; start:
                 initial={{ opacity: 0, y: reduce ? 0 : 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
-                transition={reduce ? { duration: 0.15 } : { type: 'spring', stiffness: 320, damping: 24 }}
+                transition={reduce ? { duration: MOTION.duration.reduced } : MOTION.spring.settle}
                 className="rounded-stub-pill bg-stub-navy px-4 py-2 text-center font-stub-ui text-[13px] font-semibold text-stub-cream shadow-stub-card-raised"
               >
                 Connected via {connection.name} ({connection.role})
@@ -447,6 +448,20 @@ export default function SoloGame({ onExit, start }: { onExit: () => void; start:
           raisedClassName="daily-solo-raised"
           layout="rack"
         />
+
+        {/* Test-only terminal seam. Vite replaces the flag at build time, so
+            the normal production bundle removes this branch and marker. */}
+        {import.meta.env.VITE_E2E === '1' && (
+          <button
+            type="button"
+            data-testid="matchcut-e2e-complete"
+            className="hidden"
+            onClick={() => {
+              setHand([])
+              setStatus('won')
+            }}
+          />
+        )}
 
         <AnimatePresence>
           {status !== 'playing' && (

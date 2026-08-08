@@ -4,4 +4,8 @@ import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
+  build: {
+    // Bundle budgets and smoke tests consume Vite's authoritative chunk graph.
+    manifest: true,
+  },
 })

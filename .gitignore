@@ -1,6 +1,7 @@
 .vercel
 node_modules
 dist
+dist-e2e
 .DS_Store
 memory
 .claude/settings.local.json
@@ -14,4 +15,6 @@ Feedback Screenshots*/
 audit/
 design-qa.md
 output/playwright/
+playwright-report/
+test-results/
 .playwright-cli/

@@ -1,13 +1,13 @@
-import { useMemo, useState } from 'react'
+import { lazy, Suspense, useMemo, useState } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
-import SoloGame, { type SoloStart } from './SoloGame.tsx'
-import DuelGame from './DuelGame.tsx'
-import ChronologyGame, { type ChronoStart } from './ChronologyGame.tsx'
-import ConnectionsGame, { type ConnectionsStart } from './ConnectionsGame.tsx'
+import type { SoloStart } from './SoloGame.tsx'
+import type { ChronoStart } from './ChronologyGame.tsx'
+import type { ConnectionsStart } from './ConnectionsGame.tsx'
 import HowToPlay from './components/HowToPlay.tsx'
 import { useDialogA11y } from './components/useDialogA11y.ts'
 import { type Difficulty, DIFFICULTIES, DIFFICULTY_META } from './lib/difficulty.ts'
 import { localDateSeed } from './lib/daily.ts'
+import { MOTION } from './lib/motion.ts'
 import {
   dailyStatus,
   duelRecord,
@@ -19,6 +19,14 @@ import {
 } from './lib/progress.ts'
 
 type Mode = 'menu' | 'solo' | 'duel' | 'chronology' | 'connections'
+
+// Each mode owns its gameplay code and data graph. Keeping these import()
+// boundaries at module scope means React caches the resolved module after its
+// first load, while the menu ships without any mode-only component or pool.
+const SoloGame = lazy(() => import('./SoloGame.tsx'))
+const DuelGame = lazy(() => import('./DuelGame.tsx'))
+const ChronologyGame = lazy(() => import('./ChronologyGame.tsx'))
+const ConnectionsGame = lazy(() => import('./ConnectionsGame.tsx'))
 
 // Chronology's OWN practice-spread dial (NOT Duel's difficulty.ts, which is link-
 // engine tuned). House voice borrows film-distribution words: a "wide" release is
@@ -84,10 +92,16 @@ export default function App() {
   const connChip = useMemo(() => dailyStatus('connections', todaySeed), [mode, todaySeed])
   const duelChip = useMemo(() => duelRecord(difficulty), [mode, difficulty])
 
-  if (mode === 'solo') return <SoloGame onExit={() => setMode('menu')} start={soloStart} />
-  if (mode === 'duel') return <DuelGame onExit={() => setMode('menu')} difficulty={difficulty} />
-  if (mode === 'chronology') return <ChronologyGame onExit={() => setMode('menu')} start={chronoStart} />
-  if (mode === 'connections') return <ConnectionsGame onExit={() => setMode('menu')} start={connStart} />
+  if (mode !== 'menu') {
+    return (
+      <Suspense fallback={<ModeLoading />}>
+        {mode === 'solo' && <SoloGame onExit={() => setMode('menu')} start={soloStart} />}
+        {mode === 'duel' && <DuelGame onExit={() => setMode('menu')} difficulty={difficulty} />}
+        {mode === 'chronology' && <ChronologyGame onExit={() => setMode('menu')} start={chronoStart} />}
+        {mode === 'connections' && <ConnectionsGame onExit={() => setMode('menu')} start={connStart} />}
+      </Suspense>
+    )
+  }
 
   return (
     <div
@@ -330,7 +344,7 @@ function IntroOverlay({ onDismiss }: { onDismiss: () => void }) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: reduce ? 0.15 : 0.25 }}
+      transition={{ duration: reduce ? MOTION.duration.reduced : MOTION.duration.reveal }}
       data-intro
       onClick={onDismiss}
     >
@@ -339,7 +353,7 @@ function IntroOverlay({ onDismiss }: { onDismiss: () => void }) {
         initial={{ opacity: 0, y: reduce ? 0 : 16, scale: reduce ? 1 : 0.96 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         exit={{ opacity: 0, y: reduce ? 0 : 16, scale: reduce ? 1 : 0.96 }}
-        transition={reduce ? { duration: 0.15 } : { type: 'spring', stiffness: 320, damping: 26 }}
+        transition={reduce ? { duration: MOTION.duration.reduced } : MOTION.spring.overlay}
         onClick={(e) => e.stopPropagation()}
       >
         <p className="font-stub-label text-[10px] font-bold uppercase tracking-[0.18em] text-stub-amber">
@@ -367,6 +381,34 @@ function IntroOverlay({ onDismiss }: { onDismiss: () => void }) {
         </p>
       </motion.div>
     </motion.div>
+  )
+}
+
+// Suspense replaces the menu only after a mode is selected, so this deliberate
+// interstitial can never cover an already-running deal. Once a module resolves,
+// React.lazy caches it and returning to that mode does not show this again.
+function ModeLoading() {
+  const reduce = useReducedMotion()
+  return (
+    <div className="daily-mode-shell relative mx-auto flex h-full w-full items-center justify-center bg-stub-cream px-8">
+      <motion.div
+        role="status"
+        aria-live="polite"
+        data-mode-loading
+        className="relative w-full max-w-[280px] rounded-stub-panel border-2 border-stub-navy bg-stub-paper px-8 py-9 text-center shadow-stub-card-resting"
+        initial={{ opacity: 0, y: reduce ? 0 : 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={reduce ? { duration: MOTION.duration.reduced } : MOTION.spring.overlay}
+      >
+        <MenuNotches />
+        <span className="block font-stub-label text-[10px] font-bold uppercase tracking-[0.18em] text-stub-amber">
+          Now showing
+        </span>
+        <span className="mt-2 block font-stub-display text-2xl font-bold italic text-stub-navy">
+          Threading the reel…
+        </span>
+      </motion.div>
+    </div>
   )
 }
 

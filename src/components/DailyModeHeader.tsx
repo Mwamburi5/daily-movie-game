@@ -35,7 +35,7 @@ export default function DailyModeHeader({
           type="button"
           aria-label="Back to menu"
           onClick={onBack}
-          className="flex h-11 w-9 flex-none items-center justify-center text-2xl text-stub-amber transition-transform active:scale-90"
+          className="daily-icon-button daily-icon-lg flex h-11 w-9 flex-none items-center justify-center text-stub-amber transition-transform active:scale-90"
         >
           ‹
         </button>

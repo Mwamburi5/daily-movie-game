@@ -34,6 +34,7 @@ import { matchCutShare } from './lib/share.ts'
 import { localDateSeed } from './lib/daily.ts'
 import { recordDailyFinish, type DailyFinish } from './lib/progress.ts'
 import { track, type EventData } from './lib/analytics.ts'
+import { MOTION } from './lib/motion.ts'
 import ShareCopy from './components/ShareCopy.tsx'
 import FixedDigits from './components/FixedDigits.tsx'
 import DailyModeHeader from './components/DailyModeHeader.tsx'
@@ -436,7 +437,7 @@ export default function ChronologyGame({ onExit, start }: { onExit: () => void; 
           backgroundSize: '7px 7px',
         }}
       >
-      <div className="daily-mode-shell relative mx-auto h-full w-full">
+      <div className="daily-mode-shell relative mx-auto h-full w-full" data-mode-stage="chronology">
         {/* 7a navy Stub header: nav row + a strokes/streak tally, bottom corners
             only per the token sheet. Cream ink on navy, with the header's cream
             dot texture. Title in Domine; the tally reads in the same value shape
@@ -477,7 +478,7 @@ export default function ChronologyGame({ onExit, start }: { onExit: () => void; 
                 type="button"
                 aria-label="New round"
                 onClick={resetGame}
-                className="flex h-11 w-9 items-center justify-center text-xl text-stub-cream/80 active:scale-90 active:text-stub-cream"
+                className="daily-icon-button daily-icon-md flex h-11 w-9 items-center justify-center text-stub-cream/80 active:scale-90 active:text-stub-cream"
               >
                 ↺
               </button>
@@ -614,7 +615,7 @@ export default function ChronologyGame({ onExit, start }: { onExit: () => void; 
                 initial={{ opacity: 0, y: reduce ? 0 : 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
-                transition={reduce ? { duration: 0.15 } : { type: 'spring', stiffness: 320, damping: 24 }}
+                transition={reduce ? { duration: MOTION.duration.reduced } : MOTION.spring.settle}
                 className="rounded-stub-pill bg-stub-navy px-4 py-2 text-center font-stub-ui text-[13px] font-semibold text-stub-cream shadow-stub-card-resting"
               >
                 {toast.text}
@@ -662,6 +663,19 @@ export default function ChronologyGame({ onExit, start }: { onExit: () => void; 
           compact={compact}
           onRaise={(id) => status === 'playing' && !placing && setRaisedId(id)}
         />
+
+        {/* Test-only terminal seam; a regular production build erases it. */}
+        {import.meta.env.VITE_E2E === '1' && (
+          <button
+            type="button"
+            data-testid="matchcut-e2e-complete"
+            className="hidden"
+            onClick={() => {
+              setHand([])
+              setStatus('cleared')
+            }}
+          />
+        )}
 
         <AnimatePresence>
           {status === 'cleared' && (
@@ -744,6 +758,12 @@ const Gap = ({
             const tap = gesture.current && !gesture.current.moved
             gesture.current = null
             if (tap) onActivate()
+          }}
+          onKeyDown={(event) => {
+            if (event.key === 'Enter' || event.key === ' ') {
+              event.preventDefault()
+              onActivate()
+            }
           }}
         />
       )}

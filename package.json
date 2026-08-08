@@ -6,7 +6,11 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
+    "build:e2e": "tsc --noEmit && VITE_E2E=1 vite build --outDir dist-e2e",
+    "check:bundle": "node scripts/check-bundle.mjs",
     "preview": "vite preview",
+    "preview:e2e": "vite preview --outDir dist-e2e",
+    "test:smoke": "playwright test",
     "verify": "node sim/verify.ts",
     "verify:chronology": "node sim/chronology-verify.ts",
     "verify:solo": "node sim/solo-verify.ts",
@@ -29,6 +33,7 @@
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
+    "@playwright/test": "^1.62.1",
     "@tailwindcss/vite": "^4.1.4",
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",

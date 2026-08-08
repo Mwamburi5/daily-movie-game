@@ -890,9 +890,19 @@ what's ready-to-review per sitting.
       revealed-board states; no overflow or console warnings. `design-qa.md`
       passes; build + 64/64 + 8/8 + 42/42 + 14/14 green. No scoring, deal,
       persistence, pool, or baked-grid change.
-- [ ] **PRE-LAUNCH POLISH · foundations (§9·P1)** — route-level code/data
+- [x] **PRE-LAUNCH POLISH · foundations (§9·P1)** — route-level code/data
       splitting · asset manifest and budgets · CI + browser smoke tests · shared
-      spacing/type/motion/icon tokens. No new dependency; no rule change.
+      spacing/type/motion/icon tokens. No new production dependency; no rule
+      change. **COMPLETE 2026-08-08:** four React.lazy mode/data boundaries,
+      production Vite manifest, honest transitive gzip/session budgets, Node 22
+      CI, seven Playwright browser journeys, and shared spacing/type/motion/icon
+      conventions are implemented. Build + budgets + browser 7/7 + 64/64 +
+      8/8 + 42/42 + 14/14 are green. Production-preview network evidence
+      confirms zero mode/data chunks on the menu and selective fetch after
+      start; 390×844, 375×667, 1280×720, reduced motion, and dev `?mode=` are
+      clean. Buri approved development-only `@playwright/test`; normal production
+      builds are additionally gated against leakage of the isolated E2E seam.
+      Evidence and exact before/after bytes: `docs/delivery-foundations-report.md`.
 - [ ] **PRE-LAUNCH POLISH · mode waves (§9·P2–P4)** — Chronology first, then
       menu + Solo/Connections, Duel last; each wave includes icon + Framer +
       accessibility + both phone sizes and stops for Buri's visual approval.

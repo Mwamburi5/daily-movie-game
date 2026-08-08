@@ -65,7 +65,7 @@ body {
 .daily-mode-shell { max-width: 420px; }
 .daily-mode-header { border-bottom: 2px solid var(--color-stub-amber); }
 .daily-mode-title {
-  font-size: 30px;
+  font-size: var(--type-stub-title-lg);
   line-height: 1;
 }
 .daily-mode-header-tab {
@@ -86,7 +86,7 @@ body {
 .chrono-reel-band {
   top: 174px;
   min-height: 174px;
-  padding-block: 20px;
+  padding-block: var(--space-stub-5);
   scrollbar-width: none;
   overscroll-behavior-x: contain;
 }
@@ -288,6 +288,34 @@ body {
    consuming passes via arbitrary values (e.g. z-[var(--z-hud)]) or a
    plain style={{ zIndex: 'var(--z-hud)' }}. Scale per README "Z-layers". */
 :root {
+  /* Shared spacing scale — derived from the proven daily-mode layouts. */
+  --space-stub-1: 4px;
+  --space-stub-2: 8px;
+  --space-stub-3: 12px;
+  --space-stub-4: 16px;
+  --space-stub-5: 20px;
+  --space-stub-6: 24px;
+  --space-stub-8: 32px;
+
+  /* Typography roles. Families remain the @theme tokens above. */
+  --type-stub-label-xs: 8px;
+  --type-stub-label-sm: 10px;
+  --type-stub-caption: 11px;
+  --type-stub-body-sm: 12px;
+  --type-stub-body: 13.5px;
+  --type-stub-card-title: 17px;
+  --type-stub-title-lg: 30px;
+
+  /* Motion and icon conventions shared by CSS-driven interactions. */
+  --dur-press: 100ms;
+  --dur-reveal: 250ms;
+  --ease-stub-standard: cubic-bezier(.16, 1, .3, 1);
+  --icon-stub-sm: 16px;
+  --icon-stub-md: 20px;
+  --icon-stub-lg: 24px;
+  --icon-stub-stroke: 2;
+  --touch-target-min: 44px;
+
   --z-canvas: 0;
   --z-resting: 10;
   --z-shelf-booth: 20;
@@ -306,6 +334,40 @@ body {
   --dur-race: 500ms;
   --dur-reduced: 150ms;
   --stagger-deal: 60ms;
+}
+
+/* Text glyphs are temporary until the full local-SVG pass; these dimensions,
+   stroke convention, and 44px interaction halo are the shared icon contract. */
+.daily-icon-button {
+  position: relative;
+  transition-duration: var(--dur-press);
+  transition-timing-function: var(--ease-stub-standard);
+}
+.daily-icon-button::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: var(--touch-target-min);
+  height: var(--touch-target-min);
+  transform: translate(-50%, -50%);
+}
+.daily-icon-button > svg {
+  width: 1em;
+  height: 1em;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: var(--icon-stub-stroke);
+}
+.daily-icon-sm { font-size: var(--icon-stub-sm); }
+.daily-icon-md { font-size: var(--icon-stub-md); }
+.daily-icon-lg { font-size: var(--icon-stub-lg); }
+
+@media (prefers-reduced-motion: reduce) {
+  .daily-icon-button {
+    transition-duration: var(--dur-reduced);
+    transition-property: opacity;
+  }
 }
 
 /* Halftone textures — patterns, not single-value tokens, so they're left

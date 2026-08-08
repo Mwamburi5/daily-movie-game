@@ -1407,7 +1407,7 @@ export default function DuelGame({
   )
 
   return (
-    <div className="relative h-full overflow-hidden bg-stub-cream">
+    <div className="relative h-full overflow-hidden bg-stub-cream" data-mode-stage="duel">
       {/* ── Desktop theater (lg+ only) ────────────────────────────────────────
           Kills the 420px letterbox: the phone column becomes a LIT SCREEN
           mounted in a navy movie house, the dead margin becomes an ambient
@@ -2102,6 +2102,22 @@ export default function DuelGame({
             />
           )}
         </AnimatePresence>
+
+        {/* Test-only terminal seam. VITE_E2E is undefined for normal builds,
+            so Vite/Rollup erase this branch and its marker. */}
+        {import.meta.env.VITE_E2E === '1' && (
+          <button
+            type="button"
+            data-testid="matchcut-e2e-complete"
+            className="hidden"
+            onClick={() => {
+              setPlayerScore(TARGET_SCORE)
+              setCpuScore(0)
+              setEndReason('target')
+              setStatus('over')
+            }}
+          />
+        )}
 
         <AnimatePresence>
           {gameOver && (

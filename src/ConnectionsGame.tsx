@@ -29,6 +29,7 @@ import { localDateSeed } from './lib/daily.ts'
 import { makeRng } from './lib/rng.ts'
 import { recordDailyFinish, type DailyFinish } from './lib/progress.ts'
 import { track, type EventData } from './lib/analytics.ts'
+import { MOTION } from './lib/motion.ts'
 import ShareCopy from './components/ShareCopy.tsx'
 import { useDialogA11y } from './components/useDialogA11y.ts'
 import DailyModeHeader from './components/DailyModeHeader.tsx'
@@ -330,7 +331,7 @@ export default function ConnectionsGame({ onExit, start }: { onExit: () => void;
                 type="button"
                 aria-label="New round"
                 onClick={resetGame}
-                className="flex h-11 w-9 items-center justify-center text-xl text-stub-cream/80 active:scale-90 active:text-stub-cream"
+                className="daily-icon-button daily-icon-md flex h-11 w-9 items-center justify-center text-stub-cream/80 active:scale-90 active:text-stub-cream"
               >
                 ↺
               </button>
@@ -539,7 +540,7 @@ export default function ConnectionsGame({ onExit, start }: { onExit: () => void;
                     initial={{ opacity: 0, y: reduce ? 0 : 6 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0 }}
-                    transition={reduce ? { duration: 0.15 } : { type: 'spring', stiffness: 320, damping: 24 }}
+                    transition={reduce ? { duration: MOTION.duration.reduced } : MOTION.spring.settle}
                     className={`rounded-stub-pill border-2 px-4 py-1.5 font-stub-ui text-[12px] font-semibold shadow-stub-card-resting ${
                       toast.tone === 'miss'
                         ? 'border-stub-red bg-stub-red text-stub-cream'
@@ -613,6 +614,21 @@ export default function ConnectionsGame({ onExit, start }: { onExit: () => void;
         <div className="sr-only" role="status" aria-live="polite">
           {toast?.text ?? ''}
         </div>
+
+        {/* Test-only terminal seam; it cannot exist in a normal production
+            build and does not participate in dealer or grouping logic. */}
+        {import.meta.env.VITE_E2E === '1' && (
+          <button
+            type="button"
+            data-testid="matchcut-e2e-complete"
+            className="hidden"
+            onClick={() => {
+              setSolved([0, 1, 2, 3])
+              setGuesses(grid.groups.map((group) => [...group.films]))
+              setStatus('won')
+            }}
+          />
+        )}
 
         <AnimatePresence>
           {status !== 'playing' && !peekBoard && (
