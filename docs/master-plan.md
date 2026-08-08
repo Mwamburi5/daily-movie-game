@@ -903,12 +903,25 @@ what's ready-to-review per sitting.
       clean. Buri approved development-only `@playwright/test`; normal production
       builds are additionally gated against leakage of the isolated E2E seam.
       Evidence and exact before/after bytes: `docs/delivery-foundations-report.md`.
+- [x] **CONTENT EXCEPTION · Wave 3 pool expansion — LOCALLY COMPLETE
+      2026-08-08, NOT PUBLISHED.** Buri explicitly reopened the §9 pause and
+      selected 67 full cards: A+B+C01–C17+E+F; C18 and D skipped. Merge:
+      237→304 credited Movies, 22 stubs graduated, 438→482 dated pool with
+      spread 34/62/98/112/115/61. Connections viable key sets
+      9,562,667→37,260,495 (strict estimate ≈2,868,800→≈11,228,450); 365 grids
+      re-baked and consciously re-pinned for pool 304. Gates green: build,
+      bundle, 64/64, 8/8, 42/42, 14/14, browser 7/7, names, TMDB/date review,
+      diff check.
+      Frozen Duel/Solo 89, rules, persistence, and art are untouched. The larger
+      author-time graph requires a 20 GB Node ceiling; runtime still reads baked
+      JSON only. Full handoff: `docs/wave3-report.md`. Stop before commit/push/
+      deploy; after this exception, the further-expansion pause resumes at 482.
 - [ ] **PRE-LAUNCH POLISH · mode waves (§9·P2–P4)** — Chronology first, then
       menu + Solo/Connections, Duel last; each wave includes icon + Framer +
       accessibility + both phone sizes and stops for Buri's visual approval.
 - [ ] **PRE-LAUNCH POLISH · card-art pilot (§9·P5)** — 18–24 original,
       posterless cards across eras/genres/title lengths; approve the system and
-      production pipeline before generating the 438-card pool.
+      production pipeline before generating the 482-card pool.
 - [ ] **PRE-LAUNCH SCALE · measurement + leaderboard (§9·P6–P7)** — verify
       event receipt and funnel first; then anonymous casual daily leaderboard
       with server-validated receipts, rate limits, moderation, and no accounts.
@@ -1181,13 +1194,15 @@ docs/feedback-log.md as it arrives.
 
 ### The decision
 
-Pause further movie expansion after the current 438-film pool. The next constraint
-is not content volume; it is presentation, comprehension, delivery weight, and
-launch operations. The game can keep the ticket-stub/movie-house identity while
-feeling materially more modern by sharpening hierarchy, making empty space
-intentional, enlarging the active object, and giving every state change a single
-clear motion beat. This is a polish program, not a visual rebrand and not a rules
-rewrite.
+Pause further movie expansion after the current 482-film pool. Buri explicitly
+reopened the original 438-film pause for the locally completed 67-card Wave 3 on
+2026-08-08; that controlled exception does not change the plan's underlying call.
+The next constraint is not content volume; it is presentation, comprehension,
+delivery weight, and launch operations. The game can keep the ticket-stub/movie-
+house identity while feeling materially more modern by sharpening hierarchy,
+making empty space intentional, enlarging the active object, and giving every
+state change a single clear motion beat. This is a polish program, not a visual
+rebrand and not a rules rewrite.
 
 The 2026-08-07 concept set holds the palette, typography, paper texture, navy
 borders, ticket notches, and physical-card metaphor constant while testing three
@@ -1200,7 +1215,7 @@ the generated image is a direction reference, not a pixel contract.
 | Track | Current state | Launch implication |
 |---|---|---|
 | Core game | Four playable modes; all four verification suites green in the 2026-08-07 audit | Rules are stable enough to polish around; avoid casual mechanic changes |
-| Content | 438 films live in the unified pool | Enough for launch validation; more films add QA and bundle weight before they add meaningful readiness |
+| Content | 482 dated films in the unified pool; 304 fully credited | Enough for launch validation; more films add QA, author-time graph cost, and bundle weight before they add meaningful readiness |
 | Visual system | Strong Stub ingredients, but no complete spacing/type/icon system; density and hierarchy vary by mode | The motif is good; composition and finish are the problem |
 | Chronology | Most repeated feedback target: horizontal overflow/scroll discovery, card sizing, Wide/Tight language, same-year ambiguity; an approved reel branch is not integrated | First mode to redesign and the system's hardest responsive test |
 | Solo | Drag/flip onboarding and hand-title readability were improved in the dirty feedback wave | Preserve those gains while increasing card presence and state clarity |
@@ -1318,7 +1333,7 @@ requires RULEBOOK sync, parity verification, and re-tuning.
 
 ### P5 — Card-art pilot, then production (pilot 5–8 days; full pool 2–6 weeks)
 
-- Do **not** generate 438 images in one batch. Pick 18–24 films covering every
+- Do **not** generate 482 images in one batch. Pick 18–24 films covering every
   decade, light/dark scenes, long/short titles, animation/live action, genres,
   duplicate/remake titles, and mobile crop stress.
 - Use original, posterless editorial art: symbolic objects, locations, lighting,
@@ -1332,7 +1347,7 @@ requires RULEBOOK sync, parity verification, and re-tuning.
 - Gate the pilot on recognition without copyrighted key art, crop survival,
   title contrast, era/genre variety, and a blind “which version?” test for remakes.
 - Planning estimate: **$150–$500 one-time generation/regeneration spend plus
-  30–80 hours of art direction and QA** for a generated 438-card set. A bespoke
+  30–80 hours of art direction and QA** for a generated 482-card set. A bespoke
   illustrator-led set is more plausibly **$5,000–$25,000+**. Labor and review,
   not file hosting, are the dominant cost; validate quotes before committing.
 
@@ -1396,7 +1411,7 @@ case. At 1.3 sessions per player per day that is about **39,000 sessions/month**
 | Edge requests at ~20/session | ~780,000 | Below Vercel Pro's current 10M included |
 | Product analytics at 4 events/session | ~156,000 events | 50K included, then $3/100K; roughly **$3.18 overage/month** at today's posted rate ([Vercel pricing](https://vercel.com/pricing)) |
 | Leaderboard at 1 write + 2 indexed reads/session | 39K writes + 78K reads | Tiny: Cloudflare D1 Free allows 100K rows written/day and 5M read/day ([D1 pricing](https://developers.cloudflare.com/d1/platform/pricing/)); Supabase Free also covers 50K MAU ([Supabase pricing](https://supabase.com/pricing)) |
-| Card images | Included in 1–2MB session target | Hash/cache locally served art; load only visible/nearby cards, never all 438 |
+| Card images | Included in 1–2MB session target | Hash/cache locally served art; load only visible/nearby cards, never all 482 |
 
 **Expected monthly run rate at 1,000 DAU**
 
@@ -1427,7 +1442,7 @@ backups/support or measured usage justify it.
 | 4 | Duel + personas | Comprehensible Duel, no 667px collision, unchanged difficulty knobs |
 | 5 | Card-art pilot + tracking | 18–24 approved cards; production funnel receiving events |
 | 6 | Anonymous leaderboard + launch QA | Abuse/privacy/rollback/spend tests; Buri launch approval |
-| After launch gate | Scale art to 438, then resume movie additions | Asset QA and content gates remain green |
+| After launch gate | Scale art to 482, then resume movie additions | Asset QA and content gates remain green |
 
 This is approximately **4–6 focused solo-development weeks before full art
 production**, assuming no scoring/rule change. Card-art production can overlap

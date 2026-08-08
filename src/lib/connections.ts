@@ -276,8 +276,8 @@ export function dealGrid(seed: string, pool: Movie[] = MOVIES): Grid {
   return grid
 }
 
-// The runtime NEVER runs dealGrid — it enumerates ~9.5M viable key-sets to deal
-// one grid (needs ~12 GB heap) and OOMs a browser tab. The mode reads pre-baked
+// The runtime NEVER runs dealGrid — it exhaustively enumerates millions of
+// viable key-sets and OOMs a browser tab. The mode reads pre-baked
 // grids instead: scripts/build-connections-grids.ts pre-runs dealGrid over the
 // pinned 365-day window into src/data/connections-grids.json, and the daily
 // accessors (dailyConnectionsGrid / practiceConnectionsGrid) live in that data

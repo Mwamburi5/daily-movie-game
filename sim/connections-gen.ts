@@ -125,7 +125,7 @@ if (isMain) {
   }
 
   head('Yield')
-  const viable = enumerateViable(keys, nets)
+  let viable = enumerateViable(keys, nets)
   const bigKeys = keys.filter((k) => k.pool.length >= 4)
   const quadCandidates =
     (bigKeys.length * (bigKeys.length - 1) * (bigKeys.length - 2) * (bigKeys.length - 3)) / 24
@@ -192,6 +192,12 @@ if (isMain) {
     ? ` ≈ ${Math.round(strictRate * viable.length).toLocaleString('en-US')} of ${viable.length.toLocaleString('en-US')} extrapolated`
     : ''
   say(`  ${strictOk}/${sampled.length} checked key-sets${strictEst} — lower bound; the dealer retries up to ${DEAL_TRIES}`)
+
+  // At larger content pools the exhaustive report can occupy most of the
+  // author-time heap. The demo dealer builds its own cached viable context, so
+  // release the report's identical list before asking it to deal. Keeping both
+  // copies alive is unnecessary and crossed the 12 GB CLI ceiling at 304 films.
+  viable = []
 
   head(`Demo deal (seed "${seed}")`)
   const grid = dealGrid(seed)
