@@ -873,6 +873,23 @@ what's ready-to-review per sitting.
       Browser-verified at 390×844, 375×667, and 1280×720; no overflow or console
       warnings; build + Solo 8/8 green. `design-qa.md` passes. No rule, scoring,
       deal, persistence, or content change.
+- [x] **PRE-LAUNCH POLISH · Connections sorting-marquee refinement — BUILT +
+      VERIFIED 2026-08-07:** the loose upper-page grid is now one centered paper
+      sorting stage with responsive square tickets, numbered selection order,
+      inline one-away/miss coaching, marquee-style solved tickets, and a
+      ticket-shaped result/share panel. Player feedback exposed the false
+      one-of-each assumption, so Buri selected **Option A**: `Today's bill`
+      names the exact category multiset before play (`Actor ×3 · Genre ×1` on
+      the current daily) and counts down only the unsolved categories. The bill
+      is derived from `grid.groups`; it never maps a category to a tile, hue, or
+      share color and does not constrain or re-bake the dealer. How To Play,
+      RULEBOOK, and RULESET are synced. QA caught and fixed action-row toast
+      overlap, short-desktop clipping, solved-red semantic drift, and loss copy
+      that incorrectly said every group was found. Browser-verified at 390×844,
+      375×667, and 1280×720 through selected, one-away, solve, loss, share, and
+      revealed-board states; no overflow or console warnings. `design-qa.md`
+      passes; build + 64/64 + 8/8 + 42/42 + 14/14 green. No scoring, deal,
+      persistence, pool, or baked-grid change.
 - [ ] **PRE-LAUNCH POLISH · foundations (§9·P1)** — route-level code/data
       splitting · asset manifest and budgets · CI + browser smoke tests · shared
       spacing/type/motion/icon tokens. No new dependency; no rule change.

@@ -316,6 +316,13 @@ all 365 days; #5's **append-only pin** (digest + a PIN_DAY spot-check) guards th
 published grids exactly like solo-verify's pin. Any pool change re-runs the gate
 and, if a published grid moved, re-bakes and bumps the pin — a conscious cutover.
 
+**Category bill (presentation clue).** Before play, the UI exposes the exact
+multiset of the grid's four group categories — for example, `Actor ×3 · Genre
+×1`. As groups solve, the bill counts down only the unsolved categories. It is
+derived directly from `grid.groups`; it never maps a category to a film, tile,
+band hue, or share color. This does **not** constrain or re-bake the dealer: types
+may still repeat and the ≤1 genre lock above remains unchanged.
+
 **Frozen this build:** the pool is the shared credited `MOVIES` (grids get richer
 as Stage B grows it; the gate re-runs per merge). No difficulty dial (unlike
 Chronology's Wide/Tight) — one board per day, one for practice.

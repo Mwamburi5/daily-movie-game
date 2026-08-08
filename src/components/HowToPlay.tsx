@@ -353,8 +353,10 @@ export default function HowToPlay({ onClose }: { onClose: () => void }) {
           <p>
             Sixteen movies, <B>four hidden groups of four</B>. Every group is joined by one thing —
             a shared <B>director</B>, <B>actor</B>, <B>series</B>, or <B>genre</B>. The four groups
-            can <B>repeat a type</B> (two director groups happens), and <B>at most one</B> group is
-            ever a genre. Tap four you think belong together, then <B>Submit</B>.
+            can <B>repeat a type</B> (two director groups can happen), and <B>at most one</B> group is
+            ever a genre. <B>Today's bill</B> above the board tells you the exact mix before you
+            start — for example, <B>Actor ×3 · Genre ×1</B> — and counts down what remains. Tap
+            four you think belong together, then <B>Submit</B>.
           </p>
           <p>
             Right, the group locks in and reveals its connection. Wrong, you lose one of your{' '}

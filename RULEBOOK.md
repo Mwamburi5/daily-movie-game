@@ -300,7 +300,10 @@ game, you know the shape — here the connection is always about the *movies*.
 1. You see a **4×4 grid** of sixteen movie titles. Hidden inside are **four groups of
    four**, each joined by one thing: the same **director**, **actor**, **series**, or
    **genre**. It is *not* one group of each kind — types can **repeat** (two director
-   groups happens), and **at most one** group is ever a genre.
+   groups can happen), and **at most one** group is ever a genre. **Today's bill** above
+   the board names the exact mix before play (for example, **Actor ×3 · Genre ×1**)
+   and counts down the connection types still unsolved. It never points to particular
+   tiles.
 2. **Tap four** titles you think belong together, then tap **Submit**.
 3. **Right** — the group locks in and reveals its connection (e.g. *Director · Martin
    Scorsese*).
@@ -311,6 +314,7 @@ game, you know the shape — here the connection is always about the *movies*.
 ### What's on screen
 ```
    Connections            Mistakes left ● ● ● ●   (top bar)
+   Today's bill: Actor ×3 · Genre ×1
 
  ┌──────┐ ┌──────┐ ┌──────┐ ┌──────┐
  │TITLE │ │TITLE │ │TITLE │ │TITLE │             (16 title tiles, 4×4)
