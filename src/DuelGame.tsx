@@ -79,6 +79,7 @@ import FixedDigits from './components/FixedDigits.tsx'
 import { useDialogA11y } from './components/useDialogA11y.ts'
 import Hand from './components/Hand.tsx'
 import HowToPlay from './components/HowToPlay.tsx'
+import Icon from './components/Icon.tsx'
 import IdleCue from './components/IdleCue.tsx'
 import MeldShelf, { meldLabel } from './components/MeldShelf.tsx'
 import PlayBanner, { LastPlayLine } from './components/PlayBanner.tsx'
@@ -194,9 +195,18 @@ export default function DuelGame({
   const [shortViewport, setShortViewport] = useState(
     () => window.matchMedia('(max-height: 700px)').matches,
   )
+  const [wideViewport, setWideViewport] = useState(
+    () => window.matchMedia('(min-width: 1024px)').matches,
+  )
   useEffect(() => {
     const mq = window.matchMedia('(max-height: 700px)')
     const onChange = (e: MediaQueryListEvent) => setShortViewport(e.matches)
+    mq.addEventListener('change', onChange)
+    return () => mq.removeEventListener('change', onChange)
+  }, [])
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 1024px)')
+    const onChange = (e: MediaQueryListEvent) => setWideViewport(e.matches)
     mq.addEventListener('change', onChange)
     return () => mq.removeEventListener('change', onChange)
   }, [])
@@ -1407,7 +1417,7 @@ export default function DuelGame({
   )
 
   return (
-    <div className="relative h-full overflow-hidden bg-stub-cream" data-mode-stage="duel">
+    <div className="duel-stage-shell relative h-full overflow-hidden bg-stub-cream" data-mode-stage="duel">
       {/* ── Desktop theater (lg+ only) ────────────────────────────────────────
           Kills the 420px letterbox: the phone column becomes a LIT SCREEN
           mounted in a navy movie house, the dead margin becomes an ambient
@@ -1446,7 +1456,7 @@ export default function DuelGame({
       {/* Marquee-bulb frame hugging the screen (lg+ only), centred on the
           420px column so a rail of amber bulbs runs down each side — the
           cinema-marquee motif that gives the table a home. */}
-      <div className="pointer-events-none absolute inset-y-0 left-1/2 hidden w-[440px] -translate-x-1/2 lg:block">
+      <div className="duel-marquee-frame pointer-events-none absolute inset-y-0 left-1/2 hidden -translate-x-1/2 lg:block">
         {(['left-0', 'right-0'] as const).map((side) => (
           <div
             key={side}
@@ -1469,14 +1479,14 @@ export default function DuelGame({
           soft shadow so it reads as a lit screen on the theater — on mobile
           none of the lg: classes apply, so the board still inherits the outer
           cream exactly as before. */}
-      <div className="relative mx-auto flex h-full w-full max-w-[420px] flex-col pb-[225px] lg:bg-stub-cream lg:shadow-[0_0_64px_rgba(0,0,0,.5)] lg:ring-1 lg:ring-stub-amber/20">
+      <div className="duel-board relative mx-auto flex h-full w-full max-w-[420px] flex-col pb-[225px] lg:bg-stub-cream lg:shadow-[0_0_64px_rgba(0,0,0,.5)] lg:ring-1 lg:ring-stub-amber/20">
         {/* 7a navy header: nav row + the race-to-20 block. Bottom corners
             only per the token sheet (rounded-b, never the top). ScoreRace owns
             scores/caption/bar/target-hint — and the data-score/data-turn
             attrs, in their NEW value-carrying shape (ui-contracts Appendix
             A4). */}
         <header
-          className={`rounded-b-stub-header bg-stub-navy px-4 ${
+          className={`duel-header rounded-b-stub-header bg-stub-navy px-4 ${
             shortViewport ? 'pb-2 pt-1' : 'pb-3.5 pt-3'
           }`}
         >
@@ -1485,9 +1495,9 @@ export default function DuelGame({
               type="button"
               aria-label="Back to menu"
               onClick={onExit}
-              className="flex h-11 w-9 items-center justify-center text-2xl text-stub-cream/80 active:scale-90"
+              className="daily-icon-button flex h-11 w-9 items-center justify-center text-stub-cream/80 active:scale-90"
             >
-              ‹
+              <Icon name="back" size={24} />
             </button>
             {shortViewport ? (
               /* 7e one-row header: the compact race replaces the wordmark —
@@ -1511,9 +1521,9 @@ export default function DuelGame({
               aria-label="How to play"
               data-rules-open
               onClick={() => setShowRules(true)}
-              className="ml-2 flex h-7 w-7 items-center justify-center rounded-stub-pill text-[12px] font-extrabold text-stub-cream/80 ring-1 ring-inset ring-stub-slate-light/50 active:scale-90"
+              className="daily-icon-button ml-2 flex h-7 w-7 items-center justify-center rounded-stub-pill text-stub-cream/80 ring-1 ring-inset ring-stub-slate-light/50 active:scale-90"
             >
-              ?
+              <Icon name="help" size={20} />
             </button>
           </div>
           {!shortViewport && (
@@ -1532,7 +1542,7 @@ export default function DuelGame({
             distinct from the transient banner mid-board. Sits directly under the
             score header per the reference; hidden until the first move. */}
         {lastPlay && (
-          <div className={shortViewport ? 'mt-1' : 'mt-1.5'}>
+          <div className={`duel-last-play ${shortViewport ? 'mt-1' : 'mt-1.5'}`}>
             <LastPlayLine text={lastPlay.text} delta={lastPlay.delta} />
           </div>
         )}
@@ -1543,7 +1553,7 @@ export default function DuelGame({
             (keeping both blocks would duplicate layoutIds and silently break
             Framer's cross-zone card animations). Booth owns the CPU token
             pills (W0d ruling). */}
-        <div className={`relative z-[var(--z-resting)] mx-3 ${shortViewport ? 'mt-2' : 'mt-3'}`}>
+        <div className={`duel-cpu-booth relative z-[var(--z-resting)] mx-3 ${shortViewport ? 'mt-2' : 'mt-3'}`}>
           <TazCorner
             cpuHand={cpuHand}
             cpuTokens={cpuTokens}
@@ -1554,7 +1564,7 @@ export default function DuelGame({
         </div>
 
         {/* Draw deck + the two Double Feature marquees */}
-        <section className="relative z-[var(--z-resting)] mt-3 flex items-start justify-center gap-4">
+        <section className="duel-play-stage relative z-[var(--z-resting)] mt-3 flex items-start justify-center gap-4">
           <button
             type="button"
             aria-label={deck.length > 0 ? 'Draw a card' : 'Pass turn'}
@@ -1724,7 +1734,7 @@ export default function DuelGame({
                           }}
                           className="absolute -bottom-8 inset-x-0 z-[var(--z-traveling)] mx-auto w-max rounded-full bg-[#d8b24a] px-3 py-1.5 text-[11px] font-black uppercase tracking-wider text-[#23211c] shadow-lg ring-2 ring-white/70 active:scale-95"
                         >
-                          ↑ Take to finish meld
+                          ↑ Take for meld
                         </button>
                       </>
                     ) : (
@@ -1749,7 +1759,7 @@ export default function DuelGame({
         {/* Mid band: the flex-1 breathing zone between the piles and the shelf.
             Banner and idle cue anchor to it instead of fixed pixel tops, so
             they stay mid-board on any viewport height. */}
-        <div className="relative min-h-0 flex-1" data-mid-band>
+        <div className="duel-mid-band relative min-h-0 flex-1" data-mid-band>
         {/* Turn banner — the say() narration channel. Wrapper owns the band
             pin (PlayBanner renders in flow, W0d); the 2400ms auto-dismiss
             effect stays the parent's, per contract. On short viewports the
@@ -1789,6 +1799,7 @@ export default function DuelGame({
               drawChoice === null &&
               !meldSelect &&
               raisedId === null &&
+              !takeTargets.some(Boolean) &&
               !gameOver
             }
             reduce={reduce}
@@ -1798,22 +1809,24 @@ export default function DuelGame({
         </div>
 
         {/* Banked melds — open to lay-offs from both sides */}
-        <MeldShelf
-          melds={melds}
-          highlightIds={meldHighlights}
-          setRowRef={(id, el) => {
-            if (el) meldRowRefs.current.set(id, el)
-            else meldRowRefs.current.delete(id)
-          }}
-          // Keyboard lay-off (§7·7b a11y): Enter on a row lays the raised card
-          // off there via the same core as the drag drop; ineligible rows
-          // shake. Lay-offs stay barred mid-draw (core guard), matching drag.
-          onRowActivate={(meldId) => {
-            if (raisedId === null) return
-            const meld = melds.find((m) => m.id === meldId)
-            if (meld) playerLayOff(raisedId, meld)
-          }}
-        />
+        <div className="duel-meld-shelf">
+          <MeldShelf
+            melds={melds}
+            highlightIds={meldHighlights}
+            setRowRef={(id, el) => {
+              if (el) meldRowRefs.current.set(id, el)
+              else meldRowRefs.current.delete(id)
+            }}
+            // Keyboard lay-off (§7·7b a11y): Enter on a row lays the raised card
+            // off there via the same core as the drag drop; ineligible rows
+            // shake. Lay-offs stay barred mid-draw (core guard), matching drag.
+            onRowActivate={(meldId) => {
+              if (raisedId === null) return
+              const meld = melds.find((m) => m.id === meldId)
+              if (meld) playerLayOff(raisedId, meld)
+            }}
+          />
+        </div>
 
         {/* Super-link celebration flash */}
         {superKey > 0 && !reduce && (
@@ -1840,7 +1853,7 @@ export default function DuelGame({
 
         {/* Keep / toss choice for the drawn card */}
         {pendingDraw !== null && status === 'playerTurn' && (
-          <div className="absolute inset-x-0 bottom-[96px] z-[var(--z-contextual)] flex flex-col items-center gap-2">
+          <div className="duel-contextual absolute inset-x-0 bottom-[96px] z-[var(--z-contextual)] flex flex-col items-center gap-2">
             {drawnConnects && (
               <span className="rounded-full bg-[#2c5240] px-3 py-1 text-[11px] font-bold text-white shadow-sm">
                 It connects — drag it onto the pile to play it
@@ -1869,7 +1882,7 @@ export default function DuelGame({
 
         {/* Run continuation: keep chaining or end the turn */}
         {runState !== null && status === 'playerTurn' && (
-          <div className="absolute inset-x-0 bottom-[96px] z-[var(--z-contextual)] flex flex-col items-center gap-2">
+          <div className="duel-contextual absolute inset-x-0 bottom-[96px] z-[var(--z-contextual)] flex flex-col items-center gap-2">
             <span className="rounded-full bg-[#7a5a10] px-3 py-1 text-[11px] font-bold text-white shadow-sm">
               Run ×{runState.count + 1}? Play another via {runState.people[0]}
               {runState.people.length > 1 ? '…' : ''}
@@ -1887,7 +1900,7 @@ export default function DuelGame({
 
         {/* Meld selection bar */}
         {meldSelect && (
-          <div className="absolute inset-x-0 bottom-[96px] z-[var(--z-contextual)] flex flex-col items-center gap-2">
+          <div className="duel-contextual absolute inset-x-0 bottom-[96px] z-[var(--z-contextual)] flex flex-col items-center gap-2">
             <span className="rounded-full bg-[#23211c] px-3 py-1 text-[11px] font-bold text-white shadow-sm">
               {selected.size < 3
                 ? genrePairStuck
@@ -1924,48 +1937,56 @@ export default function DuelGame({
             owns the booth pills). Final Cut's say() stays here, parent-side,
             per the TokenChips contract boundary. */}
         <div
-          className={`absolute left-3 z-[var(--z-hud)] flex flex-col items-start gap-1.5 ${
-            shortViewport ? 'bottom-[200px]' : 'bottom-[240px]'
+          className={`duel-controls-panel absolute z-[var(--z-hud)] ${
+            raisedId !== null || pendingDraw !== null || drawChoice !== null || meldSelect || runState !== null
+              ? 'duel-controls-panel--contextual'
+              : ''
           }`}
         >
-          <TokenChips
-            side="player"
-            compact={shortViewport}
-            finalCut={playerTokens.finalCut}
-            recast={playerTokens.recast}
-            fcArmed={fcArmed}
-            finalCutDisabled={status !== 'playerTurn' || meldSelect || runState !== null}
-            onToggleFinalCut={() => {
-              const arming = !fcArmed
-              setFcArmed(arming)
-              if (arming) say('You', 'Final Cut armed — play any card')
-            }}
-          />
-          {!meldSelect && (
-            <button
-              type="button"
-              data-token="meld"
-              disabled={
-                status !== 'playerTurn' ||
-                pendingDraw !== null ||
-                runState !== null ||
-                playerHand.length < 3
-              }
-              onClick={enterMeldSelect}
-              className={`rounded-full px-2.5 py-1 text-[9px] font-extrabold uppercase tracking-wider shadow-sm transition-transform active:scale-95 disabled:opacity-50 ${
-                handHasMeld
-                  ? 'bg-stub-amber text-stub-navy ring-2 ring-stub-amber/40'
-                  : 'bg-stub-navy text-stub-cream'
-              }`}
-            >
-              Meld
-            </button>
-          )}
-        </div>
+          <div className="duel-controls-group">
+            <span className="duel-controls-label">Your tools</span>
+            <div className="duel-controls-row">
+              <TokenChips
+                side="player"
+                compact={shortViewport}
+                finalCut={playerTokens.finalCut}
+                recast={playerTokens.recast}
+                fcArmed={fcArmed}
+                finalCutDisabled={status !== 'playerTurn' || meldSelect || runState !== null}
+                onToggleFinalCut={() => {
+                  const arming = !fcArmed
+                  setFcArmed(arming)
+                  if (arming) say('You', 'Final Cut armed — play any card')
+                }}
+              />
+              {!meldSelect && (
+                <button
+                  type="button"
+                  data-token="meld"
+                  disabled={
+                    status !== 'playerTurn' ||
+                    pendingDraw !== null ||
+                    runState !== null ||
+                    playerHand.length < 3
+                  }
+                  onClick={enterMeldSelect}
+                  className={`duel-tool-button rounded-stub-pill px-2.5 font-stub-label font-extrabold uppercase tracking-wider shadow-sm transition-transform active:scale-95 disabled:opacity-50 ${
+                    handHasMeld
+                      ? 'bg-stub-amber text-stub-navy ring-2 ring-stub-amber/40'
+                      : 'bg-stub-navy text-stub-cream'
+                  }`}
+                >
+                  Meld
+                </button>
+              )}
+            </div>
+          </div>
 
+          <div className="duel-controls-group">
+            <span className="duel-controls-label">Hand aids</span>
+            <div className="duel-controls-row">
         {/* Auto-sort (Matinee only): group the hand so links & melds line up */}
         {autoSortEnabled && (
-          <div className="absolute right-3 bottom-[284px] z-[var(--z-hud)] flex flex-col items-end">
             <button
               type="button"
               data-sort
@@ -1977,16 +1998,14 @@ export default function DuelGame({
                 playerHand.length < 3
               }
               onClick={() => setPlayerHand((h) => autoSortHand(h))}
-              className="flex items-center gap-1 rounded-full bg-stub-navy px-2.5 py-1 text-[9px] font-extrabold uppercase tracking-wider text-stub-cream shadow-sm transition-transform active:scale-95 disabled:opacity-40"
+              className="duel-tool-button flex items-center gap-1 rounded-stub-pill bg-stub-navy px-2.5 font-stub-label font-extrabold uppercase tracking-wider text-stub-cream shadow-sm transition-transform active:scale-95 disabled:opacity-40"
             >
-              ⇲ Sort
+              <Icon name="sort" size={16} /> Sort
             </button>
-          </div>
         )}
 
         {/* Hint (Matinee/Feature only): pulse a playable card */}
         {hintEnabled && (
-          <div className="absolute right-3 bottom-[240px] z-[var(--z-hud)] flex flex-col items-end">
             <button
               type="button"
               data-hint
@@ -1998,16 +2017,18 @@ export default function DuelGame({
                 runState !== null
               }
               onClick={showHint}
-              className={`flex items-center gap-1 rounded-full px-2.5 py-1 text-[9px] font-extrabold uppercase tracking-wider shadow-sm transition-transform active:scale-95 ${
+              className={`duel-tool-button flex items-center gap-1 rounded-stub-pill px-2.5 font-stub-label font-extrabold uppercase tracking-wider shadow-sm transition-transform active:scale-95 ${
                 hintsLeft <= 0
                   ? 'bg-transparent text-stub-slate ring-1 ring-stub-disabled line-through'
                   : 'bg-stub-teal text-stub-cream disabled:opacity-40'
               }`}
             >
-              ◎ Hint{Number.isFinite(hintBudget) ? ` ·${hintsLeft}` : ''}
+              <Icon name="hint" size={16} /> Hint{Number.isFinite(hintBudget) ? ` ·${hintsLeft}` : ''}
             </button>
-          </div>
         )}
+            </div>
+          </div>
+        </div>
 
         {/* One-shot drag nudge (C3, feedback batch 1): a raised card on a
             fresh device is the "now what?" moment. Root-level absolute like
@@ -2024,7 +2045,7 @@ export default function DuelGame({
           !gameOver && (
             <div
               className="pointer-events-none absolute inset-x-0 z-[60] flex justify-center px-6"
-              style={{ bottom: 443 }}
+              style={{ bottom: wideViewport ? 472 : 443 }}
             >
               <motion.span
                 animate={reduce ? undefined : { opacity: [0.7, 1, 0.7] }}
@@ -2043,7 +2064,9 @@ export default function DuelGame({
           hintLabel={hintLabel}
           faceUp={faceUp}
           invalidNonce={invalidNonce}
-          raisedBottom={190}
+          raisedBottom={wideViewport ? 220 : 190}
+          wideFan={wideViewport}
+          fanClassName="duel-hand-tray"
           selectMode={meldSelect}
           selectedIds={selected}
           onToggleSelect={toggleSelect}
@@ -2127,7 +2150,7 @@ export default function DuelGame({
               aria-modal="true"
               aria-label="Game over — results"
               tabIndex={-1}
-              className="absolute inset-0 z-[100] flex flex-col items-center overflow-y-auto bg-stub-cream/95 px-8 text-center"
+              className="duel-result-overlay absolute inset-0 z-[100] flex flex-col items-center overflow-y-auto px-5 text-center"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: reduce ? 0.2 : 0.8, duration: reduce ? 0.15 : 0.35 }}
@@ -2137,7 +2160,7 @@ export default function DuelGame({
                   justify-center clipped BOTH ends at 667 once the recap reel ran
                   long (flex centering overflows both ways; the top half can
                   never be scrolled to). */}
-              <div className="my-auto flex w-full flex-col items-center py-6">
+              <div className="duel-result-panel my-auto flex w-full flex-col items-center rounded-stub-header bg-stub-cream px-6 py-6 shadow-stub-modal">
                 <h2 className="font-stub-display text-4xl font-bold text-stub-navy" data-result>
                   {winner === 'player' && 'You win!'}
                   {winner === 'cpu' && 'CPU wins.'}
@@ -2221,7 +2244,7 @@ export default function DuelGame({
         </AnimatePresence>
 
         <AnimatePresence>
-          {showRules && <HowToPlay onClose={() => setShowRules(false)} />}
+          {showRules && <HowToPlay context="duel" onClose={() => setShowRules(false)} />}
         </AnimatePresence>
       </div>
     </div>

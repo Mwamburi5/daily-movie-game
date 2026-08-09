@@ -12,7 +12,7 @@
 // refs; the flip card is ChronoCard.tsx (copied from CardView). Pure helpers are
 // imported directly.
 
-import { Fragment, useEffect, useRef, useState } from 'react'
+import { Fragment, useEffect, useRef, useState, type RefObject } from 'react'
 import { AnimatePresence, MotionConfig, motion, useAnimationControls, useReducedMotion } from 'framer-motion'
 import {
   type ChronologyCard,
@@ -38,6 +38,8 @@ import { MOTION } from './lib/motion.ts'
 import ShareCopy from './components/ShareCopy.tsx'
 import FixedDigits from './components/FixedDigits.tsx'
 import DailyModeHeader from './components/DailyModeHeader.tsx'
+import HowToPlay from './components/HowToPlay.tsx'
+import Icon from './components/Icon.tsx'
 import { useDialogA11y } from './components/useDialogA11y.ts'
 import filmstripSurface from './assets/chronology-filmstrip.webp'
 
@@ -131,6 +133,7 @@ export default function ChronologyGame({ onExit, start }: { onExit: () => void; 
   const [streak, setStreak] = useState<StreakState>(newStreak)
   const [playLog, setPlayLog] = useState<LogEntry[]>([])
   const [status, setStatus] = useState<Status>('playing')
+  const [showRules, setShowRules] = useState(false)
 
   const [placing, setPlacing] = useState<Placing | null>(null) // misfire flip in flight
   // Streak/best readout for the cleared screen — set by the finish effect
@@ -146,6 +149,7 @@ export default function ChronologyGame({ onExit, start }: { onExit: () => void; 
   const [dragging, setDragging] = useState(false)
 
   const lineBandRef = useRef<HTMLDivElement>(null)
+  const choiceTrayRef = useRef<HTMLDivElement>(null)
   const gapRefs = useRef<(HTMLDivElement | null)[]>([])
   const flipTimer = useRef<number | undefined>(undefined)
   const dragPoint = useRef<{ x: number; y: number } | null>(null) // latest drag pointer, page coords
@@ -287,11 +291,18 @@ export default function ChronologyGame({ onExit, start }: { onExit: () => void; 
   // Dialogs (rules/results) capture Escape first and stop propagation.
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setRaisedId(null)
+      if (e.key !== 'Escape' || !raisedId) return
+      const returningId = raisedId
+      setRaisedId(null)
+      requestAnimationFrame(() => {
+        choiceTrayRef.current
+          ?.querySelector<HTMLButtonElement>(`[data-choice="${CSS.escape(returningId)}"]`)
+          ?.focus({ preventScroll: true })
+      })
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [])
+  }, [raisedId])
 
   useEffect(() => {
     track('mode_start', { mode: 'chronology', kind: start.kind })
@@ -426,7 +437,21 @@ export default function ChronologyGame({ onExit, start }: { onExit: () => void; 
   const raised = hand.find((h) => h.id === raisedId) ?? null
   const flippingRaised = placing !== null && raised?.id === placing.card.id
   const centeredCard = line[Math.min(centeredIndex, line.length - 1)] ?? line[0]
-  const reelSize = compact ? 'reelCompact' : 'reel'
+  const compactPhone = compact && window.matchMedia('(max-width: 767px)').matches
+  const reelSize = compactPhone ? 'line' : compact ? 'reelCompact' : 'reel'
+
+  const raiseChoice = (id: string, keyboard: boolean) => {
+    if (status !== 'playing' || placing) return
+    setRaisedId(id)
+    if (!keyboard) return
+    // The active gaps mount after the raised state commits. Two frames keeps
+    // keyboard focus deterministic without delaying pointer input or motion.
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        gapRefs.current[0]?.querySelector<HTMLButtonElement>('button')?.focus({ preventScroll: true })
+      })
+    })
+  }
 
   return (
     <MotionConfig reducedMotion="user">
@@ -480,9 +505,18 @@ export default function ChronologyGame({ onExit, start }: { onExit: () => void; 
                 onClick={resetGame}
                 className="daily-icon-button daily-icon-md flex h-11 w-9 items-center justify-center text-stub-cream/80 active:scale-90 active:text-stub-cream"
               >
-                ↺
+                <Icon name="restart" size={20} />
               </button>
             )}
+            <button
+              type="button"
+              aria-label="How to play"
+              data-rules-open
+              onClick={() => setShowRules(true)}
+              className="daily-icon-button daily-icon-md flex h-11 w-9 items-center justify-center rounded-stub-pill text-[12px] font-extrabold text-stub-cream/80 ring-1 ring-inset ring-stub-slate-light/50 active:scale-90"
+            >
+              <Icon name="help" size={20} />
+            </button>
             </div>
           }
         />
@@ -544,6 +578,7 @@ export default function ChronologyGame({ onExit, start }: { onExit: () => void; 
                     gapRefs.current[i] = el
                   }}
                   active={raisedId !== null && !placing}
+                  edge={i === 0 ? 'older' : i === line.length ? 'newer' : null}
                   selected={activeTarget.kind === 'gap' && activeTarget.index === i}
                   // Placed line cards show their years, so naming neighbors
                   // (title + year) leaks nothing the eye doesn't already get.
@@ -655,13 +690,13 @@ export default function ChronologyGame({ onExit, start }: { onExit: () => void; 
           Drag or tap a gap to place
         </p>
 
-        {/* Hand fan — tap a title to lift it */}
-        <ChronoHand
+        {/* Title-first inventory: every hidden-year choice stays readable. */}
+        <ChronoChoiceTray
+          trayRef={choiceTrayRef}
           cards={hand}
           raisedId={raisedId}
           reduce={!!reduce}
-          compact={compact}
-          onRaise={(id) => status === 'playing' && !placing && setRaisedId(id)}
+          onRaise={raiseChoice}
         />
 
         {/* Test-only terminal seam; a regular production build erases it. */}
@@ -692,6 +727,9 @@ export default function ChronologyGame({ onExit, start }: { onExit: () => void; 
             />
           )}
         </AnimatePresence>
+        <AnimatePresence>
+          {showRules && <HowToPlay context="chronology" onClose={() => setShowRules(false)} />}
+        </AnimatePresence>
       </div>
       </div>
     </MotionConfig>
@@ -707,12 +745,14 @@ export default function ChronologyGame({ onExit, start }: { onExit: () => void; 
 const Gap = ({
   active,
   selected,
+  edge,
   label,
   onActivate,
   setRef,
 }: {
   active: boolean
   selected: boolean
+  edge: 'older' | 'newer' | null
   label: string
   onActivate: () => void
   setRef: (el: HTMLDivElement | null) => void
@@ -722,9 +762,10 @@ const Gap = ({
     <div
       ref={setRef}
       data-gap
+      data-gap-edge={edge ?? undefined}
       data-gap-selected={selected || undefined}
       className="chrono-gap relative flex shrink-0 items-center justify-center transition-[width]"
-      style={{ width: active ? 28 : 14 }}
+      style={{ width: edge ? (active ? 52 : 28) : active ? 34 : 14 }}
     >
       <div
         className="h-[72%] rounded-full transition-[width,background-color,box-shadow,opacity]"
@@ -737,6 +778,16 @@ const Gap = ({
           boxShadow: selected ? 'var(--shadow-stub-glow-amber)' : 'none',
         }}
       />
+      {edge && (
+        <span
+          aria-hidden="true"
+          className={`absolute bottom-1 font-stub-label text-[8px] font-bold uppercase tracking-[0.12em] ${
+            active ? 'text-stub-amber' : 'text-stub-cream/65'
+          }`}
+        >
+          {edge}
+        </span>
+      )}
       {active && (
         <button
           type="button"
@@ -839,67 +890,85 @@ function RaisedCard({
   )
 }
 
-// ── hand fan (simplified from Hand.tsx: tap-to-raise only, years hidden) ────────
-const FAN_CARD_W = 78
-function ChronoHand({
+// ── title-first choice tray ───────────────────────────────────────────────────
+// Two columns × five rows on phones; five columns × two rows from tablet up.
+// Buttons show title only: no year, month, decade accent, or answer-bearing data.
+function choiceTitleSize(title: string): number {
+  const longest = title.split(/\s+/).reduce((max, word) => Math.max(max, word.length), 1)
+  const total = title.replace(/\s+/g, ' ').trim().length || 1
+  const widthCap = 164 / (0.82 * longest)
+  const lineCap = (164 * 2) / (0.82 * total)
+  return Math.max(12, Math.min(14, widthCap, lineCap))
+}
+
+function ChronoChoiceTray({
+  trayRef,
   cards,
   raisedId,
   reduce,
-  compact,
   onRaise,
 }: {
+  trayRef: RefObject<HTMLDivElement>
   cards: ChronologyCard[]
   raisedId: string | null
   reduce: boolean
-  compact: boolean
-  onRaise: (id: string) => void
+  onRaise: (id: string, keyboard: boolean) => void
 }) {
   const spring = reduce
     ? ({ duration: 0.15 } as const)
     : ({ type: 'spring', stiffness: 380, damping: 30 } as const)
-  const n = cards.length
-  const cardWidth = compact ? FAN_CARD_W : 96
-  const spacing = Math.min(compact ? 36 : 38, (360 - cardWidth) / Math.max(n - 1, 1))
 
   return (
     <div
+      ref={trayRef}
       className="chrono-hand absolute inset-x-0 bottom-0 z-30"
       style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
+      data-choice-tray
+      aria-label="Hidden-year movie choices"
     >
-      {cards.map((c, i) => {
-        if (c.id === raisedId) return null // its slot stays empty while raised
-        const off = i - (n - 1) / 2
-        return (
-          <motion.div
-            key={c.id}
-            layoutId={c.id}
-            data-card={c.id}
-            className="absolute left-1/2"
-            style={{ marginLeft: -cardWidth / 2, top: compact ? 2 : 10, zIndex: 10 + i, touchAction: 'none' }}
-            animate={{
-              x: off * spacing,
-              y: Math.min(compact ? 9 : 28, Math.abs(off) ** 1.45 * (compact ? 2.3 : 3.6)),
-            }}
-            transition={spring}
-            onTap={() => onRaise(c.id)}
-            // Keyboard raise (§7·7b a11y). Title only — years stay hidden by
-            // design in this mode, so the label must not name one.
-            role="button"
-            tabIndex={0}
-            aria-label={`${c.title} — raise`}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault()
-                onRaise(c.id)
-              }
-            }}
-          >
-            <motion.div animate={{ rotate: off * 5 }} transition={spring}>
-              <ChronoCardView card={c} faceUp={false} size={compact ? 'handCompact' : 'hand'} />
-            </motion.div>
-          </motion.div>
-        )
-      })}
+      <div className="chrono-choice-grid grid h-full grid-cols-2 grid-rows-5 gap-1 px-1.5 py-1.5 md:grid-cols-5 md:grid-rows-2 md:gap-2 md:px-5 md:py-3">
+        {cards.map((card, index) => {
+          const selected = card.id === raisedId
+          return (
+            <motion.button
+              key={card.id}
+              layoutId={selected ? undefined : card.id}
+              type="button"
+              data-card={card.id}
+              data-choice={card.id}
+              data-choice-index={index}
+              data-choice-selected={selected || undefined}
+              aria-pressed={selected}
+              aria-label={`${card.title} — ${selected ? 'raised' : 'raise'}`}
+              onClick={() => !selected && onRaise(card.id, false)}
+              onKeyDown={(event) => {
+                if (selected || (event.key !== 'Enter' && event.key !== ' ')) return
+                event.preventDefault()
+                onRaise(card.id, true)
+              }}
+              transition={spring}
+              className={`chrono-choice-ticket relative flex min-h-11 min-w-0 items-center justify-center overflow-hidden rounded-[10px] border-2 px-2 py-1 text-center shadow-[0_2px_7px_rgba(31,58,82,.18)] ${
+                selected
+                  ? 'border-dashed border-stub-amber bg-stub-amber/10 text-stub-navy'
+                  : 'border-stub-navy bg-stub-paper text-stub-navy active:scale-[0.98]'
+              }`}
+            >
+              <span className="pointer-events-none absolute inset-x-2 top-1 border-t border-dotted border-stub-navy/35" aria-hidden="true" />
+              <span
+                className="line-clamp-2 break-words font-stub-display font-bold uppercase leading-[1.05] tracking-[-0.02em]"
+                style={{ fontSize: choiceTitleSize(card.title) }}
+              >
+                {card.title}
+              </span>
+              {selected && (
+                <span className="absolute bottom-0.5 right-1.5 font-stub-label text-[7px] font-bold uppercase tracking-wider text-stub-amber">
+                  raised
+                </span>
+              )}
+            </motion.button>
+          )
+        })}
+      </div>
     </div>
   )
 }

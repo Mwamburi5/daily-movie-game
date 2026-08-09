@@ -124,8 +124,9 @@ deployed or modified.
 
 ## CI, tokens, and remaining risks
 
-`.github/workflows/ci.yml` uses Node 22 and the locked dependency graph on pull
-requests and pushes to `main`/`codex/**`. Its first job runs the production build,
+At the original foundation snapshot, `.github/workflows/ci.yml` used Node 22 and
+the locked dependency graph on pull requests and pushes to `main`/`codex/**`.
+Its first job ran the production build,
 bundle enforcement, and all four existing verification suites. A dependent
 browser job installs the Playwright-locked Chromium build and runs the seven
 smoke journeys. `@playwright/test` is development-only; production dependencies
@@ -142,16 +143,16 @@ Remaining operational risks are explicit:
 
 - The menu passes by 4,700 gzip bytes (4.59 KiB), so its 100 KiB budget is useful
   and relatively tight rather than ceremonial.
-- The linked Vercel project does not pin a Node version in repository metadata;
-  Node 22 is the conservative CI LTS choice, but the remote setting should be
-  confirmed before changing production.
+- The original snapshot did not pin a Node version in repository metadata. The
+  production-polish repair below supersedes that risk with a Node 24.x engine
+  declaration; remote CI/deploy proof remains approval-gated.
 - The browser CI job must download Chromium and Linux system packages. The lock
   file pins Playwright, while availability of that external download remains a
   CI-service dependency.
-- `npm audit --omit=dev` reports zero production vulnerabilities. Full
-  `npm audit` reports two high-severity build-time transitive advisories in the
-  existing Vite/Tailwind toolchain; no forced dependency upgrade was made in
-  this delivery milestone.
+- Final Phase 4 `npm audit` and `npm audit --omit=dev` both report zero
+  vulnerabilities. A lockfile-only repair moved the existing Vite build chain
+  from PostCSS 8.5.15 to 8.5.26 and Nanoid 3.3.12 to 3.3.18; direct and
+  production dependencies are unchanged.
 
 ## Verification results
 
@@ -164,3 +165,44 @@ Remaining operational risks are explicit:
 - `npm run test:smoke` — 7 passed, 0 failed (17.7 s).
 - Production-preview browser/network checks — pass for all evidence above.
 - `git diff --check` — pass.
+
+## Production-polish repair addendum — 2026-08-08
+
+The first Wave 3 GitHub run on `a710fff` did not report a failed assertion. It
+was cancelled at the workflow ceiling after the serial job had already passed
+checkout, setup, install, build, bundle enforcement, Duel 64/64, Solo 8/8, and
+Chronology 42/42. The exhaustive Connections verifier was still progressing at
+cancellation; locally it completes 14/14 in 187 seconds. The run also warned
+that checkout/setup-node v4's Node 20 action runtime was deprecated and forced
+to Node 24 by the hosted runner.
+
+The local repair preserves every assertion and changes orchestration only:
+
+- `package.json` and the lockfile pin Node `24.x`, aligning the local runtime,
+  GitHub setup, and the repository contract Vercel will read.
+- GitHub Actions now use `actions/checkout@v6` and `actions/setup-node@v6`.
+- Build/budgets, Duel rules, Solo+Chronology rules, and exhaustive Connections
+  rules run as four parallel jobs. Browser smoke waits for all four.
+- Job ceilings are intentional: 10 minutes for build/daily, 20 for Duel/browser,
+  and 30 for the exhaustive Connections audit.
+
+The Phase 1 candidate remains inside every delivery budget:
+
+| Surface | Current gzip JS | Current cold session |
+|---|---:|---:|
+| Menu | 94.49 KiB | — |
+| Daily Puzzle | 131.29 KiB cold | 319.92 KiB |
+| Chronology | 116.55 KiB cold | 267.31 KiB |
+| Connections | 143.51 KiB cold | 268.99 KiB |
+| Duel | 142.04 KiB cold | 267.52 KiB |
+
+The browser suite now has ten journeys. New coverage proves the compact-phone
+help CTA, overview brevity, four mode-isolated rule dialogs, expanded details,
+ten stable Chronology choices across all five required viewports, 44px targets,
+and keyboard focus movement/restoration. The final clean run passes in 33.4 seconds.
+
+The final Phase 4 candidate has 14 browser journeys and passes build (438
+modules), bundle enforcement, Duel 64/64, Solo 8/8, Chronology 42/42,
+Connections 14/14, browser 14/14, and `git diff --check`. This repair has not
+been committed, pushed, or run remotely. A green GitHub run therefore remains a
+publication gate rather than a claimed result.

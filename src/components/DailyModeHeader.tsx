@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import Icon from './Icon.tsx'
 
 interface DailyModeHeaderProps {
   title: string
@@ -37,7 +38,7 @@ export default function DailyModeHeader({
           onClick={onBack}
           className="daily-icon-button daily-icon-lg flex h-11 w-9 flex-none items-center justify-center text-stub-amber transition-transform active:scale-90"
         >
-          ‹
+          <Icon name="back" size={24} />
         </button>
         <div className="flex min-w-0 flex-col leading-none">
           <span className="daily-mode-title truncate font-stub-display font-bold tracking-tight text-stub-cream">

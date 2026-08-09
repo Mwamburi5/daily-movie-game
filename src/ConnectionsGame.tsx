@@ -33,6 +33,8 @@ import { MOTION } from './lib/motion.ts'
 import ShareCopy from './components/ShareCopy.tsx'
 import { useDialogA11y } from './components/useDialogA11y.ts'
 import DailyModeHeader from './components/DailyModeHeader.tsx'
+import HowToPlay from './components/HowToPlay.tsx'
+import Icon from './components/Icon.tsx'
 
 // How a round was started (chosen at the menu, App.tsx). The DAILY rides today's
 // baked grid keyed to the player's local calendar date, so everyone sees the same
@@ -146,6 +148,7 @@ export default function ConnectionsGame({ onExit, start }: { onExit: () => void;
   const [mistakes, setMistakes] = useState(0)
   const [guesses, setGuesses] = useState<string[][]>([]) // each = the 4 submitted ids
   const [status, setStatus] = useState<Status>('playing')
+  const [showRules, setShowRules] = useState(false)
   const [shuffleNonce, setShuffleNonce] = useState(0)
   const [shakeNonce, setShakeNonce] = useState(0)
   const [toast, setToast] = useState<{ key: number; text: string; tone: ToastTone } | null>(null)
@@ -333,9 +336,18 @@ export default function ConnectionsGame({ onExit, start }: { onExit: () => void;
                 onClick={resetGame}
                 className="daily-icon-button daily-icon-md flex h-11 w-9 items-center justify-center text-stub-cream/80 active:scale-90 active:text-stub-cream"
               >
-                ↺
+                <Icon name="restart" size={20} />
               </button>
             )}
+            <button
+              type="button"
+              aria-label="How to play"
+              data-rules-open
+              onClick={() => setShowRules(true)}
+              className="daily-icon-button daily-icon-md flex h-11 w-9 items-center justify-center rounded-stub-pill text-[12px] font-extrabold text-stub-cream/80 ring-1 ring-inset ring-stub-slate-light/50 active:scale-90"
+            >
+              <Icon name="help" size={20} />
+            </button>
             </div>
           }
         />
@@ -645,6 +657,9 @@ export default function ConnectionsGame({ onExit, start }: { onExit: () => void;
               onPeek={status === 'lost' ? () => setPeekBoard(true) : undefined}
             />
           )}
+        </AnimatePresence>
+        <AnimatePresence>
+          {showRules && <HowToPlay context="connections" onClose={() => setShowRules(false)} />}
         </AnimatePresence>
 
         {/* Board peek: the results step aside so the revealed groups can be

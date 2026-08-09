@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { motion, useAnimationControls, useReducedMotion } from 'framer-motion'
 import type { Movie } from '../data/types.ts'
 import StubCard from './StubCard.tsx'
+import Icon from './Icon.tsx'
 
 const CARD_W = 96
 const RACK_SCALE = 0.9
@@ -59,6 +60,7 @@ interface HandProps {
   fanClassName?: string
   raisedClassName?: string
   layout?: 'fan' | 'rack'
+  wideFan?: boolean
   // Meld selection mode: taps toggle membership instead of raising
   selectMode?: boolean
   selectedIds?: ReadonlySet<string>
@@ -81,6 +83,7 @@ export default function Hand({
   fanClassName = '',
   raisedClassName = '',
   layout = 'fan',
+  wideFan = false,
   selectMode = false,
   selectedIds,
   onToggleSelect,
@@ -99,7 +102,9 @@ export default function Hand({
   // (was 360) + cap 47: at 7 cards each covered card's visible sliver gains
   // ~2px of title — part of the C4 readability pass (feedback batch 1); still
   // clears the 375px viewport with margin at the outer cards' tilt.
-  const spacing = Math.min(47, (372 - CARD_W) / Math.max(n - 1, 1))
+  const spacing = wideFan
+    ? Math.min(92, (820 - CARD_W) / Math.max(n - 1, 1))
+    : Math.min(47, (372 - CARD_W) / Math.max(n - 1, 1))
   const raised = cards.find((c) => c.id === raisedId)
 
   // ── Long-press drag-to-reorder ───────────────────────────────────────────
@@ -269,7 +274,7 @@ export default function Hand({
                 // Tilt 3.5°/slot (was 5): the flatter fan keeps neighboring
                 // title bands parallel enough to scan (C4 readability pass).
                 animate={{
-                  rotate: rack || grabbed ? 0 : off * 3.5,
+                  rotate: rack || grabbed ? 0 : off * (wideFan ? 1.4 : 3.5),
                   scale: rack ? RACK_SCALE * (grabbed ? 1.06 : 1) : grabbed ? 1.06 : 1,
                 }}
                 transition={spring}
@@ -371,7 +376,7 @@ function RaisedCard({
           onFlip(movie.id)
         }}
       >
-        ⇄
+        <Icon name="flip" size={20} />
       </button>
     </motion.div>
   )

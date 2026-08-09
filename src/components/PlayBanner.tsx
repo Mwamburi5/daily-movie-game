@@ -46,7 +46,7 @@ export default function PlayBanner({
             // documented palette exception — see docs/ui-contracts.md
             // Appendix A (pre-Stub app tier accents; W1 checkpoint judges
             // them on real pixels).
-            className={`flex items-center gap-2 rounded-stub-pill border-2 border-stub-navy py-1.5 pl-1.5 pr-2.5 font-stub-label shadow-stub-card-resting ${
+            className={`flex max-w-[calc(100vw-24px)] items-center gap-1.5 rounded-stub-pill border-2 border-stub-navy py-1.5 pl-1.5 pr-2 font-stub-label shadow-stub-card-resting ${
               banner.tier === 'super'
                 ? 'bg-[#a3411a]'
                 : banner.tier === 'strong'
@@ -63,7 +63,7 @@ export default function PlayBanner({
             </span>
             {/* Lowercase say() voice preserved verbatim — CAPS is a CSS treatment
                 on the wrapper's uppercase siblings, never re-case this span. */}
-            <span className="text-[13px] font-semibold normal-case text-stub-cream">{banner.text}</span>
+            <span className="whitespace-nowrap text-[12px] font-semibold leading-tight normal-case text-stub-cream">{banner.text}</span>
             {banner.deep && (
               <span
                 data-banner-deep

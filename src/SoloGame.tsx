@@ -11,6 +11,7 @@ import { MOTION } from './lib/motion.ts'
 import StubCard from './components/StubCard.tsx'
 import Hand from './components/Hand.tsx'
 import HowToPlay from './components/HowToPlay.tsx'
+import Icon from './components/Icon.tsx'
 import DailyModeHeader from './components/DailyModeHeader.tsx'
 import Results from './components/Results.tsx'
 import soloSpotlightUrl from './assets/solo-spotlight.webp'
@@ -60,6 +61,7 @@ export default function SoloGame({ onExit, start }: { onExit: () => void; start:
   const [playLog, setPlayLog] = useState<{ id: string; flipped: boolean }[]>([])
   const [raisedId, setRaisedId] = useState<string | null>(null)
   const [invalidNonce, setInvalidNonce] = useState(0)
+  const [invalidNotice, setInvalidNotice] = useState(false)
   // Nonce for the header's "+1" pulse — first flips are the scored move players
   // miss (feedback batch 1: the counter ticked silently), so the cost announces
   // itself at the moment it's paid.
@@ -71,6 +73,7 @@ export default function SoloGame({ onExit, start }: { onExit: () => void; start:
   const [finishMeta, setFinishMeta] = useState<DailyFinish | null>(null)
   const pileZoneRef = useRef<HTMLDivElement>(null)
   const lowerTimer = useRef<number | undefined>(undefined)
+  const invalidNoticeTimer = useRef<number | undefined>(undefined)
 
   const flips = flippedEver.size + invalids * 2
   const score = flips - comboBonus
@@ -84,6 +87,14 @@ export default function SoloGame({ onExit, start }: { onExit: () => void; start:
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
   }, [])
+
+  useEffect(
+    () => () => {
+      window.clearTimeout(lowerTimer.current)
+      window.clearTimeout(invalidNoticeTimer.current)
+    },
+    [],
+  )
 
   const topId = pile[pile.length - 1]
   const topMovie = movieById.get(topId)!
@@ -131,6 +142,9 @@ export default function SoloGame({ onExit, start }: { onExit: () => void; start:
     if (shared.length === 0) {
       setInvalids((n) => n + 1) // +2 on the flip counter
       setInvalidNonce((n) => n + 1) // trigger shake
+      setInvalidNotice(true)
+      window.clearTimeout(invalidNoticeTimer.current)
+      invalidNoticeTimer.current = window.setTimeout(() => setInvalidNotice(false), 1800)
       window.clearTimeout(lowerTimer.current)
       lowerTimer.current = window.setTimeout(() => setRaisedId(null), 650)
       return
@@ -193,12 +207,14 @@ export default function SoloGame({ onExit, start }: { onExit: () => void; start:
     // first deal, so re-fire here to keep mode_start ↔ mode_finish paired 1:1
     track('mode_start', { mode: 'solo', kind: start.kind })
     window.clearTimeout(lowerTimer.current)
+    window.clearTimeout(invalidNoticeTimer.current)
     setHand(puzzle.handMovieIds)
     setPile([puzzle.starterMovieId])
     setFaceUp(new Set())
     setFlippedEver(new Set())
     setFlipPulse(0)
     setInvalids(0)
+    setInvalidNotice(false)
     setCombo(null)
     setComboBonus(0)
     setConnection(null)
@@ -266,9 +282,9 @@ export default function SoloGame({ onExit, start }: { onExit: () => void; start:
                 role="text"
                 aria-label={`Flips ${flips}, score ${score}, par ${puzzle.par}`}
               >
-                <span className="relative flex min-w-7 flex-col items-center leading-none">
+                <span className="relative flex min-w-8 flex-col items-center leading-none">
                   <span className="font-stub-display text-[14px] font-bold text-stub-cream">{flips}</span>
-                  <span className="mt-0.5 font-stub-label text-[6px] font-bold uppercase tracking-[0.08em] text-stub-slate-light">Flips</span>
+                  <span className="solo-score-label mt-0.5 font-stub-label font-bold uppercase tracking-[0.04em] text-stub-slate-light">Flip</span>
                   {/* "+1" pops off the counter on each first flip (re-flips are free,
                       so no pulse) — the flip cost teaches itself. Keyed remount per
                       flip; the spent span sits invisible until the next one. */}
@@ -285,13 +301,13 @@ export default function SoloGame({ onExit, start }: { onExit: () => void; start:
                     </motion.span>
                   )}
                 </span>
-                <span className="flex min-w-7 flex-col items-center leading-none">
+                <span className="flex min-w-8 flex-col items-center leading-none">
                   <span className="font-stub-display text-[14px] font-bold text-stub-cream">{score}</span>
-                  <span className="mt-0.5 font-stub-label text-[6px] font-bold uppercase tracking-[0.08em] text-stub-slate-light">Score</span>
+                  <span className="solo-score-label mt-0.5 font-stub-label font-bold uppercase tracking-[0.04em] text-stub-slate-light">Score</span>
                 </span>
-                <span className="flex min-w-7 flex-col items-center leading-none">
+                <span className="flex min-w-8 flex-col items-center leading-none">
                   <span className="font-stub-display text-[14px] font-bold text-stub-cream">{puzzle.par}</span>
-                  <span className="mt-0.5 font-stub-label text-[6px] font-bold uppercase tracking-[0.08em] text-stub-slate-light">Par</span>
+                  <span className="solo-score-label mt-0.5 font-stub-label font-bold uppercase tracking-[0.04em] text-stub-slate-light">Par</span>
                 </span>
               </div>
               <div className="solo-header-actions flex items-center gap-1">
@@ -300,17 +316,17 @@ export default function SoloGame({ onExit, start }: { onExit: () => void; start:
                   aria-label="How to play"
                   data-rules-open
                   onClick={() => setShowRules(true)}
-                  className="flex h-7 w-7 items-center justify-center rounded-stub-pill text-[12px] font-extrabold text-stub-cream/80 ring-1 ring-inset ring-stub-slate-light/50 active:scale-90"
+                  className="daily-icon-button flex h-7 w-7 items-center justify-center rounded-stub-pill text-[12px] font-extrabold text-stub-cream/80 ring-1 ring-inset ring-stub-slate-light/50 active:scale-90"
                 >
-                  ?
+                  <Icon name="help" size={20} />
                 </button>
                 <button
                   type="button"
                   aria-label="Restart game"
                   onClick={resetGame}
-                  className="flex h-9 w-9 items-center justify-center rounded-stub-pill text-xl text-stub-cream/80 active:scale-90 active:text-stub-amber"
+                  className="daily-icon-button flex h-9 w-9 items-center justify-center rounded-stub-pill text-xl text-stub-cream/80 active:scale-90 active:text-stub-amber"
                 >
-                  ↺
+                  <Icon name="restart" size={20} />
                 </button>
               </div>
             </div>
@@ -319,6 +335,9 @@ export default function SoloGame({ onExit, start }: { onExit: () => void; start:
 
         {/* Discard pile */}
         <section className="solo-pile-stage absolute inset-x-0 z-10 flex justify-center">
+          <p className="solo-zone-label absolute font-stub-label text-[12px] font-bold uppercase tracking-[0.14em] text-stub-navy/70">
+            Now playing
+          </p>
           <div ref={pileZoneRef} className="relative">
             {/* Underlay stack: thin navy-edged paper ticket slabs, so the pile
                 reads as a stack of stubs rather than colored rectangles. Faint
@@ -375,13 +394,13 @@ export default function SoloGame({ onExit, start }: { onExit: () => void; start:
         <AnimatePresence>
           {raisedId === null && !connection && status === 'playing' && (
             <motion.p
-              className="solo-stage-instruction pointer-events-none absolute inset-x-0 z-10 text-center font-stub-label text-[9px] font-bold uppercase tracking-[0.11em] text-stub-navy"
+              className="solo-stage-instruction pointer-events-none absolute inset-x-0 z-10 px-4 text-center font-stub-label text-[12px] font-bold uppercase leading-relaxed tracking-[0.07em] text-stub-navy"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: reduce ? 0.15 : 0.25 }}
             >
-              Flip for credits · raise a card to play
+              First flip +1 · re-flips free · raise a card to play
             </motion.p>
           )}
         </AnimatePresence>
@@ -389,16 +408,33 @@ export default function SoloGame({ onExit, start }: { onExit: () => void; start:
         {/* SR live mirror (§7·7b a11y): announce each landed connection —
             always mounted, unlike the AnimatePresence banner below. */}
         <div className="sr-only" role="status" aria-live="polite">
-          {connection
-            ? `Connected via ${connection.name} (${connection.role})` +
-              (connection.comboCount >= 3 ? ` — combo ×${connection.comboCount}` : '')
-            : ''}
+          {invalidNotice
+            ? 'No valid shared credit. Two-stroke penalty.'
+            : connection
+              ? `Connected via ${connection.name} (${connection.role})` +
+                (connection.comboCount >= 3 ? ` — combo ×${connection.comboCount}` : '')
+              : ''}
         </div>
 
         {/* Connection banner + combo badge */}
         <div className="solo-feedback pointer-events-none absolute inset-x-0 z-40 flex flex-col items-center gap-1.5 px-4">
           <AnimatePresence>
-            {connection && (
+            {invalidNotice && (
+              <motion.div
+                key={`invalid-${invalidNonce}`}
+                data-solo-invalid
+                initial={{ opacity: 0, y: reduce ? 0 : 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: reduce ? MOTION.duration.reduced : MOTION.duration.reveal }}
+                className="rounded-stub-pill bg-stub-red px-4 py-2 text-center font-stub-ui text-[13px] font-semibold text-stub-paper shadow-stub-card-raised"
+              >
+                No shared credit · +2
+              </motion.div>
+            )}
+          </AnimatePresence>
+          <AnimatePresence>
+            {connection && !invalidNotice && (
               <motion.div
                 key={connection.seq}
                 initial={{ opacity: 0, y: reduce ? 0 : 10 }}
@@ -435,6 +471,10 @@ export default function SoloGame({ onExit, start }: { onExit: () => void; start:
           <div className="absolute inset-0 z-20" onPointerDown={() => setRaisedId(null)} />
         )}
 
+        <p className="solo-hand-label pointer-events-none absolute z-10 hidden font-stub-label text-[12px] font-bold uppercase tracking-[0.14em] text-stub-navy/70">
+          Your hand · {hand.length} tickets
+        </p>
+
         <Hand
           cards={hand.map((id) => movieById.get(id)!)}
           raisedId={raisedId}
@@ -452,15 +492,23 @@ export default function SoloGame({ onExit, start }: { onExit: () => void; start:
         {/* Test-only terminal seam. Vite replaces the flag at build time, so
             the normal production bundle removes this branch and marker. */}
         {import.meta.env.VITE_E2E === '1' && (
-          <button
-            type="button"
-            data-testid="matchcut-e2e-complete"
-            className="hidden"
-            onClick={() => {
-              setHand([])
-              setStatus('won')
-            }}
-          />
+          <>
+            <button
+              type="button"
+              data-testid="matchcut-e2e-complete"
+              className="hidden"
+              onClick={() => {
+                setHand([])
+                setStatus('won')
+              }}
+            />
+            <button
+              type="button"
+              data-testid="matchcut-e2e-stuck"
+              className="hidden"
+              onClick={() => setStatus('stuck')}
+            />
+          </>
         )}
 
         <AnimatePresence>
@@ -485,7 +533,7 @@ export default function SoloGame({ onExit, start }: { onExit: () => void; start:
         </AnimatePresence>
 
         <AnimatePresence>
-          {showRules && <HowToPlay onClose={() => setShowRules(false)} />}
+          {showRules && <HowToPlay context="solo" onClose={() => setShowRules(false)} />}
         </AnimatePresence>
       </div>
     </div>

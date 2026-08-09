@@ -890,21 +890,28 @@ what's ready-to-review per sitting.
       revealed-board states; no overflow or console warnings. `design-qa.md`
       passes; build + 64/64 + 8/8 + 42/42 + 14/14 green. No scoring, deal,
       persistence, pool, or baked-grid change.
-- [x] **PRE-LAUNCH POLISH · foundations (§9·P1)** — route-level code/data
+- [ ] **PRE-LAUNCH POLISH · foundations (§9·P1) — IMPLEMENTATION BUILT,
+      REMOTE/OPS OPEN.** Route-level code/data
       splitting · asset manifest and budgets · CI + browser smoke tests · shared
       spacing/type/motion/icon tokens. No new production dependency; no rule
-      change. **COMPLETE 2026-08-08:** four React.lazy mode/data boundaries,
-      production Vite manifest, honest transitive gzip/session budgets, Node 22
-      CI, seven Playwright browser journeys, and shared spacing/type/motion/icon
-      conventions are implemented. Build + budgets + browser 7/7 + 64/64 +
+      change. **BUILD SUBSET COMPLETE 2026-08-08:** four React.lazy mode/data
+      boundaries, production Vite manifest, honest transitive gzip/session
+      budgets, the initial CI workflow, seven Playwright browser journeys, and
+      shared spacing/type/motion/icon conventions are implemented. The original
+      local matrix—build + budgets + browser 7/7 + 64/64 +
       8/8 + 42/42 + 14/14 are green. Production-preview network evidence
       confirms zero mode/data chunks on the menu and selective fetch after
       start; 390×844, 375×667, 1280×720, reduced motion, and dev `?mode=` are
       clean. Buri approved development-only `@playwright/test`; normal production
       builds are additionally gated against leakage of the isolated E2E seam.
-      Evidence and exact before/after bytes: `docs/delivery-foundations-report.md`.
-- [x] **CONTENT EXCEPTION · Wave 3 pool expansion — LOCALLY COMPLETE
-      2026-08-08, NOT PUBLISHED.** Buri explicitly reopened the §9 pause and
+      **2026-08-08 repair:** the cancelled Wave 3 run was traced to the serial
+      exhaustive Connections verifier, not a failed assertion. Node is now
+      repository-pinned to 24.x, Actions use v6, and unchanged coverage is split
+      across parallel jobs locally. Remote green proof, monitoring, Web Vitals,
+      spend limits, rollback, and the future art manifest remain open. Evidence
+      and exact before/after bytes: `docs/delivery-foundations-report.md`.
+- [x] **CONTENT EXCEPTION · Wave 3 pool expansion — DEPLOYED 2026-08-08
+      (`a710fff`).** Buri explicitly reopened the §9 pause and
       selected 67 full cards: A+B+C01–C17+E+F; C18 and D skipped. Merge:
       237→304 credited Movies, 22 stubs graduated, 438→482 dated pool with
       spread 34/62/98/112/115/61. Connections viable key sets
@@ -914,11 +921,27 @@ what's ready-to-review per sitting.
       diff check.
       Frozen Duel/Solo 89, rules, persistence, and art are untouched. The larger
       author-time graph requires a 20 GB Node ceiling; runtime still reads baked
-      JSON only. Full handoff: `docs/wave3-report.md`. Stop before commit/push/
-      deploy; after this exception, the further-expansion pause resumes at 482.
-- [ ] **PRE-LAUNCH POLISH · mode waves (§9·P2–P4)** — Chronology first, then
-      menu + Solo/Connections, Duel last; each wave includes icon + Framer +
-      accessibility + both phone sizes and stops for Buri's visual approval.
+      JSON only. Full handoff: `docs/wave3-report.md`. The initial review stopped
+      before publication as required; Buri subsequently approved and published
+      `a710fff`. The further-expansion pause resumes at 482.
+- [x] **PRE-LAUNCH POLISH · mode waves (§9·P2–P4)** — **Phases 1–3 approved;
+      full local release candidate completed 2026-08-09.** Mode-specific How to Play and the Chronology title-first tray
+      are approved. The approved menu uses a reachable phone stack and deliberate
+      2×2 tablet/desktop program; Daily Puzzle keeps the Solo-only 4+3 rack while
+      separating pile, travel, and hand zones on desktop, replacing essential
+      6px counters with 12px labels, and making flip/invalid cost explicit.
+      Connections' accepted board was re-proven unchanged across idle, selected,
+      one-away, solve, loss, reveal, and result states. Duel now uses grouped
+      phone tools and a real 1180px desktop table with distinct CPU, play, tool,
+      commentary, shelf, and readable fan zones. The shared local SVG family and
+      bounded/scrollable result treatment are complete. The final local matrix
+      passes build, budgets, Duel 64/64, Solo 8/8, Chronology 42/42,
+      Connections 14/14, browser 14/14, and diff checks. One pre-existing keyboard event collision is
+      separately logged for rule/parity approval: activating the pile with a
+      raised card can also fire the tap-to-flip path and affect score. Every
+      visual phase received Buri's approval. The candidate remains uncommitted,
+      unpushed, and undeployed; remote CI, attended accessibility/devices, and
+      operational launch gates remain in their separate rows below.
 - [ ] **PRE-LAUNCH POLISH · card-art pilot (§9·P5)** — 18–24 original,
       posterless cards across eras/genres/title lengths; approve the system and
       production pipeline before generating the 482-card pool.

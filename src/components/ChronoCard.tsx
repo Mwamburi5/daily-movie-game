@@ -47,7 +47,10 @@ const DIMS = {
   hand: { w: 96, h: 128, titleBasePx: 13, titleFloorPx: 6, year: 'text-[32px]', pad: 7, edge: 9, radius: '11px', border: 2 },
   handCompact: { w: 78, h: 104, titleBasePx: 11, titleFloorPx: 5, year: 'text-[27px]', pad: 6, edge: 8, radius: '10px', border: 2 },
   raised: { w: 184, h: 245, titleBasePx: 20, titleFloorPx: 10, year: 'text-[68px]', pad: 12, edge: 20, radius: 'var(--radius-stub-panel)', border: 2.5 },
-  raisedCompact: { w: 156, h: 208, titleBasePx: 18, titleFloorPx: 9, year: 'text-[58px]', pad: 10, edge: 16, radius: 'var(--radius-stub-panel)', border: 2.5 },
+  // Short viewports reserve 232px for the full 2×5 title tray. This still reads
+  // as a hero beside a 44px choice ticket, while fitting between the reel and
+  // tray without hiding either legal end gap.
+  raisedCompact: { w: 140, h: 187, titleBasePx: 17, titleFloorPx: 9, year: 'text-[52px]', pad: 9, edge: 15, radius: 'var(--radius-stub-panel)', border: 2.5 },
   line: { w: 64, h: 90, titleBasePx: 10, titleFloorPx: 4, year: 'text-[22px]', pad: 5, edge: 7, radius: 'var(--radius-stub-card)', border: 2 },
   reel: { w: 100, h: 133, titleBasePx: 13, titleFloorPx: 6, year: 'text-[32px]', pad: 7, edge: 10, radius: 'var(--radius-stub-card)', border: 2 },
   reelCompact: { w: 88, h: 117, titleBasePx: 12, titleFloorPx: 5, year: 'text-[28px]', pad: 6, edge: 9, radius: '11px', border: 2 },

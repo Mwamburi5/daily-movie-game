@@ -4,6 +4,7 @@ import type { SoloStart } from './SoloGame.tsx'
 import type { ChronoStart } from './ChronologyGame.tsx'
 import type { ConnectionsStart } from './ConnectionsGame.tsx'
 import HowToPlay from './components/HowToPlay.tsx'
+import Icon from './components/Icon.tsx'
 import { useDialogA11y } from './components/useDialogA11y.ts'
 import { type Difficulty, DIFFICULTIES, DIFFICULTY_META } from './lib/difficulty.ts'
 import { localDateSeed } from './lib/daily.ts'
@@ -105,7 +106,7 @@ export default function App() {
 
   return (
     <div
-      className="relative mx-auto flex h-full w-full max-w-[420px] flex-col bg-stub-cream"
+      className="menu-shell relative mx-auto flex h-full w-full flex-col bg-stub-cream"
       style={{
         backgroundImage: 'radial-gradient(rgba(31,58,82,.06) 1px, transparent 1.2px)',
         backgroundSize: '7px 7px',
@@ -115,7 +116,7 @@ export default function App() {
           2026-07-07): the menu no longer opens header-less. Carries the wordmark
           and the rules affordance (the old bottom "How to play" button folds
           into this ?, matching every game screen). */}
-      <header className="flex items-center justify-between rounded-b-stub-header bg-stub-navy px-5 pb-4 pt-4">
+      <header className="menu-header flex items-center justify-between rounded-b-stub-header bg-stub-navy px-5 pb-4 pt-4">
         <h1 className="font-stub-display text-2xl font-bold italic tracking-tight text-stub-cream">
           Match Cut
         </h1>
@@ -124,9 +125,9 @@ export default function App() {
           aria-label="How to play"
           data-rules-open
           onClick={() => setShowRules(true)}
-          className="flex h-8 w-8 items-center justify-center rounded-stub-pill text-[13px] font-extrabold text-stub-cream/80 ring-1 ring-inset ring-stub-slate-light/50 active:scale-90"
+          className="daily-icon-button flex h-8 w-8 items-center justify-center rounded-stub-pill text-[13px] font-extrabold text-stub-cream/80 ring-1 ring-inset ring-stub-slate-light/50 active:scale-90"
         >
-          ?
+          <Icon name="help" size={20} />
         </button>
       </header>
 
@@ -135,19 +136,36 @@ export default function App() {
           plain justify-center, a 667px viewport clipped the Connections card
           UNREACHABLY (flex centering overflows both ends; the top half can
           never be scrolled to). */}
-      <div className="flex w-full min-h-0 flex-1 flex-col items-center overflow-y-auto px-8">
-        <div className="my-auto flex w-full flex-col items-center gap-8 py-6">
-        <p className="text-center font-stub-ui text-sm text-stub-slate">
-          Connect movies by the people who made them.
-        </p>
-        <div className="flex w-full max-w-[300px] flex-col gap-3">
+      <div className="menu-scroll flex min-h-0 w-full flex-1 flex-col items-center overflow-y-auto px-8">
+        <main className="menu-workspace my-auto flex w-full flex-col items-center gap-8 py-6">
+        <section className="menu-intro text-center" aria-labelledby="menu-program-title">
+          <p className="font-stub-label text-[11px] font-bold uppercase tracking-[0.16em] text-stub-amber">
+            Tonight&apos;s program
+          </p>
+          <h2 id="menu-program-title" className="mt-2 font-stub-display text-3xl font-bold text-stub-navy">
+            Pick your feature.
+          </h2>
+          <p className="mt-3 font-stub-ui text-[15px] leading-relaxed text-stub-slate">
+            Connect movies by the people who made them. Three fresh dailies, plus the head-to-head cut.
+          </p>
+          <p className="menu-recommendation mt-4 rounded-stub-panel border border-stub-amber/60 bg-stub-amber/10 px-4 py-3 font-stub-ui text-[14px] leading-snug text-stub-navy">
+            <span className="block font-stub-label text-[11px] font-bold uppercase tracking-[0.12em] text-stub-amber">
+              Recommended start
+            </span>
+            Daily Puzzle — a quick hand to learn the links.
+          </p>
+        </section>
+        <div className="menu-mode-grid flex w-full max-w-[300px] flex-col gap-3">
           {/* Card order (Buri, 2026-08-07): dailies lead, Duel demoted to LAST —
               batch-1 feedback had duel comprehension failing across 3 sources and
               zero would-return votes; the deepest mode can't be the front door.
               The old navy hero fill went with it (see the Duel card below) — no
               card is "the" primary now. W5d punched notches stay on every card. */}
-          <div className="relative rounded-stub-panel border-2 border-stub-navy bg-stub-paper px-6 py-4 shadow-stub-card-resting">
+          <article className="menu-card menu-card--recommended relative rounded-stub-panel border-2 border-stub-navy bg-stub-paper px-6 py-4 shadow-stub-card-resting">
             <MenuNotches />
+            <span data-menu-recommended className="menu-card-kicker mb-2 inline-flex rounded-stub-pill bg-stub-amber px-2.5 py-1 font-stub-label text-[11px] font-bold uppercase tracking-[0.1em] text-stub-navy">
+              Start here · daily
+            </span>
             <button
               type="button"
               data-mode="solo"
@@ -166,21 +184,21 @@ export default function App() {
             </button>
             {/* The daily is the button above; the original hand-designed puzzle
                 stays on as a fixed practice round. */}
-            <div className="mt-3 flex items-center gap-2">
-              <span className="font-stub-label text-[11px] font-semibold uppercase tracking-[0.08em] text-stub-slate">
+            <div className="menu-practice-row mt-3 flex items-center gap-2 border-t border-dashed border-stub-navy/20 pt-3">
+              <span className="font-stub-label text-[12px] font-semibold uppercase tracking-[0.08em] text-stub-slate">
                 practice
               </span>
               <button
                 type="button"
                 data-solo-practice
                 onClick={() => startSolo({ kind: 'practice' })}
-                className="flex-1 rounded-stub-pill border-2 border-stub-navy bg-stub-paper px-2 py-1 font-stub-label text-[10px] font-bold uppercase tracking-[0.08em] text-stub-navy transition-colors active:bg-stub-navy/10"
+                className="min-h-11 flex-1 rounded-stub-pill border-2 border-stub-navy bg-stub-paper px-3 py-2 font-stub-label text-[11px] font-bold uppercase tracking-[0.08em] text-stub-navy transition-colors active:bg-stub-navy/10"
               >
                 The original hand
               </button>
             </div>
-          </div>
-          <div className="relative rounded-stub-panel border-2 border-stub-navy bg-stub-paper px-6 py-4 shadow-stub-card-resting">
+          </article>
+          <article className="menu-card relative rounded-stub-panel border-2 border-stub-navy bg-stub-paper px-6 py-4 shadow-stub-card-resting">
             <MenuNotches />
             <button
               type="button"
@@ -200,8 +218,8 @@ export default function App() {
             </button>
             {/* The daily is the button above; practice is its own affordance —
                 each pill starts a fresh random round at that spread. */}
-            <div className="mt-3 flex items-center gap-2">
-              <span className="font-stub-label text-[11px] font-semibold uppercase tracking-[0.08em] text-stub-slate">
+            <div className="menu-practice-row mt-3 flex items-center gap-2 border-t border-dashed border-stub-navy/20 pt-3">
+              <span className="font-stub-label text-[12px] font-semibold uppercase tracking-[0.08em] text-stub-slate">
                 practice
               </span>
               <div className="flex flex-1 gap-1.5">
@@ -211,20 +229,20 @@ export default function App() {
                     type="button"
                     data-chrono-practice={p.id}
                     onClick={() => startChronology({ kind: 'practice', difficulty: p.id })}
-                    className="flex-1 rounded-stub-pill border-2 border-stub-navy bg-stub-paper px-2 py-1 font-stub-label text-[10px] font-bold uppercase tracking-[0.08em] text-stub-navy transition-colors active:bg-stub-navy/10"
+                    className="min-h-11 flex-1 rounded-stub-pill border-2 border-stub-navy bg-stub-paper px-2 py-1.5 font-stub-label text-[11px] font-bold uppercase tracking-[0.08em] text-stub-navy transition-colors active:bg-stub-navy/10"
                   >
                     {p.label}
-                    <span className="block text-[8px] font-semibold normal-case tracking-normal text-stub-slate">
+                    <span className="block text-[10px] font-semibold normal-case tracking-normal text-stub-slate">
                       {p.sub}
                     </span>
                   </button>
                 ))}
               </div>
             </div>
-          </div>
+          </article>
           {/* Connections (Mode 4) — EXTRAPOLATED, composed from the same paper
               panel as the other daily cards (cohesion ruling). */}
-          <div className="relative rounded-stub-panel border-2 border-stub-navy bg-stub-paper px-6 py-4 shadow-stub-card-resting">
+          <article className="menu-card relative rounded-stub-panel border-2 border-stub-navy bg-stub-paper px-6 py-4 shadow-stub-card-resting">
             <MenuNotches />
             <button
               type="button"
@@ -243,24 +261,24 @@ export default function App() {
               </span>
             </button>
             {/* The daily is the button above; practice deals a fresh verified grid. */}
-            <div className="mt-3 flex items-center gap-2">
-              <span className="font-stub-label text-[11px] font-semibold uppercase tracking-[0.08em] text-stub-slate">
+            <div className="menu-practice-row mt-3 flex items-center gap-2 border-t border-dashed border-stub-navy/20 pt-3">
+              <span className="font-stub-label text-[12px] font-semibold uppercase tracking-[0.08em] text-stub-slate">
                 practice
               </span>
               <button
                 type="button"
                 data-connections-practice
                 onClick={() => startConnections({ kind: 'practice' })}
-                className="flex-1 rounded-stub-pill border-2 border-stub-navy bg-stub-paper px-2 py-1 font-stub-label text-[10px] font-bold uppercase tracking-[0.08em] text-stub-navy transition-colors active:bg-stub-navy/10"
+                className="min-h-11 flex-1 rounded-stub-pill border-2 border-stub-navy bg-stub-paper px-3 py-2 font-stub-label text-[11px] font-bold uppercase tracking-[0.08em] text-stub-navy transition-colors active:bg-stub-navy/10"
               >
                 Random grid
               </button>
             </div>
-          </div>
+          </article>
           {/* Duel — the deep-strategy mode, deliberately last and on the same
               paper panel as the dailies (demoted from the navy hero it launched
               with; Buri, 2026-08-07). Its difficulty picker rides along. */}
-          <div className="relative rounded-stub-panel border-2 border-stub-navy bg-stub-paper px-6 py-4 shadow-stub-card-resting">
+          <article className="menu-card relative rounded-stub-panel border-2 border-stub-navy bg-stub-paper px-6 py-4 shadow-stub-card-resting">
             <MenuNotches />
             <button
               type="button"
@@ -287,7 +305,7 @@ export default function App() {
             </button>
             {/* Difficulty segmented control → Stub pill group: amber-active,
                 recolored for the paper panel (was black/25 on navy). */}
-            <div className="mt-3 flex gap-1 rounded-stub-pill bg-stub-navy/10 p-0.5">
+            <div className="menu-practice-row mt-3 flex gap-1 rounded-stub-pill bg-stub-navy/10 p-0.5">
               {DIFFICULTIES.map((d) => (
                 <button
                   key={d}
@@ -298,7 +316,7 @@ export default function App() {
                     setDifficulty(d)
                     recordDifficultyPick(d)
                   }}
-                  className={`flex-1 whitespace-nowrap rounded-stub-pill px-2 py-1.5 font-stub-label text-[10px] font-bold uppercase tracking-[0.06em] transition-colors ${
+                  className={`min-h-11 flex-1 whitespace-nowrap rounded-stub-pill px-2 py-2 font-stub-label text-[10px] font-bold uppercase tracking-[0.04em] transition-colors ${
                     difficulty === d
                       ? 'bg-stub-amber text-stub-navy shadow-sm'
                       : 'text-stub-slate active:text-stub-navy'
@@ -311,12 +329,12 @@ export default function App() {
             <p className="mt-1.5 text-center font-stub-ui text-[11px] text-stub-slate">
               {DIFFICULTY_META[difficulty].blurb}
             </p>
-          </div>
+          </article>
         </div>
-        </div>
+        </main>
       </div>
       <AnimatePresence>
-        {showRules && <HowToPlay onClose={() => setShowRules(false)} />}
+        {showRules && <HowToPlay context="overview" onClose={() => setShowRules(false)} />}
         {showIntro && <IntroOverlay onDismiss={dismissIntro} />}
       </AnimatePresence>
     </div>

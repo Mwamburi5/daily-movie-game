@@ -11,17 +11,17 @@ permissions:
   contents: read
 
 jobs:
-  delivery-and-rules:
+  build-and-budgets:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 10
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
-      - name: Use Node.js 22
-        uses: actions/setup-node@v4
+      - name: Use repository Node.js version
+        uses: actions/setup-node@v6
         with:
-          node-version: 22
+          node-version-file: package.json
           cache: npm
 
       - name: Install locked dependencies
@@ -33,8 +33,40 @@ jobs:
       - name: Enforce bundle budgets
         run: npm run check:bundle
 
+  duel-rules:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Use repository Node.js version
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: package.json
+          cache: npm
+
+      - name: Install locked dependencies
+        run: npm ci
+
       - name: Verify Duel parity
         run: npm run verify
+
+  daily-rules:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Use repository Node.js version
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: package.json
+          cache: npm
+
+      - name: Install locked dependencies
+        run: npm ci
 
       - name: Verify Solo
         run: npm run verify:solo
@@ -42,21 +74,41 @@ jobs:
       - name: Verify Chronology
         run: npm run verify:chronology
 
+  connections-rules:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Use repository Node.js version
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: package.json
+          cache: npm
+
+      - name: Install locked dependencies
+        run: npm ci
+
       - name: Verify Connections
         run: npm run verify:connections
 
   browser-smoke:
-    needs: delivery-and-rules
+    needs:
+      - build-and-budgets
+      - duel-rules
+      - daily-rules
+      - connections-rules
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
-      - name: Use Node.js 22
-        uses: actions/setup-node@v4
+      - name: Use repository Node.js version
+        uses: actions/setup-node@v6
         with:
-          node-version: 22
+          node-version-file: package.json
           cache: npm
 
       - name: Install locked dependencies
