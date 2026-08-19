@@ -158,7 +158,7 @@ export default function DrawChoice({ options, onPick, reduce }: DrawChoiceProps)
               target ≥44px with an amber press/hover affordance (README:
               takeable → amber border + glow). */}
           <div className="mt-3.5 flex items-start justify-center gap-2">
-            {options.map((opt) => {
+            {options.map((opt, index) => {
               // With a wild on the table only the wild is tappable — the other
               // cards are already gone in rules terms (never a legal keep).
               const dead = hasWild && !opt.wild
@@ -171,12 +171,12 @@ export default function DrawChoice({ options, onPick, reduce }: DrawChoiceProps)
                   onClick={() => onPick(opt.id)}
                   aria-label={
                     opt.wild
-                      ? 'Keep the wild — wilds are always kept'
+                      ? `Option ${index + 1} of ${options.length}: keep the wild — wilds are always kept`
                       : dead
-                        ? 'Leaves the show — the wild is kept instead'
+                        ? `Option ${index + 1} of ${options.length}: leaves the show — the wild is kept instead`
                         : opt.connects
-                          ? 'Keep this card — it connects'
-                          : 'Keep this card'
+                          ? `Option ${index + 1} of ${options.length}: keep this card — connection hint`
+                          : `Option ${index + 1} of ${options.length}: keep this card — no connection hint`
                   }
                   // relative for the CONNECTS pill; min targets guarantee ≥44px
                   // even if a future cardSlot shrinks. The ring is the amber

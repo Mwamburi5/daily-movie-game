@@ -989,7 +989,27 @@ what's ready-to-review per sitting.
 - [ ] **PRE-LAUNCH SCALE · launch gate (§9·P8)** — real-device/accessibility,
       performance, rollback, spend alerts, privacy/credits, TMDB commercial-use
       decision, and URL-in-share/front-door cutover. Further movie expansion
-      stays paused until this gate is green.
+      stays paused until this gate is green. **Goal 5 in progress 2026-08-19:**
+      complete canonical/Open Graph/X metadata and a 1200×630 Stub-native social
+      card are locally gated while `noindex, nofollow` remains. Build, budgets,
+      security, audits, 64/64 + 8/8 + 42/42 + 14/14, browser 24/24, current
+      Chrome 151, current WebKit 26.5, and the 63-shot viewport/result matrix are
+      green. The browser gate now includes keyboard-only four-mode entry/return,
+      named controls/dialogs, contrast-safe focus, and static reduced-motion
+      feedback. A read-only receipt identifies the live `c063f26` production
+      baseline, edge/security smoke, domain/TLS posture, and rollback target;
+      it is not Goal 5 release approval. Buri approved the Goal 5 viewport and
+      social-preview screenshot checkpoint on 2026-08-19. Branded Safari
+      26.5.2 then passed all four mode/action checks; its attendance exposed
+      and verified the fix for identical spoken names on Duel's three hidden
+      draw choices, using ordinal/hint-only labels with no title leak. Actual
+      Safari 200% zoom also passed menu reflow and mode reachability. Buri then
+      enabled VoiceOver for an actual Safari spot-check: headings, named
+      controls, pressed state/live feedback, the Duel choice dialog, and the
+      rules hierarchy passed. Real iPhone/Android + TalkBack + attended motion/
+      focus, dashboard/account controls, protected Preview, production, and
+      indexing remain distinct open gates in
+      `docs/goal-5-public-launch-acceptance.md`.
 - [ ] **D1 Duel deep-cut reveal as a difficulty lever** (PARKED, concept
       approved 2026-07-06; §3·D1) — deepCast TMDB content pass (P2-adjacent) →
       deep-cut flip face (W3) → difficulty knob + re-tune (W5); needs its own

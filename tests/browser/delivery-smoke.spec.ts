@@ -1,4 +1,4 @@
-import { expect, test as base, type Page } from '@playwright/test'
+import { expect, test as base, type Locator, type Page } from '@playwright/test'
 import { movieById } from '../../src/data/movies.ts'
 import { TIER_POINTS } from '../../src/lib/duel.ts'
 import { linkTier, sharedPeople } from '../../src/lib/solver.ts'
@@ -51,6 +51,30 @@ const test = base.extend<{ browserFaults: string[] }>({
   },
 })
 
+test('social discovery metadata is complete while indexing stays closed', async ({ page, request, browserFaults }) => {
+  void browserFaults
+  await page.goto('/')
+
+  await expect(page).toHaveTitle('Match Cut — Four movie games, one daily ritual')
+  await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', /Connect movies/)
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', 'https://matchcutdaily.com/')
+  await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'noindex, nofollow')
+  await expect(page.locator('meta[property="og:type"]')).toHaveAttribute('content', 'website')
+  await expect(page.locator('meta[property="og:url"]')).toHaveAttribute('content', 'https://matchcutdaily.com/')
+  await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content', 'https://matchcutdaily.com/social-preview.png')
+  await expect(page.locator('meta[property="og:image:width"]')).toHaveAttribute('content', '1200')
+  await expect(page.locator('meta[property="og:image:height"]')).toHaveAttribute('content', '630')
+  await expect(page.locator('meta[name="twitter:card"]')).toHaveAttribute('content', 'summary_large_image')
+
+  const preview = await request.get('/social-preview.png')
+  expect(preview.status()).toBe(200)
+  expect(preview.headers()['content-type']).toBe('image/png')
+  const previewPng = await preview.body()
+  expect(previewPng.length).toBeGreaterThan(25_000)
+  expect(previewPng.readUInt32BE(16)).toBe(1200)
+  expect(previewPng.readUInt32BE(20)).toBe(630)
+})
+
 test('production preview enforces headers and keeps analytics in the bundle', async ({ page, browserFaults }) => {
   void browserFaults
   const response = await page.goto('/')
@@ -80,8 +104,104 @@ test('production preview enforces headers and keeps analytics in the bundle', as
 async function openMenu(page: Page) {
   await page.goto('/')
   const intro = page.locator('[data-intro-dismiss]')
-  if (await intro.isVisible()) await intro.click()
+  if (await intro.count()) {
+    await expect(intro).toBeVisible()
+    await intro.click()
+    await expect(intro).toBeHidden()
+  }
   await expect(page.locator('[data-mode="solo"]')).toBeVisible()
+}
+
+async function tabTo(page: Page, target: Locator, limit = 80) {
+  for (let step = 0; step < limit; step += 1) {
+    if (await target.evaluate((element) => element === document.activeElement)) return
+    await page.keyboard.press('Tab')
+  }
+  throw new Error(`keyboard focus did not reach ${await target.evaluate((element) => element.outerHTML.slice(0, 160))}`)
+}
+
+async function expectTwoToneFocus(target: Locator) {
+  await expect(target).toBeFocused()
+  const focus = await target.evaluate((element) => {
+    const parse = (value: string) => {
+      const hex = value.trim().match(/^#([0-9a-f]{6})$/i)
+      if (hex) {
+        const raw = hex[1]
+        return [0, 2, 4].map((offset) => Number.parseInt(raw.slice(offset, offset + 2), 16)).concat(1)
+      }
+      const channels = value.match(/[\d.]+/g)?.map(Number) ?? []
+      return [channels[0] ?? 0, channels[1] ?? 0, channels[2] ?? 0, channels[3] ?? 1]
+    }
+    const composite = (foreground: number[], background: number[]) => {
+      const alpha = foreground[3]
+      return foreground.slice(0, 3).map((channel, index) => channel * alpha + background[index] * (1 - alpha))
+    }
+    const luminance = (color: number[]) => {
+      const channels = color.slice(0, 3).map((channel) => {
+        const value = channel / 255
+        return value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4
+      })
+      return 0.2126 * channels[0] + 0.7152 * channels[1] + 0.0722 * channels[2]
+    }
+    const contrast = (foreground: number[], background: number[]) => {
+      const first = luminance(foreground)
+      const second = luminance(background)
+      return (Math.max(first, second) + 0.05) / (Math.min(first, second) + 0.05)
+    }
+    let surface: Element | null = element
+    let background = [255, 255, 255, 1]
+    while (surface) {
+      const candidate = parse(getComputedStyle(surface).backgroundColor)
+      if (candidate[3] >= 0.95) {
+        background = candidate
+        break
+      }
+      surface = surface.parentElement
+    }
+    const style = getComputedStyle(element)
+    const outline = composite(parse(style.outlineColor), background)
+    const halo = composite(parse(style.getPropertyValue('--color-stub-navy')), background)
+    return {
+      outlineColor: style.outlineColor,
+      outlineStyle: style.outlineStyle,
+      outlineWidth: style.outlineWidth,
+      boxShadow: style.boxShadow,
+      outlineContrast: contrast(outline, background),
+      haloContrast: contrast(halo, background),
+    }
+  })
+  expect(focus.outlineStyle).toBe('solid')
+  expect(Number.parseFloat(focus.outlineWidth)).toBeGreaterThanOrEqual(2)
+  if (focus.outlineContrast < 3) {
+    expect(focus.boxShadow).toContain('rgb(31, 58, 82)')
+    expect(focus.boxShadow).toContain('6px')
+    expect(focus.haloContrast).toBeGreaterThanOrEqual(3)
+  } else {
+    expect(focus.outlineContrast).toBeGreaterThanOrEqual(3)
+  }
+}
+
+async function expectNamedInteractiveControls(page: Page) {
+  const unnamed = await page.locator('button, a[href], input, select, textarea, [role="button"], [role="dialog"]').evaluateAll((elements) => (
+    elements.flatMap((element) => {
+      const style = getComputedStyle(element)
+      if (style.display === 'none' || style.visibility === 'hidden' || element.getClientRects().length === 0) return []
+      if (element.getAttribute('aria-hidden') === 'true') return []
+      const labelledBy = element.getAttribute('aria-labelledby')
+        ?.split(/\s+/)
+        .map((id) => document.getElementById(id)?.textContent?.trim() ?? '')
+        .join(' ')
+        .trim()
+      const name = element.getAttribute('aria-label')
+        ?? labelledBy
+        ?? element.getAttribute('title')
+        ?? element.textContent?.trim()
+        ?? ''
+      if (name) return []
+      return [`${element.tagName.toLowerCase()}${element.getAttribute('role') ? `[role="${element.getAttribute('role')}"]` : ''}`]
+    })
+  ))
+  expect(unnamed, 'all visible interactive controls and dialogs have an accessible name').toEqual([])
 }
 
 async function finishThroughTestSeam(page: Page) {
@@ -318,7 +438,15 @@ test('Duel draws, completes, shares, and returns', async ({ page, browserFaults 
   await expect(page.locator('[data-mode-stage="duel"]')).toBeVisible()
 
   await page.getByRole('button', { name: 'Draw a card' }).click()
-  await expect(page.getByRole('dialog', { name: 'Drew three — keep one' })).toBeVisible()
+  const drawDialog = page.getByRole('dialog', { name: 'Drew three — keep one' })
+  await expect(drawDialog).toBeVisible()
+  const drawOptions = drawDialog.locator('[data-draw-choice]')
+  await expect(drawOptions).toHaveCount(3)
+  const drawOptionNames = await drawOptions.evaluateAll((options) => options.map((option) => option.getAttribute('aria-label')))
+  expect(new Set(drawOptionNames).size).toBe(3)
+  for (let index = 0; index < drawOptionNames.length; index += 1) {
+    expect(drawOptionNames[index]).toMatch(new RegExp(`^Option ${index + 1} of 3:`))
+  }
 
   await finishThroughTestSeam(page)
   await verifyShareAndReturn(page, /Game over — results/, 'Match Cut · Duel')
@@ -366,6 +494,70 @@ test('overview help stays brief and keeps its primary action visible on a compac
   await page.keyboard.press('Escape')
   await expect(dialog).toBeHidden()
   await expect(page.locator('[data-rules-open]')).toBeFocused()
+})
+
+test('keyboard-only entry exposes a two-tone focus indicator and named controls in every mode', async ({ page, browserFaults }) => {
+  void browserFaults
+  await openMenu(page)
+  await expectNamedInteractiveControls(page)
+
+  for (const mode of ['solo', 'chronology', 'connections', 'duel'] as const) {
+    const menuEntry = page.locator(`[data-mode="${mode}"]`)
+    await tabTo(page, menuEntry)
+    await expectTwoToneFocus(menuEntry)
+    await page.keyboard.press('Enter')
+
+    await expect(page.locator(`[data-mode-stage="${mode}"]`)).toBeVisible()
+    await expectNamedInteractiveControls(page)
+
+    const back = page.getByRole('button', { name: 'Back to menu' })
+    await tabTo(page, back)
+    await expectTwoToneFocus(back)
+
+    await page.keyboard.press('Tab')
+    const help = page.getByRole('button', { name: 'How to play' })
+    await expectTwoToneFocus(help)
+    await page.keyboard.press('Enter')
+
+    const dialog = page.getByRole('dialog', { name: new RegExp(`How to play`, 'i') })
+    await expect(dialog).toBeVisible()
+    await expect(dialog).toBeFocused()
+    await expectNamedInteractiveControls(page)
+    await page.keyboard.press('Escape')
+    await expect(dialog).toBeHidden()
+    await expectTwoToneFocus(help)
+
+    await page.keyboard.press('Shift+Tab')
+    await expectTwoToneFocus(back)
+    await page.keyboard.press('Enter')
+    await expect(page.locator('[data-mode="solo"]')).toBeVisible()
+  }
+})
+
+test('reduced-motion preference keeps the Duel cue static while gameplay remains available', async ({ page, browserFaults }) => {
+  void browserFaults
+  await page.emulateMedia({ reducedMotion: 'reduce' })
+  await openMenu(page)
+  expect(await page.evaluate(() => matchMedia('(prefers-reduced-motion: reduce)').matches)).toBe(true)
+
+  await page.locator('[data-mode="duel"]').click()
+  const cue = page.getByText(/turn — .*card or draw/, { exact: true })
+  await expect(cue).toBeVisible()
+  const opacitySamples = await cue.evaluate(async (element) => {
+    const first = getComputedStyle(element).opacity
+    await new Promise((resolve) => setTimeout(resolve, 250))
+    return [first, getComputedStyle(element).opacity]
+  })
+  expect(opacitySamples).toEqual(['1', '1'])
+
+  const draw = page.getByRole('button', { name: 'Draw a card' })
+  const transition = await draw.evaluate((element) => {
+    const style = getComputedStyle(element)
+    return { property: style.transitionProperty, duration: style.transitionDuration }
+  })
+  expect(transition.property).not.toContain('transform')
+  await draw.press('Enter')
+  await expect(page.getByRole('dialog', { name: 'Drew three — keep one' })).toBeVisible()
 })
 
 test('each mode opens only its own rules', async ({ page, browserFaults }) => {

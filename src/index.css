@@ -42,11 +42,14 @@ body {
 }
 
 /* Keyboard focus ring (§7·7b a11y slice). :focus-visible only — pointer taps
-   never paint it, so the touch experience is untouched. Amber is THE action
-   color; the offset keeps it legible over navy chrome and cream paper alike. */
+   never paint it, so the touch experience is untouched. Amber stays the action
+   signal on navy; the outer navy halo supplies the required contrast when that
+   same amber ring sits on cream or paper. !important deliberately overrides a
+   focused card's resting shadow for the duration of keyboard focus. */
 :focus-visible {
   outline: 2px solid var(--color-stub-amber);
   outline-offset: 2px;
+  box-shadow: 0 0 0 6px var(--color-stub-navy) !important;
   border-radius: 4px;
 }
 

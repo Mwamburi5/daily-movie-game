@@ -13,10 +13,16 @@ below requires Buri's explicit approval.
 - [x] Confirm `RULEBOOK.md` and `sim/RULESET.md` are current for any approved
   mechanic change.
 
-Local candidate recorded 2026-08-09: branch `codex/daily-mode-polish`, baseline
-and upstream `a710fff`, uncommitted production-polish scope. The unrelated
-`docs/pool-expansion-goal-prompt.md` is preserved and excluded. There was no
-mechanic change, so neither rules document required a synchronized edit.
+Goal 5 candidate recorded 2026-08-19: branch `codex/daily-mode-polish`, base and
+upstream `c063f267c819f8109e5ec0257e675fc925026dde`, with a local Goal 5 delta
+for social metadata/preview imagery, its browser contract, Safari console
+cleanup, distinct non-spoiling screen-reader names for Duel's hidden draw
+choices, and the acceptance record. The unrelated
+`docs/full-product-code-review-kickoff-prompt.md` and
+`docs/pool-expansion-goal-prompt.md` are preserved and excluded. There is no
+mechanic change, so neither rules document requires a synchronized edit. The
+base SHA's GitHub run `32212903103` is green; the Goal 5 delta still needs its
+own reviewed commit, push approval, and exact-SHA CI receipt.
 
 ## Local release gates
 
@@ -24,20 +30,20 @@ mechanic change, so neither rules document required a synchronized edit.
 - [x] `npm run build`
 - [x] `npm run check:bundle`
 - [x] `npm run check:security`
-- [x] `npm run verify:preview-security` against the protected Preview
+- [ ] Run `npm run verify:preview-security` against the protected Goal 5 Preview.
 - [ ] Confirm `vercel.json` and the attended account checks in
       `docs/security-launch-checklist.md` are complete for the candidate.
 - [x] `npm run verify` — 64/64
 - [x] `npm run verify:solo` — 8/8
 - [x] `npm run verify:chronology` — 42/42
 - [x] `npm run verify:connections` — 14/14
-- [x] `npm run test:smoke` — 21/21
+- [x] `npm run test:smoke` — 24/24
 - [x] `git diff --check`
 - [x] Inspect the production manifest and confirm menu/mode lazy-loading budgets.
 
-The final production build transformed 438 modules. Menu shell is 95.31 KiB
-gzip; every first-mode cold JS load is 117.39–144.37 KiB; every modelled cold
-played session is 269.44–322.36 KiB. Normal chunks contain no E2E marker. The
+The Goal 5 production build transformed 440 modules. Menu shell is 95.87 KiB
+gzip; every first-mode cold JS load is 117.97–145.11 KiB; every modelled cold
+played session is 271.19–324.59 KiB. Normal chunks contain no E2E marker. The
 menu-to-mode browser journey confirms that no mode chunk is requested before
 selection and that selecting Solo does not fetch the other modes. `npm audit`
 and `npm audit --omit=dev` both report zero vulnerabilities after the lockfile-
@@ -50,14 +56,53 @@ only PostCSS/Nanoid transitive update.
   tablet, short desktop, and full desktop.
 - [x] Keyboard/focus browser pass for dialogs, Chronology choices/gaps, and results.
 - [x] Reduced-motion browser pass.
+- [x] Buri approved the fresh Goal 5 initial/result and social-preview
+      checkpoint in this task on 2026-08-19.
+- [x] Current Safari 26.5.2 branded pass: all four modes entered and exercised;
+      current WebKit completed terminal/share/menu paths with zero faults.
+- [x] Actual Safari 200% zoom: menu recomposed to one readable column and the
+      enlarged Connections entry remained reachable; automated all-mode matrix
+      retained zero horizontal overflow.
 - [ ] Real iPhone and Android play-through.
-- [ ] VoiceOver and TalkBack spot-check.
+- [x] VoiceOver spot-check in actual Safari: headings, named controls, pressed
+      state/live feedback, Duel choice dialog, and rules hierarchy passed.
+- [ ] TalkBack spot-check with the real Android device.
 - [ ] 200% zoom/text-enlargement and contrast check.
 
-The local browser and screenshot evidence is complete. It is not a substitute
-for the three unchecked attended-device/assistive-technology gates. A separately
-gated, pre-existing Duel keyboard/tap collision also remains unresolved because
-it can affect score and was not authorized as part of visual polish.
+The local browser and screenshot evidence is complete. The earlier Duel
+keyboard/tap score collision was resolved before the Goal 5 baseline and is
+covered by click, Enter, Space, touch, and drag parity tests. The browser gate
+also verifies keyboard-only mode entry/return, named visible controls/dialogs,
+dialog focus restoration, a contrast-safe focus indicator, and static reduced-
+motion feedback with its action still available. Safari attendance exposed and
+rechecked a real accessibility correction: Duel's three face-down draw choices
+now have distinct ordinal/hint-only spoken names without revealing their hidden
+titles. Actual VoiceOver then exposed the ordered headings, named controls,
+pressed state/live feedback, Duel choice dialog, and rules hierarchy without
+duplicate or unnamed game controls. Spoken audio is not captured by desktop
+automation. TalkBack, real-device, and attended motion/focus gates remain open.
+
+## Existing production baseline — not Goal 5 approval
+
+Read-only checks on 2026-08-19 found Vercel production deployment
+`dpl_8SighytERqgygRYvbf1eMyLis6SL` Ready and aliased to
+`matchcutdaily.com`. Its HTML/assets match the pre-Goal 5 `c063f26` baseline:
+the Goal 5 social metadata and preview image are absent, and `noindex,
+nofollow` remains present. The public domain passed the 9/9 edge-header/CSP
+verifier, had zero console faults, loaded analytics successfully, accepted one
+non-sensitive test event, and exposed no production test seams, secret names,
+or source maps. This is a production-baseline receipt only; it does not satisfy
+the protected Goal 5 Preview or final production gates.
+
+The existing Preview redirects unauthenticated requests to Vercel SSO. Vercel
+listed no project environment variables. Apex HTTPS, HTTP-to-HTTPS, `www`-to-
+apex redirects, Vercel nameservers, public DNS answers, and TLS coverage were
+confirmed. No DS delegation was observed, so DNSSEC remains an attended
+decision. The previous Ready deployment
+`dpl_7Mk27AwKQ8vcN3CUPj666kfCPNx9` is the recorded rollback target; the
+documented command is `vercel rollback <deployment-id-or-url>`, and no rollback
+was executed. Dashboard analytics/Web Vitals, alerts, spend controls, account
+MFA/access, and the rollback drill remain open.
 
 ## Source-control and CI gates
 
