@@ -23,11 +23,15 @@ mechanic change, so neither rules document required a synchronized edit.
 - [x] `npm ci`
 - [x] `npm run build`
 - [x] `npm run check:bundle`
+- [x] `npm run check:security`
+- [x] `npm run verify:preview-security` against the protected Preview
+- [ ] Confirm `vercel.json` and the attended account checks in
+      `docs/security-launch-checklist.md` are complete for the candidate.
 - [x] `npm run verify` — 64/64
 - [x] `npm run verify:solo` — 8/8
 - [x] `npm run verify:chronology` — 42/42
 - [x] `npm run verify:connections` — 14/14
-- [x] `npm run test:smoke` — 14/14
+- [x] `npm run test:smoke` — 21/21
 - [x] `git diff --check`
 - [x] Inspect the production manifest and confirm menu/mode lazy-loading budgets.
 
@@ -72,6 +76,8 @@ it can affect score and was not authorized as part of visual polish.
 - [ ] Deploy production explicitly; a Git push alone is not deployment proof.
 - [ ] Verify `https://matchcutdaily.com` returns HTTP 200 and references the new
   hashed assets.
+- [ ] Verify the required production headers and CSP match the tested Preview
+  receipt; do not infer edge configuration from the local build.
 - [ ] Run one real production interaction in every changed mode and check the
   browser console/network for failures.
 - [ ] Confirm `noindex, nofollow` remains present.

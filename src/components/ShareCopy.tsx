@@ -31,6 +31,7 @@ export default function ShareCopy({ text, analytics }: { text: string; analytics
       <button
         type="button"
         data-share-copy
+        data-result-cta="share"
         onClick={onCopy}
         aria-live="polite"
         className="mt-5 min-h-12 rounded-stub-pill bg-stub-navy px-7 py-3 text-[15px] font-bold text-stub-cream shadow-stub-card-resting active:scale-95"

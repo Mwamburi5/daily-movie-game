@@ -98,6 +98,8 @@ export default function SoloGame({ onExit, start }: { onExit: () => void; start:
 
   const topId = pile[pile.length - 1]
   const topMovie = movieById.get(topId)!
+  const raisedMovie = raisedId === null ? null : movieById.get(raisedId)!
+  const raisedConnects = raisedMovie !== null && sharedPeople(topMovie, raisedMovie).length > 0
   const underlays = pile.slice(0, -1).slice(-2)
 
   // One winning order from the starter, for the stuck screen reveal.
@@ -202,6 +204,14 @@ export default function SoloGame({ onExit, start }: { onExit: () => void; start:
     playCard(id)
   }
 
+  // One activation contract for pointer, touch, and keyboard. A held card
+  // routes to the same geometry-free play core as drag; an empty hand target
+  // keeps the established flip-for-credits behavior.
+  const activatePile = () => {
+    if (raisedId !== null) playCard(raisedId)
+    else flipCard(topId)
+  }
+
   const resetGame = () => {
     // a replay is a new game for analytics — the mount effect only covers the
     // first deal, so re-fire here to keep mode_start ↔ mode_finish paired 1:1
@@ -261,7 +271,7 @@ export default function SoloGame({ onExit, start }: { onExit: () => void; start:
       className="h-full overflow-hidden bg-stub-cream"
     >
       <div
-        className="daily-mode-shell relative mx-auto h-full w-full bg-stub-cream"
+        className="app-shell daily-mode-shell relative mx-auto h-full w-full bg-stub-cream"
         data-mode-stage="solo"
         style={{
           backgroundImage: `url(${soloSpotlightUrl})`,
@@ -278,13 +288,13 @@ export default function SoloGame({ onExit, start }: { onExit: () => void; start:
           right={
             <div className="solo-header-right flex items-center gap-1.5">
               <div
-                className="grid grid-cols-3 gap-1 text-center tabular-nums"
+                className="app-counter-group grid grid-cols-3 gap-1 text-center tabular-nums"
                 role="text"
                 aria-label={`Flips ${flips}, score ${score}, par ${puzzle.par}`}
               >
                 <span className="relative flex min-w-8 flex-col items-center leading-none">
-                  <span className="font-stub-display text-[14px] font-bold text-stub-cream">{flips}</span>
-                  <span className="solo-score-label mt-0.5 font-stub-label font-bold uppercase tracking-[0.04em] text-stub-slate-light">Flip</span>
+                  <span className="app-counter-value text-stub-cream">{flips}</span>
+                  <span className="app-counter-label solo-score-label mt-0.5 text-stub-slate-light">Flip</span>
                   {/* "+1" pops off the counter on each first flip (re-flips are free,
                       so no pulse) — the flip cost teaches itself. Keyed remount per
                       flip; the spent span sits invisible until the next one. */}
@@ -302,12 +312,12 @@ export default function SoloGame({ onExit, start }: { onExit: () => void; start:
                   )}
                 </span>
                 <span className="flex min-w-8 flex-col items-center leading-none">
-                  <span className="font-stub-display text-[14px] font-bold text-stub-cream">{score}</span>
-                  <span className="solo-score-label mt-0.5 font-stub-label font-bold uppercase tracking-[0.04em] text-stub-slate-light">Score</span>
+                  <span className="app-counter-value text-stub-cream">{score}</span>
+                  <span className="app-counter-label solo-score-label mt-0.5 text-stub-slate-light">Score</span>
                 </span>
                 <span className="flex min-w-8 flex-col items-center leading-none">
-                  <span className="font-stub-display text-[14px] font-bold text-stub-cream">{puzzle.par}</span>
-                  <span className="solo-score-label mt-0.5 font-stub-label font-bold uppercase tracking-[0.04em] text-stub-slate-light">Par</span>
+                  <span className="app-counter-value text-stub-cream">{puzzle.par}</span>
+                  <span className="app-counter-label solo-score-label mt-0.5 text-stub-slate-light">Par</span>
                 </span>
               </div>
               <div className="solo-header-actions flex items-center gap-1">
@@ -316,7 +326,7 @@ export default function SoloGame({ onExit, start }: { onExit: () => void; start:
                   aria-label="How to play"
                   data-rules-open
                   onClick={() => setShowRules(true)}
-                  className="daily-icon-button flex h-7 w-7 items-center justify-center rounded-stub-pill text-[12px] font-extrabold text-stub-cream/80 ring-1 ring-inset ring-stub-slate-light/50 active:scale-90"
+                  className="app-help-button daily-icon-button text-[12px] font-extrabold active:scale-90"
                 >
                   <Icon name="help" size={20} />
                 </button>
@@ -334,11 +344,30 @@ export default function SoloGame({ onExit, start }: { onExit: () => void; start:
         />
 
         {/* Discard pile */}
-        <section className="solo-pile-stage absolute inset-x-0 z-10 flex justify-center">
-          <p className="solo-zone-label absolute font-stub-label text-[12px] font-bold uppercase tracking-[0.14em] text-stub-navy/70">
-            Now playing
+        <section
+          className={`solo-pile-stage absolute inset-x-0 flex justify-center ${
+            raisedId !== null ? 'z-30' : 'z-10'
+          }`}
+        >
+          <p
+            className={`solo-zone-label absolute font-stub-label text-[12px] font-bold uppercase tracking-[0.14em] ${
+              raisedId !== null && raisedConnects ? 'text-stub-amber' : 'text-stub-navy/70'
+            }`}
+          >
+            {raisedId !== null && raisedConnects ? 'Play here' : 'Now playing'}
           </p>
-          <div ref={pileZoneRef} className="relative">
+          <div
+            ref={pileZoneRef}
+            className={`solo-play-target relative ${
+              raisedId !== null
+                ? raisedConnects
+                  ? 'solo-play-target--active'
+                  : 'solo-play-target--blocked'
+                : ''
+            }`}
+            data-play-target="pile"
+            data-target-active={raisedId !== null ? raisedConnects : undefined}
+          >
             {/* Underlay stack: thin navy-edged paper ticket slabs, so the pile
                 reads as a stack of stubs rather than colored rectangles. Faint
                 navy tint + resting shadow, same rotate/opacity stagger. */}
@@ -358,12 +387,13 @@ export default function SoloGame({ onExit, start }: { onExit: () => void; start:
             <motion.div
               layoutId={topId}
               data-card="pile-top"
-              onTap={() => flipCard(topId)}
-              // Keyboard path (§7·7b a11y): with a card raised, Enter plays it
-              // here (the tap-free route to the drag's drop); otherwise Enter
-              // peeks the top card's credits, same as tap. Touch is untouched.
+              data-movie-id={topId}
+              onClick={activatePile}
+              // One explicit keyboard path avoids Framer's accessible onTap
+              // synthesizing a second activation after this handler.
               role="button"
               tabIndex={0}
+              aria-pressed={raisedId === null ? faceUp.has(topId) : undefined}
               aria-label={
                 raisedId !== null
                   ? `Play ${movieById.get(raisedId)!.title} onto the pile — top card ${topMovie.title}`
@@ -372,8 +402,7 @@ export default function SoloGame({ onExit, start }: { onExit: () => void; start:
               onKeyDown={(e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
                   e.preventDefault()
-                  if (raisedId !== null) playCard(raisedId)
-                  else flipCard(topId)
+                  if (!e.repeat) activatePile()
                 }
               }}
               initial={reduce ? { opacity: 0 } : { opacity: 0, y: -12, rotate: -1.5 }}
@@ -392,15 +421,20 @@ export default function SoloGame({ onExit, start }: { onExit: () => void; start:
         </section>
 
         <AnimatePresence>
-          {raisedId === null && !connection && status === 'playing' && (
+          {!connection && status === 'playing' && playLog.length === 0 && (
             <motion.p
+              data-first-move-guidance
               className="solo-stage-instruction pointer-events-none absolute inset-x-0 z-10 px-4 text-center font-stub-label text-[12px] font-bold uppercase leading-relaxed tracking-[0.07em] text-stub-navy"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: reduce ? 0.15 : 0.25 }}
             >
-              First flip +1 · re-flips free · raise a card to play
+              {raisedId === null
+                ? 'First move · choose a hand ticket'
+                : raisedConnects
+                  ? 'Now tap the glowing pile · or drag the card there'
+                  : 'No link yet · flip for credits or choose another ticket'}
             </motion.p>
           )}
         </AnimatePresence>
@@ -427,7 +461,7 @@ export default function SoloGame({ onExit, start }: { onExit: () => void; start:
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: reduce ? MOTION.duration.reduced : MOTION.duration.reveal }}
-                className="rounded-stub-pill bg-stub-red px-4 py-2 text-center font-stub-ui text-[13px] font-semibold text-stub-paper shadow-stub-card-raised"
+                className="app-feedback-banner rounded-stub-pill bg-stub-red px-4 py-2 text-center font-stub-ui text-[13px] font-semibold text-stub-paper shadow-stub-card-raised"
               >
                 No shared credit · +2
               </motion.div>
@@ -441,7 +475,7 @@ export default function SoloGame({ onExit, start }: { onExit: () => void; start:
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
                 transition={reduce ? { duration: MOTION.duration.reduced } : MOTION.spring.settle}
-                className="rounded-stub-pill bg-stub-navy px-4 py-2 text-center font-stub-ui text-[13px] font-semibold text-stub-cream shadow-stub-card-raised"
+                className="app-feedback-banner rounded-stub-pill bg-stub-navy px-4 py-2 text-center font-stub-ui text-[13px] font-semibold text-stub-cream shadow-stub-card-raised"
               >
                 Connected via {connection.name} ({connection.role})
               </motion.div>

@@ -936,12 +936,50 @@ what's ready-to-review per sitting.
       commentary, shelf, and readable fan zones. The shared local SVG family and
       bounded/scrollable result treatment are complete. The final local matrix
       passes build, budgets, Duel 64/64, Solo 8/8, Chronology 42/42,
-      Connections 14/14, browser 14/14, and diff checks. One pre-existing keyboard event collision is
-      separately logged for rule/parity approval: activating the pile with a
-      raised card can also fire the tap-to-flip path and affect score. Every
+      Connections 14/14, browser 14/14, and diff checks. **Input/scoring parity
+      resolved 2026-08-18:** pile targets now use one pointer/touch activation
+      plus an explicit non-repeating Enter/Space path, and raised-card targets
+      clear the dismiss backdrop. Direct successful-play coverage proves click,
+      Enter, Space, touch, and drag in both Daily Puzzle and Duel; target-only
+      activation still flips exactly once. The post-fix matrix is build + bundle
+      + Duel 64/64 + Solo 8/8 + Chronology 42/42 + Connections 14/14 + browser
+      20/20, with fresh 390×844 successful-play screenshots inspected. Every
       visual phase received Buri's approval. The candidate remains uncommitted,
       unpushed, and undeployed; remote CI, attended accessibility/devices, and
       operational launch gates remain in their separate rows below.
+- [x] **PRE-LAUNCH POLISH · Goal 3 mode-specific onboarding — LOCALLY VERIFIED
+      2026-08-18:** Daily Puzzle and Duel now teach the first meaningful action
+      in context, and a raised card emphasizes its action-local playable pile,
+      marquee, or existing Meld-row targets. Duel Meld picks gain numbered,
+      raised selection states, faded non-picks, and a non-overlapping readout.
+      Connections keeps the accepted 4×4 board and adds quiet desktop task/
+      progress marquees in the surrounding space. A shared result key makes
+      lower/fewer/higher semantics explicit; CTA order is copy result → replay/
+      deal → Menu in all four modes. The menu adds a local-only 0/3 daily
+      passport from existing once-per-seed meta records plus skill-labelled
+      practice prompts. No storage schema, mechanic, scoring, deal, pool, share,
+      board, or fan contract changed. Local gates: build, budgets, Duel 64/64,
+      Solo 8/8, Chronology 42/42, Connections 14/14, browser 20/20, and diff
+      checks. Evidence: `docs/goal-3-mode-specific-qa.md`. Work remains
+      uncommitted, unpushed, and undeployed; attended human/device approval
+      stays in the launch gate.
+- [x] **PRE-LAUNCH POLISH · Goal 4 security hardening — LOCALLY + PREVIEW
+      VERIFIED; ATTENDED ACCOUNTS OPEN 2026-08-18:** `vercel.json` now carries a
+      restrictive CSP and defense-in-depth headers, mirrored into Vite preview
+      so the browser suite runs under the enforced policy. The Vercel Analytics
+      queue/loader moved out of inline HTML into `src/lib/analytics.ts`. CI
+      actions are immutable-SHA pinned, dependency review and weekly Dependabot
+      updates are configured, and the dependency-free `check:security` gate
+      checks secrets, sourcemaps, prod test seams, action pins, header drift,
+      inline script, and bundled analytics. Protected Preview
+      `dpl_ECTuDQiuZcWnCa8fCxSJ3jVTK6bk` passed 9/9 exact headers, zero CSP and
+      console faults, analytics loader/event 200, and remote production-asset
+      hygiene; the local CSP browser/gameplay matrix is 21/21 + 64/64 + 8/8 +
+      42/42 + 14/14, with `npm audit` at zero. The owner-attended Vercel,
+      GitHub, registrar/DNS, four-mode remote play, and Analytics dashboard
+      receipt remain open in `docs/security-launch-checklist.md`. The Preview is
+      an uncommitted working-tree receipt, not a production candidate; no
+      production, account, domain, push, or merge mutation was performed.
 - [ ] **PRE-LAUNCH POLISH · card-art pilot (§9·P5)** — 18–24 original,
       posterless cards across eras/genres/title lengths; approve the system and
       production pipeline before generating the 482-card pool.

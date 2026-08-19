@@ -11,6 +11,8 @@
     "build": "tsc --noEmit && vite build",
     "build:e2e": "tsc --noEmit && VITE_E2E=1 vite build --outDir dist-e2e",
     "check:bundle": "node scripts/check-bundle.mjs",
+    "check:security": "node scripts/check-security.mjs",
+    "verify:preview-security": "node scripts/verify-preview-security.mjs",
     "preview": "vite preview",
     "preview:e2e": "vite preview --outDir dist-e2e",
     "test:smoke": "playwright test",

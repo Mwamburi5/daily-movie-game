@@ -1,4 +1,7 @@
 import { expect, test as base, type Page } from '@playwright/test'
+import { movieById } from '../../src/data/movies.ts'
+import { TIER_POINTS } from '../../src/lib/duel.ts'
+import { linkTier, sharedPeople } from '../../src/lib/solver.ts'
 
 const productionOrigin = 'http://127.0.0.1:4273'
 const developmentOrigin = 'http://127.0.0.1:5273'
@@ -6,6 +9,15 @@ const developmentOrigin = 'http://127.0.0.1:5273'
 const test = base.extend<{ browserFaults: string[] }>({
   browserFaults: async ({ page }, use) => {
     const faults: string[] = []
+    await page.addInitScript(() => {
+      const state = window as unknown as { __matchcutCspViolations?: string[] }
+      state.__matchcutCspViolations = []
+      window.addEventListener('securitypolicyviolation', (event) => {
+        state.__matchcutCspViolations?.push(
+          `${event.effectiveDirective}: ${event.blockedURI || 'inline'}`,
+        )
+      })
+    })
     const isFirstParty = (url: string) => {
       try {
         const origin = new URL(url).origin
@@ -31,8 +43,38 @@ const test = base.extend<{ browserFaults: string[] }>({
     })
 
     await use(faults)
+    const cspViolations = await page.evaluate(() => (
+      window as unknown as { __matchcutCspViolations?: string[] }
+    ).__matchcutCspViolations ?? [])
+    expect(cspViolations, 'no Content Security Policy violations').toEqual([])
     expect(faults, 'no uncaught browser errors or failed first-party requests').toEqual([])
   },
+})
+
+test('production preview enforces headers and keeps analytics in the bundle', async ({ page, browserFaults }) => {
+  void browserFaults
+  const response = await page.goto('/')
+  expect(response).not.toBeNull()
+  const headers = response!.headers()
+  expect(headers['content-security-policy']).toContain("script-src 'self'")
+  expect(headers['content-security-policy']).toContain("script-src-attr 'none'")
+  expect(headers['content-security-policy']).not.toContain("script-src 'self' 'unsafe-inline'")
+  expect(headers['content-security-policy']).not.toContain("'unsafe-eval'")
+  expect(headers['x-content-type-options']).toBe('nosniff')
+  expect(headers['x-frame-options']).toBe('DENY')
+  expect(headers['referrer-policy']).toBe('strict-origin-when-cross-origin')
+  expect(headers['permissions-policy']).toContain('camera=()')
+  await expect(page.locator('script:not([src])')).toHaveCount(0)
+
+  const queued = await page.evaluate(() => {
+    const analytics = window as unknown as {
+      va?: (event: 'event', props: { name: string; data: { mode: string } }) => void
+      vaq?: unknown[]
+    }
+    analytics.va?.('event', { name: 'mode_start', data: { mode: 'security-check' } })
+    return analytics.vaq?.length ?? 0
+  })
+  expect(queued).toBe(1)
 })
 
 async function openMenu(page: Page) {
@@ -57,6 +99,154 @@ async function verifyShareAndReturn(page: Page, resultName: RegExp, sharePrefix:
   await page.getByRole('button', { name: 'Menu', exact: true }).click()
   await expect(page.locator('[data-mode="solo"]')).toBeVisible()
 }
+
+type SuccessfulPlayInput = 'click' | 'Enter' | 'Space' | 'drag'
+
+async function dragRaisedCardTo(page: Page, target: ReturnType<Page['locator']>) {
+  const raised = await page.locator('[data-card^="raised-"]').boundingBox()
+  const targetBox = await target.boundingBox()
+  expect(raised).not.toBeNull()
+  expect(targetBox).not.toBeNull()
+  await page.mouse.move(raised!.x + raised!.width / 2, raised!.y + raised!.height / 2)
+  await page.mouse.down()
+  await page.mouse.move(
+    targetBox!.x + targetBox!.width / 2,
+    targetBox!.y + targetBox!.height / 2,
+    { steps: 12 },
+  )
+  await page.mouse.up()
+}
+
+async function successfulSoloPlay(page: Page, input: SuccessfulPlayInput) {
+  await openMenu(page)
+  await page.locator('[data-solo-practice]').click()
+  const card = page.locator('[data-hand-layout="rack"] [data-card="casino"]')
+  const pile = page.locator('[data-card="pile-top"]')
+
+  if (input === 'Enter' || input === 'Space') await card.press(input)
+  else await card.click()
+  await expect(page.locator('[data-card="raised-casino"]')).toBeVisible()
+
+  if (input === 'drag') await dragRaisedCardTo(page, pile)
+  else if (input === 'Enter' || input === 'Space') await pile.press(input)
+  else await pile.click()
+
+  await expect(pile).toHaveAttribute('data-movie-id', 'casino')
+  await expect(page.locator('[data-card^="raised-"]')).toHaveCount(0)
+  await expect(page.locator('[data-hand-layout="rack"] [data-card]')).toHaveCount(6)
+  await expect(page.locator('[aria-label^="Flips "]')).toHaveAttribute(
+    'aria-label',
+    /^Flips 0, score 0, par 9$/,
+  )
+}
+
+async function successfulDuelPlay(page: Page, input: SuccessfulPlayInput) {
+  await openMenu(page)
+  await page.locator('[data-mode="duel"]').click()
+  await page.locator('[data-token="finalCut"]').click()
+
+  const card = page.locator('[data-hand-layout="fan"] [data-card]').last()
+  const cardId = await card.getAttribute('data-card')
+  expect(cardId).not.toBeNull()
+  const pile = page.locator('[data-card="pile-top-0"]')
+  const pileId = await pile.getAttribute('data-movie-id')
+  expect(pileId).not.toBeNull()
+  const shared = sharedPeople(movieById.get(pileId!)!, movieById.get(cardId!)!)
+  const expectedPoints = shared.length === 0
+    ? 1
+    : TIER_POINTS[linkTier(movieById.get(pileId!)!, movieById.get(cardId!)!, shared)]
+
+  if (input === 'Enter' || input === 'Space') await card.press(input)
+  else await card.click()
+  await expect(page.locator(`[data-card="raised-${cardId}"]`)).toBeVisible()
+
+  if (input === 'drag') await dragRaisedCardTo(page, pile)
+  else if (input === 'Enter' || input === 'Space') await pile.press(input)
+  else await pile.click()
+
+  await expect.poll(async () => {
+    const score = await page.locator('[data-score]').first().getAttribute('data-score')
+    return Number(score?.split('-')[0])
+  }).toBe(expectedPoints)
+  await expect(page.locator('[data-card^="raised-"]')).toHaveCount(0)
+  await expect(page.locator('[data-hand-layout="fan"] [data-card]')).toHaveCount(6)
+  const finalCut = page.locator('[data-token="finalCut"]')
+  // A scored link can open the Run decision and contextually disable every
+  // tool while preserving the token. Assert spent/retained state, not whether
+  // the current turn substate happens to make the button clickable.
+  if (shared.length === 0) await expect(finalCut).toHaveClass(/line-through/)
+  else await expect(finalCut).not.toHaveClass(/line-through/)
+}
+
+for (const input of ['click', 'Enter', 'Space', 'drag'] as const) {
+  test(`Daily Puzzle and Duel complete exactly one successful ${input} play`, async ({ page, browserFaults }) => {
+    void browserFaults
+    await successfulSoloPlay(page, input)
+    await successfulDuelPlay(page, input)
+  })
+}
+
+test('target-only click, Enter, and Space each toggle credits exactly once', async ({ page, browserFaults }) => {
+  void browserFaults
+  await openMenu(page)
+  await page.locator('[data-solo-practice]').click()
+  const soloPile = page.locator('[data-card="pile-top"]')
+  await soloPile.click()
+  await expect(soloPile).toHaveAttribute('aria-pressed', 'true')
+  await soloPile.press('Enter')
+  await expect(soloPile).toHaveAttribute('aria-pressed', 'false')
+  await soloPile.press('Space')
+  await expect(soloPile).toHaveAttribute('aria-pressed', 'true')
+  await expect(page.locator('[aria-label^="Flips "]')).toHaveAttribute('aria-label', /^Flips 1, score 1,/)
+
+  await openMenu(page)
+  await page.locator('[data-mode="duel"]').click()
+  const duelPile = page.locator('[data-card="pile-top-0"]')
+  await duelPile.click()
+  await expect(duelPile).toHaveAttribute('aria-pressed', 'true')
+  await duelPile.press('Enter')
+  await expect(duelPile).toHaveAttribute('aria-pressed', 'false')
+  await duelPile.press('Space')
+  await expect(duelPile).toHaveAttribute('aria-pressed', 'true')
+  await expect(page.locator('[data-score]').first()).toHaveAttribute('data-score', '0-0')
+})
+
+test.describe('touch input parity', () => {
+  test.use({ hasTouch: true })
+
+  test('Daily Puzzle and Duel complete exactly one successful touch play', async ({ page, browserFaults }) => {
+    void browserFaults
+    await openMenu(page)
+    await page.locator('[data-solo-practice]').tap()
+    await page.locator('[data-hand-layout="rack"] [data-card="casino"]').tap()
+    await page.locator('[data-card="pile-top"]').tap()
+    await expect(page.locator('[data-card="pile-top"]')).toHaveAttribute('data-movie-id', 'casino')
+    await expect(page.locator('[data-hand-layout="rack"] [data-card]')).toHaveCount(6)
+    await expect(page.locator('[aria-label^="Flips "]')).toHaveAttribute('aria-label', /^Flips 0, score 0, par 9$/)
+
+    await openMenu(page)
+    await page.locator('[data-mode="duel"]').tap()
+    await page.locator('[data-token="finalCut"]').tap()
+    const card = page.locator('[data-hand-layout="fan"] [data-card]').last()
+    const cardId = await card.getAttribute('data-card')
+    const pile = page.locator('[data-card="pile-top-0"]')
+    const pileId = await pile.getAttribute('data-movie-id')
+    expect(cardId).not.toBeNull()
+    expect(pileId).not.toBeNull()
+    const shared = sharedPeople(movieById.get(pileId!)!, movieById.get(cardId!)!)
+    const expectedPoints = shared.length === 0
+      ? 1
+      : TIER_POINTS[linkTier(movieById.get(pileId!)!, movieById.get(cardId!)!, shared)]
+    await card.tap()
+    await pile.tap()
+    await expect.poll(async () => {
+      const score = await page.locator('[data-score]').first().getAttribute('data-score')
+      return Number(score?.split('-')[0])
+    }).toBe(expectedPoints)
+    await expect(page.locator('[data-card^="raised-"]')).toHaveCount(0)
+    await expect(page.locator('[data-hand-layout="fan"] [data-card]')).toHaveCount(6)
+  })
+})
 
 test('menu keeps every mode chunk lazy until Solo is selected', async ({ page, browserFaults }) => {
   void browserFaults
@@ -319,6 +509,10 @@ test('Daily Puzzle keeps its rack contract while desktop separates pile and hand
       items.map((item) => Math.round(item.getBoundingClientRect().left)),
     )).size).toBeGreaterThanOrEqual(4)
 
+    await expect.poll(async () => cards.evaluateAll((items) => items.every((item) => {
+      const rect = item.getBoundingClientRect()
+      return rect.left >= 0 && rect.right <= window.innerWidth && rect.top >= 0 && rect.bottom <= window.innerHeight
+    }))).toBe(true)
     const cardRects = await cards.evaluateAll((items) => items.map((item) => {
       const rect = item.getBoundingClientRect()
       return { left: rect.left, right: rect.right, top: rect.top, bottom: rect.bottom }
@@ -331,7 +525,7 @@ test('Daily Puzzle keeps its rack contract while desktop separates pile and hand
       labels.map((label) => Number.parseFloat(getComputedStyle(label).fontSize)),
     )
     expect(scoreLabelSizes.every((size) => size >= 12)).toBe(true)
-    await expect(page.getByText('First flip +1 · re-flips free · raise a card to play')).toBeVisible()
+    await expect(page.getByText('First move · choose a hand ticket')).toBeVisible()
 
     if (viewport.width >= 1024) {
       await expect(page.getByText('Now playing', { exact: true })).toBeVisible()

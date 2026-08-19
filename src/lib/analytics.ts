@@ -1,14 +1,45 @@
 // src/lib/analytics.ts — custom events for Vercel Web Analytics (WS1).
 //
-// Deps are locked, so this rides the SCRIPT-TAG route, not @vercel/analytics:
-// index.html installs the `window.va` queue stub and defers
-// /_vercel/insights/script.js. Calls made before the script loads pool in
-// window.vaq and flush when it arrives; if it never arrives (local dev,
-// adblock, Analytics not enabled in the dashboard) everything is a harmless
-// no-op — the game must never notice analytics.
+// Deps are locked, so this rides Vercel's same-origin script route, not
+// @vercel/analytics. Keeping the loader in this module removes inline script
+// from index.html and lets the app run with script-src 'self'. Calls made
+// before the collector loads queue in window.vaq; analytics must never affect
+// gameplay if the script is unavailable or blocked.
+
+type VaProps = {
+  name: string
+  data?: Record<string, string | number | boolean>
+}
+
+type VaArguments = [event: 'event', props: VaProps]
 
 interface VaWindow {
-  va?: (event: 'event', props: { name: string; data?: Record<string, string | number | boolean> }) => void
+  va?: (...args: VaArguments) => void
+  vaq?: VaArguments[]
+}
+
+const ANALYTICS_SCRIPT_PATH = '/_vercel/insights/script.js'
+
+function isLocalHost(hostname: string): boolean {
+  return hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '[::1]'
+}
+
+export function installAnalytics(): void {
+  const analyticsWindow = window as VaWindow
+  analyticsWindow.va ??= (...args: VaArguments) => {
+    ;(analyticsWindow.vaq ??= []).push(args)
+  }
+
+  // Vercel owns this same-origin route only on deployments. Keep local preview
+  // quiet while retaining the queue stub for deterministic browser coverage.
+  if (isLocalHost(window.location.hostname)) return
+  if (document.querySelector(`script[src="${ANALYTICS_SCRIPT_PATH}"]`)) return
+
+  const script = document.createElement('script')
+  script.defer = true
+  script.src = ANALYTICS_SCRIPT_PATH
+  script.dataset.vercelAnalytics = 'true'
+  document.head.appendChild(script)
 }
 
 // Flat primitives only — Vercel custom-event props don't nest, and nothing

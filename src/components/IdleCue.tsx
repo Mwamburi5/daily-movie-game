@@ -13,9 +13,11 @@ import { motion } from 'framer-motion'
 export default function IdleCue({
   visible,
   reduce,
+  text = 'one move — play a card or draw',
 }: {
   visible: boolean
   reduce: boolean
+  text?: string
 }) {
   if (!visible) return null
   return (
@@ -27,7 +29,7 @@ export default function IdleCue({
         transition={reduce ? undefined : { duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
         className="rounded-stub-pill border-2 border-stub-amber bg-stub-navy px-3 py-1 font-stub-label text-[10px] font-bold uppercase tracking-[.1em] text-stub-amber"
       >
-        one move — play a card or draw
+        {text}
       </motion.span>
     </div>
   )

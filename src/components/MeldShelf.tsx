@@ -78,7 +78,11 @@ export default function MeldShelf({
   return (
     // In-flow root, no self-pinning: the parent's column owns the position
     // (Appendix A·1 doctrine). Keep the resting z-layer var from MeldZone.
-    <div className="relative z-[var(--z-resting)] w-full">
+    <div
+      className={`relative w-full ${
+        highlightIds.size > 0 ? 'z-[var(--z-traveling)]' : 'z-[var(--z-resting)]'
+      }`}
+    >
       {/* Horizontal scroll strip. overflow-x-auto (not hidden) so the rows
           are actually swipeable on touch — the comp's `overflow:hidden` is a
           static-mockup artifact; the caption says SWIPE. */}
@@ -95,10 +99,11 @@ export default function MeldShelf({
               aria-label={`${meldLabel(meld)} meld, ${meld.cardIds.length} cards${
                 lit ? ' — accepts the raised card, press Enter to lay off' : ''
               }`}
+              onClick={() => onRowActivate?.(meld.id)}
               onKeyDown={(e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
                   e.preventDefault()
-                  onRowActivate?.(meld.id)
+                  if (!e.repeat) onRowActivate?.(meld.id)
                 }
               }}
               className={`flex-none rounded-stub-card border-2 bg-stub-paper px-2 py-[5px] ${

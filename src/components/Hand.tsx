@@ -98,13 +98,24 @@ export default function Hand({
     : ({ type: 'spring', stiffness: 380, damping: 30 } as const)
   const n = cards.length
   const rack = layout === 'rack'
-  // Fan tightens as the hand grows (duel draws can exceed 7 cards). Width 372
-  // (was 360) + cap 47: at 7 cards each covered card's visible sliver gains
-  // ~2px of title — part of the C4 readability pass (feedback batch 1); still
-  // clears the 375px viewport with margin at the outer cards' tilt.
+  const fanRef = useRef<HTMLDivElement>(null)
+  const [fanWidth, setFanWidth] = useState(() => Math.min(420, window.innerWidth))
+  useEffect(() => {
+    const node = fanRef.current
+    if (!node) return
+    const update = () => setFanWidth(node.clientWidth)
+    update()
+    const observer = new ResizeObserver(update)
+    observer.observe(node)
+    return () => observer.disconnect()
+  }, [])
+  // Fan tightens as the hand grows (duel draws can exceed 7 cards) and as its
+  // actual shell narrows. The 158px reserve includes the tilted outer ticket,
+  // so a 320px viewport never crops its title; the 47px cap preserves the
+  // approved spacing everywhere with enough room.
   const spacing = wideFan
     ? Math.min(92, (820 - CARD_W) / Math.max(n - 1, 1))
-    : Math.min(47, (372 - CARD_W) / Math.max(n - 1, 1))
+    : Math.min(47, (fanWidth - 158) / Math.max(n - 1, 1))
   const raised = cards.find((c) => c.id === raisedId)
 
   // ── Long-press drag-to-reorder ───────────────────────────────────────────
@@ -112,7 +123,6 @@ export default function Hand({
   // so a horizontal slide can re-slot it. Off during meld selection. The resting
   // animate below stays identical to the no-reorder version — grab only swaps
   // which target a card animates toward, never how the fan is laid out.
-  const fanRef = useRef<HTMLDivElement>(null)
   const [grabbedId, setGrabbedId] = useState<string | null>(null)
   const [grabX, setGrabX] = useState(0)
   const grabCenter = useRef(0) // fan centre in screen px, captured when a grab starts
@@ -194,8 +204,8 @@ export default function Hand({
       <div
         ref={fanRef}
         data-hand-layout={layout}
+        data-selection-mode={selectMode || undefined}
         className={`absolute inset-x-0 bottom-0 z-30 h-[225px] ${fanClassName}`}
-        style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
       >
         {cards.map((m, i) => {
           if (m.id === raisedId) return null
@@ -207,9 +217,10 @@ export default function Hand({
           const rackX = (rackColumn - (rackRowCount - 1) / 2) * RACK_SLOT
           const rackY = n <= 4 ? RACK_ROW_GAP : 8 + rackRow * RACK_ROW_GAP
           const selected = selectMode && !!selectedIds?.has(m.id)
+          const selectedIndex = selected ? [...(selectedIds ?? [])].indexOf(m.id) : -1
           const hinted = m.id === hintId
           const grabbed = m.id === grabbedId
-          const lift = selected ? 26 : hinted ? 22 : 0
+          const lift = selected ? 34 : hinted ? 22 : 0
           return (
             <motion.div
               key={m.id}
@@ -246,8 +257,12 @@ export default function Hand({
                 grabbed
                   ? { opacity: 1, x: grabX - grabCenter.current, y: -48 }
                   : rack
-                    ? { opacity: 1, x: rackX, y: rackY - lift }
-                    : { x: off * spacing, y: Math.abs(off) ** 1.7 * 5 - lift }
+                    ? { opacity: selectMode && !selected ? 0.56 : 1, x: rackX, y: rackY - lift }
+                    : {
+                        opacity: selectMode && !selected ? 0.56 : 1,
+                        x: off * spacing,
+                        y: Math.abs(off) ** 1.7 * 5 - lift,
+                      }
               }
               transition={
                 grabbed
@@ -288,7 +303,12 @@ export default function Hand({
                   hintLabel={hinted ? hintLabel : undefined}
                 />
                 {selected && (
-                  <div className="pointer-events-none absolute inset-0 rounded-xl ring-4 ring-stub-amber/80" />
+                  <>
+                    <div className="pointer-events-none absolute inset-0 rounded-xl bg-stub-amber/5 ring-4 ring-stub-amber" />
+                    <span className="pointer-events-none absolute -top-7 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded-stub-pill border-2 border-stub-amber bg-stub-navy px-2 py-1 font-stub-label text-[8px] font-bold uppercase tracking-[.1em] text-stub-amber shadow-stub-card-resting">
+                      Pick {selectedIndex + 1}
+                    </span>
+                  </>
                 )}
                 {hinted && !reduce && (
                   <motion.div

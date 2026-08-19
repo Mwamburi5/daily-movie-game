@@ -39,6 +39,8 @@ import ShareCopy from './components/ShareCopy.tsx'
 import FixedDigits from './components/FixedDigits.tsx'
 import DailyModeHeader from './components/DailyModeHeader.tsx'
 import HowToPlay from './components/HowToPlay.tsx'
+import ResultActions from './components/ResultActions.tsx'
+import ResultMeaning from './components/ResultMeaning.tsx'
 import Icon from './components/Icon.tsx'
 import { useDialogA11y } from './components/useDialogA11y.ts'
 import filmstripSurface from './assets/chronology-filmstrip.webp'
@@ -462,7 +464,7 @@ export default function ChronologyGame({ onExit, start }: { onExit: () => void; 
           backgroundSize: '7px 7px',
         }}
       >
-      <div className="daily-mode-shell relative mx-auto h-full w-full" data-mode-stage="chronology">
+      <div className="app-shell daily-mode-shell relative mx-auto h-full w-full" data-mode-stage="chronology">
         {/* 7a navy Stub header: nav row + a strokes/streak tally, bottom corners
             only per the token sheet. Cream ink on navy, with the header's cream
             dot texture. Title in Domine; the tally reads in the same value shape
@@ -474,12 +476,12 @@ export default function ChronologyGame({ onExit, start }: { onExit: () => void; 
           right={
             <div className="flex items-center gap-2">
             <div className="text-right tabular-nums">
-              <div className="font-stub-label text-[11px] uppercase tracking-wide text-stub-cream">
+              <div className="app-counter-label text-stub-cream">
                 {/* FixedDigits: the strokes tally ticks in Domine, which has no
                     tnum — 1ch digit boxes stop the row nudging left per stroke
                     (§7·7b). The mono label + credits tail are tabular already. */}
                 Strokes{' '}
-                <span className="chrono-strokes-value font-stub-display font-bold">
+                <span className="app-counter-value chrono-strokes-value">
                   <FixedDigits value={strokes} />
                 </span>
                 {credits > 0 && <span className="text-stub-amber"> · −{credits}</span>}
@@ -513,7 +515,7 @@ export default function ChronologyGame({ onExit, start }: { onExit: () => void; 
               aria-label="How to play"
               data-rules-open
               onClick={() => setShowRules(true)}
-              className="daily-icon-button daily-icon-md flex h-11 w-9 items-center justify-center rounded-stub-pill text-[12px] font-extrabold text-stub-cream/80 ring-1 ring-inset ring-stub-slate-light/50 active:scale-90"
+              className="app-help-button daily-icon-button daily-icon-md text-[12px] font-extrabold active:scale-90"
             >
               <Icon name="help" size={20} />
             </button>
@@ -637,7 +639,7 @@ export default function ChronologyGame({ onExit, start }: { onExit: () => void; 
                 animate={{ opacity: 1, scale: 1, rotate: 0 }}
                 exit={{ opacity: 0 }}
                 transition={reduce ? { duration: 0.15 } : { type: 'spring', stiffness: 460, damping: 13 }}
-                className="rounded-stub-pill bg-stub-amber px-4 py-1.5 font-stub-label text-[11px] font-bold uppercase tracking-wider text-stub-navy shadow-stub-glow-amber"
+                className="app-feedback-banner rounded-stub-pill bg-stub-amber px-4 py-1.5 font-stub-label text-[11px] font-bold uppercase tracking-wider text-stub-navy shadow-stub-glow-amber"
               >
                 Streak ×{STREAK_TARGET}
               </motion.div>
@@ -651,7 +653,7 @@ export default function ChronologyGame({ onExit, start }: { onExit: () => void; 
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
                 transition={reduce ? { duration: MOTION.duration.reduced } : MOTION.spring.settle}
-                className="rounded-stub-pill bg-stub-navy px-4 py-2 text-center font-stub-ui text-[13px] font-semibold text-stub-cream shadow-stub-card-resting"
+                className="app-feedback-banner rounded-stub-pill bg-stub-navy px-4 py-2 text-center font-stub-ui text-[13px] font-semibold text-stub-cream shadow-stub-card-resting"
               >
                 {toast.text}
               </motion.div>
@@ -922,7 +924,6 @@ function ChronoChoiceTray({
     <div
       ref={trayRef}
       className="chrono-hand absolute inset-x-0 bottom-0 z-30"
-      style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
       data-choice-tray
       aria-label="Hidden-year movie choices"
     >
@@ -1038,6 +1039,10 @@ function ChronoResults({
         <p className="mt-3 font-stub-display text-lg font-bold tabular-nums text-stub-navy">
           Final score {score}
         </p>
+        <ResultMeaning
+          direction="Lower is better"
+          detail={`Score ${score} = ${strokes} strokes − ${credits} credits`}
+        />
         <p className="mt-1 font-stub-ui text-sm text-stub-slate tabular-nums">
           {strokes} {strokes === 1 ? 'stroke' : 'strokes'}
           {credits > 0 && ` · ${credits} streak credit${credits === 1 ? '' : 's'}`}
@@ -1056,22 +1061,11 @@ function ChronoResults({
 
         <ShareCopy text={text} analytics={analytics} />
 
-        <button
-          type="button"
-          onClick={onReset}
-          className="mt-3 min-h-12 rounded-stub-pill border-2 border-stub-navy bg-stub-paper px-7 py-3 font-stub-ui text-[15px] font-bold text-stub-navy shadow-stub-card-resting active:scale-95"
-        >
-          {/* Honest replay labels (§7·7c): the daily re-deals the SAME board by
-              design ("the daily is the daily"), so don't promise a new one. */}
-          {practice ? 'New round' : "Replay today's line"}
-        </button>
-        <button
-          type="button"
-          onClick={onMenu}
-          className="mt-3 min-h-12 rounded-stub-pill border-2 border-stub-navy bg-stub-paper px-7 py-3 font-stub-ui text-[15px] font-bold text-stub-navy active:scale-95"
-        >
-          Menu
-        </button>
+        <ResultActions
+          primaryLabel={practice ? 'New round' : "Replay today's line"}
+          onPrimary={onReset}
+          onMenu={onMenu}
+        />
       </motion.div>
     </motion.div>
   )

@@ -92,6 +92,11 @@ export default function App() {
   const chronoChip = useMemo(() => dailyStatus('chronology', todaySeed), [mode, todaySeed])
   const connChip = useMemo(() => dailyStatus('connections', todaySeed), [mode, todaySeed])
   const duelChip = useMemo(() => duelRecord(difficulty), [mode, difficulty])
+  const dailyPassport = [
+    { mode: 'solo', label: 'Puzzle', status: soloChip },
+    { mode: 'chronology', label: 'Chronology', status: chronoChip },
+    { mode: 'connections', label: 'Connections', status: connChip },
+  ] as const
 
   if (mode !== 'menu') {
     return (
@@ -106,7 +111,7 @@ export default function App() {
 
   return (
     <div
-      className="menu-shell relative mx-auto flex h-full w-full flex-col bg-stub-cream"
+      className="app-shell menu-shell relative mx-auto flex h-full w-full flex-col bg-stub-cream"
       style={{
         backgroundImage: 'radial-gradient(rgba(31,58,82,.06) 1px, transparent 1.2px)',
         backgroundSize: '7px 7px',
@@ -116,7 +121,7 @@ export default function App() {
           2026-07-07): the menu no longer opens header-less. Carries the wordmark
           and the rules affordance (the old bottom "How to play" button folds
           into this ?, matching every game screen). */}
-      <header className="menu-header flex items-center justify-between rounded-b-stub-header bg-stub-navy px-5 pb-4 pt-4">
+      <header className="app-shell-header menu-header relative flex items-center justify-between px-5">
         <h1 className="font-stub-display text-2xl font-bold italic tracking-tight text-stub-cream">
           Match Cut
         </h1>
@@ -125,10 +130,11 @@ export default function App() {
           aria-label="How to play"
           data-rules-open
           onClick={() => setShowRules(true)}
-          className="daily-icon-button flex h-8 w-8 items-center justify-center rounded-stub-pill text-[13px] font-extrabold text-stub-cream/80 ring-1 ring-inset ring-stub-slate-light/50 active:scale-90"
+          className="app-help-button daily-icon-button text-[13px] font-extrabold active:scale-90"
         >
           <Icon name="help" size={20} />
         </button>
+        <span className="app-shell-header-tab" aria-hidden="true" />
       </header>
 
       {/* Scroll container: `my-auto` on the inner column centers the cards when
@@ -148,6 +154,7 @@ export default function App() {
           <p className="mt-3 font-stub-ui text-[15px] leading-relaxed text-stub-slate">
             Connect movies by the people who made them. Three fresh dailies, plus the head-to-head cut.
           </p>
+          <DailyPassport entries={dailyPassport} />
           <p className="menu-recommendation mt-4 rounded-stub-panel border border-stub-amber/60 bg-stub-amber/10 px-4 py-3 font-stub-ui text-[14px] leading-snug text-stub-navy">
             <span className="block font-stub-label text-[11px] font-bold uppercase tracking-[0.12em] text-stub-amber">
               Recommended start
@@ -194,7 +201,8 @@ export default function App() {
                 onClick={() => startSolo({ kind: 'practice' })}
                 className="min-h-11 flex-1 rounded-stub-pill border-2 border-stub-navy bg-stub-paper px-3 py-2 font-stub-label text-[11px] font-bold uppercase tracking-[0.08em] text-stub-navy transition-colors active:bg-stub-navy/10"
               >
-                The original hand
+                <span className="block">Learn the links</span>
+                <span className="menu-practice-purpose">fixed warm-up hand</span>
               </button>
             </div>
           </article>
@@ -232,8 +240,8 @@ export default function App() {
                     className="min-h-11 flex-1 rounded-stub-pill border-2 border-stub-navy bg-stub-paper px-2 py-1.5 font-stub-label text-[11px] font-bold uppercase tracking-[0.08em] text-stub-navy transition-colors active:bg-stub-navy/10"
                   >
                     {p.label}
-                    <span className="block text-[10px] font-semibold normal-case tracking-normal text-stub-slate">
-                      {p.sub}
+                    <span className="menu-practice-purpose">
+                      {p.id === 'easy' ? 'train range' : 'train close calls'}
                     </span>
                   </button>
                 ))}
@@ -271,7 +279,8 @@ export default function App() {
                 onClick={() => startConnections({ kind: 'practice' })}
                 className="min-h-11 flex-1 rounded-stub-pill border-2 border-stub-navy bg-stub-paper px-3 py-2 font-stub-label text-[11px] font-bold uppercase tracking-[0.08em] text-stub-navy transition-colors active:bg-stub-navy/10"
               >
-                Random grid
+                <span className="block">Train grouping</span>
+                <span className="menu-practice-purpose">fresh random grid</span>
               </button>
             </div>
           </article>
@@ -338,6 +347,39 @@ export default function App() {
         {showIntro && <IntroOverlay onDismiss={dismissIntro} />}
       </AnimatePresence>
     </div>
+  )
+}
+
+function DailyPassport({
+  entries,
+}: {
+  entries: readonly { mode: string; label: string; status: DailyStatus }[]
+}) {
+  const stamped = entries.filter((entry) => entry.status.playedToday).length
+  return (
+    <section
+      className="daily-passport"
+      aria-label={`Daily passport: ${stamped} of ${entries.length} daily modes completed today`}
+      data-daily-passport
+    >
+      <div className="daily-passport-heading">
+        <span>Daily passport</span>
+        <span className="tabular-nums">{stamped}/{entries.length} stamped</span>
+      </div>
+      <div className="daily-passport-stamps">
+        {entries.map((entry) => (
+          <span
+            key={entry.mode}
+            className={`daily-passport-stamp ${entry.status.playedToday ? 'daily-passport-stamp--done' : ''}`}
+            data-passport-mode={entry.mode}
+          >
+            <span aria-hidden="true">{entry.status.playedToday ? '✓' : '·'}</span>
+            {entry.label}
+          </span>
+        ))}
+      </div>
+      <p>Stored on this device only. Practice never stamps the card.</p>
+    </section>
   )
 }
 
@@ -408,7 +450,7 @@ function IntroOverlay({ onDismiss }: { onDismiss: () => void }) {
 function ModeLoading() {
   const reduce = useReducedMotion()
   return (
-    <div className="daily-mode-shell relative mx-auto flex h-full w-full items-center justify-center bg-stub-cream px-8">
+    <div className="app-shell daily-mode-shell relative mx-auto flex h-full w-full items-center justify-center bg-stub-cream px-8">
       <motion.div
         role="status"
         aria-live="polite"

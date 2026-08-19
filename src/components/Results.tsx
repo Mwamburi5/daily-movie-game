@@ -5,6 +5,8 @@ import { matchCutShare } from '../lib/share.ts'
 import type { EventData } from '../lib/analytics.ts'
 import type { DailyFinish } from '../lib/progress.ts'
 import ShareCopy from './ShareCopy.tsx'
+import ResultActions from './ResultActions.tsx'
+import ResultMeaning from './ResultMeaning.tsx'
 
 interface SolutionStep {
   title: string
@@ -108,6 +110,11 @@ export default function Results({
           </p>
         )}
 
+        <ResultMeaning
+          direction={status === 'won' ? 'Lower is better' : 'Round ended'}
+          detail={status === 'won' ? `Score ${score} vs par ${par}` : 'No legal connection remained'}
+        />
+
         <p className="mt-1 font-stub-ui text-sm text-stub-slate">
           {flips} {flips === 1 ? 'flip' : 'flips'} · {invalids} invalid{' '}
           {invalids === 1 ? 'play' : 'plays'}
@@ -131,16 +138,6 @@ export default function Results({
 
         <ShareCopy text={text} analytics={analytics} />
 
-        <button
-          type="button"
-          onClick={onReset}
-          className="mt-3 min-h-12 rounded-stub-pill bg-stub-amber px-7 py-3 font-stub-ui text-[15px] font-bold text-stub-navy shadow-stub-card-resting active:scale-95"
-        >
-          {/* Honest replay labels (§7·7c): both Solo kinds replay the SAME board
-              (daily = today's deal, practice = the fixed original hand). */}
-          {practice ? 'Replay this hand' : "Replay today's hand"}
-        </button>
-
         {status === 'stuck' && !showSolution && (
           <button
             type="button"
@@ -151,13 +148,11 @@ export default function Results({
           </button>
         )}
 
-        <button
-          type="button"
-          onClick={onMenu}
-          className="mt-3 min-h-12 rounded-stub-pill border-2 border-stub-navy bg-stub-paper px-7 py-3 font-stub-ui text-[15px] font-bold text-stub-navy active:scale-95"
-        >
-          Menu
-        </button>
+        <ResultActions
+          primaryLabel={practice ? 'Replay this hand' : "Replay today's hand"}
+          onPrimary={onReset}
+          onMenu={onMenu}
+        />
 
         {showSolution && (
           <div className="mt-5 max-h-[300px] w-full max-w-[300px] overflow-y-auto rounded-stub-panel bg-stub-paper px-5 py-4 text-left shadow-stub-card-resting">

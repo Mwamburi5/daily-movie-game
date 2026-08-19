@@ -35,6 +35,8 @@ import { useDialogA11y } from './components/useDialogA11y.ts'
 import DailyModeHeader from './components/DailyModeHeader.tsx'
 import HowToPlay from './components/HowToPlay.tsx'
 import Icon from './components/Icon.tsx'
+import ResultActions from './components/ResultActions.tsx'
+import ResultMeaning from './components/ResultMeaning.tsx'
 
 // How a round was started (chosen at the menu, App.tsx). The DAILY rides today's
 // baked grid keyed to the player's local calendar date, so everyone sees the same
@@ -309,17 +311,21 @@ export default function ConnectionsGame({ onExit, start }: { onExit: () => void;
         backgroundSize: '7px 7px',
       }}
     >
-      <div className="daily-mode-shell relative mx-auto flex h-full w-full flex-col" data-mode-stage="connections">
+      <div className="app-shell daily-mode-shell relative mx-auto flex h-full w-full flex-col" data-mode-stage="connections">
         {/* 7a navy Stub header — same shape as Chronology's: back, title, mode
             eyebrow; right side carries the mistakes tally as dots. */}
         <DailyModeHeader
           title="Connections"
           eyebrow={start.kind === 'daily' ? 'daily' : 'practice'}
           onBack={onExit}
+          className="daily-mode-header--connections"
           right={
             <div className="flex items-center gap-2">
             <div className="text-right">
-              <div className="font-stub-label text-[10px] uppercase tracking-wide text-stub-cream/85">Mistakes left</div>
+              <div className="app-counter-label text-stub-cream/85">
+                <span className="connections-counter-full">Mistakes left</span>
+                <span className="connections-counter-narrow">Misses</span>
+              </div>
               <div className="mt-1 flex items-center justify-end gap-1" aria-label={`${mistakesLeft} mistakes left`}>
                 {Array.from({ length: MAX_MISTAKES }).map((_, i) => (
                   <span
@@ -344,7 +350,7 @@ export default function ConnectionsGame({ onExit, start }: { onExit: () => void;
               aria-label="How to play"
               data-rules-open
               onClick={() => setShowRules(true)}
-              className="daily-icon-button daily-icon-md flex h-11 w-9 items-center justify-center rounded-stub-pill text-[12px] font-extrabold text-stub-cream/80 ring-1 ring-inset ring-stub-slate-light/50 active:scale-90"
+              className="app-help-button daily-icon-button daily-icon-md text-[12px] font-extrabold active:scale-90"
             >
               <Icon name="help" size={20} />
             </button>
@@ -355,8 +361,18 @@ export default function ConnectionsGame({ onExit, start }: { onExit: () => void;
         {/* The sorting board is one centered object: coach line, ticket field,
             selection readout, then controls. It scales as a unit instead of
             leaving an accidental cream void below the first four rows. */}
-        <div className="connections-board flex min-h-0 flex-1 overflow-y-auto px-3 py-4">
-          <div className="connections-workspace my-auto flex w-full flex-col items-center gap-2.5">
+        <div className="connections-board relative flex min-h-0 flex-1 overflow-y-auto px-3 py-4">
+          <aside className="connections-desktop-marquee connections-desktop-marquee--left" aria-hidden="true">
+            <span>Sorting room</span>
+            <strong>Four titles</strong>
+            <em>One shared credit</em>
+          </aside>
+          <aside className="connections-desktop-marquee connections-desktop-marquee--right" aria-hidden="true">
+            <span>Today&apos;s progress</span>
+            <strong>{solved.length} of 4 groups</strong>
+            <em>{mistakesLeft} mistakes left</em>
+          </aside>
+          <div className="connections-workspace mx-auto my-auto flex w-full flex-col items-center gap-2.5">
             <div className="connections-coach w-full px-1">
               <div className="flex items-center justify-between gap-3">
                 <p className="font-stub-label text-[9px] font-bold uppercase tracking-[0.16em] text-stub-amber">
@@ -396,7 +412,7 @@ export default function ConnectionsGame({ onExit, start }: { onExit: () => void;
               </div>
             </div>
 
-            <section className="connections-stage relative w-full overflow-hidden rounded-[18px] border-2 border-stub-navy bg-stub-paper p-2 shadow-stub-card-resting" aria-label="Connections sorting board">
+            <section className="app-stage-frame connections-stage relative w-full overflow-hidden bg-stub-paper p-2 shadow-stub-card-resting" aria-label="Connections sorting board">
               <div className="connections-stage-texture pointer-events-none absolute inset-0" />
               <div className="connections-progress relative mb-2 grid grid-cols-4 gap-1" aria-hidden="true">
                 {Array.from({ length: 4 }).map((_, i) => (
@@ -521,7 +537,7 @@ export default function ConnectionsGame({ onExit, start }: { onExit: () => void;
                           </span>
                         )}
                         <span
-                          className="font-stub-display uppercase"
+                          className="connections-tile-title font-stub-display uppercase"
                           lang="en"
                           style={{
                             fontSize: `clamp(${tileFontSize(title)}px, 1.2vw, ${tileFontSize(title) + 4}px)`,
@@ -553,7 +569,7 @@ export default function ConnectionsGame({ onExit, start }: { onExit: () => void;
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0 }}
                     transition={reduce ? { duration: MOTION.duration.reduced } : MOTION.spring.settle}
-                    className={`rounded-stub-pill border-2 px-4 py-1.5 font-stub-ui text-[12px] font-semibold shadow-stub-card-resting ${
+                    className={`app-feedback-banner rounded-stub-pill border-2 px-4 py-1.5 font-stub-ui text-[12px] font-semibold shadow-stub-card-resting ${
                       toast.tone === 'miss'
                         ? 'border-stub-red bg-stub-red text-stub-cream'
                         : toast.tone === 'near'
@@ -585,7 +601,7 @@ export default function ConnectionsGame({ onExit, start }: { onExit: () => void;
             </div>
 
             {status === 'playing' && (
-              <div className="connections-actions flex w-full flex-none items-center gap-2 pb-[max(8px,env(safe-area-inset-bottom))]">
+              <div className="connections-actions flex w-full flex-none items-center gap-2 pb-2">
             <button
               type="button"
               data-action="shuffle"
@@ -766,6 +782,10 @@ function ConnectionsResults({
                   : `${mistakes} mistake${mistakes === 1 ? '' : 's'} on the way.`
                 : 'The remaining groups are waiting on the board.'}
             </p>
+            <ResultMeaning
+              direction="Fewer mistakes is better"
+              detail={won ? `${mistakes} of ${MAX_MISTAKES} used` : `${MAX_MISTAKES} of ${MAX_MISTAKES} used`}
+            />
 
             {daily && (
               <p className="mt-2 font-stub-label text-[10px] font-semibold uppercase tracking-wider text-stub-slate tabular-nums" data-daily-meta>
@@ -801,24 +821,11 @@ function ConnectionsResults({
               </button>
             )}
 
-            <div className="mt-3 flex w-full items-center justify-center gap-2">
-              <button
-                type="button"
-                onClick={onReset}
-                className="min-h-11 flex-1 rounded-stub-pill border-2 border-stub-navy bg-stub-paper px-4 py-2 font-stub-ui text-[13px] font-bold text-stub-navy shadow-stub-card-resting active:scale-95"
-              >
-                {/* Honest replay labels (§7·7c): the daily re-deals the SAME grid by
-                    design; only practice deals a fresh one. */}
-                {practice ? 'New grid' : "Replay today's grid"}
-              </button>
-              <button
-                type="button"
-                onClick={onMenu}
-                className="min-h-11 rounded-stub-pill border-2 border-stub-navy bg-stub-paper px-5 py-2 font-stub-ui text-[13px] font-bold text-stub-navy active:scale-95"
-              >
-                Menu
-              </button>
-            </div>
+            <ResultActions
+              primaryLabel={practice ? 'New grid' : "Replay today's grid"}
+              onPrimary={onReset}
+              onMenu={onMenu}
+            />
           </div>
         </div>
       </motion.div>

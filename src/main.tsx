@@ -2,6 +2,9 @@ import { StrictMode, type ComponentType } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.tsx'
+import { installAnalytics } from './lib/analytics.ts'
+
+installAnalytics()
 
 if (import.meta.env.DEV) {
   // Keep heavyweight pool assertions useful in development without making
