@@ -1,19 +1,19 @@
-import { lazy, Suspense, useMemo, useState } from 'react'
+import { lazy, Suspense, useMemo, useRef, useState } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import type { SoloStart } from './SoloGame.tsx'
 import type { ChronoStart } from './ChronologyGame.tsx'
 import type { ConnectionsStart } from './ConnectionsGame.tsx'
 import HowToPlay from './components/HowToPlay.tsx'
 import Icon from './components/Icon.tsx'
-import { useDialogA11y } from './components/useDialogA11y.ts'
+import Onboarding from './components/Onboarding.tsx'
 import { type Difficulty, DIFFICULTIES, DIFFICULTY_META } from './lib/difficulty.ts'
 import { localDateSeed } from './lib/daily.ts'
 import { MOTION } from './lib/motion.ts'
 import {
   dailyStatus,
   duelRecord,
-  hasSeenIntro,
-  markIntroSeen,
+  hasSeenOnboarding,
+  markOnboardingSeen,
   lastDifficulty,
   recordDifficultyPick,
   type DailyStatus,
@@ -60,13 +60,18 @@ export default function App() {
   const [connStart, setConnStart] = useState<ConnectionsStart>({ kind: 'daily' })
   const [soloStart, setSoloStart] = useState<SoloStart>({ kind: 'daily' })
   const [showRules, setShowRules] = useState(false)
-  // First-run framing: shown once per device, before the menu makes sense.
-  // Lazy init reads the meta flag a single time (persistence guardrail: display
-  // only). Dismiss persists so it never nags a returning player.
-  const [showIntro, setShowIntro] = useState(() => !hasSeenIntro())
-  const dismissIntro = () => {
-    markIntroSeen()
-    setShowIntro(false)
+  const rulesButtonRef = useRef<HTMLButtonElement>(null)
+  // First-run onboarding: the four static screens, shown once per device before
+  // the menu makes sense. Lazy init reads the meta flag a single time
+  // (persistence guardrail: display only). Dismissing persists, so it never nags
+  // a returning player — and the help sheet can still replay it on demand.
+  const [showOnboarding, setShowOnboarding] = useState(() => !hasSeenOnboarding())
+  const dismissOnboarding = () => {
+    markOnboardingSeen()
+    setShowOnboarding(false)
+    // The first-run flow has no surviving trigger, and replay unmounts its help-
+    // sheet trigger. Give both exits one deterministic destination on the menu.
+    window.requestAnimationFrame(() => rulesButtonRef.current?.focus())
   }
 
   const startChronology = (start: ChronoStart) => {
@@ -126,6 +131,7 @@ export default function App() {
           Match Cut
         </h1>
         <button
+          ref={rulesButtonRef}
           type="button"
           aria-label="How to play"
           data-rules-open
@@ -143,7 +149,7 @@ export default function App() {
           UNREACHABLY (flex centering overflows both ends; the top half can
           never be scrolled to). */}
       <div className="menu-scroll flex min-h-0 w-full flex-1 flex-col items-center overflow-y-auto px-8">
-        <main className="menu-workspace my-auto flex w-full flex-col items-center gap-8 py-6">
+        <main className="menu-workspace my-auto flex w-full flex-col items-center gap-6 py-5">
         <section className="menu-intro text-center" aria-labelledby="menu-program-title">
           <p className="font-stub-label text-[11px] font-bold uppercase tracking-[0.16em] text-stub-amber">
             Tonight&apos;s program
@@ -343,8 +349,17 @@ export default function App() {
         </main>
       </div>
       <AnimatePresence>
-        {showRules && <HowToPlay context="overview" onClose={() => setShowRules(false)} />}
-        {showIntro && <IntroOverlay onDismiss={dismissIntro} />}
+        {showRules && (
+          <HowToPlay
+            context="overview"
+            onClose={() => setShowRules(false)}
+            onReplayIntro={() => {
+              setShowRules(false)
+              setShowOnboarding(true)
+            }}
+          />
+        )}
+        {showOnboarding && <Onboarding onDismiss={dismissOnboarding} />}
       </AnimatePresence>
     </div>
   )
@@ -356,15 +371,20 @@ function DailyPassport({
   entries: readonly { mode: string; label: string; status: DailyStatus }[]
 }) {
   const stamped = entries.filter((entry) => entry.status.playedToday).length
+  const complete = stamped === entries.length
   return (
     <section
-      className="daily-passport"
-      aria-label={`Daily passport: ${stamped} of ${entries.length} daily modes completed today`}
+      className={`daily-passport ${complete ? 'daily-passport--complete' : ''}`}
+      aria-label={
+        complete
+          ? `Triple Feature complete: all ${entries.length} daily modes completed today`
+          : `Daily passport: ${stamped} of ${entries.length} daily modes completed today`
+      }
       data-daily-passport
     >
       <div className="daily-passport-heading">
-        <span>Daily passport</span>
-        <span className="tabular-nums">{stamped}/{entries.length} stamped</span>
+        <span>{complete ? 'Triple Feature' : 'Daily passport'}</span>
+        <span className="tabular-nums">{complete ? 'complete ✓' : `${stamped}/${entries.length} stamped`}</span>
       </div>
       <div className="daily-passport-stamps">
         {entries.map((entry) => (
@@ -378,69 +398,12 @@ function DailyPassport({
           </span>
         ))}
       </div>
-      <p>Stored on this device only. Practice never stamps the card.</p>
+      <p>
+        {complete
+          ? 'Tonight’s program complete. Come back tomorrow for three fresh stubs.'
+          : 'Stored on this device only. Practice never stamps the card.'}
+      </p>
     </section>
-  )
-}
-
-// One-shot first-run framing (Buri: "minimal framing now", 2026-07-08). NOT a
-// tutorial funnel — a single welcome beat that answers "what is this?" before the
-// four cards land, then never returns (gated by the seenIntro meta flag).
-// Composed from the menu's own Stub tokens: navy hero panel, amber primary, cream
-// text — the cohesion ruling (EXTRAPOLATED; no reference comp). Tapping the scrim
-// or Play both dismiss; the card stops propagation so an inside tap doesn't.
-function IntroOverlay({ onDismiss }: { onDismiss: () => void }) {
-  const reduce = useReducedMotion()
-  // Dialog contract (§7·7b a11y): focus enters, Tab cycles inside, Esc dismisses.
-  const dialogRef = useDialogA11y(onDismiss)
-  return (
-    <motion.div
-      ref={dialogRef}
-      role="dialog"
-      aria-modal="true"
-      aria-label="Welcome to Match Cut"
-      tabIndex={-1}
-      className="absolute inset-0 z-[130] flex items-center justify-center bg-stub-navy/40 px-8 backdrop-blur-sm"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: reduce ? MOTION.duration.reduced : MOTION.duration.reveal }}
-      data-intro
-      onClick={onDismiss}
-    >
-      <motion.div
-        className="w-full max-w-[320px] rounded-stub-panel bg-stub-navy px-7 py-8 text-center shadow-stub-card-resting"
-        initial={{ opacity: 0, y: reduce ? 0 : 16, scale: reduce ? 1 : 0.96 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        exit={{ opacity: 0, y: reduce ? 0 : 16, scale: reduce ? 1 : 0.96 }}
-        transition={reduce ? { duration: MOTION.duration.reduced } : MOTION.spring.overlay}
-        onClick={(e) => e.stopPropagation()}
-      >
-        <p className="font-stub-label text-[10px] font-bold uppercase tracking-[0.18em] text-stub-amber">
-          Welcome to
-        </p>
-        <h2 className="mt-1 font-stub-display text-3xl font-bold italic tracking-tight text-stub-cream">
-          Match Cut
-        </h2>
-        <p className="mt-4 font-stub-ui text-[13.5px] leading-relaxed text-stub-cream/80">
-          Movies connect through the people who make them — the actors, directors, and series they share.
-        </p>
-        <p className="mt-2.5 font-stub-ui text-[13.5px] leading-relaxed text-stub-cream/80">
-          Four ways to play with those links. Fresh puzzles daily.
-        </p>
-        <button
-          type="button"
-          data-intro-dismiss
-          onClick={onDismiss}
-          className="mt-6 w-full rounded-stub-pill bg-stub-amber px-6 py-3 font-stub-label text-[13px] font-bold uppercase tracking-wider text-stub-navy shadow-stub-card-resting active:scale-[0.98]"
-        >
-          Play
-        </button>
-        <p className="mt-3 font-stub-ui text-[11px] text-stub-cream/45">
-          New here? Tap ? any time for the full rules.
-        </p>
-      </motion.div>
-    </motion.div>
   )
 }
 

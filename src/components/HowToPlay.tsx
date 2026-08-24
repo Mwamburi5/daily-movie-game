@@ -228,9 +228,15 @@ function Section({ section }: { section: HelpSection }) {
 export default function HowToPlay({
   context,
   onClose,
+  onReplayIntro,
 }: {
   context: HelpContext
   onClose: () => void
+  // Only the overview sheet passes this — the one place a player can ask for
+  // the first-run onboarding back. A plain text link, deliberately NOT an
+  // <article> or a second expand control: the overview sheet's shape (four
+  // cards, no expander) is a tested contract.
+  onReplayIntro?: () => void
 }) {
   const reduce = useReducedMotion()
   const [expanded, setExpanded] = useState(false)
@@ -320,6 +326,19 @@ export default function HowToPlay({
             </>
           )}
 
+          {context === 'overview' && onReplayIntro && (
+            <p className="mt-4 text-center">
+              <button
+                type="button"
+                data-replay-intro
+                onClick={onReplayIntro}
+                className="min-h-11 px-2 font-stub-ui text-[13px] font-semibold text-stub-slate underline underline-offset-4 active:text-stub-navy"
+              >
+                Watch the intro again
+              </button>
+            </p>
+          )}
+
           <section className="mt-5 border-t border-stub-slate-light/40 pt-4" data-tmdb-attribution>
             <h3 className="font-stub-label text-[11px] font-bold uppercase tracking-wider text-stub-slate">About the data</h3>
             <img src="/tmdb-logo.svg" alt="TMDB" className="mb-2 mt-2 h-3 w-auto" />
@@ -327,6 +346,7 @@ export default function HowToPlay({
               This product uses TMDB and the TMDB APIs but is not endorsed, certified, or otherwise approved by TMDB.
             </p>
           </section>
+
         </div>
 
         <footer className="flex-none border-t border-stub-navy/15 bg-stub-cream px-5 py-3 sm:px-7" data-rules-footer>

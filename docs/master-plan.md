@@ -963,6 +963,18 @@ what's ready-to-review per sitting.
       checks. Evidence: `docs/goal-3-mode-specific-qa.md`. Work remains
       uncommitted, unpushed, and undeployed; attended human/device approval
       stays in the launch gate.
+- [x] **PRE-LAUNCH POLISH · first-run welcome + menu follow-through — LOCALLY
+      VERIFIED 2026-08-24:** the old welcome overlay is now a four-screen,
+      static first-run introduction with mode-specific GOLF labels, replayable
+      from How to play. Dismissal returns keyboard focus to the menu help
+      button; the replay link precedes the TMDB attribution; and the 3/3 Daily
+      Passport resolves into a distinct Triple Feature completion state. Menu
+      spacing and label contrast were tightened without changing rules,
+      scoring, deals, pools, persistence schema, or sharing. Local gates: build
+      + 97.36 KiB menu-shell budget, security 199/26, Duel 64/64, Solo 8/8,
+      Chronology 42/42, Connections 14/14, browser 25/25, and diff checks. Work
+      remains uncommitted, unpushed, and undeployed; attended accessibility,
+      real-device, production, and indexing gates remain separate.
 - [x] **PRE-LAUNCH POLISH · Goal 4 security hardening — LOCALLY + PREVIEW
       VERIFIED; ATTENDED ACCOUNTS OPEN 2026-08-18:** `vercel.json` now carries a
       restrictive CSP and defense-in-depth headers, mirrored into Vite preview

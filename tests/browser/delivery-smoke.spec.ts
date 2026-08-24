@@ -473,6 +473,63 @@ test('direct development mode entry still reaches Chronology', async ({ page, br
   await expect(page.getByRole('button', { name: 'Back to menu' })).toBeVisible()
 })
 
+test('first-run onboarding runs once, then replays only from the overview help', async ({ page, browserFaults }) => {
+  void browserFaults
+  await page.goto('/')
+
+  const onboarding = page.getByRole('dialog', { name: 'Welcome to Match Cut' })
+  const dismiss = onboarding.locator('[data-intro-dismiss]')
+  const advance = onboarding.getByRole('button', { name: 'Next' })
+  await expect(onboarding).toBeVisible()
+  await expect(onboarding).toBeFocused()
+  await expect(onboarding.locator('[data-onboarding-dot]')).toHaveCount(4)
+  // Exactly one dismiss control per screen keeps the shared openMenu helper
+  // (and Playwright strict mode) honest.
+  await expect(dismiss).toHaveCount(1)
+  await expect(dismiss).toHaveText('Skip')
+  await expect(onboarding.getByRole('heading', { level: 2 })).toHaveText(
+    'Movies connect through the people who make them.',
+  )
+
+  // Landscape squeeze: the column must shrink and scroll internally rather than
+  // push the CTA somewhere nothing can scroll to.
+  await page.setViewportSize({ width: 667, height: 375 })
+  await expect(advance).toBeInViewport()
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true)
+  await page.setViewportSize({ width: 390, height: 844 })
+
+  await advance.click()
+  await expect(onboarding.getByRole('heading', { level: 2 })).toHaveText('Three fresh puzzles every day.')
+  await advance.click()
+  await expect(onboarding.getByRole('heading', { level: 2 })).toHaveText(/Race to 20/)
+  await advance.click()
+  await expect(onboarding.getByRole('heading', { level: 2 })).toHaveText(/Triple Feature/)
+  await expect(advance).toHaveCount(0)
+  await expect(dismiss).toHaveCount(1)
+  await expect(dismiss).toHaveText(/Let.s play!/)
+
+  await dismiss.click()
+  await expect(onboarding).toBeHidden()
+  await expect(page.locator('[data-mode="solo"]')).toBeVisible()
+  await expect(page.locator('[data-rules-open]')).toBeFocused()
+
+  await page.reload()
+  await expect(page.locator('[data-mode="solo"]')).toBeVisible()
+  await expect(page.locator('[data-onboarding]')).toHaveCount(0)
+
+  await page.locator('[data-rules-open]').click()
+  const rules = page.getByRole('dialog', { name: 'How to play all modes' })
+  await expect(rules).toBeVisible()
+  await rules.getByRole('button', { name: 'Watch the intro again' }).click()
+  await expect(rules).toBeHidden()
+  await expect(onboarding).toBeVisible()
+  await expect(onboarding).toBeFocused()
+  await dismiss.click()
+  await expect(onboarding).toBeHidden()
+  await expect(page.locator('[data-mode="solo"]')).toBeVisible()
+  await expect(page.locator('[data-rules-open]')).toBeFocused()
+})
+
 test('overview help stays brief and keeps its primary action visible on a compact phone', async ({ page, browserFaults }) => {
   void browserFaults
   await page.setViewportSize({ width: 375, height: 667 })
@@ -485,6 +542,14 @@ test('overview help stays brief and keeps its primary action visible on a compac
   await expect(dialog.locator('[data-rules-expand]')).toHaveCount(0)
   await expect(dialog.locator('[data-rules-primary]')).toBeVisible()
   await expect(dialog.locator('[data-rules-footer]')).toBeInViewport()
+  const replay = dialog.locator('[data-replay-intro]')
+  const attribution = dialog.locator('[data-tmdb-attribution]')
+  await expect(replay).toHaveCount(1)
+  await expect(attribution).toHaveCount(1)
+  expect(await replay.evaluate((node) => {
+    const section = document.querySelector('[data-tmdb-attribution]')
+    return section !== null && Boolean(node.compareDocumentPosition(section) & Node.DOCUMENT_POSITION_FOLLOWING)
+  })).toBe(true)
   await expect(dialog).toBeFocused()
   await page.keyboard.press('Shift+Tab')
   await expect(dialog.locator('[data-rules-primary]')).toBeFocused()

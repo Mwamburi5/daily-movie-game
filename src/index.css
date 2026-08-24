@@ -255,6 +255,14 @@ body {
   background: rgba(207, 149, 42, .14);
   color: var(--color-stub-navy);
 }
+.daily-passport--complete {
+  border-color: var(--color-stub-amber);
+  background: rgba(207, 149, 42, .12);
+  box-shadow: 0 0 0 3px rgba(207, 149, 42, .12), 0 3px 8px rgba(31, 58, 82, .09);
+}
+.daily-passport--complete .daily-passport-heading {
+  color: var(--color-stub-navy);
+}
 .daily-passport > p {
   margin-top: 7px;
   font-family: var(--font-stub-ui);

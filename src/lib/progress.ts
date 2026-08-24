@@ -40,13 +40,18 @@ interface ProgressV1 {
   chronology: DailyMeta
   connections: DailyMeta
   duel: Record<Difficulty, DuelMeta>
-  // First-run framing dismissed. META ONLY — a one-shot UI gate (App.tsx), never
-  // read by a rule. Optional/additive: a pre-intro blob lacks it → treated as
-  // unseen (shows once, then persists). Same additive pattern as `connections`.
+  // RETIRED 2026-08, ignored. The one-card welcome overlay this gated is gone;
+  // the four-screen onboarding below carries its own flag. Kept on the interface
+  // so an existing blob still parses (and still round-trips) — never read.
   seenIntro?: boolean
   // Duel drag-to-play nudge dismissed (feedback batch 1: "drag it to play took
-  // me a sec"). META ONLY, same one-shot additive pattern as seenIntro.
+  // me a sec"). META ONLY, one-shot additive UI gate.
   seenDragPlay?: boolean
+  // First-run onboarding completed. META ONLY — a one-shot UI gate (App.tsx),
+  // never read by a rule. Optional/additive: a blob without it reads as unseen,
+  // so every device (including one that only ever saw the retired welcome card)
+  // gets the new flow exactly once. Same additive pattern as `connections`.
+  seenOnboarding?: boolean
   // Last difficulty picked on the menu (§7·7c "difficulty reset on load").
   // META ONLY — a picker default, never a rule input: App still hands the value
   // to DuelGame as a prop exactly as if the chip had been tapped. Additive:
@@ -68,8 +73,8 @@ const fresh = (): ProgressV1 => ({
     feature: { plays: 0, wins: 0 },
     directors: { plays: 0, wins: 0 },
   },
-  seenIntro: false,
   seenDragPlay: false,
+  seenOnboarding: false,
 })
 
 // localStorage can be absent or throwing (Safari private mode, storage full).
@@ -182,20 +187,21 @@ export function duelRecord(difficulty: Difficulty): DuelMeta {
   return loadProgress().duel[difficulty] ?? { plays: 0, wins: 0 }
 }
 
-// ── first-run framing ─────────────────────────────────────────────────────────
-// A one-shot welcome overlay (App.tsx) — Buri's "minimal framing" call
-// (2026-07-08), NOT a tutorial funnel. Meta-state only: a UI gate, never a rule
-// input. A blob without the flag reads as unseen, so the intro shows exactly once
-// per device and then persists.
+// ── first-run onboarding ──────────────────────────────────────────────────────
+// The one-time four-screen flow (App.tsx → Onboarding.tsx), which replaced the
+// 2026-07-08 welcome card. Meta-state only: a UI gate, never a rule input. A
+// blob without the flag reads as unseen, so the flow auto-runs exactly once per
+// device and then persists; the help sheet can replay it on demand without
+// clearing the flag (a replay is not a first run).
 
-export function hasSeenIntro(): boolean {
-  return loadProgress().seenIntro === true
+export function hasSeenOnboarding(): boolean {
+  return loadProgress().seenOnboarding === true
 }
 
-export function markIntroSeen(): void {
+export function markOnboardingSeen(): void {
   const p = loadProgress()
-  if (p.seenIntro) return
-  p.seenIntro = true
+  if (p.seenOnboarding) return
+  p.seenOnboarding = true
   save(p)
 }
 
