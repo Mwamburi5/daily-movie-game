@@ -9,6 +9,7 @@ import {
   MELD_POINTS_PER_CARD,
   TARGET_SCORE,
   TIER_POINTS,
+  WILD_IDS,
   WILD_MOVIES,
   bestMeld,
   canLayOff,
@@ -16,6 +17,7 @@ import {
   cpuTossOrKeep,
   creditNames,
   deal,
+  forcedWildDraw,
   isValidMeld,
   isWild,
   ladderPtsPerCard,
@@ -46,11 +48,12 @@ import {
 } from './lib/difficulty.ts'
 import { hasSeenDragPlay, markDragPlaySeen, recordDuelFinish, type DuelMeta } from './lib/progress.ts'
 import { track } from './lib/analytics.ts'
+import { useJourneyAnalytics } from './lib/journeyAnalytics.ts'
 
-// Resolve a card id to its Movie — wild or canonical (the deck holds 3 wilds).
+// Resolve a card id to its Movie — wild or canonical.
 const mv = (id: string): Movie => wildMovie(id) ?? movieById.get(id)!
 
-// Deal a duel, then splice the 3 wilds into the DRAW deck only (never the opening
+// Deal a duel, then splice all wilds into the DRAW deck only (never the opening
 // piles/hands) so they're drawn naturally — mirrors the sim's playGame seeding.
 // d.deck[0] becomes the second Double Feature pile, so wilds go after it.
 function dealDuel(): Deal {
@@ -94,6 +97,7 @@ import { matchCutShare } from './lib/share.ts'
 
 type DuelStatus = 'playerTurn' | 'cpuTurn' | 'recastOffer' | 'over'
 type EndReason = 'playerOut' | 'cpuOut' | 'stalemate' | 'target'
+type E2EDuelFixture = 'ordinary-draw' | 'no-play-draw' | 'one-wild-draw' | 'multi-wild-draw' | 'take-ready'
 
 interface Tokens {
   finalCut: boolean
@@ -190,6 +194,7 @@ export default function DuelGame({
   // Coerced to a plain boolean: the forged Stub components (IdleCue,
   // PlayBanner, ScoreRace…) take `reduce: boolean`, not framer's `| null`.
   const reduce = useReducedMotion() ?? false
+  const journey = useJourneyAnalytics({ mode: 'duel', difficulty })
   // 7e compact threshold: the SE class (≤700px tall) gets the one-row header
   // and ticket-strip booth; taller phones get the full 7a treatment. One JS
   // flag (not CSS hiding) because TazCorner's pips carry layoutId={id} —
@@ -237,8 +242,8 @@ export default function DuelGame({
   const [passStreak, setPassStreak] = useState(0)
   // Card just drawn, awaiting the keep / toss / play decision
   const [pendingDraw, setPendingDraw] = useState<string | null>(null)
-  // Draw-3-keep-1: the 3 revealed cards awaiting the player's pick (null = not choosing).
-  // The 2 not kept are burned (out of play, invisible per decision D1).
+  // Draw-3: the revealed cards awaiting the player's pick (null = not choosing).
+  // Normally one is kept. If wilds appear, every wild is kept and only reals burn.
   const [drawChoice, setDrawChoice] = useState<string[] | null>(null)
   const [playerTokens, setPlayerTokens] = useState<Tokens>({ finalCut: true, recast: true })
   const [cpuTokens, setCpuTokens] = useState<Tokens>({ finalCut: true, recast: true })
@@ -289,7 +294,7 @@ export default function DuelGame({
   const meldSeq = useRef(0)
   // Guards a recast offer so a held CPU play resolves at most once. A rapid
   // double-tap of Allow/Recast would otherwise re-enter the resolver from a
-  // stale closure and append the same card twice (89→90, a conservation break).
+  // stale closure and append the same card twice (a conservation break).
   const resolvingOffer = useRef(false)
 
   // The LINKING top of each Double Feature pile — skips wilds (transparent on a
@@ -305,6 +310,13 @@ export default function DuelGame({
   const raisedMovie = raisedId !== null ? mv(raisedId)! : null
   const playerHandMovies = playerHand.map((id) => mv(id)!)
   const handHasMeld = bestMeld(playerHandMovies) !== null
+  const playerHasImmediateAction =
+    handHasMeld ||
+    playerHandMovies.some((card) =>
+      isWild(card.id) ||
+      tops.some((top) => sharedPeople(top, card).length > 0) ||
+      melds.some((meld) => canLayOff(card, meld)),
+    )
   // Rummy take-to-meld: a pile top the player may lift to complete a meld the
   // hand can't bank alone (purposeful take only — no free hoarding). Blocked when
   // a wild covers the top, or it'd empty the last pile with no deck to reseed.
@@ -422,6 +434,7 @@ export default function DuelGame({
 
   const flipCard = (id: string) => {
     if (gameOver) return
+    journey.action('flip', true)
     setFaceUp((prev) => {
       const next = new Set(prev)
       if (next.has(id)) next.delete(id)
@@ -514,11 +527,14 @@ export default function DuelGame({
     if (pendingDraw !== null || runState !== null) return
     const card = mv(id)!
     if (!canLayOff(card, meldHit)) {
+      journey.action('play', false)
+      journey.friction('invalid_play')
       // Keyboard-only feedback: the drag path never routes an ineligible row
       // here (it falls through to the pile hit-test instead).
       invalidShake()
       return
     }
+    journey.action('play', true)
     dismissDragNudge()
     const newHand = playerHand.filter((h) => h !== id)
     setMelds((ms) =>
@@ -554,6 +570,7 @@ export default function DuelGame({
     // A wild plays on any pile for +0 — the universal shed/unstick. It lands face
     // up but transparent (the real card beneath still links), no run, no lay-off.
     if (isWild(id) && runState === null) {
+      journey.action('play', true)
       const landedWild = landed
       dismissDragNudge()
       const newHand = playerHand.filter((h) => h !== id)
@@ -583,7 +600,10 @@ export default function DuelGame({
       shared.length === 0 && fcArmed && playerTokens.finalCut && runState === null
     // Mid-run, only cards chaining through the run's person are legal
     const chainOk = runState === null || shared.some((s) => runState.people.includes(s.name))
-    if ((shared.length === 0 && !viaFinalCut) || (shared.length > 0 && !chainOk)) {
+    const validPlay = viaFinalCut || (shared.length > 0 && chainOk)
+    journey.action(viaFinalCut ? 'final_cut' : 'play', validPlay)
+    if (!validPlay) {
+      journey.friction('invalid_play')
       invalidShake()
       return
     }
@@ -718,6 +738,8 @@ export default function DuelGame({
       runState !== null
     )
       return
+    journey.action('draw', true)
+    if (!playerHasImmediateAction) journey.friction('no_play_draw')
     const take = deck.slice(0, 3)
     setDeck(deck.slice(take.length))
     setDrawChoice(take)
@@ -726,25 +748,28 @@ export default function DuelGame({
 
   // Player keeps one of the revealed cards; the rest leave play. The kept card
   // comes up raised for the usual keep / toss / play decision.
-  // Wilds are kept, never burned (RULESET §11) — the sim and the CPU's draw3
-  // both force-keep a revealed wild, so the human path must too or parity (and
-  // the 3-wilds invariant the tuning rides on) breaks. DrawChoice disables the
-  // other cards when a wild shows; this guard is the rule's enforcement.
+  // Wilds are kept, never burned (RULESET §11). If draw-3 reveals more than one,
+  // every wild enters the hand; the tapped wild alone continues through the
+  // normal keep/toss/play flow while its siblings remain held. Non-wilds burn.
   const playerPickDraw = (id: string) => {
     if (drawChoice === null) return
-    const wildId = drawChoice.find(isWild)
-    const keep = wildId ?? id
+    journey.action('keep', true)
+    const forced = forcedWildDraw(drawChoice, id)
+    const keep = forced?.keep ?? id
+    const keptIds = forced ? [forced.keep, ...forced.extras] : [keep]
     setDrawChoice(null)
-    setPlayerHand((h) => [...h, keep])
+    setPlayerHand((h) => [...h, ...keptIds])
     setPendingDraw(keep)
     setRaisedId(keep)
     say(
       'You',
-      wildId !== undefined
-        ? 'kept the wild — never burned'
-        : tops.some((t) => sharedPeople(t, mv(keep)!).length > 0)
-          ? 'kept it — it connects!'
-          : 'kept the card',
+      forced && forced.extras.length > 0
+        ? `kept all ${forced.extras.length + 1} wilds — never burned`
+        : forced
+          ? 'kept the wild — never burned'
+          : tops.some((t) => sharedPeople(t, mv(keep)!).length > 0)
+            ? 'kept it — it connects!'
+            : 'kept the card',
     )
   }
 
@@ -754,6 +779,7 @@ export default function DuelGame({
   const doTakePile = (pileIdx: number) => {
     const T = takeTargets[pileIdx]
     if (!T) return
+    journey.action('take', true)
     const reseed = piles[pileIdx].length === 1 && deck.length > 0
     setPiles((ps) => ps.map((p, i) => (i === pileIdx ? (reseed ? [deck[0]] : p.slice(0, -1)) : p)))
     if (reseed) setDeck((d) => d.slice(1))
@@ -769,6 +795,7 @@ export default function DuelGame({
 
   const playerKeep = () => {
     if (pendingDraw === null) return
+    journey.action('keep', true)
     setPendingDraw(null)
     setRaisedId(null)
     setFcArmed(false)
@@ -795,6 +822,7 @@ export default function DuelGame({
   // needed. The unstick mechanism, and a tactical brick for the opponent.
   const playerToss = () => {
     if (pendingDraw === null) return
+    journey.action('toss', true)
     const id = pendingDraw
     // Bury the brick on the most-connective marquee (denial — degrades the CPU's
     // best top). With two Double Feature piles the toss needs a target.
@@ -821,6 +849,7 @@ export default function DuelGame({
       meldSelect
     )
       return
+    journey.action('pass', true)
     setRaisedId(null)
     setFcArmed(false)
     setRunState(null)
@@ -855,6 +884,7 @@ export default function DuelGame({
       runState !== null
     )
       return
+    journey.action('hint', true)
     // Consider both Double Feature tops: pulse the first card playable on either.
     let id: string | null = null
     for (const t of tops) {
@@ -887,6 +917,7 @@ export default function DuelGame({
 
   const enterMeldSelect = () => {
     if (status !== 'playerTurn' || pendingDraw !== null || runState !== null) return
+    journey.action('meld', true)
     setMeldSelect(true)
     setSelected(new Set())
     setRaisedId(null)
@@ -898,16 +929,19 @@ export default function DuelGame({
     setSelected(new Set())
   }
 
-  const toggleSelect = (id: string) =>
+  const toggleSelect = (id: string) => {
+    journey.action('select', true)
     setSelected((prev) => {
       const next = new Set(prev)
       if (next.has(id)) next.delete(id)
       else next.add(id)
       return next
     })
+  }
 
   const bankMeld = () => {
     if (!selectionValid) return
+    journey.action('meld', true)
     const ids = [...selected]
     const cards = ids.map((i) => mv(i)!)
     const reals = cards.filter((c) => !isWild(c.id)) // wilds: filler, score 0
@@ -1013,12 +1047,14 @@ export default function DuelGame({
 
   const allowCpuPlay = () => {
     if (resolvingOffer.current || !recastOffer) return
+    journey.action('recast', true)
     resolvingOffer.current = true
     resolveCpuPlay(recastOffer)
   }
 
   const playerRecast = () => {
     if (resolvingOffer.current || recastOffer === null) return
+    journey.action('recast', true)
     resolvingOffer.current = true
     setPlayerTokens((t) => ({ ...t, recast: false }))
     if (recastOffer.finalCut) setCpuTokens((t) => ({ ...t, finalCut: false }))
@@ -1041,15 +1077,16 @@ export default function DuelGame({
         const seen = new Set([...piles.flat(), ...cpuHand, ...extra])
         return DUEL_POOL.filter((m) => !seen.has(m.id))
       }
-      // Draw-3-keep-1: reveal the top 3, keep the best (pickDraw), burn the rest.
-      // Returns the kept card id; the others just leave the deck (invisible per D1).
+      // Draw-3: reveal the top 3, keep the best (pickDraw), burn the rest. Wilds
+      // are never burned: return one for this turn and hold any additional wilds.
       const draw3 = () => {
         const take = deck.slice(0, 3)
         setDeck(deck.slice(take.length))
-        // A wild has 0 connectivity, so pickDraw would burn it as the "worst" card
-        // — but a universal wild is obviously kept. Keep it, burn the other two.
-        const wildInTake = take.find(isWild)
-        if (wildInTake !== undefined) return wildInTake
+        const forced = forcedWildDraw(take)
+        if (forced) {
+          if (forced.extras.length > 0) setCpuHand((h) => [...h, ...forced.extras])
+          return forced.keep
+        }
         const { keep } = pickDraw(take.map((id) => mv(id)!), tops, k, unseenWith(take))
         return keep.id
       }
@@ -1329,9 +1366,7 @@ export default function DuelGame({
   }, [playerScore, cpuScore])
 
   const newGame = () => {
-    // a replay is a new game for analytics — the mount effect only covers the
-    // first deal, so re-fire here to keep mode_start ↔ mode_finish paired 1:1
-    track('mode_start', { mode: 'duel', difficulty })
+    journey.replay()
     window.clearTimeout(lowerTimer.current)
     const d = dealDuel()
     setPiles([[d.starterId], [d.deck[0]]])
@@ -1373,11 +1408,6 @@ export default function DuelGame({
   const cpuNet = cpuScore - cpuHand.length
   const winner = playerNet > cpuNet ? 'player' : cpuNet > playerNet ? 'cpu' : 'draw'
 
-  useEffect(() => {
-    track('mode_start', { mode: 'duel', difficulty })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
   // Every finished duel counts toward the per-difficulty record (no daily to
   // gate on — replays ARE the return signal). newGame resets status, so the
   // next finish records its own game.
@@ -1401,6 +1431,74 @@ export default function DuelGame({
         ? 'You'
         : 'CPU'
   const offerMovie = recastOffer ? mv(recastOffer.id)! : null
+
+  // Deterministic browser-only states for the release gate. Each fixture uses
+  // real cards and the real rule helpers; it controls only which valid state is
+  // presented so coverage cannot depend on Math.random(). The dead VITE_E2E
+  // branch and these marker strings are erased from a normal production build.
+  const applyE2EFixture = (fixture: E2EDuelFixture) => {
+    if (import.meta.env.VITE_E2E !== '1') return
+    const quietHand = [
+      'the-return-of-the-king',
+      'mission-impossible-2',
+      'the-hurt-locker',
+      'children-of-men',
+      'nightcrawler',
+      'avengers-infinity-war',
+      'fight-club',
+    ]
+    const noPlayHand = [
+      'the-departed',
+      'inception',
+      'the-dark-knight',
+      'pulp-fiction',
+      'inglourious-basterds',
+      'forrest-gump',
+      'jurassic-park',
+    ]
+    const nextPiles = fixture === 'take-ready'
+      ? [['heat', 'goodfellas'], ['alien']]
+      : [['heat'], ['alien']]
+    const nextPlayerHand = fixture === 'take-ready'
+      ? ['casino', 'the-irishman']
+      : fixture === 'no-play-draw'
+        ? noPlayHand
+        : quietHand
+    const forcedDraw = fixture === 'ordinary-draw' || fixture === 'no-play-draw'
+      ? ['goodfellas', 'casino', 'taxi-driver']
+      : fixture === 'one-wild-draw'
+        ? [WILD_IDS[0], 'goodfellas', 'casino']
+        : fixture === 'multi-wild-draw'
+          ? [WILD_IDS[3], WILD_IDS[4], WILD_IDS[0]]
+          : []
+    const used = new Set([...nextPiles.flat(), ...nextPlayerHand, ...forcedDraw])
+    const remaining = [...DUEL_POOL.map((movie) => movie.id), ...WILD_IDS].filter((id) => !used.has(id))
+    const nextCpuHand = remaining.slice(0, 7)
+    nextCpuHand.forEach((id) => used.add(id))
+
+    setPiles(nextPiles)
+    setPlayerHand(nextPlayerHand)
+    setCpuHand(nextCpuHand)
+    setDeck([...forcedDraw, ...remaining.filter((id) => !used.has(id))])
+    setStatus('playerTurn')
+    setEndReason(null)
+    setPlayerScore(0)
+    setCpuScore(0)
+    setPassStreak(0)
+    setPendingDraw(null)
+    setDrawChoice(null)
+    setMelds([])
+    setMeldSelect(false)
+    setSelected(new Set())
+    setRunState(null)
+    setCpuRun(null)
+    setRaisedId(null)
+    setHintId(null)
+    setHintMeldId(null)
+    setBanner(null)
+    setLastPlay(null)
+    setLastCpuQuote('')
+  }
 
   // Hint pill label ("HINT · PACINO"): hintCard returns an id only, so name the
   // shared person here. Only label a genuine pile link — a lay-off-only hint
@@ -1548,7 +1646,10 @@ export default function DuelGame({
               type="button"
               aria-label="How to play"
               data-rules-open
-              onClick={() => setShowRules(true)}
+              onClick={() => {
+                journey.helpOpen(gameOver ? 'result' : 'playing')
+                setShowRules(true)
+              }}
               className="app-help-button daily-icon-button ml-2 active:scale-90"
             >
               <Icon name="help" size={20} />
@@ -2004,6 +2105,7 @@ export default function DuelGame({
                 finalCutDisabled={status !== 'playerTurn' || meldSelect || runState !== null}
                 onToggleFinalCut={() => {
                   const arming = !fcArmed
+                  journey.action('final_cut', true)
                   setFcArmed(arming)
                   if (arming) say('You', 'Final Cut armed — play any card')
                 }}
@@ -2046,7 +2148,10 @@ export default function DuelGame({
                 meldSelect ||
                 playerHand.length < 3
               }
-              onClick={() => setPlayerHand((h) => autoSortHand(h))}
+              onClick={() => {
+                journey.action('sort', true)
+                setPlayerHand((h) => autoSortHand(h))
+              }}
               className="duel-tool-button flex items-center gap-1 rounded-stub-pill bg-stub-navy px-2.5 font-stub-label font-extrabold uppercase tracking-wider text-stub-cream shadow-sm transition-transform active:scale-95 disabled:opacity-40"
             >
               <Icon name="sort" size={16} /> Sort
@@ -2122,6 +2227,7 @@ export default function DuelGame({
           onToggleSelect={toggleSelect}
           onRaise={(id) => {
             if (status === 'playerTurn' && pendingDraw === null) {
+              journey.action('select', true)
               setHintId(null)
               setHintMeldId(null)
               setRaisedId(id)
@@ -2129,7 +2235,10 @@ export default function DuelGame({
           }}
           onFlip={flipCard}
           onDrop={playerPlay}
-          onReorder={(id, toIndex) => setPlayerHand((h) => moveId(h, id, toIndex))}
+          onReorder={(id, toIndex) => {
+            journey.action('sort', true)
+            setPlayerHand((h) => moveId(h, id, toIndex))
+          }}
         />
 
         {/* Draw-3-keep-1: pick one of the revealed cards; the rest leave play.
@@ -2176,20 +2285,58 @@ export default function DuelGame({
           )}
         </AnimatePresence>
 
-        {/* Test-only terminal seam. VITE_E2E is undefined for normal builds,
-            so Vite/Rollup erase this branch and its marker. */}
+        {/* Test-only terminal and deterministic state seams. VITE_E2E is
+            undefined for normal builds, so Vite/Rollup erase this branch. */}
         {import.meta.env.VITE_E2E === '1' && (
-          <button
-            type="button"
-            data-testid="matchcut-e2e-complete"
-            className="hidden"
-            onClick={() => {
-              setPlayerScore(TARGET_SCORE)
-              setCpuScore(0)
-              setEndReason('target')
-              setStatus('over')
-            }}
-          />
+          <>
+            <button
+              type="button"
+              data-testid="matchcut-e2e-complete"
+              className="hidden"
+              onClick={() => {
+                setPlayerScore(TARGET_SCORE)
+                setCpuScore(0)
+                setEndReason('target')
+                setStatus('over')
+              }}
+            />
+            <button
+              type="button"
+              data-testid="matchcut-e2e-ordinary-draw"
+              className="hidden"
+              onClick={() => applyE2EFixture('ordinary-draw')}
+            />
+            <button
+              type="button"
+              data-testid="matchcut-e2e-no-play-draw"
+              className="hidden"
+              onClick={() => applyE2EFixture('no-play-draw')}
+            />
+            <button
+              type="button"
+              data-testid="matchcut-e2e-one-wild-draw"
+              className="hidden"
+              onClick={() => applyE2EFixture('one-wild-draw')}
+            />
+            <button
+              type="button"
+              data-testid="matchcut-e2e-wild-draw"
+              className="hidden"
+              onClick={() => applyE2EFixture('multi-wild-draw')}
+            />
+            <button
+              type="button"
+              data-testid="matchcut-e2e-take-ready"
+              className="hidden"
+              onClick={() => applyE2EFixture('take-ready')}
+            />
+            <output data-testid="matchcut-e2e-player-hand" className="hidden">
+              {playerHand.length}
+            </output>
+            <output data-testid="matchcut-e2e-deck" className="hidden">
+              {deck.length}
+            </output>
+          </>
         )}
 
         <AnimatePresence>
@@ -2282,7 +2429,15 @@ export default function DuelGame({
         </AnimatePresence>
 
         <AnimatePresence>
-          {showRules && <HowToPlay context="duel" onClose={() => setShowRules(false)} />}
+          {showRules && (
+            <HowToPlay
+              context="duel"
+              onClose={() => {
+                journey.helpClose()
+                setShowRules(false)
+              }}
+            />
+          )}
         </AnimatePresence>
       </div>
     </div>

@@ -1,0 +1,580 @@
+{
+  "schemaVersion": "matchcut-daily-duel-wild-simulation-v2",
+  "generatedAt": "2026-08-25T21:05:56.508Z",
+  "gamesPerMatchupAndMirror": 8000,
+  "seed": 200824,
+  "assertionsEnabled": true,
+  "simulatedWildCounts": [
+    8,
+    16
+  ],
+  "ownerDirectedWildCount": 16,
+  "pool": {
+    "realFilms": 216,
+    "digest": "d9b988232fabddadd2616d4fcc6c1ad604bce1207106b9ac6539784b50a38fdb",
+    "metadataStatus": "buri-approved-policy-covered-tmdb-cast-rulings-and-series",
+    "proposedExistingSeriesOverrides": {
+      "top-gun": "top-gun",
+      "the-avengers": "avengers"
+    }
+  },
+  "baselineEncounterShare": 0.03947,
+  "proposedIdentitySlate": [
+    {
+      "id": "wild-12angry",
+      "title": "12 Angry Men"
+    },
+    {
+      "id": "wild-casablanca",
+      "title": "Casablanca"
+    },
+    {
+      "id": "wild-kane",
+      "title": "Citizen Kane"
+    },
+    {
+      "id": "wild-wizard-of-oz",
+      "title": "The Wizard of Oz"
+    },
+    {
+      "id": "wild-2001",
+      "title": "2001: A Space Odyssey"
+    },
+    {
+      "id": "wild-psycho",
+      "title": "Psycho"
+    },
+    {
+      "id": "wild-seven-samurai",
+      "title": "Seven Samurai"
+    },
+    {
+      "id": "wild-singin-in-the-rain",
+      "title": "Singin' in the Rain"
+    },
+    {
+      "id": "wild-dr-strangelove",
+      "title": "Dr. Strangelove"
+    },
+    {
+      "id": "wild-vertigo",
+      "title": "Vertigo"
+    },
+    {
+      "id": "wild-tokyo-story",
+      "title": "Tokyo Story"
+    },
+    {
+      "id": "wild-bicycle-thieves",
+      "title": "Bicycle Thieves"
+    },
+    {
+      "id": "wild-in-the-mood-for-love",
+      "title": "In the Mood for Love"
+    },
+    {
+      "id": "wild-spirited-away",
+      "title": "Spirited Away"
+    },
+    {
+      "id": "wild-metropolis",
+      "title": "Metropolis"
+    },
+    {
+      "id": "wild-pather-panchali",
+      "title": "Pather Panchali"
+    }
+  ],
+  "variants": {
+    "8": {
+      "wildCount": 8,
+      "wildIds": [
+        "wild-12angry",
+        "wild-casablanca",
+        "wild-kane",
+        "wild-wizard-of-oz",
+        "wild-2001",
+        "wild-psycho",
+        "wild-seven-samurai",
+        "wild-singin-in-the-rain"
+      ],
+      "wildTitles": [
+        "12 Angry Men",
+        "Casablanca",
+        "Citizen Kane",
+        "The Wizard of Oz",
+        "2001: A Space Odyssey",
+        "Psycho",
+        "Seven Samurai",
+        "Singin' in the Rain"
+      ],
+      "realDrawCardsAfterSetup": 200,
+      "totalDrawCardsAfterSetup": 208,
+      "encounterShare": 0.03846,
+      "targetDeviation": 0.097,
+      "matchups": {
+        "matinee": {
+          "target": 0.65,
+          "forwardCasualWin": {
+            "p": 0.618,
+            "lo": 0.607,
+            "hi": 0.628
+          },
+          "mirrorCasualWin": {
+            "p": 0.556,
+            "lo": 0.546,
+            "hi": 0.567
+          },
+          "firstPlayerMirrorDelta": {
+            "diff": 0.061,
+            "lo": 0.045,
+            "hi": 0.078,
+            "real": true
+          },
+          "flow": {
+            "games": 8000,
+            "averageTurns": 32.368,
+            "endReasons": {
+              "target": 7299,
+              "AOut": 644,
+              "BOut": 57
+            },
+            "stalemateRate": 0,
+            "averageNetGap": 8.735,
+            "averageCardsHeld": 11.307,
+            "deadTurnRate": 0.546,
+            "averageLongestDeadStreak": 5.336,
+            "drawConnectivityRate": 0.215,
+            "supersPerGame": 0.792,
+            "runsPerGame": 0.264,
+            "meldPointsPerGame": 16.705,
+            "recastsPerGame": 0.029,
+            "wildsDrawnPerGame": 2.647,
+            "wildForceKeepRate": 1,
+            "wildsPlayedPerGame": 0.001,
+            "wildsMeldedPerGame": 1.596,
+            "wildBlocksTakePerGame": 0,
+            "wildsHeldAtEndPerGame": 1.048,
+            "wildCoveringPilesPerGame": 0.005,
+            "wildGoOutsPerGame": 0.006,
+            "multiWildDrawsPerGame": 0.091,
+            "wildCardsInMultiDrawsPerGame": 0.183,
+            "wildBurned": 0,
+            "conservationFailures": 0
+          }
+        },
+        "feature": {
+          "target": 0.5,
+          "forwardCasualWin": {
+            "p": 0.46,
+            "lo": 0.449,
+            "hi": 0.471
+          },
+          "mirrorCasualWin": {
+            "p": 0.413,
+            "lo": 0.403,
+            "hi": 0.424
+          },
+          "firstPlayerMirrorDelta": {
+            "diff": 0.046,
+            "lo": 0.03,
+            "hi": 0.063,
+            "real": true
+          },
+          "flow": {
+            "games": 8000,
+            "averageTurns": 31.795,
+            "endReasons": {
+              "target": 7363,
+              "BOut": 493,
+              "AOut": 144
+            },
+            "stalemateRate": 0,
+            "averageNetGap": 7.593,
+            "averageCardsHeld": 9.026,
+            "deadTurnRate": 0.489,
+            "averageLongestDeadStreak": 4.691,
+            "drawConnectivityRate": 0.275,
+            "supersPerGame": 0.865,
+            "runsPerGame": 0.142,
+            "meldPointsPerGame": 15.33,
+            "recastsPerGame": 0.237,
+            "wildsDrawnPerGame": 2.497,
+            "wildForceKeepRate": 1,
+            "wildsPlayedPerGame": 0.011,
+            "wildsMeldedPerGame": 1.46,
+            "wildBlocksTakePerGame": 0,
+            "wildsHeldAtEndPerGame": 1.026,
+            "wildCoveringPilesPerGame": 0.013,
+            "wildGoOutsPerGame": 0.022,
+            "multiWildDrawsPerGame": 0.086,
+            "wildCardsInMultiDrawsPerGame": 0.174,
+            "wildBurned": 0,
+            "conservationFailures": 0
+          }
+        },
+        "directors": {
+          "target": 0.41,
+          "forwardCasualWin": {
+            "p": 0.385,
+            "lo": 0.375,
+            "hi": 0.396
+          },
+          "mirrorCasualWin": {
+            "p": 0.339,
+            "lo": 0.329,
+            "hi": 0.349
+          },
+          "firstPlayerMirrorDelta": {
+            "diff": 0.046,
+            "lo": 0.031,
+            "hi": 0.062,
+            "real": true
+          },
+          "flow": {
+            "games": 8000,
+            "averageTurns": 32.171,
+            "endReasons": {
+              "target": 7292,
+              "BOut": 485,
+              "AOut": 223
+            },
+            "stalemateRate": 0,
+            "averageNetGap": 7.737,
+            "averageCardsHeld": 8.95,
+            "deadTurnRate": 0.502,
+            "averageLongestDeadStreak": 4.669,
+            "drawConnectivityRate": 0.266,
+            "supersPerGame": 0.695,
+            "runsPerGame": 0.082,
+            "meldPointsPerGame": 16.671,
+            "recastsPerGame": 0.517,
+            "wildsDrawnPerGame": 2.494,
+            "wildForceKeepRate": 1,
+            "wildsPlayedPerGame": 0.009,
+            "wildsMeldedPerGame": 1.586,
+            "wildBlocksTakePerGame": 0,
+            "wildsHeldAtEndPerGame": 0.897,
+            "wildCoveringPilesPerGame": 0.013,
+            "wildGoOutsPerGame": 0.026,
+            "multiWildDrawsPerGame": 0.085,
+            "wildCardsInMultiDrawsPerGame": 0.172,
+            "wildBurned": 0,
+            "conservationFailures": 0
+          }
+        }
+      },
+      "pairedTierGaps": {
+        "matineeMinusFeature": {
+          "diff": 0.158,
+          "lo": 0.144,
+          "hi": 0.172,
+          "real": true
+        },
+        "featureMinusDirectors": {
+          "diff": 0.074,
+          "lo": 0.061,
+          "hi": 0.088,
+          "real": true
+        }
+      },
+      "aggregateForwardFlow": {
+        "games": 24000,
+        "averageTurns": 32.111,
+        "endReasons": {
+          "target": 21954,
+          "AOut": 1011,
+          "BOut": 1035
+        },
+        "stalemateRate": 0,
+        "averageNetGap": 8.022,
+        "averageCardsHeld": 9.761,
+        "deadTurnRate": 0.513,
+        "averageLongestDeadStreak": 4.899,
+        "drawConnectivityRate": 0.251,
+        "supersPerGame": 0.784,
+        "runsPerGame": 0.162,
+        "meldPointsPerGame": 16.235,
+        "recastsPerGame": 0.261,
+        "wildsDrawnPerGame": 2.546,
+        "wildForceKeepRate": 1,
+        "wildsPlayedPerGame": 0.007,
+        "wildsMeldedPerGame": 1.548,
+        "wildBlocksTakePerGame": 0,
+        "wildsHeldAtEndPerGame": 0.99,
+        "wildCoveringPilesPerGame": 0.01,
+        "wildGoOutsPerGame": 0.018,
+        "multiWildDrawsPerGame": 0.087,
+        "wildCardsInMultiDrawsPerGame": 0.176,
+        "wildBurned": 0,
+        "conservationFailures": 0
+      }
+    },
+    "16": {
+      "wildCount": 16,
+      "wildIds": [
+        "wild-12angry",
+        "wild-casablanca",
+        "wild-kane",
+        "wild-wizard-of-oz",
+        "wild-2001",
+        "wild-psycho",
+        "wild-seven-samurai",
+        "wild-singin-in-the-rain",
+        "wild-dr-strangelove",
+        "wild-vertigo",
+        "wild-tokyo-story",
+        "wild-bicycle-thieves",
+        "wild-in-the-mood-for-love",
+        "wild-spirited-away",
+        "wild-metropolis",
+        "wild-pather-panchali"
+      ],
+      "wildTitles": [
+        "12 Angry Men",
+        "Casablanca",
+        "Citizen Kane",
+        "The Wizard of Oz",
+        "2001: A Space Odyssey",
+        "Psycho",
+        "Seven Samurai",
+        "Singin' in the Rain",
+        "Dr. Strangelove",
+        "Vertigo",
+        "Tokyo Story",
+        "Bicycle Thieves",
+        "In the Mood for Love",
+        "Spirited Away",
+        "Metropolis",
+        "Pather Panchali"
+      ],
+      "realDrawCardsAfterSetup": 200,
+      "totalDrawCardsAfterSetup": 216,
+      "encounterShare": 0.07407,
+      "targetDeviation": 0.081,
+      "matchups": {
+        "matinee": {
+          "target": 0.65,
+          "forwardCasualWin": {
+            "p": 0.603,
+            "lo": 0.592,
+            "hi": 0.614
+          },
+          "mirrorCasualWin": {
+            "p": 0.551,
+            "lo": 0.54,
+            "hi": 0.561
+          },
+          "firstPlayerMirrorDelta": {
+            "diff": 0.052,
+            "lo": 0.036,
+            "hi": 0.069,
+            "real": true
+          },
+          "flow": {
+            "games": 8000,
+            "averageTurns": 32.25,
+            "endReasons": {
+              "target": 7329,
+              "AOut": 600,
+              "BOut": 71
+            },
+            "stalemateRate": 0,
+            "averageNetGap": 9.105,
+            "averageCardsHeld": 12.126,
+            "deadTurnRate": 0.563,
+            "averageLongestDeadStreak": 5.527,
+            "drawConnectivityRate": 0.194,
+            "supersPerGame": 0.712,
+            "runsPerGame": 0.205,
+            "meldPointsPerGame": 17.909,
+            "recastsPerGame": 0.029,
+            "wildsDrawnPerGame": 5.09,
+            "wildForceKeepRate": 1,
+            "wildsPlayedPerGame": 0.002,
+            "wildsMeldedPerGame": 2.307,
+            "wildBlocksTakePerGame": 0,
+            "wildsHeldAtEndPerGame": 2.778,
+            "wildCoveringPilesPerGame": 0.008,
+            "wildGoOutsPerGame": 0.007,
+            "multiWildDrawsPerGame": 0.341,
+            "wildCardsInMultiDrawsPerGame": 0.69,
+            "wildBurned": 0,
+            "conservationFailures": 0
+          }
+        },
+        "feature": {
+          "target": 0.5,
+          "forwardCasualWin": {
+            "p": 0.481,
+            "lo": 0.471,
+            "hi": 0.492
+          },
+          "mirrorCasualWin": {
+            "p": 0.429,
+            "lo": 0.418,
+            "hi": 0.44
+          },
+          "firstPlayerMirrorDelta": {
+            "diff": 0.052,
+            "lo": 0.036,
+            "hi": 0.069,
+            "real": true
+          },
+          "flow": {
+            "games": 8000,
+            "averageTurns": 31.975,
+            "endReasons": {
+              "target": 7379,
+              "BOut": 468,
+              "AOut": 153
+            },
+            "stalemateRate": 0,
+            "averageNetGap": 8.007,
+            "averageCardsHeld": 10.062,
+            "deadTurnRate": 0.512,
+            "averageLongestDeadStreak": 4.944,
+            "drawConnectivityRate": 0.246,
+            "supersPerGame": 0.765,
+            "runsPerGame": 0.108,
+            "meldPointsPerGame": 16.737,
+            "recastsPerGame": 0.219,
+            "wildsDrawnPerGame": 4.853,
+            "wildForceKeepRate": 1,
+            "wildsPlayedPerGame": 0.014,
+            "wildsMeldedPerGame": 2.134,
+            "wildBlocksTakePerGame": 0,
+            "wildsHeldAtEndPerGame": 2.704,
+            "wildCoveringPilesPerGame": 0.018,
+            "wildGoOutsPerGame": 0.033,
+            "multiWildDrawsPerGame": 0.325,
+            "wildCardsInMultiDrawsPerGame": 0.657,
+            "wildBurned": 0,
+            "conservationFailures": 0
+          }
+        },
+        "directors": {
+          "target": 0.41,
+          "forwardCasualWin": {
+            "p": 0.395,
+            "lo": 0.385,
+            "hi": 0.406
+          },
+          "mirrorCasualWin": {
+            "p": 0.348,
+            "lo": 0.337,
+            "hi": 0.358
+          },
+          "firstPlayerMirrorDelta": {
+            "diff": 0.048,
+            "lo": 0.032,
+            "hi": 0.063,
+            "real": true
+          },
+          "flow": {
+            "games": 8000,
+            "averageTurns": 32.034,
+            "endReasons": {
+              "target": 7260,
+              "BOut": 511,
+              "AOut": 229
+            },
+            "stalemateRate": 0,
+            "averageNetGap": 8.081,
+            "averageCardsHeld": 9.711,
+            "deadTurnRate": 0.523,
+            "averageLongestDeadStreak": 4.896,
+            "drawConnectivityRate": 0.238,
+            "supersPerGame": 0.627,
+            "runsPerGame": 0.06,
+            "meldPointsPerGame": 18.039,
+            "recastsPerGame": 0.499,
+            "wildsDrawnPerGame": 4.785,
+            "wildForceKeepRate": 1,
+            "wildsPlayedPerGame": 0.015,
+            "wildsMeldedPerGame": 2.341,
+            "wildBlocksTakePerGame": 0,
+            "wildsHeldAtEndPerGame": 2.429,
+            "wildCoveringPilesPerGame": 0.021,
+            "wildGoOutsPerGame": 0.04,
+            "multiWildDrawsPerGame": 0.322,
+            "wildCardsInMultiDrawsPerGame": 0.651,
+            "wildBurned": 0,
+            "conservationFailures": 0
+          }
+        }
+      },
+      "pairedTierGaps": {
+        "matineeMinusFeature": {
+          "diff": 0.121,
+          "lo": 0.107,
+          "hi": 0.136,
+          "real": true
+        },
+        "featureMinusDirectors": {
+          "diff": 0.086,
+          "lo": 0.073,
+          "hi": 0.099,
+          "real": true
+        }
+      },
+      "aggregateForwardFlow": {
+        "games": 24000,
+        "averageTurns": 32.086,
+        "endReasons": {
+          "target": 21968,
+          "AOut": 982,
+          "BOut": 1050
+        },
+        "stalemateRate": 0,
+        "averageNetGap": 8.398,
+        "averageCardsHeld": 10.633,
+        "deadTurnRate": 0.533,
+        "averageLongestDeadStreak": 5.123,
+        "drawConnectivityRate": 0.225,
+        "supersPerGame": 0.701,
+        "runsPerGame": 0.125,
+        "meldPointsPerGame": 17.562,
+        "recastsPerGame": 0.249,
+        "wildsDrawnPerGame": 4.909,
+        "wildForceKeepRate": 1,
+        "wildsPlayedPerGame": 0.011,
+        "wildsMeldedPerGame": 2.26,
+        "wildBlocksTakePerGame": 0,
+        "wildsHeldAtEndPerGame": 2.637,
+        "wildCoveringPilesPerGame": 0.016,
+        "wildGoOutsPerGame": 0.027,
+        "multiWildDrawsPerGame": 0.329,
+        "wildCardsInMultiDrawsPerGame": 0.666,
+        "wildBurned": 0,
+        "conservationFailures": 0
+      }
+    }
+  },
+  "crossVariant": {
+    "8-minus-16": {
+      "matinee": {
+        "diff": 0.015,
+        "lo": 0.002,
+        "hi": 0.028,
+        "real": true
+      },
+      "feature": {
+        "diff": -0.022,
+        "lo": -0.035,
+        "hi": -0.009,
+        "real": true
+      },
+      "directors": {
+        "diff": -0.01,
+        "lo": -0.023,
+        "hi": 0.003,
+        "real": false
+      }
+    }
+  },
+  "maxAdjacentWinDifference": 0.02175,
+  "requires8000Followup": false,
+  "evidenceRecommendation": 16,
+  "recommendationPolicy": "lowest summed target deviation among the directly compared endpoints; owner direction is recorded separately"
+}

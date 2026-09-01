@@ -1,10 +1,25 @@
 import { expect, test as base, type Locator, type Page } from '@playwright/test'
+import chronologyPool from '../../src/data/chronology-pool.json' with { type: 'json' }
+import connectionsData from '../../src/data/connections-grids.json' with { type: 'json' }
 import { movieById } from '../../src/data/movies.ts'
-import { TIER_POINTS } from '../../src/lib/duel.ts'
+import type { Movie } from '../../src/data/types.ts'
+import { localDateSeed } from '../../src/lib/daily.ts'
+import { TIER_POINTS, isValidMeld, legalPlays } from '../../src/lib/duel.ts'
 import { linkTier, sharedPeople } from '../../src/lib/solver.ts'
 
 const productionOrigin = 'http://127.0.0.1:4273'
 const developmentOrigin = 'http://127.0.0.1:5273'
+const chronologyById = new Map(chronologyPool.map((card) => [card.id, card]))
+
+function connectionsGridForSeed(seed: string) {
+  const utc = (value: string) => {
+    const [year, month, day] = value.split('-').map(Number)
+    return Date.UTC(year, month - 1, day)
+  }
+  const offset = Math.round((utc(seed) - utc(connectionsData.anchor)) / 86_400_000)
+  const index = ((offset % connectionsData.grids.length) + connectionsData.grids.length) % connectionsData.grids.length
+  return connectionsData.grids[index]
+}
 
 const test = base.extend<{ browserFaults: string[] }>({
   browserFaults: async ({ page }, use) => {
@@ -101,6 +116,255 @@ test('production preview enforces headers and keeps analytics in the bundle', as
   expect(queued).toBe(1)
 })
 
+test('privacy-safe journey analytics dedupes boundaries and never loads a localhost collector', async ({ page, browserFaults }) => {
+  void browserFaults
+  const readEvents = () => page.evaluate(() => {
+    const analytics = window as unknown as {
+      vaq?: Array<['event', { name: string; data: Record<string, string | number | boolean> }]>
+    }
+    return (analytics.vaq ?? []).map(([, event]) => event)
+  })
+
+  const collectorRequests: string[] = []
+  page.on('request', (request) => {
+    if (request.url().includes('/_vercel/insights/')) collectorRequests.push(request.url())
+  })
+
+  await openMenu(page)
+  await page.evaluate(() => {
+    ;(window as unknown as { vaq?: unknown[] }).vaq = []
+  })
+  await page.locator('[data-mode="solo"]').click()
+  await expect(page.locator('[data-mode-stage="solo"]')).toBeVisible()
+
+  await expect.poll(async () => (await readEvents()).filter((event) => event.name === 'mode_start')).toEqual([
+    { name: 'mode_start', data: { mode: 'solo', kind: 'daily', session_mode_ordinal: '1' } },
+  ])
+
+  const pile = page.locator('[data-card="pile-top"]')
+  await pile.click()
+  await pile.click()
+  await expect.poll(async () => (await readEvents()).filter((event) => event.name === 'first_action')).toEqual([
+    { name: 'first_action', data: { mode: 'solo', kind: 'daily', action: 'flip' } },
+  ])
+
+  const help = page.locator('[data-rules-open]')
+  await help.click()
+  await expect(page.getByRole('dialog', { name: 'How to play Daily Puzzle' })).toBeVisible()
+  await page.keyboard.press('Escape')
+  await expect(help).toBeFocused()
+  await pile.click()
+  await pile.click()
+  const afterHelp = await readEvents()
+  expect(afterHelp.filter((event) => event.name === 'help_open')).toEqual([
+    { name: 'help_open', data: { mode: 'solo', state: 'playing' } },
+  ])
+  expect(afterHelp.filter((event) => event.name === 'help_return')).toEqual([
+    { name: 'help_return', data: { mode: 'solo', resolved: true } },
+  ])
+
+  await finishThroughTestSeam(page)
+  await expect(page.getByRole('dialog', { name: 'Solved — results' })).toBeVisible()
+  const finishEvents = (await readEvents()).filter((event) => event.name === 'mode_finish')
+  expect(finishEvents).toHaveLength(1)
+  expect(finishEvents[0]).toMatchObject({
+    name: 'mode_finish',
+    data: { mode: 'solo', kind: 'daily', result: 'won' },
+  })
+  const share = page.locator('[data-share-copy]')
+  await share.click()
+  await expect(share).toHaveText('copied ✓')
+
+  await page.evaluate(() => {
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: { writeText: () => Promise.reject(new Error('blocked for fallback test')) },
+    })
+    Object.defineProperty(document, 'execCommand', {
+      configurable: true,
+      value: () => false,
+    })
+  })
+  await share.click()
+  await expect(share).toHaveText('select below to copy')
+
+  const shareEvents = await readEvents()
+  expect(shareEvents.filter((event) => event.name === 'share_attempt')).toEqual([
+    { name: 'share_attempt', data: { mode: 'solo', result: 'copied' } },
+    { name: 'share_attempt', data: { mode: 'solo', result: 'manual_fallback' } },
+  ])
+  expect(shareEvents.filter((event) => event.name === 'share')).toHaveLength(1)
+
+  await page.getByRole('button', { name: "Replay today's hand" }).click()
+  await expect(page.locator('[data-mode-stage="solo"]')).toBeVisible()
+  const replayEvents = await readEvents()
+  expect(replayEvents.filter((event) => event.name === 'replay')).toEqual([
+    { name: 'replay', data: { mode: 'solo', kind: 'daily' } },
+  ])
+  expect(replayEvents.filter((event) => event.name === 'mode_start')).toEqual([
+    { name: 'mode_start', data: { mode: 'solo', kind: 'daily', session_mode_ordinal: '1' } },
+    { name: 'mode_start', data: { mode: 'solo', kind: 'daily', session_mode_ordinal: '1' } },
+  ])
+
+  await page.getByRole('button', { name: 'Back to menu' }).click()
+  await page.locator('[data-mode="chronology"]').click()
+  await expect.poll(async () => (await readEvents()).filter((event) => event.name === 'mode_start').at(-1)).toEqual(
+    { name: 'mode_start', data: { mode: 'chronology', kind: 'daily', session_mode_ordinal: '2' } },
+  )
+
+  const queueBeforeBlock = (await readEvents()).length
+  await page.evaluate(() => {
+    ;(window as unknown as { va?: () => void }).va = () => { throw new Error('collector blocked') }
+  })
+  await page.getByRole('button', { name: /— raise$/ }).first().press('Enter')
+  await page.locator('[data-gap] button').first().press('Enter')
+  await expect(page.locator('[data-line-card]')).toHaveCount(2)
+  expect((await readEvents()).length).toBe(queueBeforeBlock)
+
+  expect(collectorRequests).toEqual([])
+  expect(await page.locator('script[src="/_vercel/insights/script.js"]').count()).toBe(0)
+})
+
+test('analytics friction events follow real resulting transitions and bounded buckets', async ({ page, browserFaults }) => {
+  void browserFaults
+  const events = () => page.evaluate(() => {
+    const analytics = window as unknown as {
+      vaq?: Array<['event', { name: string; data: Record<string, string | number | boolean> }]>
+    }
+    return (analytics.vaq ?? []).map(([, event]) => event)
+  })
+  const clear = () => page.evaluate(() => {
+    ;(window as unknown as { vaq?: unknown[] }).vaq = []
+  })
+
+  await openMenu(page)
+  await page.locator('[data-mode="solo"]').click()
+  await clear()
+  const soloTopId = await page.locator('[data-card="pile-top"]').getAttribute('data-movie-id')
+  const soloHandIds = await page.locator('[data-hand-layout] [data-card]').evaluateAll((cards) =>
+    cards.map((card) => card.getAttribute('data-card')!).filter((id) => !id.startsWith('raised-')),
+  )
+  const invalidSoloId = soloHandIds.find((id) =>
+    sharedPeople(movieById.get(soloTopId!)!, movieById.get(id)!).length === 0,
+  )
+  expect(invalidSoloId).toBeTruthy()
+  await page.locator(`[data-card="${invalidSoloId}"]`).press('Enter')
+  await page.locator('[data-card="pile-top"]').press('Enter')
+  await expect.poll(async () => (await events()).filter((event) => event.name === 'friction')).toEqual([
+    { name: 'friction', data: { mode: 'solo', kind: 'invalid_play', count_bucket: '1' } },
+  ])
+
+  await page.getByRole('button', { name: 'Back to menu' }).click()
+  await page.locator('[data-mode="chronology"]').click()
+  await clear()
+  const choice = page.locator('[data-choice]').first()
+  const choiceId = await choice.getAttribute('data-choice')
+  const card = chronologyById.get(choiceId!)!
+  const lineId = await page.locator('[data-line-card]').first().getAttribute('data-line-card')
+  const lineCard = chronologyById.get(lineId!)!
+  const correctGap = lineCard.releaseDate > card.releaseDate ||
+    (lineCard.releaseDate === card.releaseDate && lineCard.id > card.id) ? 0 : 1
+  await choice.press('Enter')
+  await page.locator('[data-gap] button').nth(correctGap === 0 ? 1 : 0).press('Enter')
+  await expect(page.locator('[data-line-card]')).toHaveCount(2)
+  await expect.poll(async () => (await events()).filter((event) => event.name === 'friction')).toEqual([
+    { name: 'friction', data: { mode: 'chronology', kind: 'misfire', count_bucket: '1' } },
+  ])
+
+  await page.getByRole('button', { name: 'Back to menu' }).click()
+  await page.locator('[data-mode="connections"]').click()
+  await clear()
+  const grid = connectionsGridForSeed(localDateSeed())
+  const oneAway = [...grid.groups[0].films.slice(0, 3), grid.groups[1].films[0]]
+  for (const id of oneAway) await page.locator(`[data-tile="${id}"]`).click()
+  const submit = page.locator('[data-action="submit"]')
+  await submit.click()
+  await submit.click()
+  await page.locator('[data-action="deselect"]').click()
+  for (const group of grid.groups) await page.locator(`[data-tile="${group.films[0]}"]`).click()
+  await submit.click()
+  await expect.poll(async () => (await events()).filter((event) => event.name === 'friction')).toEqual([
+    { name: 'friction', data: { mode: 'connections', kind: 'one_away', count_bucket: '1' } },
+    { name: 'friction', data: { mode: 'connections', kind: 'repeat_guess', count_bucket: '2' } },
+    { name: 'friction', data: { mode: 'connections', kind: 'miss', count_bucket: '3' } },
+  ])
+
+  await page.getByRole('button', { name: 'Back to menu' }).click()
+  await page.locator('[data-mode="duel"]').click()
+  await applyDuelFixture(page, 'no-play-draw')
+  await clear()
+  await page.getByRole('button', { name: 'Draw a card' }).click()
+  await expect.poll(async () => (await events()).filter((event) => event.name === 'friction')).toEqual([
+    { name: 'friction', data: { mode: 'duel', kind: 'no_play_draw', count_bucket: '1' } },
+  ])
+})
+
+test('malformed progress repairs only corrupt nested displays and never blocks the menu', async ({ page, browserFaults }) => {
+  void browserFaults
+  const today = localDateSeed()
+  await page.addInitScript((seed) => {
+    if (sessionStorage.getItem('progress-fixture-installed')) return
+    sessionStorage.setItem('progress-fixture-installed', '1')
+    localStorage.setItem('matchcut:v1', JSON.stringify({
+      v: 1,
+      solo: { lastSeed: seed, streak: 5, best: -3 },
+      chronology: 'broken nested record',
+      connections: { lastSeed: seed, streak: -9, best: 99 },
+      duel: {
+        matinee: { plays: 3, wins: 8 },
+        feature: { plays: -4, wins: 'many' },
+        directors: null,
+      },
+      seenOnboarding: true,
+      lastDifficulty: 'unknown',
+    }))
+  }, today)
+  await page.goto('/')
+  await expect(page.locator('[data-mode="solo"]')).toBeVisible()
+  await expect(page.locator('[data-streak-chip="solo"]')).toHaveText('✓ streak 5')
+  await expect(page.locator('[data-streak-chip="chronology"]')).toHaveCount(0)
+  await expect(page.locator('[data-streak-chip="connections"]')).toHaveText('✓ streak 1')
+  await expect(page.locator('[data-record-chip="duel"]')).toHaveText('3/3 won')
+  await expect(page.locator('[data-difficulty="matinee"]')).toHaveAttribute('aria-pressed', 'true')
+  if (process.env.CAPTURE_LAUNCH_EVIDENCE === '1') {
+    await page.screenshot({ path: 'output/playwright/launch-readiness/progress-sanitized-menu-390x844.png' })
+  }
+
+  await page.evaluate(() => localStorage.setItem('matchcut:v1', '{malformed json'))
+  await page.reload()
+  const onboarding = page.getByRole('dialog', { name: 'Welcome to Match Cut' })
+  await expect(onboarding).toBeVisible()
+  await onboarding.locator('[data-intro-dismiss]').click()
+  await expect(page.locator('[data-mode="solo"]')).toBeVisible()
+  await expect(page.locator('[data-streak-chip]')).toHaveCount(0)
+})
+
+test('Duel ordinary plays stay person-gated while series upgrades legal links and supports Melds', () => {
+  const movie = (id: string, topCast: string[]): Movie => ({
+    id,
+    title: id,
+    year: 2000,
+    director: [],
+    writers: [],
+    topCast,
+    posterColor: '#000000',
+    genre: id,
+    series: 'synthetic-series',
+  })
+  const first = movie('series-one', [])
+  const second = movie('series-two', [])
+  const third = movie('series-three', [])
+
+  expect(legalPlays(first, [second])).toEqual([])
+  expect(isValidMeld([first, second, third])).toBe(true)
+
+  const linkedFirst = movie('linked-one', ['Shared Actor'])
+  const linkedSecond = movie('linked-two', ['Shared Actor'])
+  const shared = sharedPeople(linkedFirst, linkedSecond)
+  expect(legalPlays(linkedFirst, [linkedSecond])).toEqual([linkedSecond])
+  expect(linkTier(linkedFirst, linkedSecond, shared)).toBe('super')
+})
+
 async function openMenu(page: Page) {
   await page.goto('/')
   const intro = page.locator('[data-intro-dismiss]')
@@ -110,6 +374,61 @@ async function openMenu(page: Page) {
     await expect(intro).toBeHidden()
   }
   await expect(page.locator('[data-mode="solo"]')).toBeVisible()
+}
+
+async function applyDuelFixture(page: Page, name: 'ordinary-draw' | 'no-play-draw' | 'one-wild-draw' | 'wild-draw' | 'take-ready') {
+  const seam = page.getByTestId(`matchcut-e2e-${name}`)
+  await expect(seam).toBeAttached()
+  await seam.evaluate((button: HTMLButtonElement) => button.click())
+}
+
+async function placeChronologyChoiceClean(page: Page) {
+  // Pin the ticket by id, not by `.first()`: that locator re-resolves at press
+  // time, and the tray reorders while the previous ticket's exit settles, so a
+  // position-based press can raise a different card than the one the gap index
+  // below was computed for (measured misfire flake under load, 2026-08-31).
+  let choiceId: string | null = null
+  await expect
+    .poll(async () => {
+      const ids = await page.locator('[data-choice]').evaluateAll((items) =>
+        items.map((item) => item.getAttribute('data-choice')!),
+      )
+      choiceId = ids[0] ?? null
+      return ids.length > 0 && new Set(ids).size === ids.length
+    })
+    .toBe(true)
+  const choice = page.locator(`[data-choice="${choiceId}"]`)
+  const card = chronologyById.get(choiceId!)!
+  // Read the line only once the previous placement's layoutId crossfade has
+  // fully unmounted: its transient flight node duplicates a line id, which
+  // would shift the computed gap index into a misfire (measured flaking under
+  // load 2026-08-31 — the fixed 180ms tail wait alone can lose that race).
+  let lineIds: string[] = []
+  await expect
+    .poll(async () => {
+      lineIds = await page.locator('[data-line-card]').evaluateAll((items) =>
+        items.map((item) => item.getAttribute('data-line-card')!),
+      )
+      return new Set(lineIds).size === lineIds.length
+    })
+    .toBe(true)
+  const slot = lineIds
+    .map((id) => chronologyById.get(id)!)
+    .findIndex((lineCard) =>
+      lineCard.releaseDate > card.releaseDate ||
+      (lineCard.releaseDate === card.releaseDate && lineCard.id > card.id),
+    )
+  const gapIndex = slot === -1 ? lineIds.length : slot
+  await choice.press('Enter')
+  // nth() re-resolves at press time: wait until only THIS raise's gap buttons
+  // exist (a prior placement's exiting gaps linger under load and shift nth)
+  const gapButtons = page.locator('[data-gap] button')
+  await expect(gapButtons).toHaveCount(lineIds.length + 1)
+  await gapButtons.nth(gapIndex).press('Enter')
+  await expect(page.locator('[data-line-card]')).toHaveCount(lineIds.length + 1)
+  // Let the reduced-motion layoutId crossfade unmount before reading the next
+  // DOM order; transient duplicate flight nodes are visual only, not line state.
+  await page.waitForTimeout(180)
 }
 
 async function tabTo(page: Page, target: Locator, limit = 80) {
@@ -403,6 +722,19 @@ test('Daily Puzzle starts, accepts a real action, completes, shares, and returns
   await verifyShareAndReturn(page, /Solved — results/, 'Match Cut · Daily Puzzle')
 })
 
+test('Daily Puzzle cutover seed deals from the approved 216-film pool', async ({ page, browserFaults }) => {
+  void browserFaults
+  await page.goto('/?dailySeed=2026-09-27')
+  const intro = page.locator('[data-intro-dismiss]')
+  if (await intro.count()) await intro.click()
+  await page.locator('[data-mode="solo"]').click()
+  await expect(page.locator('[data-mode-stage="solo"]')).toBeVisible()
+  await expect(page.locator('[data-card="pile-top"]')).toHaveAttribute(
+    'data-movie-id',
+    'mission-impossible-dead-reckoning-part-one',
+  )
+})
+
 test('Chronology daily places a card, completes, shares, and returns', async ({ page, browserFaults }) => {
   void browserFaults
   await openMenu(page)
@@ -437,6 +769,9 @@ test('Duel draws, completes, shares, and returns', async ({ page, browserFaults 
   await page.locator('[data-mode="duel"]').click()
   await expect(page.locator('[data-mode-stage="duel"]')).toBeVisible()
 
+  await applyDuelFixture(page, 'ordinary-draw')
+  await expect(page.getByTestId('matchcut-e2e-player-hand')).toHaveText('7')
+  await expect(page.getByTestId('matchcut-e2e-deck')).toHaveText('216')
   await page.getByRole('button', { name: 'Draw a card' }).click()
   const drawDialog = page.getByRole('dialog', { name: 'Drew three — keep one' })
   await expect(drawDialog).toBeVisible()
@@ -447,9 +782,53 @@ test('Duel draws, completes, shares, and returns', async ({ page, browserFaults 
   for (let index = 0; index < drawOptionNames.length; index += 1) {
     expect(drawOptionNames[index]).toMatch(new RegExp(`^Option ${index + 1} of 3:`))
   }
+  await drawOptions.first().click()
+  await expect(drawDialog).toBeHidden()
+  await expect(page.getByTestId('matchcut-e2e-player-hand')).toHaveText('8')
+  await expect(page.getByTestId('matchcut-e2e-deck')).toHaveText('213')
 
   await finishThroughTestSeam(page)
   await verifyShareAndReturn(page, /Game over — results/, 'Match Cut · Duel')
+})
+
+test('Duel keeps one deterministic wild and burns only the two revealed real cards', async ({ page, browserFaults }) => {
+  void browserFaults
+  await openMenu(page)
+  await page.locator('[data-mode="duel"]').click()
+  await expect(page.locator('[data-mode-stage="duel"]')).toBeVisible()
+
+  await applyDuelFixture(page, 'one-wild-draw')
+  await page.getByRole('button', { name: 'Draw a card' }).click()
+  const drawDialog = page.getByRole('dialog', { name: 'Drew 3 — keep all 1 wild' })
+  await expect(drawDialog).toBeVisible()
+  await expect(drawDialog).toContainText('A wild is never burned — tap it to keep it')
+  const drawOptions = drawDialog.locator('[data-draw-choice]')
+  const enabledWild = drawDialog.locator('[data-draw-choice]:enabled')
+  await expect(drawOptions).toHaveCount(3)
+  await expect(enabledWild).toHaveCount(1)
+  await enabledWild.click()
+  await expect(drawDialog).toBeHidden()
+  await expect(page.getByTestId('matchcut-e2e-player-hand')).toHaveText('8')
+  await expect(page.getByTestId('matchcut-e2e-deck')).toHaveText('213')
+})
+
+test('Duel keeps every wild in a deterministic multi-wild draw', async ({ page, browserFaults }) => {
+  void browserFaults
+  await openMenu(page)
+  await page.locator('[data-mode="duel"]').click()
+  await expect(page.locator('[data-mode-stage="duel"]')).toBeVisible()
+
+  await applyDuelFixture(page, 'wild-draw')
+  await page.getByRole('button', { name: 'Draw a card' }).click()
+  const drawDialog = page.getByRole('dialog', { name: 'Drew 3 — keep all 3 wilds' })
+  await expect(drawDialog).toBeVisible()
+  const drawOptions = drawDialog.locator('[data-draw-choice]')
+  await expect(drawOptions).toHaveCount(3)
+  for (let index = 0; index < 3; index += 1) await expect(drawOptions.nth(index)).toBeEnabled()
+  await drawOptions.first().click()
+  await expect(drawDialog).toBeHidden()
+  await expect(page.getByTestId('matchcut-e2e-player-hand')).toHaveText('10')
+  await expect(page.getByTestId('matchcut-e2e-deck')).toHaveText('213')
 })
 
 test('practice entry starts a fresh Connections grid and remains interactive', async ({ page, browserFaults }) => {
@@ -501,7 +880,11 @@ test('first-run onboarding runs once, then replays only from the overview help',
   await advance.click()
   await expect(onboarding.getByRole('heading', { level: 2 })).toHaveText('Three fresh puzzles every day.')
   await advance.click()
-  await expect(onboarding.getByRole('heading', { level: 2 })).toHaveText(/Race to 20/)
+  await expect(onboarding.getByRole('heading', { level: 2 })).toHaveText(
+    'Reaching 20 ends the show; highest net score wins.',
+  )
+  await expect(onboarding.getByRole('img')).toHaveAttribute('aria-label', /CPU 11/)
+  await expect(onboarding).not.toContainText('Taz')
   await advance.click()
   await expect(onboarding.getByRole('heading', { level: 2 })).toHaveText(/Triple Feature/)
   await expect(advance).toHaveCount(0)
@@ -511,6 +894,9 @@ test('first-run onboarding runs once, then replays only from the overview help',
   await dismiss.click()
   await expect(onboarding).toBeHidden()
   await expect(page.locator('[data-mode="solo"]')).toBeVisible()
+  await expect(page.locator('[data-mode="duel"]')).toContainText(
+    'Reaching 20 ends the show; highest net score wins.',
+  )
   await expect(page.locator('[data-rules-open]')).toBeFocused()
 
   await page.reload()
@@ -561,6 +947,55 @@ test('overview help stays brief and keeps its primary action visible on a compac
   await expect(page.locator('[data-rules-open]')).toBeFocused()
 })
 
+test('public support and honest privacy disclosure stay reachable at release widths', async ({ page, browserFaults }) => {
+  void browserFaults
+  const viewports = [
+    { width: 320, height: 568 },
+    { width: 360, height: 800 },
+    { width: 390, height: 844 },
+    { width: 1024, height: 768 },
+  ]
+
+  for (const viewport of viewports) {
+    await page.setViewportSize(viewport)
+    await openMenu(page)
+    const helpButton = page.locator('[data-rules-open]')
+    await helpButton.click()
+
+    const dialog = page.getByRole('dialog', { name: 'How to play all modes' })
+    const support = dialog.locator('[data-player-support]')
+    const supportLink = support.locator('[data-support-link]')
+    const privacy = support.locator('[data-privacy-disclosure]')
+    await expect(support).toBeVisible()
+    await expect(support).toContainText('GitHub sign-in is required')
+    await expect(support).toContainText('the report will be public')
+    await expect(supportLink).toHaveAttribute('href', 'https://github.com/Mwamburi5/daily-movie-game/issues/new/choose')
+    await expect(supportLink).toHaveAttribute('target', '_blank')
+    await expect(supportLink).toHaveAttribute('rel', /noopener/)
+    await expect(supportLink).toHaveAccessibleName('Open public GitHub support (opens in a new tab)')
+
+    await privacy.locator('summary').focus()
+    await page.keyboard.press('Enter')
+    await expect(privacy).toHaveAttribute('open', '')
+    await expect(privacy).toContainText('per-mode streaks')
+    await expect(privacy).toContainText('anonymous page views')
+    await expect(privacy).toContainText('does not add your movie or person choices')
+    await expect(privacy).toContainText('discards the visitor session used for deduplication after 24 hours')
+    await expect(privacy).toContainText('no user identity export, drain, or D1/D7 player tracking')
+    await expect(supportLink).toBeInViewport()
+    if (process.env.CAPTURE_LAUNCH_EVIDENCE === '1') {
+      await support.scrollIntoViewIfNeeded()
+      await page.screenshot({
+        path: `output/playwright/launch-readiness/support-privacy-${viewport.width}x${viewport.height}.png`,
+      })
+    }
+
+    await page.keyboard.press('Escape')
+    await expect(dialog).toBeHidden()
+    await expect(helpButton).toBeFocused()
+  }
+})
+
 test('keyboard-only entry exposes a two-tone focus indicator and named controls in every mode', async ({ page, browserFaults }) => {
   void browserFaults
   await openMenu(page)
@@ -599,13 +1034,14 @@ test('keyboard-only entry exposes a two-tone focus indicator and named controls 
   }
 })
 
-test('reduced-motion preference keeps the Duel cue static while gameplay remains available', async ({ page, browserFaults }) => {
+test('reduced-motion no-helper Duel state keeps the generic cue static and Enter Draw playable', async ({ page, browserFaults }) => {
   void browserFaults
   await page.emulateMedia({ reducedMotion: 'reduce' })
   await openMenu(page)
   expect(await page.evaluate(() => matchMedia('(prefers-reduced-motion: reduce)').matches)).toBe(true)
 
   await page.locator('[data-mode="duel"]').click()
+  await applyDuelFixture(page, 'ordinary-draw')
   const cue = page.getByText(/turn — .*card or draw/, { exact: true })
   await expect(cue).toBeVisible()
   const opacitySamples = await cue.evaluate(async (element) => {
@@ -625,6 +1061,22 @@ test('reduced-motion preference keeps the Duel cue static while gameplay remains
   await expect(page.getByRole('dialog', { name: 'Drew three — keep one' })).toBeVisible()
 })
 
+test('reduced-motion Take helper intentionally replaces the generic Duel cue and remains playable', async ({ page, browserFaults }) => {
+  void browserFaults
+  await page.emulateMedia({ reducedMotion: 'reduce' })
+  await openMenu(page)
+  await page.locator('[data-mode="duel"]').click()
+  await applyDuelFixture(page, 'take-ready')
+
+  await expect(page.getByText(/turn — .*card or draw/, { exact: true })).toHaveCount(0)
+  const take = page.locator('[data-take="0"]')
+  await expect(take).toBeVisible()
+  await expect(take).toBeEnabled()
+  await take.click()
+  await expect(page.getByTestId('matchcut-e2e-player-hand')).toHaveText('3')
+  await expect(page.locator('[data-card="pile-top-0"]')).toHaveAttribute('data-movie-id', 'heat')
+})
+
 test('each mode opens only its own rules', async ({ page, browserFaults }) => {
   void browserFaults
   const cases = [
@@ -641,8 +1093,17 @@ test('each mode opens only its own rules', async ({ page, browserFaults }) => {
 
     const dialog = page.getByRole('dialog', { name: `How to play ${entry.label}` })
     await expect(dialog).toBeVisible()
+    await expect(dialog.locator('[data-player-support]')).toHaveCount(1)
     await expect(dialog).toContainText(entry.unique)
     await expect(dialog).not.toContainText(entry.absent)
+    if (entry.mode === 'solo') {
+      await expect(dialog).toContainText('share an actor, director, or writer')
+      await expect(dialog).not.toContainText('same series')
+    }
+    if (entry.mode === 'duel') {
+      await expect(dialog).toContainText('Reaching 20 ends the show; highest net score wins.')
+      await expect(dialog).toContainText('a series-only pair is not an ordinary legal play')
+    }
     await expect(dialog.locator('[data-rules-primary]')).toBeVisible()
     await dialog.locator('[data-rules-expand]').click()
     await expect(dialog.locator('[data-rules-expanded]')).toBeVisible()
@@ -651,6 +1112,64 @@ test('each mode opens only its own rules', async ({ page, browserFaults }) => {
     await page.keyboard.press('Escape')
     await expect(dialog).toBeHidden()
     await page.getByRole('button', { name: 'Back to menu' }).click()
+  }
+})
+
+test('Chronology header keeps its title, score meaning, and controls separate at release viewports', async ({ page, browserFaults }) => {
+  void browserFaults
+  const viewports = [
+    { width: 320, height: 568 },
+    { width: 360, height: 800 },
+    { width: 390, height: 844 },
+    { width: 768, height: 1024 },
+    { width: 1024, height: 768 },
+    { width: 1440, height: 900 },
+  ]
+
+  for (const viewport of viewports) {
+    await page.setViewportSize(viewport)
+    await openMenu(page)
+    await page.locator('[data-mode="chronology"]').click()
+    await expect(page.locator('[data-mode-stage="chronology"]')).toBeVisible()
+
+    if (viewport.width === 320) {
+      for (let placed = 0; placed < 7; placed += 1) await placeChronologyChoiceClean(page)
+      await expect(page.locator('.app-counter-label')).toContainText('−2')
+    }
+
+    const title = page.locator('.daily-mode-title')
+    const counter = page.locator('.app-counter-label')
+    const back = page.getByRole('button', { name: 'Back to menu' })
+    const help = page.getByRole('button', { name: 'How to play' })
+    const [titleBox, counterBox, backBox, helpBox] = await Promise.all([
+      title.boundingBox(),
+      counter.boundingBox(),
+      back.boundingBox(),
+      help.boundingBox(),
+    ])
+    expect(titleBox).not.toBeNull()
+    expect(counterBox).not.toBeNull()
+    expect(backBox).not.toBeNull()
+    expect(helpBox).not.toBeNull()
+    expect(titleBox!.x + titleBox!.width).toBeLessThanOrEqual(counterBox!.x - 2)
+    expect(backBox!.height).toBeGreaterThanOrEqual(44)
+    const helpHitTarget = await help.evaluate((element) => {
+      const button = element.getBoundingClientRect()
+      const target = getComputedStyle(element, '::after')
+      return {
+        width: Math.max(button.width, Number.parseFloat(target.width)),
+        height: Math.max(button.height, Number.parseFloat(target.height)),
+      }
+    })
+    expect(helpHitTarget.width).toBeGreaterThanOrEqual(44)
+    expect(helpHitTarget.height).toBeGreaterThanOrEqual(44)
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true)
+
+    await help.click()
+    await expect(page.getByRole('dialog', { name: 'How to play Chronology' })).toBeVisible()
+    await page.keyboard.press('Escape')
+    await expect(page.getByRole('dialog', { name: 'How to play Chronology' })).toBeHidden()
+    await back.click()
   }
 })
 
@@ -894,4 +1413,166 @@ test('Duel exposes a compact tools dock, a real desktop table, and a stable resu
   await expect(help).toContainText('Matinee')
   await expect(help).toContainText('Feature')
   await expect(help).toContainText(/Director.s Cut/)
+})
+
+// Pins the browser's local calendar so a test can deal a specific daily board.
+// Both dailies derive their seed from localDateSeed()'s zero-argument new Date();
+// explicit Date arguments pass through untouched.
+async function pinLocalDate(page: Page, seed: string) {
+  await page.addInitScript({
+    content: `(() => {
+      const RealDate = Date
+      const fixed = new RealDate('${seed}T12:00:00')
+      window.Date = class extends RealDate {
+        constructor(...args) { if (args.length) { super(...args) } else { super(fixed.getTime()) } }
+        static now() { return fixed.getTime() }
+      }
+    })()`,
+  })
+}
+
+// The two worst boards from the Goal 4 title-fit inventory over all 365 baked
+// grids (audit/daily-duel-216-launch-readiness-2026-08-27/title-fit-inventory.ts):
+// 2026-09-25 packs four ≤8px-fit tiles including the corpus's longest unbreakable
+// word, and 2027-05-27 carries its longest title outright (54 chars, six lines).
+const longTitleBoards = [
+  { seed: '2026-09-25', label: 'densest board', extremeTile: 'blackkklansman' },
+  { seed: '2027-05-27', label: 'longest-title board', extremeTile: 'pirates-of-the-caribbean-the-curse-of-the-black-pearl' },
+]
+
+for (const board of longTitleBoards) {
+  test(`Connections long-title ${board.label} stays fully readable at release viewports`, async ({ page, browserFaults }) => {
+    void browserFaults
+    await pinLocalDate(page, board.seed)
+    const viewports = [
+      { width: 320, height: 568 },
+      { width: 360, height: 800 },
+      { width: 390, height: 844 },
+      { width: 768, height: 1024 },
+      { width: 1024, height: 768 },
+    ]
+
+    for (const viewport of viewports) {
+      await page.setViewportSize(viewport)
+      await openMenu(page)
+      await page.locator('[data-mode="connections"]').click()
+      const extreme = page.locator(`[data-tile="${board.extremeTile}"]`)
+      await expect(extreme).toBeVisible()
+      // rect reads need the real Domine metrics: fonts.ready alone can resolve
+      // before the lazily-fetched face starts loading, and the later swap
+      // re-runs the tiles' layout animation mid-measurement. Force the load,
+      // then let the swap-triggered springs finish.
+      await page.evaluate(async () => {
+        await document.fonts.load('700 10px Domine')
+        await document.fonts.ready
+      })
+      await page.waitForTimeout(450)
+
+      const tiles = await page.locator('[data-tile]').evaluateAll((buttons) =>
+        buttons.map((button) => {
+          const span = button.querySelector('.connections-tile-title')!
+          const style = getComputedStyle(span)
+          const rect = span.getBoundingClientRect()
+          return {
+            id: button.getAttribute('data-tile'),
+            height: button.getBoundingClientRect().height,
+            fontPx: parseFloat(style.fontSize),
+            lines: Math.round(rect.height / parseFloat(style.lineHeight)),
+            truncated: span.scrollHeight > span.clientHeight + 1,
+          }
+        }),
+      )
+      expect(tiles).toHaveLength(16)
+      // the 6-line clamp is a safety net, never a scissor: no hidden title text
+      expect(tiles.filter((tile) => tile.truncated)).toEqual([])
+      expect(tiles.every((tile) => tile.lines <= 6)).toBe(true)
+      // uniform square tiles: no row stretches to absorb a dense title (a real
+      // stretch differs by a full line; sub-pixel grid rounding stays under 1px)
+      const heights = tiles.map((tile) => tile.height)
+      expect(Math.max(...heights) - Math.min(...heights)).toBeLessThan(1)
+      expect(tiles.every((tile) => tile.fontPx >= 6.5 && tile.fontPx <= 14.5)).toBe(true)
+
+      // the selection ordinal renders on its navy chip inside the tile bounds
+      await extreme.click()
+      await expect(extreme).toHaveAttribute('aria-pressed', 'true')
+      const badgeInside = await extreme.evaluate((button) => {
+        const badge = [...button.querySelectorAll('span')].find((span) => span.textContent?.startsWith('PICK'))
+        if (!badge) return false
+        const badgeRect = badge.getBoundingClientRect()
+        const tileRect = button.getBoundingClientRect()
+        return badgeRect.left >= tileRect.left && badgeRect.right <= tileRect.right &&
+          badgeRect.top >= tileRect.top && badgeRect.bottom <= tileRect.bottom
+      })
+      expect(badgeInside).toBe(true)
+      if (process.env.CAPTURE_LAUNCH_EVIDENCE === '1') {
+        await page.screenshot({
+          path: `output/playwright/launch-readiness/long-title-${board.seed}-${viewport.width}x${viewport.height}.png`,
+        })
+      }
+      await extreme.click()
+      await expect(extreme).toHaveAttribute('aria-pressed', 'false')
+    }
+
+    // solved-band readability: solve the extreme title's own group and keep all
+    // four full titles inside the band without sideways clipping
+    await page.setViewportSize({ width: 390, height: 844 })
+    await openMenu(page)
+    await page.locator('[data-mode="connections"]').click()
+    const group = connectionsGridForSeed(board.seed).groups.find((candidate) =>
+      candidate.films.includes(board.extremeTile),
+    )!
+    for (const film of group.films) await page.locator(`[data-tile="${film}"]`).click()
+    await page.locator('[data-action="submit"]').click()
+    const band = page.locator('[data-solved-group]').first()
+    await expect(band).toBeVisible()
+    for (const film of group.films) {
+      await expect(band).toContainText(movieById.get(film)!.title)
+    }
+    expect(await band.evaluate((element) => element.scrollWidth <= element.clientWidth + 1)).toBe(true)
+  })
+}
+
+test('Chronology placement hint clears the choice tickets at desktop heights', async ({ page, browserFaults }) => {
+  void browserFaults
+  // 1024x768 sat in the 721-802px-tall envelope where the top-anchored hint and
+  // the bottom-anchored tray used to intersect (Now-pass screenshot 07)
+  const viewports = [
+    { width: 768, height: 1024 },
+    { width: 1024, height: 768 },
+    { width: 1280, height: 800 },
+  ]
+
+  for (const viewport of viewports) {
+    await page.setViewportSize(viewport)
+    await openMenu(page)
+    await page.locator('[data-mode="chronology"]').click()
+    await expect(page.locator('[data-mode-stage="chronology"]')).toBeVisible()
+    await page.waitForTimeout(300)
+
+    const checkClearance = async () => {
+      const clearance = await page.evaluate(() => {
+        const hint = document.querySelector('.chrono-reel-instruction')!
+        const hintRect = hint.getBoundingClientRect()
+        const overlaps = [...document.querySelectorAll('.chrono-hand [data-choice]')].filter((ticket) => {
+          const rect = ticket.getBoundingClientRect()
+          return hintRect.bottom > rect.top && hintRect.top < rect.bottom &&
+            hintRect.right > rect.left && hintRect.left < rect.right
+        })
+        return { visible: getComputedStyle(hint).display !== 'none', overlapIds: overlaps.map((t) => t.getAttribute('data-choice')) }
+      })
+      expect(clearance.visible).toBe(true)
+      expect(clearance.overlapIds).toEqual([])
+    }
+
+    await checkClearance()
+    // the hint's operative state: a raised card waiting for a gap
+    await page.locator('[data-choice]').first().press('Enter')
+    await expect(page.locator('[data-gap] button').first()).toBeVisible()
+    await checkClearance()
+    if (process.env.CAPTURE_LAUNCH_EVIDENCE === '1' && viewport.width === 1024) {
+      await page.screenshot({
+        path: `output/playwright/launch-readiness/chronology-hint-${viewport.width}x${viewport.height}.png`,
+      })
+    }
+  }
 })

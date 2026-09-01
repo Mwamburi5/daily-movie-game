@@ -1,5 +1,5 @@
 import { CHRONOLOGY_POOL } from './data/chronologyPool.ts'
-import { DUEL_POOL } from './data/duelPool.ts'
+import { LEGACY_DUEL_POOL, dailyDuelPoolForSeed } from './data/duelPool.ts'
 import { PUZZLE } from './data/puzzle.ts'
 import { type ChronoDifficulty, HAND_SIZE, dealRoundShaped, isLineSorted } from './lib/chronology.ts'
 import { dailySoloPuzzle, localDateSeed } from './lib/daily.ts'
@@ -12,15 +12,17 @@ import { isSolvable } from './lib/solver.ts'
 export function runDevAssertions() {
   ;(window as unknown as Record<string, unknown>).__matchcutProgress = progress
 
-  const order = isSolvable(PUZZLE, DUEL_POOL)
+  const order = isSolvable(PUZZLE, LEGACY_DUEL_POOL)
   console.assert(order !== null, '[matchcut] Bundled practice puzzle is NOT solvable — fix src/data')
   if (order) {
-    const title = (id: string) => DUEL_POOL.find((m) => m.id === id)?.title ?? id
+    const title = (id: string) => LEGACY_DUEL_POOL.find((m) => m.id === id)?.title ?? id
     console.info('[matchcut] practice puzzle solvable, e.g.:', order.map(title).join(' → '))
   }
 
-  const daily = dailySoloPuzzle(localDateSeed(), DUEL_POOL)
-  console.assert(isSolvable(daily, DUEL_POOL) !== null, '[matchcut] Solo daily is NOT solvable — check lib/daily.ts')
+  const seed = localDateSeed()
+  const dailyPool = dailyDuelPoolForSeed(seed)
+  const daily = dailySoloPuzzle(seed, dailyPool)
+  console.assert(isSolvable(daily, dailyPool) !== null, '[matchcut] Solo daily is NOT solvable — check lib/daily.ts')
   console.info(`[matchcut] solo daily ok: ${daily.id}, par ${daily.par}`)
 
   for (const difficulty of ['easy', 'standard', 'hard'] as ChronoDifficulty[]) {

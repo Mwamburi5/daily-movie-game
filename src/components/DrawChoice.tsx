@@ -40,8 +40,8 @@ export interface DrawOption {
   /** True → this card shares a person with a marquee pile top (the amber hint). */
   connects: boolean
   /** True → a wild: always kept, never burned (RULESET §11). When any option is
-      wild it becomes the ONLY tappable card; the parent renders it face-up and
-      its playerPickDraw guard force-keeps it regardless. */
+      wild, only wilds remain tappable; the parent keeps every revealed wild and
+      burns every non-wild regardless of which wild is tapped. */
   wild?: boolean
   /** The face-down card, rendered by the parent (StubCard faceUp={false} ticket back). */
   cardSlot: React.ReactNode
@@ -84,9 +84,10 @@ export default function DrawChoice({ options, onPick, reduce }: DrawChoiceProps)
   // the hook is only a fallback for a naked mount.
   const hookReduce = useReducedMotion()
   const soft = reduce || hookReduce
-  // A revealed wild collapses the choice: it's the forced keep (RULESET §11),
-  // the other cards go non-interactive and the copy states the rule.
-  const hasWild = options.some((o) => o.wild)
+  // A revealed wild collapses the choice: every wild is force-kept (RULESET
+  // §11), non-wilds go non-interactive, and the copy states the rule.
+  const wildCount = options.filter((o) => o.wild).length
+  const hasWild = wildCount > 0
   // Trap-only dialog (§7·7b a11y): a forced pick has no dismiss, so no onClose.
   const dialogRef = useDialogA11y()
 
@@ -98,7 +99,7 @@ export default function DrawChoice({ options, onPick, reduce }: DrawChoiceProps)
       ref={dialogRef}
       role="dialog"
       aria-modal="true"
-      aria-label="Drew three — keep one"
+      aria-label={hasWild ? `Drew ${options.length} — keep all ${wildCount} wild${wildCount === 1 ? '' : 's'}` : 'Drew three — keep one'}
       tabIndex={-1}
       className="absolute inset-0 z-[85] flex items-center justify-center px-3"
     >
@@ -147,7 +148,7 @@ export default function DrawChoice({ options, onPick, reduce }: DrawChoiceProps)
             {options.length === 1
               ? 'One left — take it'
               : hasWild
-                ? `Draw ${options.length} — wild is kept`
+                ? `Draw ${options.length} — ${wildCount > 1 ? 'wilds are' : 'wild is'} kept`
                 : options.length === 2
                   ? 'Draw 2 — keep one'
                   : 'Draw 3 — keep one'}
@@ -159,8 +160,8 @@ export default function DrawChoice({ options, onPick, reduce }: DrawChoiceProps)
               takeable → amber border + glow). */}
           <div className="mt-3.5 flex items-start justify-center gap-2">
             {options.map((opt, index) => {
-              // With a wild on the table only the wild is tappable — the other
-              // cards are already gone in rules terms (never a legal keep).
+              // With wilds on the table only wilds are tappable — every wild is
+              // kept, while non-wilds are already gone in rules terms.
               const dead = hasWild && !opt.wild
               return (
                 <button
@@ -171,7 +172,7 @@ export default function DrawChoice({ options, onPick, reduce }: DrawChoiceProps)
                   onClick={() => onPick(opt.id)}
                   aria-label={
                     opt.wild
-                      ? `Option ${index + 1} of ${options.length}: keep the wild — wilds are always kept`
+                      ? `Option ${index + 1} of ${options.length}: keep all ${wildCount} wild${wildCount === 1 ? '' : 's'} — wilds are never burned`
                       : dead
                         ? `Option ${index + 1} of ${options.length}: leaves the show — the wild is kept instead`
                         : opt.connects
@@ -202,7 +203,9 @@ export default function DrawChoice({ options, onPick, reduce }: DrawChoiceProps)
             {options.length <= 1
               ? 'Tap to keep — then play, hold, or toss it'
               : hasWild
-                ? 'A wild is never burned — tap it to keep it'
+                ? wildCount > 1
+                  ? 'Wilds are never burned — tap any wild to keep them all'
+                  : 'A wild is never burned — tap it to keep it'
                 : 'The rest leave the show — tap one to keep'}
           </span>
         </div>

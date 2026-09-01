@@ -264,13 +264,13 @@ function checkDeterminism(): void {
   // being established at dealer birth, exactly as solo-verify's 2026-07-03 pin
   // was). PIN_DAY is a human-legible spot-check of one concrete grid so a
   // failure shows WHAT moved, not just that the digest differs.
-  // Re-pinned for the Buri-selected Wave 3 content expansion over the unchanged
-  // anchor window 2026-07-06 → 2027-07-05, pool 304 films. The frozen Duel/Solo
-  // pool is unchanged; this pin tracks the credited Connections pool only.
+  // Re-pinned for the approved Daily / Duel 216-film cutover over the unchanged
+  // anchor window 2026-07-06 → 2027-07-05. Sixteen stub graduations move the
+  // credited Connections catalog from 304 to 320; Chronology remains 482.
   const digest = createHash('sha256')
     .update(seeds.map((s, i) => `${s}#${gridStr(grids[i])}`).join('\n'))
     .digest('hex')
-  const PIN_DIGEST = '7dd82d0499e2b5330ec852d895c99e0db19a1fade4f75c6b100afd4001f4d60f'
+  const PIN_DIGEST = '0f333d3236fea7c2033f3b49577acfa9c9b9e9c199d3802b5e0d48e2e8c6cab6'
   check(
     `pinned digest over ${DAYS} grids from ${seeds[0]}`,
     digest === PIN_DIGEST,
@@ -281,13 +281,13 @@ function checkDeterminism(): void {
   // digest differs. The anchor's first day.
   const PIN_DAY = '2026-07-06'
   const PIN_DAY_STR =
-    'actor:Elijah Wood=the-fellowship-of-the-ring,the-hobbit-an-unexpected-journey,the-return-of-the-king,the-two-towers|' +
-    'actor:Jon Voight=ali,enemy-of-the-state,heat,mission-impossible|' +
-    'actor:Mark Ruffalo=shutter-island,spider-man-brand-new-day,the-avengers,zodiac|' +
-    'actor:Steve Buscemi=fargo,monsters-inc,reservoir-dogs,the-big-lebowski'
+    'actor:Emily Blunt=a-quiet-place,a-quiet-place-part-ii,edge-of-tomorrow,looper|' +
+    'actor:Jack Black=anchorman,enemy-of-the-state,school-of-rock,the-super-mario-galaxy-movie|' +
+    'actor:Ryan Gosling=barbie,blade-runner-2049,la-la-land,the-notebook|' +
+    'genre:Action=crouching-tiger-hidden-dragon,die-hard,godzilla-minus-one,the-batman'
   const pinnedGrid = dealGrid(PIN_DAY)
   check(
-    `pinned seed ${PIN_DAY} → its exact grid (4 actor groups)`,
+    `pinned seed ${PIN_DAY} → its exact grid (3 actor + 1 genre)`,
     gridStr(pinnedGrid) === PIN_DAY_STR,
     `got ${gridStr(pinnedGrid)}`,
   )

@@ -9,6 +9,7 @@ import Onboarding from './components/Onboarding.tsx'
 import { type Difficulty, DIFFICULTIES, DIFFICULTY_META } from './lib/difficulty.ts'
 import { localDateSeed } from './lib/daily.ts'
 import { MOTION } from './lib/motion.ts'
+import { track } from './lib/analytics.ts'
 import {
   dailyStatus,
   duelRecord,
@@ -135,7 +136,10 @@ export default function App() {
           type="button"
           aria-label="How to play"
           data-rules-open
-          onClick={() => setShowRules(true)}
+          onClick={() => {
+            track('help_open', { mode: 'overview', state: 'menu' })
+            setShowRules(true)
+          }}
           className="app-help-button daily-icon-button text-[13px] font-extrabold active:scale-90"
         >
           <Icon name="help" size={20} />
@@ -315,7 +319,7 @@ export default function App() {
                 )}
               </span>
               <span className="mt-0.5 block font-stub-ui text-[12px] text-stub-slate">
-                Take turns scoring links. Race to 20 — high score wins.
+                Reaching 20 ends the show; highest net score wins.
               </span>
             </button>
             {/* Difficulty segmented control → Stub pill group: amber-active,

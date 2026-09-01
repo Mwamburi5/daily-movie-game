@@ -74,21 +74,19 @@ remaining surfaces are composed from them (§2.4).
 
 | | entry | pool | daily | sim/data | Stub UI |
 |---|---|---|---|---|---|
-| Solo | `SoloGame.tsx` | `DUEL_POOL` 89 (frozen; cutover = Buri, W5) | constructive walk, solver par | `verify:solo` 8/8 + append-only pin | ✗ (W3) |
-| Duel | `DuelGame.tsx` **1,999 ln / 35 useState** | `DUEL_POOL` 89 (frozen, fnv pin) | none (by design) | `verify` 64/64 · eval tune 66.7/49.2/43.5 · tilt in band (A 53.6/B 44.1) | components forged, unwired (W1–W2) |
-| Chronology | `ChronologyGame.tsx` | `chronology-pool.json` 162 | `dealRoundShaped(seed)` | `verify:chronology` 42/42 (**no published-daily pin yet** — W5) | ✗ (W3) |
-| Connections | **no app code** | — | — | `sim/connections-gen.ts` exists (ambiguity gate, deterministic dealGrid, yield 9.86M/≈3.05M strict @237) | ✗ (W4) |
+| Solo | `SoloGame.tsx` | legacy 89 through 2026-09-26; 216 from 2026-09-27; practice 89 | constructive walk, solver par | `verify:solo` 8/8 + boundary/legacy pins | ✓ |
+| Duel | `DuelGame.tsx` **2,309 ln / 41 useState** | 216 real + 16 wilds (ordered digest pinned) | none (by design) | `verify` 64/64 · eval tune 65.9/50.3/41.4 · tilt in band (A 50.1/B 47.2) | ✓ |
+| Chronology | `ChronologyGame.tsx` | `chronology-pool.json` 482 | `dealRoundShaped(seed)` | `verify:chronology` 42/42 | ✓ |
+| Connections | `ConnectionsGame.tsx` | `MOVIES` 320; 365 baked grids | `dealGrid(seed)` | `verify:connections` 14/14 + baked digest/pin | ✓ |
 
-**Shared substrate:** `MOVIES` = 237 credited films; A4 unification designed +
-signed off, **not implemented** (P1); Stage B growth plan written (P2); TMDB
-tooling live, 24 rulings + 3 standing policies; attribution shipped in
-HowToPlay. **The Connections dealer lock existed only in session memory until
-this doc** — now recorded in §4·W4.
+**Shared substrate:** `MOVIES` = 320 credited films; the dated Chronology catalog
+remains 482. Daily/Duel's current 216 and legacy 89 are explicit ordered
+versions. TMDB tooling, standing rulings, name/date audits, attribution, and the
+Connections dealer/baked-runtime lock are all live.
 
-**Stale facts corrected by this doc:** DuelGame is 1,999/35 (not 1,300/31 nor
-1,989/31) · gates are 64/64 (not 60/60) · RULEBOOK Mode 3 exists (old open item
-dead) · the Wave-D "double-tap Allow It guard" already exists
-(`resolvingOffer`, DuelGame.tsx:243) · `tsc` is not a separate gate (build runs it).
+**Current facts:** DuelGame is 2,309/41 · gates are 64/64 (not 60/60) ·
+RULEBOOK covers all four modes · the Wave-D "double-tap Allow It guard" exists
+(`resolvingOffer`, DuelGame.tsx:295) · `tsc` is not a separate gate (build runs it).
 
 ## 2. Operating rules (the constitution)
 
@@ -106,8 +104,8 @@ dead) · the Wave-D "double-tap Allow It guard" already exists
    before more UI work. Deploys always wait.
 3. **Gate policy:** quick suite (`build` + `verify:solo` + `verify:chronology`,
    ≈5s) freely, after any change. Full `verify` (2m37s) at every wave close and
-   after any change touching `sim/`, `src/lib/`, or deal paths. `eval` tune only
-   on content merges into the frozen 89 (expected byte-identical). New gates
+   after any change touching `sim/`, `src/lib/`, or deal paths. `eval` tune on
+   any Daily/Duel content or mechanic change. New gates
    join, never replace: `verify:connections` from W4 on.
 4. **UI acceptance:** every UI wave produces screenshot pairs — app vs the
    reference PNG in `design_handoff_screenshots/` — at **390×844 and 375×667**,
@@ -127,10 +125,10 @@ dead) · the Wave-D "double-tap Allow It guard" already exists
    each, quick suite between. No reducer refactor — the 35-useState soup is
    load-bearing. Contract line pins have drifted +5..+11 below :1300 since the
    flex-zone pass — re-verify pins at wire time, don't trust them blind.
-6. **Freezes:** deps locked (React 18 / Vite / Tailwind 4 / Framer only) ·
-   `DUEL_POOL_IDS` stays the tuned 89 this build · Duel/Solo rules and
-   `sim/RULESET.md` untouched (new *additive* Connections sim files are allowed
-   and get their own contract section in RULESET when the mode lands) ·
+6. **Freezes:** deps locked (React 18 / Vite / Tailwind 4 / Framer only) · the
+   legacy 89 and current 216 ordered pools are independently pinned · the
+   2026-09-27 seed boundary and 16-wild keep-all rule now require an explicit
+   owner-approved change plus full retune/parity gates ·
    localStorage = meta-state only (`matchcut:v1`) · **card faces are
    typographic this build (Buri re-ruled 2026-07-06):** the comps show
    scene-art cards, but the build renders the exact Stub frame (genre-colored
@@ -975,6 +973,34 @@ what's ready-to-review per sitting.
       Chronology 42/42, Connections 14/14, browser 25/25, and diff checks. Work
       remains uncommitted, unpushed, and undeployed; attended accessibility,
       real-device, production, and indexing gates remain separate.
+- [x] **CONTENT CUTOVER · Daily Puzzle / Duel 216 + 16 — RELEASE CHECKPOINT
+      2026-08-26:** Buri approved the exact 216 Keep / 0 Maybe / 6 Strike slate,
+      the all-time-film 16-wild roster, keep-all multi-wild behavior, and
+      `2026-09-27` as the first expanded Daily. Seeds through 2026-09-26 remain
+      byte-pinned to the legacy 89; Duel uses 216 after release. The 16 full
+      Movie records and two approved series-continuity tags are live in the
+      local candidate. Existing difficulty controls were retuned to
+      65.9/50.3/41.4 over 8,000 seeded games per tier without changing scoring,
+      deals, hand size, target, melds, or Recast. Chronology stays byte-identical
+      at 482 dated films; Connections is rebaked and re-pinned for 320 credited
+      films. Local gates: build, budgets, security, Duel 64/64, Solo 8/8,
+      Chronology 42/42, Connections 14/14, browser 27/27, names, and diff check.
+      Full evidence: `docs/daily-duel-216-release-checkpoint.md`. Work is stopped
+      uncommitted, unpushed, undeployed, and unindexed for owner review.
+- [x] **CONTENT CUTOVER · 216 + 16 Now fix review — LOCALLY VERIFIED
+      2026-08-27:** the browser gate now uses real-card, `VITE_E2E`-only states
+      for ordinary/one-wild/multi-wild Draw 3 and the reduced-motion no-helper/
+      Take-helper split; affected coverage passed 60/60 and the normal build
+      contains no fixture marker. Chronology's 320 px title no longer collides
+      with `STROKES`; current menu/onboarding/Help/result surfaces use CPU and
+      the exact 20/net promise; Daily/Duel series wording matches the existing
+      person-gated helper, backed by a synthetic series-only characterization.
+      Node 24 gates: build, bundle, security, Duel 64/64, Solo 8/8, Chronology
+      42/42, Connections 14/14, browser 31/31 twice, and live-flow tune
+      65.9/50.3/41.4 with zero stalemates. Evidence:
+      `docs/daily-duel-216-now-fix-pass-checkpoint.md`. Work remains unstaged,
+      uncommitted, unpushed, undeployed, and unindexed; launch readiness is a
+      separate approval-gated pass.
 - [x] **PRE-LAUNCH POLISH · Goal 4 security hardening — LOCALLY + PREVIEW
       VERIFIED; ATTENDED ACCOUNTS OPEN 2026-08-18:** `vercel.json` now carries a
       restrictive CSP and defense-in-depth headers, mirrored into Vite preview
@@ -1565,3 +1591,21 @@ after the pilot is approved, but further movie additions should not.
   plan after the full status audit and three-direction Chronology concept pass.
   Further movie expansion pauses behind the visual, delivery, measurement,
   leaderboard, rights, and launch gates. Cost model assumes 1,000 daily players.
+- v5 (2026-08-31): launch-readiness pass COMPLETE through its local stop point
+  (Goals 0–3 on 08-28; R0+4–8 on 08-31, all receipted in
+  `audit/daily-duel-216-launch-readiness-2026-08-27/manifest.md`). F05/F06/F09/
+  F10/F11/F12 resolved locally (support route + privacy disclosure · journey
+  analytics dictionary with exact-once proofs · full Node 24 matrix ·
+  path-by-path security-count reconciliation incl. the `bundle-report.json`
+  gate-order artifact · progress sanitization · measured long-title/hint fixes
+  with regression tests); F07 partial (automated Chromium/WebKit/200% closed;
+  five attended lanes `ATTENDED NOT RUN` with continuation scripts in
+  `docs/daily-duel-216-attended-acceptance.md`); F08 open by design.
+  ⚠ menu shell at 99.85/100 KiB gzip — budget effectively spent. Verdict and
+  the exact-path staging proposal (A+B+C release commit, promo excluded,
+  audit/ force-add = Buri decision):
+  `docs/daily-duel-216-launch-readiness-checkpoint.md`. Next: Buri's
+  Approval 1 (stage → commit → push for exact-SHA CI), then PR → merge to
+  `main` (priority directive 2026-08-31), then Preview / deploy / indexing as
+  separate gates. First 216 Daily stays pinned to 2026-09-27 — 27-day runway
+  at writing.

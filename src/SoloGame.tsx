@@ -1,12 +1,13 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { movieById } from './data/movies.ts'
-import { DUEL_POOL } from './data/duelPool.ts'
+import { LEGACY_DUEL_POOL, dailyDuelPoolForSeed } from './data/duelPool.ts'
 import { PUZZLE } from './data/puzzle.ts'
 import { dailySoloPuzzle, localDateSeed } from './lib/daily.ts'
 import { hasAnyPlay, isSolvable, sharedPeople, type Role } from './lib/solver.ts'
 import { recordDailyFinish, type DailyFinish } from './lib/progress.ts'
 import { track } from './lib/analytics.ts'
+import { useJourneyAnalytics } from './lib/journeyAnalytics.ts'
 import { MOTION } from './lib/motion.ts'
 import StubCard from './components/StubCard.tsx'
 import Hand from './components/Hand.tsx'
@@ -25,6 +26,14 @@ export type SoloStart = { kind: 'daily' } | { kind: 'practice' }
 
 type Status = 'playing' | 'won' | 'stuck'
 
+const initialDailySeed = () => {
+  if (import.meta.env.VITE_E2E === '1') {
+    const override = new URLSearchParams(window.location.search).get('dailySeed')
+    if (override && /^\d{4}-\d{2}-\d{2}$/.test(override)) return override
+  }
+  return localDateSeed()
+}
+
 // "Robert De Niro" -> "De Niro", for the combo badge
 const surname = (name: string) => {
   const parts = name.split(' ')
@@ -40,15 +49,20 @@ interface Connection {
 
 export default function SoloGame({ onExit, start }: { onExit: () => void; start: SoloStart }) {
   const reduce = useReducedMotion()
+  const journey = useJourneyAnalytics({ mode: 'solo', kind: start.kind })
   // Today's seed, fixed at mount (same pattern as Chronology's dailySeed ref) —
   // the deal and the streak record must key off the SAME seed even if midnight
   // passes mid-game.
-  const dailySeed = useRef(localDateSeed()).current
+  const dailySeed = useRef(initialDailySeed()).current
+  const puzzlePool = useMemo(
+    () => (start.kind === 'daily' ? dailyDuelPoolForSeed(dailySeed) : LEGACY_DUEL_POOL),
+    [start.kind, dailySeed],
+  )
   // The puzzle is fixed for the life of the mount: today's generated daily, or
   // the designed practice hand. Restart replays the same board.
   const puzzle = useMemo(
-    () => (start.kind === 'daily' ? dailySoloPuzzle(dailySeed, DUEL_POOL) : PUZZLE),
-    [start.kind, dailySeed],
+    () => (start.kind === 'daily' ? dailySoloPuzzle(dailySeed, puzzlePool) : PUZZLE),
+    [start.kind, dailySeed, puzzlePool],
   )
   const [hand, setHand] = useState<string[]>(puzzle.handMovieIds)
   const [pile, setPile] = useState<string[]>([puzzle.starterMovieId])
@@ -103,7 +117,7 @@ export default function SoloGame({ onExit, start }: { onExit: () => void; start:
   const underlays = pile.slice(0, -1).slice(-2)
 
   // One winning order from the starter, for the stuck screen reveal.
-  const solution = useMemo(() => isSolvable(puzzle, DUEL_POOL) ?? [], [puzzle])
+  const solution = useMemo(() => isSolvable(puzzle, puzzlePool) ?? [], [puzzle, puzzlePool])
   const solutionSteps = useMemo(
     () =>
       solution.map((id, i) => {
@@ -122,6 +136,7 @@ export default function SoloGame({ onExit, start }: { onExit: () => void; start:
 
   const flipCard = (id: string) => {
     if (status !== 'playing') return
+    journey.action('flip', true)
     if (!faceUp.has(id) && !flippedEver.has(id)) {
       setFlippedEver((prev) => new Set(prev).add(id))
       setFlipPulse((n) => n + 1)
@@ -140,8 +155,10 @@ export default function SoloGame({ onExit, start }: { onExit: () => void; start:
     if (status !== 'playing') return
     const card = movieById.get(id)!
     const shared = sharedPeople(topMovie, card)
+    journey.action('play', shared.length > 0)
 
     if (shared.length === 0) {
+      journey.friction('invalid_play')
       setInvalids((n) => n + 1) // +2 on the flip counter
       setInvalidNonce((n) => n + 1) // trigger shake
       setInvalidNotice(true)
@@ -213,9 +230,7 @@ export default function SoloGame({ onExit, start }: { onExit: () => void; start:
   }
 
   const resetGame = () => {
-    // a replay is a new game for analytics — the mount effect only covers the
-    // first deal, so re-fire here to keep mode_start ↔ mode_finish paired 1:1
-    track('mode_start', { mode: 'solo', kind: start.kind })
+    journey.replay()
     window.clearTimeout(lowerTimer.current)
     window.clearTimeout(invalidNoticeTimer.current)
     setHand(puzzle.handMovieIds)
@@ -239,11 +254,6 @@ export default function SoloGame({ onExit, start }: { onExit: () => void; start:
     const t = window.setTimeout(() => setConnection(null), 2600)
     return () => window.clearTimeout(t)
   }, [connection])
-
-  useEffect(() => {
-    track('mode_start', { mode: 'solo', kind: start.kind })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
 
   // Reaching the end screen (won OR stuck) completes the daily. The streak
   // record is once-per-seed inside recordDailyFinish, so a same-day replay via
@@ -325,7 +335,10 @@ export default function SoloGame({ onExit, start }: { onExit: () => void; start:
                   type="button"
                   aria-label="How to play"
                   data-rules-open
-                  onClick={() => setShowRules(true)}
+                  onClick={() => {
+                    journey.helpOpen(status === 'playing' ? 'playing' : 'result')
+                    setShowRules(true)
+                  }}
                   className="app-help-button daily-icon-button text-[12px] font-extrabold active:scale-90"
                 >
                   <Icon name="help" size={20} />
@@ -515,7 +528,11 @@ export default function SoloGame({ onExit, start }: { onExit: () => void; start:
           faceUp={faceUp}
           invalidNonce={invalidNonce}
           raisedBottom={256}
-          onRaise={(id) => status === 'playing' && setRaisedId(id)}
+          onRaise={(id) => {
+            if (status !== 'playing') return
+            journey.action('select', true)
+            setRaisedId(id)
+          }}
           onFlip={flipCard}
           onDrop={attemptPlay}
           fanClassName="daily-solo-hand"
@@ -567,7 +584,15 @@ export default function SoloGame({ onExit, start }: { onExit: () => void; start:
         </AnimatePresence>
 
         <AnimatePresence>
-          {showRules && <HowToPlay context="solo" onClose={() => setShowRules(false)} />}
+          {showRules && (
+            <HowToPlay
+              context="solo"
+              onClose={() => {
+                journey.helpClose()
+                setShowRules(false)
+              }}
+            />
+          )}
         </AnimatePresence>
       </div>
     </div>

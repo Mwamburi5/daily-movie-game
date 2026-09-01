@@ -18,14 +18,15 @@ construction. What this document pins is the **turn orchestration** and the
 
 ## 1. Setup
 
-- 89 unique movie cards **+ 3 wild cards** (see `#11`). `deal()` shuffles the 89,
-  then: `starter` = 1 card, each side draws 7, the rest form the deck; the 3 wilds
-  are then spliced into the **deck** (never the opening piles/hands). So the deck
-  holds 73 real + 3 wild = 76 cards.
+- 216 unique movie cards **+ 16 wild cards** (see `#11`). `deal()` shuffles the
+  216, then: `starter` = 1 card, each side draws 7, and the second Double Feature
+  pile takes 1 more real card. The 16 wilds are then spliced into the **draw deck**
+  (never the opening piles/hands). So the live draw deck holds 200 real + 16 wild
+  = 216 cards.
 - Tokens per side: **Final Cut** ×1, **Recast** ×1.
 - Cards live in exactly one zone at all times: pile(s) · both hands · deck ·
   banked melds · burned. (Conservation invariant — see `#2`; wilds are conserved
-  separately, exactly 3 in play at all times.)
+  separately, exactly 16 in play at all times.)
 
 ## 2. Scoring economy (shared constants — do not drift)
 
@@ -119,16 +120,17 @@ order. First applicable action wins:
 
 | Tier | deepLinks | deepMelds | policy | whiff | meldMiss | meldLazy | recast |
 |---|---|---|---|---|---|---|---|
-| Matinee | no | no | random | .44 | .68 | no | never |
-| Feature | yes | no | greedy | .05 | 0 | **no** | gameLoss |
-| Director's | yes | yes | greedyDenial | .18 | 0 | no | full |
+| Matinee | no | no | random | .44 | .80 | no | never |
+| Feature | yes | no | greedy | .05 | 0 | **yes** | gameLoss |
+| Director's | yes | yes | greedyDenial | .18 | .30 | no | full |
 
-Tuned for the **full base game** (flow package + the four funpass winners, `#11`) to land the casual
-player at ~65 / 50 / 41 % win rate vs Matinee / Feature / Director's (measured 66 / 50 / 42 @ 6000
-games, `npm run eval tune`). The winners lifted casual on Feature to ~52.5; **re-tuned 2026-06-30**
-by flipping Feature `meldLazy → no` (eager melding) — whiff proved a no-op lever that low. Director's
-keeps deep knowledge ("sees everything") but whiffs .18 so a casual can still take ~2 of 5 — the
-whiff is execution, not sight.
+Tuned for the **full base game** (flow package + the four funpass winners, `#11`)
+to land the casual player at ~65 / 50 / 41 % win rate vs Matinee / Feature /
+Director's. **Re-tuned 2026-08-25 for 216 real + 16 wilds**, measured at
+65.9 / 50.3 / 41.4 over 8,000 seeded games per tier. Only existing CPU controls
+changed: Matinee meld miss .68→.80, Feature `meldLazy` no→yes, and Director's
+meld miss 0→.30. Director's keeps deep knowledge ("sees everything"); no scoring,
+deal, hand, target, meld, or Recast rule changed.
 
 Simulated casual player (`HUMAN_CASUAL`): greedy, whiff .22, meldMiss .45,
 recast gameLoss, no deep knowledge.
@@ -146,8 +148,10 @@ them by default. All three call the same `src/lib/` helpers React does.
 - **Double Feature** (`doubleFeature`): two side-by-side pile tops, seeded by the
   starter + the first deck card. A play may land on **either** top; the agent
   picks the best (card, pile) pair. A run stays on the pile it started.
-- **Draw-3-keep-1** (`draw3`): a draw reveals 3, the agent keeps the best 1, and
-  **burns the other 2** (out of play — tracked in the `burned` zone).
+- **Draw-3-keep-1** (`draw3`): a draw reveals 3, the agent normally keeps the
+  best 1 and **burns the other 2** (out of play — tracked in the `burned` zone).
+  If any wilds are revealed, every wild is kept and only non-wilds burn; a
+  multi-wild reveal can therefore grow the hand by more than one.
 - **Race to target** (`targetScore`): the game also ends the moment a side
   reaches N played points.
 - **Go-out bonus** (`goOutBonus`): bonus points for emptying your hand.
@@ -216,15 +220,19 @@ collapsed to base game (no flags). React and the sim share the implementation.
   Genre sets take **no** wild filler (a wild's genre is private). Sim'd 3-vs-5,
   LOCKED at 3.
 
-- **Wild cards ×3** (`12 Angry Men`, `Casablanca`, `Citizen Kane`). Blank Movies —
+- **Wild cards ×16** (`12 Angry Men`, `Casablanca`, `Citizen Kane`, `The Wizard
+  of Oz`, `2001: A Space Odyssey`, `Psycho`, `Seven Samurai`, `Singin’ in the
+  Rain`, `Dr. Strangelove`, `Vertigo`, `Tokyo Story`, `Bicycle Thieves`, `In the
+  Mood for Love`, `Spirited Away`, `Metropolis`, `Pather Panchali`). Blank Movies —
   empty credits, each a unique private genre — spliced into the deck. Behaviors:
   - **Transparent on a pile**: `topForLinking` skips trailing wilds, so the real
     card beneath still links. A wild plays onto any pile for **+0** (universal
     shed/unstick).
   - **Meld filler**: ≤1 wild per meld, ≥2 real cards; the wild scores 0 and
     defines no rung. Never bridges two unrelated cards.
-  - **Kept, never burned**: a drawn wild is always kept (a player obviously keeps
-    a universal). Conserved: exactly 3 in play at all times.
+  - **Kept, never burned**: every wild in a draw-3 reveal is kept. If two or
+    three appear together, all enter the hand and every non-wild burns; the hand
+    may grow by more than one. Conserved: exactly 16 in play at all times.
   - **NEW RULE — wild-blocks-take** (2026-06-30): a wild covering a pile top
     **blocks the take** — you can't lift the (real) linking card buried beneath a
     transparent wild. `takeToMeld` skips wild-topped piles. (Forced by a

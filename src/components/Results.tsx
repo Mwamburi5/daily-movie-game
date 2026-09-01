@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
 import { useDialogA11y } from './useDialogA11y.ts'
 import { matchCutShare } from '../lib/share.ts'
-import type { EventData } from '../lib/analytics.ts'
+import type { ModeIdentity } from '../lib/analytics.ts'
 import type { DailyFinish } from '../lib/progress.ts'
 import ShareCopy from './ShareCopy.tsx'
 import ResultActions from './ResultActions.tsx'
@@ -25,7 +25,7 @@ interface ResultsProps {
   solution: SolutionStep[]
   daily: DailyFinish | null // streak readout — null on practice rounds
   practice: boolean // practice hand: marks the share line, relabels replay
-  analytics: EventData // mode identity for the share event (SoloGame owns kind)
+  analytics: ModeIdentity // mode identity for the share event (SoloGame owns kind)
   onReset: () => void
   onMenu: () => void // back to the mode menu (W5d: every end screen routes home)
 }

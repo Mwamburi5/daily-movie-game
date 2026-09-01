@@ -160,3 +160,15 @@ MFA/access, and the rollback drill remain open.
 - Missing legal target, clipped essential control, or inaccessible modal escape.
 - Bundle/session budget regression outside an explicitly approved exception.
 - Monitoring, analytics, privacy, or cost controls fail the launch contract.
+
+Launch-readiness candidate recorded 2026-08-31: branch
+`codex/daily-mode-polish`, HEAD `ce398376d0c03be5356d64000557817c2f0150c3`
+(1 ahead of origin, unpushed), plus the classified dirty candidate —
+categories, combined-diff review requirement, excluded promo files, and the
+`audit/` force-add decision are specified in
+`docs/daily-duel-216-launch-readiness-checkpoint.md` §12. Full Node 24 local
+matrix green 2026-08-31 (64/64 · 8/8 · 42/42 · 14/14 · analytics · progress ·
+smoke 38/38 ×2 · tune 65.9/50.3/41.4 asserts-on · build/bundle/security/diff).
+Attended device/AT lanes for this candidate: `ATTENDED NOT RUN` — see
+`docs/daily-duel-216-attended-acceptance.md`. Commit, push, CI, Preview,
+deploy, and indexing remain unexecuted and separately gated.

@@ -34,7 +34,7 @@ export interface DuelMeta {
   wins: number
 }
 
-interface ProgressV1 {
+export interface ProgressV1 {
   v: 1
   solo: DailyMeta
   chronology: DailyMeta
@@ -77,6 +77,82 @@ const fresh = (): ProgressV1 => ({
   seenOnboarding: false,
 })
 
+const MAX_STREAK_DAYS = 36_525 // 100 years: generous, finite display guard.
+const MAX_DUEL_GAMES = 1_000_000
+const BEST_BOUNDS: Record<DailyMode, readonly [number, number]> = {
+  // Bounds sit far outside ordinary play except Connections, whose score is
+  // exactly the 0..3 mistakes used on a win. Safe integers outside these
+  // display ranges are clamped; wrong types/non-finite values reset to null.
+  solo: [-100, 1_000],
+  chronology: [-10, 100],
+  connections: [0, 3],
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null && !Array.isArray(value)
+}
+
+function boundedInteger(value: unknown, min: number, max: number, fallback: number): number {
+  if (!Number.isSafeInteger(value)) return fallback
+  return Math.max(min, Math.min(max, value as number))
+}
+
+function validSeed(value: unknown): value is string {
+  if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return false
+  const [year, month, day] = value.split('-').map(Number)
+  if (year < 2000) return false
+  const date = new Date(Date.UTC(year, month - 1, day))
+  return date.getUTCFullYear() === year && date.getUTCMonth() === month - 1 && date.getUTCDate() === day
+}
+
+function sanitizeDaily(value: unknown, mode: DailyMode): DailyMeta {
+  if (!isRecord(value)) return freshDaily()
+  const lastSeed = validSeed(value.lastSeed) ? value.lastSeed : null
+  const streak = lastSeed === null
+    ? 0
+    : boundedInteger(value.streak, 1, MAX_STREAK_DAYS, 1)
+  const [bestMin, bestMax] = BEST_BOUNDS[mode]
+  const best = value.best === null
+    ? null
+    : Number.isSafeInteger(value.best)
+      ? boundedInteger(value.best, bestMin, bestMax, bestMin)
+      : null
+  return { lastSeed, streak, best }
+}
+
+function sanitizeDuel(value: unknown): DuelMeta {
+  if (!isRecord(value)) return { plays: 0, wins: 0 }
+  const plays = boundedInteger(value.plays, 0, MAX_DUEL_GAMES, 0)
+  const wins = boundedInteger(value.wins, 0, plays, 0)
+  return { plays, wins }
+}
+
+// Sanitize each nested record independently. A corrupt Chronology record must
+// not erase a valid Solo streak; missing Connections and newer optional fields
+// retain the existing additive-v1 migration behavior.
+export function sanitizeProgress(value: unknown): ProgressV1 {
+  if (!isRecord(value) || value.v !== 1) return fresh()
+  const duel = isRecord(value.duel) ? value.duel : {}
+  const clean: ProgressV1 = {
+    v: 1,
+    solo: sanitizeDaily(value.solo, 'solo'),
+    chronology: sanitizeDaily(value.chronology, 'chronology'),
+    connections: sanitizeDaily(value.connections, 'connections'),
+    duel: {
+      matinee: sanitizeDuel(duel.matinee),
+      feature: sanitizeDuel(duel.feature),
+      directors: sanitizeDuel(duel.directors),
+    },
+    seenDragPlay: value.seenDragPlay === true,
+    seenOnboarding: value.seenOnboarding === true,
+  }
+  if (typeof value.seenIntro === 'boolean') clean.seenIntro = value.seenIntro
+  if (value.lastDifficulty === 'matinee' || value.lastDifficulty === 'feature' || value.lastDifficulty === 'directors') {
+    clean.lastDifficulty = value.lastDifficulty
+  }
+  return clean
+}
+
 // localStorage can be absent or throwing (Safari private mode, storage full).
 // Meta-state is a nicety — every failure path degrades to "no memory", never
 // to a broken game.
@@ -84,13 +160,7 @@ export function loadProgress(): ProgressV1 {
   try {
     const raw = window.localStorage.getItem(KEY)
     if (!raw) return fresh()
-    const p = JSON.parse(raw) as ProgressV1
-    if (p?.v !== 1 || !p.solo || !p.chronology || !p.duel) return fresh()
-    // connections is an additive v1 field (arrived with Mode 4). Backfill it on a
-    // pre-connections blob rather than requiring it — a missing mode must never
-    // wipe the solo/chronology streaks a player already earned.
-    if (!p.connections) p.connections = freshDaily()
-    return p
+    return sanitizeProgress(JSON.parse(raw))
   } catch {
     return fresh()
   }

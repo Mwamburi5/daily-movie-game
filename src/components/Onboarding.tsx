@@ -130,17 +130,17 @@ const SCREENS: Screen[] = [
   },
   {
     key: 'duel',
-    sentence: 'Duel: head-to-head against the computer. Race to 20.',
-    sliceLabel: 'A duel scoreboard: you 14, Taz 11, racing to 20 across two marquees',
+    sentence: 'Reaching 20 ends the show; highest net score wins.',
+    sliceLabel: 'A duel scoreboard: you 14, CPU 11; reaching 20 ends the show and highest net score wins',
     slice: (
       <span className="block">
         <span className="flex items-baseline justify-between font-stub-label text-[10px] font-bold uppercase tracking-[0.06em] text-stub-navy">
           <span>
             You <span className="text-[13px] tabular-nums">14</span>
           </span>
-          <span className="text-stub-slate">Race to 20</span>
+          <span className="text-stub-slate">Ends at 20</span>
           <span className="text-stub-slate">
-            Taz <span className="text-[13px] tabular-nums">11</span>
+            CPU <span className="text-[13px] tabular-nums">11</span>
           </span>
         </span>
         <span className="mt-2 block h-2 w-full overflow-hidden rounded-stub-pill border border-stub-navy bg-stub-paper">

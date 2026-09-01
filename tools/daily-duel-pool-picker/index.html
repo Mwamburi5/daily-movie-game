@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light" />
+    <title>Match Cut · 200-film pool picker</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="masthead">
+      <div>
+        <p class="eyebrow">MATCH CUT · AUTHORING TOOL</p>
+        <h1>200-film Daily / Duel picker</h1>
+        <p class="lede">
+          The current 89 are locked. The proposed 150 is the connected spine. Replace weaker tail cards
+          with outside challengers only when the live floors stay green.
+        </p>
+      </div>
+      <div class="model-stamp" aria-label="Model version">
+        <span>MODEL</span>
+        <code id="model-digest">loading…</code>
+      </div>
+    </header>
+
+    <section class="not-approval" aria-label="Approval boundary">
+      <strong>Review state is not approval.</strong>
+      Local choices persist in this browser, but no partial picker state changes game data. Export and
+      explicitly submit the finished selection to Buri’s Checkpoint 1 task.
+    </section>
+
+    <section class="dashboard" aria-labelledby="dashboard-title">
+      <div class="dashboard-heading">
+        <div>
+          <p class="eyebrow">LIVE KEEP SET</p>
+          <h2 id="dashboard-title"><span id="keep-count">—</span> / 200 real films</h2>
+        </div>
+        <div class="decision-counts" aria-label="Decision counts">
+          <span class="count keep">Keep <b id="count-keep">—</b></span>
+          <span class="count maybe">Maybe <b id="count-maybe">—</b></span>
+          <span class="count strike">Strike <b id="count-strike">—</b></span>
+        </div>
+      </div>
+
+      <div id="metric-grid" class="metric-grid" aria-live="polite"></div>
+      <div id="warnings" class="warnings" aria-live="polite"></div>
+
+      <details class="distribution-panel">
+        <summary>Live decade, genre, series, concentration, and deep-cut detail</summary>
+        <div id="distributions" class="distribution-grid"></div>
+      </details>
+    </section>
+
+    <section class="toolbar" aria-label="Picker filters and actions">
+      <label class="search-field">
+        <span>Search</span>
+        <input id="search" type="search" placeholder="Title, person, genre…" autocomplete="off" />
+      </label>
+      <label>
+        <span>Layer</span>
+        <select id="filter-layer">
+          <option value="all">All layers</option>
+          <option value="current-89">Locked current 89</option>
+          <option value="proposed-150">Proposed 150 spine</option>
+          <option value="fallback-175">150→175 fallback</option>
+          <option value="fallback-200">175→200 fallback</option>
+          <option value="outside-challenger">Outside challengers</option>
+        </select>
+      </label>
+      <label>
+        <span>Decision</span>
+        <select id="filter-decision">
+          <option value="all">All decisions</option>
+          <option value="keep">Keep</option>
+          <option value="maybe">Maybe</option>
+          <option value="strike">Strike</option>
+        </select>
+      </label>
+      <label>
+        <span>Gate</span>
+        <select id="filter-gate">
+          <option value="all">All gate states</option>
+          <option value="pass">Outside gate passes</option>
+          <option value="blocked">Outside gate blocked</option>
+          <option value="verified">Current credited</option>
+          <option value="provisional">Unverified metadata</option>
+        </select>
+      </label>
+      <label>
+        <span>Sort</span>
+        <select id="sort">
+          <option value="model">Model order</option>
+          <option value="title">Title A–Z</option>
+          <option value="year-new">Newest first</option>
+          <option value="year-old">Oldest first</option>
+          <option value="degree-high">Projected degree high</option>
+          <option value="degree-low">Projected degree low</option>
+          <option value="gate">Gate pass first</option>
+        </select>
+      </label>
+      <div class="toolbar-actions">
+        <button id="undo" type="button">Undo <kbd>U</kbd></button>
+        <button id="reset" type="button" class="danger-quiet">Reset</button>
+      </div>
+    </section>
+
+    <main class="workspace">
+      <section class="review-pane" aria-labelledby="active-title">
+        <nav class="candidate-nav" aria-label="Candidate navigation">
+          <button id="previous" type="button" aria-label="Previous visible card">← Previous</button>
+          <span id="review-position">— of —</span>
+          <button id="next" type="button" aria-label="Next visible card">Next →</button>
+        </nav>
+        <article id="active-card" class="active-card"></article>
+      </section>
+
+      <aside class="queue-pane" aria-labelledby="queue-title">
+        <div class="queue-heading">
+          <div>
+            <p class="eyebrow">VISIBLE QUEUE</p>
+            <h2 id="queue-title"><span id="visible-count">—</span> cards</h2>
+          </div>
+          <p>Tap a row to review it.</p>
+        </div>
+        <div id="queue" class="queue" role="list"></div>
+      </aside>
+    </main>
+
+    <footer class="export-bar">
+      <div>
+        <strong>Selection receipt</strong>
+        <span>Exports are evidence of picker state, not an implementation instruction.</span>
+      </div>
+      <div class="export-actions">
+        <button id="export-markdown" type="button">Export Markdown</button>
+        <button id="export-json" type="button">Export JSON</button>
+      </div>
+    </footer>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

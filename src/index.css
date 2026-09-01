@@ -433,7 +433,13 @@ body {
 }
 
 @media (max-width: 340px) {
+  [data-difficulty] {
+    padding-inline: 6px;
+    font-size: 9px;
+    letter-spacing: 0;
+  }
   .daily-mode-title { font-size: 21px; }
+  [data-mode-stage="chronology"] .daily-mode-title { font-size: 18px; }
   .daily-mode-header--solo .daily-mode-title { font-size: 21px; }
   .daily-mode-header--connections .daily-mode-title { font-size: 18px; }
   .daily-mode-header--connections .app-counter-label {
@@ -509,7 +515,10 @@ body {
     bottom: auto;
   }
   [data-mode-stage="chronology"] .chrono-reel-instruction {
-    top: clamp(610px, calc(50% + 200px), 710px);
+    /* min() caps the hint just above the bottom-anchored tray (12px offset +
+       170px tray + ~20px hint/gap): at 721-802px-tall desktops the two anchors
+       otherwise intersect and the hint lands on the middle choice tickets. */
+    top: min(clamp(610px, calc(50% + 200px), 710px), calc(100% - 202px));
     bottom: auto;
   }
   [data-mode-stage="chronology"] .chrono-hand {

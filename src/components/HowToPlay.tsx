@@ -29,7 +29,7 @@ const MODE_HELP: Record<Exclude<HelpContext, 'overview'>, ModeHelp> = {
         ordered: true,
         items: [
           'Choose a hand card, then tap it or press Enter to raise it.',
-          'Drag the raised card to the pile, or activate the pile by keyboard, when the movies share a valid credit.',
+          'Drag the raised card to the pile, or activate the pile by keyboard, when the movies share an actor, director, or writer.',
           'If you need a clue, tap the pile or raised card to flip for credits. Keep connecting until your hand is empty.',
         ],
       },
@@ -51,7 +51,7 @@ const MODE_HELP: Record<Exclude<HelpContext, 'overview'>, ModeHelp> = {
       {
         title: 'Daily and practice',
         items: [
-          'The daily is the same solver-proven hand for everyone on your local calendar day. Practice replays the original hand-designed puzzle.',
+          'The daily is the same solver-proven hand for everyone on your local calendar day. Dates from September 27, 2026 use the expanded 216-film pool; practice replays the original hand-designed puzzle.',
         ],
       },
     ],
@@ -158,22 +158,22 @@ const MODE_HELP: Record<Exclude<HelpContext, 'overview'>, ModeHelp> = {
   },
   duel: {
     label: 'Duel vs Computer',
-    objective: 'Take turns linking movies across two marquees and finish with the highest net score.',
+    objective: 'Take turns linking movies across two marquees. Reaching 20 ends the show; highest net score wins.',
     sections: [
       {
         title: 'What you do',
         ordered: true,
         items: [
-          'On your turn, play one hand card that shares a valid credit with either marquee pile, or draw three and keep one.',
+          'On your turn, play one hand card that shares an actor, director, or writer with either marquee, or draw three and keep one.',
           'Score links, bank Melds, and use your one Final Cut and one Recast token when they matter.',
-          'The show ends at 20 points, an empty hand, or two passes with an empty deck. Highest net score wins: points minus cards still held.',
+          'Reaching 20 ends the show; highest net score wins. An empty hand or two passes with an empty deck also ends the show. Net means points minus cards still held.',
         ],
       },
       {
         title: 'Links and scoring',
         items: [
           'Standard links score +1, strong links +2, and super links +4 plus an encore. Meld cards score by their locked Auteur, Actor, Series, or Genre rung.',
-          'Reaching 20 rings the bell; it does not override the final net-score comparison.',
+          'Series upgrades an otherwise legal person-linked play to a super link; a series-only pair is not an ordinary legal play. Series can also support a Meld.',
         ],
       },
       {
@@ -181,7 +181,7 @@ const MODE_HELP: Record<Exclude<HelpContext, 'overview'>, ModeHelp> = {
         items: [
           'Flip any playable card for free to read its printed credits. A deep cut links only through a hidden notable credit.',
           'Meld banks 3+ related films. Final Cut plays any card for +1. Recast cancels an opponent’s super link or Final Cut. Each token can be spent once.',
-          'A draw reveals three: keep one, toss one to a marquee for no points, or play a kept card if it connects. A drawn wild is always kept.',
+          'A draw reveals three: normally keep one, then hold it, toss it to a marquee for no points, or play it if it connects. Every revealed wild is kept, so a multi-wild draw can grow your hand by more than one.',
         ],
       },
       {
@@ -208,8 +208,10 @@ const OVERVIEW = [
   ['Daily Puzzle', 'Connect one hand to the pile. Golf scoring: low wins.'],
   ['Chronology', 'Place ten hidden-year titles from older to newer.'],
   ['Connections', 'Sort sixteen titles into four clean groups of four.'],
-  ['Duel vs Computer', 'Trade linked plays across two marquees and race to the highest net score.'],
+  ['Duel vs Computer', 'Reaching 20 ends the show; highest net score wins.'],
 ] as const
+
+const SUPPORT_URL = 'https://github.com/Mwamburi5/daily-movie-game/issues/new/choose'
 
 function Section({ section }: { section: HelpSection }) {
   const List = section.ordered ? 'ol' : 'ul'
@@ -338,6 +340,54 @@ export default function HowToPlay({
               </button>
             </p>
           )}
+
+          <section
+            className="mt-5 rounded-stub-panel border-2 border-stub-navy bg-stub-paper p-4 shadow-stub-card-resting"
+            data-player-support
+          >
+            <h3 className="font-stub-display text-[18px] font-bold text-stub-navy">Help &amp; privacy</h3>
+            <p className="mt-1 font-stub-ui text-[13px] leading-relaxed text-stub-slate">
+              Report bad movie data, accessibility trouble, or a broken game through the public GitHub issue chooser.
+              GitHub sign-in is required, and the report will be public. Do not include personal information such as
+              your name, email address, account details, or private device information.
+            </p>
+            <a
+              href={SUPPORT_URL}
+              target="_blank"
+              rel="noreferrer noopener"
+              aria-label="Open public GitHub support (opens in a new tab)"
+              className="mt-3 inline-flex min-h-11 items-center rounded-stub-pill bg-stub-navy px-5 py-2 font-stub-ui text-[13px] font-bold text-stub-cream shadow-stub-card-resting active:scale-[0.99]"
+              data-support-link
+            >
+              Open public GitHub support
+            </a>
+            <details className="mt-4 border-t border-stub-slate-light/40 pt-3" data-privacy-disclosure>
+              <summary className="min-h-11 cursor-pointer py-2 font-stub-ui text-[13px] font-bold text-stub-navy underline decoration-stub-amber decoration-2 underline-offset-4">
+                What this site saves and measures
+              </summary>
+              <div className="mt-2 space-y-3 font-stub-ui text-[12px] leading-relaxed text-stub-slate">
+                <p>
+                  On this device, Match Cut stores per-mode streaks, whether you played today, personal bests, and
+                  your Duel record. This progress stays in your browser and does not affect deals or game rules.
+                </p>
+                <p>
+                  Vercel Web Analytics records anonymous page views and a small set of journey events so confusing
+                  or broken areas can be found. Provider context can include the page and time, general location,
+                  browser and operating system, and device type.
+                </p>
+                <p>
+                  Match Cut does not add your movie or person choices, typed text, name, email address, or a
+                  persistent cross-day player ID to those events. Analytics is cookieless; Vercel discards the
+                  visitor session used for deduplication after 24 hours, so it resets daily. Match Cut has no user
+                  identity export, drain, or D1/D7 player tracking.
+                </p>
+                <p>
+                  Analytics retention follows Vercel’s service and plan reporting policy and may be longer than the
+                  guaranteed reporting window.
+                </p>
+              </div>
+            </details>
+          </section>
 
           <section className="mt-5 border-t border-stub-slate-light/40 pt-4" data-tmdb-attribution>
             <h3 className="font-stub-label text-[11px] font-bold uppercase tracking-wider text-stub-slate">About the data</h3>

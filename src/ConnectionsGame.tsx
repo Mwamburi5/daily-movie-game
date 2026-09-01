@@ -28,7 +28,8 @@ import { matchCutShare } from './lib/share.ts'
 import { localDateSeed } from './lib/daily.ts'
 import { makeRng } from './lib/rng.ts'
 import { recordDailyFinish, type DailyFinish } from './lib/progress.ts'
-import { track, type EventData } from './lib/analytics.ts'
+import { track, type ModeIdentity } from './lib/analytics.ts'
+import { useJourneyAnalytics } from './lib/journeyAnalytics.ts'
 import { MOTION } from './lib/motion.ts'
 import ShareCopy from './components/ShareCopy.tsx'
 import { useDialogA11y } from './components/useDialogA11y.ts'
@@ -92,14 +93,17 @@ const titleOf = (id: string): string => movieById.get(id)?.title ?? id
 // for the W5d landscape ticket stubs. CSS hyphenation can't help: the dictionary
 // can't split proper nouns, so break-word just chops them mid-word. Instead we
 // shrink the font until the LONGEST word fits the tile width AND the whole title
-// fits the 5-line clamp of the 62px stub. Width worst case: the 83px tile at the
+// fits about five lines of the stub. Width worst case: the 83px tile at the
 // 375px viewport minus borders and the 5px padding → ~69px of line width (the
 // 9px side notches protrude only 3.6px inward — they never reach the content
 // box, so they cost no width); against measured wide Domine caps (~0.73px per
 // char per px) that's the 91 divisor (69/0.73 with margin). The 460 line divisor
-// is ~5·69/0.73: total chars the five clamped lines can hold — five lines only
-// ever trigger on long titles whose fitted px is small, so the stack always
-// clears the 58px inner height (worst possible: 5 × 8px × 1.06 = 42). Splitting
+// is ~5·69/0.73: total chars five comfortable lines can hold. The clamp itself
+// is 6 lines (matching the ≤340px override): the char-count estimate runs a
+// shade optimistic for wide-cap extremes on the narrower 360px tile (measured
+// 2026-08-31: the 54-char Pirates title and 45-char Deathly Hallows needed a
+// 6th line there), and tiles hold 19px+ of headroom past it — so the extra
+// line spends spare height to keep every real title fully visible. Splitting
 // on hyphens too: CSS wraps at a hyphen, so EXTRA-TERRESTRIAL's fit rides its
 // longest SEGMENT, not the whole compound. A pure char-count avoids a canvas
 // measureText that would race the web-font load and mis-size the first paint.
@@ -127,6 +131,7 @@ function shuffle<T>(arr: T[], rng: () => number): T[] {
 
 export default function ConnectionsGame({ onExit, start }: { onExit: () => void; start: ConnectionsStart }) {
   const reduce = useReducedMotion()
+  const journey = useJourneyAnalytics({ mode: 'connections', kind: start.kind })
 
   const dailySeed = useRef(localDateSeed()).current
   const practiceBase = useRef(Math.random().toString(36).slice(2)).current
@@ -191,11 +196,6 @@ export default function ConnectionsGame({ onExit, start }: { onExit: () => void;
     return () => window.clearTimeout(t)
   }, [toast])
 
-  useEffect(() => {
-    track('mode_start', { mode: 'connections', kind: start.kind })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
   // Finishing (won OR lost) completes the daily — a loss still counts as played,
   // exactly like a stuck Solo. Score = mistakes on a win (fewer is better, golf
   // semantics for `best`), null on a loss (no comparable score).
@@ -232,6 +232,7 @@ export default function ConnectionsGame({ onExit, start }: { onExit: () => void;
 
   const toggle = (id: string) => {
     if (status !== 'playing') return
+    journey.action('select', selected.includes(id) || selected.length < 4)
     setSelected((cur) =>
       cur.includes(id) ? cur.filter((x) => x !== id) : cur.length < 4 ? [...cur, id] : cur,
     )
@@ -241,6 +242,8 @@ export default function ConnectionsGame({ onExit, start }: { onExit: () => void;
     if (status !== 'playing' || selected.length !== 4) return
     const key = [...selected].sort().join(',')
     if (guesses.some((g) => [...g].sort().join(',') === key)) {
+      journey.action('submit', false)
+      journey.friction('repeat_guess')
       say('already tried that', 'near')
       return
     }
@@ -256,6 +259,7 @@ export default function ConnectionsGame({ onExit, start }: { onExit: () => void;
     setGuesses((g) => [...g, guess])
 
     if (topCount === 4) {
+      journey.action('submit', true)
       const nextSolved = [...solved, topGroup]
       setSolved(nextSolved)
       setSelected([])
@@ -266,6 +270,9 @@ export default function ConnectionsGame({ onExit, start }: { onExit: () => void;
       }
       return
     }
+
+    journey.action('submit', false)
+    journey.friction(topCount === 3 ? 'one_away' : 'miss')
 
     // Wrong: shake, count the mistake, keep the selection so a near-miss can be
     // nudged (NYT behavior). One-away when three share a group.
@@ -285,9 +292,7 @@ export default function ConnectionsGame({ onExit, start }: { onExit: () => void;
   }
 
   const resetGame = () => {
-    // a replay is a new game for analytics — the mount effect only covers the
-    // first deal, so re-fire here to keep mode_start ↔ mode_finish paired 1:1
-    track('mode_start', { mode: 'connections', kind: start.kind })
+    journey.replay()
     const next = start.kind === 'practice' ? roundN + 1 : roundN
     setRoundN(next)
     setGrid(dealFor(next))
@@ -349,7 +354,10 @@ export default function ConnectionsGame({ onExit, start }: { onExit: () => void;
               type="button"
               aria-label="How to play"
               data-rules-open
-              onClick={() => setShowRules(true)}
+              onClick={() => {
+                journey.helpOpen(status === 'playing' ? 'playing' : 'result')
+                setShowRules(true)
+              }}
               className="app-help-button daily-icon-button daily-icon-md text-[12px] font-extrabold active:scale-90"
             >
               <Icon name="help" size={20} />
@@ -531,8 +539,11 @@ export default function ConnectionsGame({ onExit, start }: { onExit: () => void;
                             }}
                           />
                         ))}
+                        {/* the ordinal's navy chip matches the selected tile
+                            face, so it is invisible except where a 5–6-line
+                            title would otherwise interleave glyphs with it */}
                         {on && (
-                          <span className="pointer-events-none absolute right-1.5 top-1.5 font-stub-label text-[7px] font-bold tracking-wider text-stub-amber">
+                          <span className="pointer-events-none absolute right-1.5 top-1.5 rounded-sm bg-stub-navy px-0.5 font-stub-label text-[7px] font-bold tracking-wider text-stub-amber">
                             PICK {selectedIndex + 1}
                           </span>
                         )}
@@ -546,7 +557,7 @@ export default function ConnectionsGame({ onExit, start }: { onExit: () => void;
                             letterSpacing: '0.005em',
                             display: '-webkit-box',
                             WebkitBoxOrient: 'vertical',
-                            WebkitLineClamp: 5,
+                            WebkitLineClamp: 6,
                             overflow: 'hidden',
                             overflowWrap: 'break-word',
                           }}
@@ -606,7 +617,10 @@ export default function ConnectionsGame({ onExit, start }: { onExit: () => void;
               type="button"
               data-action="shuffle"
               disabled={status !== 'playing'}
-              onClick={() => setShuffleNonce((n) => n + 1)}
+              onClick={() => {
+                journey.action('shuffle', true)
+                setShuffleNonce((n) => n + 1)
+              }}
               className="min-h-11 rounded-stub-pill border-2 border-stub-navy bg-stub-paper px-4 font-stub-label text-[10px] font-bold uppercase tracking-wider text-stub-navy shadow-stub-card-resting active:scale-95 disabled:opacity-35"
             >
               Shuffle
@@ -615,7 +629,10 @@ export default function ConnectionsGame({ onExit, start }: { onExit: () => void;
               type="button"
               data-action="deselect"
               disabled={status !== 'playing' || selected.length === 0}
-              onClick={() => setSelected([])}
+              onClick={() => {
+                journey.action('deselect', selected.length > 0)
+                setSelected([])
+              }}
               className="min-h-11 rounded-stub-pill border-2 border-stub-navy bg-stub-paper px-4 font-stub-label text-[10px] font-bold uppercase tracking-wider text-stub-navy shadow-stub-card-resting active:scale-95 disabled:opacity-35"
             >
               Deselect
@@ -675,7 +692,15 @@ export default function ConnectionsGame({ onExit, start }: { onExit: () => void;
           )}
         </AnimatePresence>
         <AnimatePresence>
-          {showRules && <HowToPlay context="connections" onClose={() => setShowRules(false)} />}
+          {showRules && (
+            <HowToPlay
+              context="connections"
+              onClose={() => {
+                journey.helpClose()
+                setShowRules(false)
+              }}
+            />
+          )}
         </AnimatePresence>
 
         {/* Board peek: the results step aside so the revealed groups can be
@@ -720,7 +745,7 @@ function ConnectionsResults({
   groupOf: Map<string, number>
   daily: DailyFinish | null
   practice: boolean // practice grid: marks the share line, relabels replay
-  analytics: EventData // mode identity for the share event (parent owns kind)
+  analytics: ModeIdentity // mode identity for the share event (parent owns kind)
   onReset: () => void
   onMenu: () => void // back to the mode menu (W5d: every end screen routes home)
   onPeek?: () => void // loss only: step aside so the revealed board can be read

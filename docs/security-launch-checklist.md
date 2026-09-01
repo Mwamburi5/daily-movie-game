@@ -161,3 +161,11 @@ and account-hardening items are owner-attended release evidence; they may be
 marked only by the person who attended each dashboard. Promotion to production,
 public indexing, URL-in-share, domain redirects, and `main` merge remain separate
 approvals.
+
+Local receipt, 2026-08-31 (launch-readiness pass): Node v24.14.0, npm 11.9.0;
+security scan green — 241 repository files / 25 production files after a bare
+build, 26 when `check:bundle` has written `dist/bundle-report.json` first (the
+report is scanned by the same assertions and never deploys; the historical
+225→228→229→241 chain is decomposed path-by-path in the launch-readiness
+manifest, Goal 6). Assertion contract unchanged. Bundle budgets green with the
+menu shell at 99.85/100 KiB gzip — effectively no headroom remains.

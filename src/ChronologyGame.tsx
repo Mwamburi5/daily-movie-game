@@ -33,7 +33,8 @@ import { matchCutShare } from './lib/share.ts'
 // shares the exact local-midnight rollover rule (no drift between modes).
 import { localDateSeed } from './lib/daily.ts'
 import { recordDailyFinish, type DailyFinish } from './lib/progress.ts'
-import { track, type EventData } from './lib/analytics.ts'
+import { track, type ModeIdentity } from './lib/analytics.ts'
+import { useJourneyAnalytics } from './lib/journeyAnalytics.ts'
 import { MOTION } from './lib/motion.ts'
 import ShareCopy from './components/ShareCopy.tsx'
 import FixedDigits from './components/FixedDigits.tsx'
@@ -109,6 +110,7 @@ function reelVisualStyle(offset: number) {
 }
 
 export default function ChronologyGame({ onExit, start }: { onExit: () => void; start: ChronoStart }) {
+  const journey = useJourneyAnalytics({ mode: 'chronology', kind: start.kind })
   const reduce = useReducedMotion()
 
   // The daily seed is fixed to today's local date (deterministic, shared). The
@@ -306,11 +308,6 @@ export default function ChronologyGame({ onExit, start }: { onExit: () => void; 
     return () => window.removeEventListener('keydown', onKey)
   }, [raisedId])
 
-  useEffect(() => {
-    track('mode_start', { mode: 'chronology', kind: start.kind })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
   // Clearing the board completes the daily. recordDailyFinish is once-per-seed,
   // so a same-day "Play again" reads back the existing entry (repeat: true);
   // practice rounds never record — they'd let streaks be farmed off-seed.
@@ -318,7 +315,7 @@ export default function ChronologyGame({ onExit, start }: { onExit: () => void; 
     if (status !== 'cleared') return
     // strokes = raw effort, score = strokes − streak credits (the golf number
     // the end screen shows and the daily records) — both settled at 'cleared'
-    track('mode_finish', { mode: 'chronology', kind: start.kind, strokes, score })
+    track('mode_finish', { mode: 'chronology', kind: start.kind, result: 'cleared', strokes, score })
     if (start.kind !== 'daily') return
     setFinishMeta(recordDailyFinish('chronology', dailySeed, score))
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -382,6 +379,7 @@ export default function ChronologyGame({ onExit, start }: { onExit: () => void; 
     const target = resolveGapTarget(point)
     setActiveTarget(target)
     if (target.kind !== 'gap') {
+      journey.action('place', false)
       setInvalidNonce((n) => n + 1)
       if (target.kind === 'edge-blocked') say('more line that way — hold your card at the edge to scroll')
       return
@@ -398,11 +396,13 @@ export default function ChronologyGame({ onExit, start }: { onExit: () => void; 
     if (!card) return
     const placement = scorePlacement(card, line, chosen)
     const tight = gapTightness(line, placement.correctSlot)
+    journey.action('place', placement.result === 'clean')
 
     if (placement.result === 'clean') {
       applyPlacement(card, placement, tight) // settles in place
       return
     }
+    journey.friction('misfire')
     // Misfire: flip the raised card to reveal its year, then snap it home.
     setPlacing({ card, placement, tight })
     window.clearTimeout(flipTimer.current)
@@ -413,9 +413,7 @@ export default function ChronologyGame({ onExit, start }: { onExit: () => void; 
   }
 
   const resetGame = () => {
-    // a replay is a new game for analytics — the mount effect only covers the
-    // first deal, so re-fire here to keep mode_start ↔ mode_finish paired 1:1
-    track('mode_start', { mode: 'chronology', kind: start.kind })
+    journey.replay()
     window.clearTimeout(flipTimer.current)
     // Practice gets a fresh random round; the daily replays today's fixed board
     // (a retry of the same puzzle, not a new one — the daily is the daily).
@@ -444,6 +442,7 @@ export default function ChronologyGame({ onExit, start }: { onExit: () => void; 
 
   const raiseChoice = (id: string, keyboard: boolean) => {
     if (status !== 'playing' || placing) return
+    journey.action('select', true)
     setRaisedId(id)
     if (!keyboard) return
     // The active gaps mount after the raised state commits. Two frames keeps
@@ -514,7 +513,10 @@ export default function ChronologyGame({ onExit, start }: { onExit: () => void; 
               type="button"
               aria-label="How to play"
               data-rules-open
-              onClick={() => setShowRules(true)}
+              onClick={() => {
+                journey.helpOpen(status === 'playing' ? 'playing' : 'result')
+                setShowRules(true)
+              }}
               className="app-help-button daily-icon-button daily-icon-md text-[12px] font-extrabold active:scale-90"
             >
               <Icon name="help" size={20} />
@@ -730,7 +732,15 @@ export default function ChronologyGame({ onExit, start }: { onExit: () => void; 
           )}
         </AnimatePresence>
         <AnimatePresence>
-          {showRules && <HowToPlay context="chronology" onClose={() => setShowRules(false)} />}
+          {showRules && (
+            <HowToPlay
+              context="chronology"
+              onClose={() => {
+                journey.helpClose()
+                setShowRules(false)
+              }}
+            />
+          )}
         </AnimatePresence>
       </div>
       </div>
@@ -995,7 +1005,7 @@ function ChronoResults({
   log: LogEntry[]
   daily: DailyFinish | null // streak readout — null on practice rounds
   practice: boolean // practice round: marks the share line, relabels replay
-  analytics: EventData // mode identity for the share event (parent owns kind)
+  analytics: ModeIdentity // mode identity for the share event (parent owns kind)
   onReset: () => void
   onMenu: () => void // back to the mode menu (W5d: every end screen routes home)
 }) {

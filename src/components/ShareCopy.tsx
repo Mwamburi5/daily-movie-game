@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { track, type EventData } from '../lib/analytics.ts'
+import { track, type ModeIdentity } from '../lib/analytics.ts'
 import { copyToClipboard } from '../lib/share.ts'
 
 type CopyState = 'idle' | 'copied' | 'failed'
@@ -8,7 +8,7 @@ type CopyState = 'idle' | 'copied' | 'failed'
 // shipped it — now shared so all three end screens behave identically.
 // `analytics` names the mode for the 'share' event — the caller supplies it
 // because this component can't know which mode it's mounted in.
-export default function ShareCopy({ text, analytics }: { text: string; analytics?: EventData }) {
+export default function ShareCopy({ text, analytics }: { text: string; analytics?: ModeIdentity }) {
   const [copy, setCopy] = useState<CopyState>('idle')
 
   // Revert the transient "copied" / "failed" label back to idle after a beat.
@@ -20,6 +20,12 @@ export default function ShareCopy({ text, analytics }: { text: string; analytics
 
   const onCopy = async () => {
     const ok = await copyToClipboard(text)
+    if (analytics) {
+      track('share_attempt', {
+        mode: analytics.mode,
+        result: ok ? 'copied' : 'manual_fallback',
+      })
+    }
     // only a landed copy counts as a share — a blocked clipboard shows the
     // select-by-hand fallback, which we can't observe
     if (ok && analytics) track('share', analytics)

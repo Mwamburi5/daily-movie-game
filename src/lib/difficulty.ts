@@ -38,7 +38,7 @@ export const KNOBS: Record<Difficulty, Knobs> = {
     deepMelds: false,
     policy: 'random',
     whiff: 0.44,
-    meldMissChance: 0.68,
+    meldMissChance: 0.80,
     meldLazy: false,
     recast: 'never',
   },
@@ -48,9 +48,9 @@ export const KNOBS: Record<Difficulty, Knobs> = {
     policy: 'greedy',
     whiff: 0.05,
     meldMissChance: 0,
-    meldLazy: false, // re-tuned 2026-06-30: funpass winners lifted casual to ~52.5 on
-    //                  Feature; eager melding (was lazy) claws it back toward 50. whiff
-    //                  proved a no-op lever down here, so this is the real knob.
+    meldLazy: true, // re-tuned 2026-08-25 for the approved 216+16 deck: the larger
+    //                 catalog made eager melding too strong; the prior lazy setting
+    //                 restores the casual matchup to the 50% target.
     recast: 'gameLoss',
   },
   directors: {
@@ -58,7 +58,7 @@ export const KNOBS: Record<Difficulty, Knobs> = {
     deepMelds: true,
     policy: 'greedyDenial',
     whiff: 0.18,
-    meldMissChance: 0,
+    meldMissChance: 0.30,
     meldLazy: false,
     recast: 'full',
   },
@@ -237,9 +237,10 @@ export function ladderBestMeld(
   k: Knobs,
   genreFloor?: number,
   useWilds = false,
+  isWildCard: (id: string) => boolean = isWild,
 ): Movie[] | null {
-  const real = hand.filter((m) => !isWild(m.id))
-  const wild = useWilds ? hand.find((m) => isWild(m.id)) : undefined // ≤1 wild/meld
+  const real = hand.filter((m) => !isWildCard(m.id))
+  const wild = useWilds ? hand.find((m) => isWildCard(m.id)) : undefined // ≤1 wild/meld
   const groups = new Map<string, Movie[]>()
   const add = (key: string, m: Movie) => {
     const g = groups.get(key) ?? []
@@ -254,7 +255,7 @@ export function ladderBestMeld(
   let best: Movie[] | null = null
   let bestVal = 0
   const consider = (cards: Movie[]) => {
-    const reals = cards.filter((c) => !isWild(c.id))
+    const reals = cards.filter((c) => !isWildCard(c.id))
     const val = reals.length * ladderPtsPerCard(reals, k.deepMelds, genreFloor) // wild pays 0
     if (val > bestVal || (val === bestVal && best !== null && cards.length > best.length)) {
       bestVal = val
