@@ -26,8 +26,21 @@ import {
   whiffs,
 } from '../src/lib/difficulty.ts'
 import { movieById } from '../src/data/movies.ts'
-import { DUEL_POOL, DUEL_POOL_IDS } from '../src/data/duelPool.ts'
-import { deal, isWild, LADDER_PTS, meldRung, TIER_POINTS, MELD_POINTS_PER_CARD } from '../src/lib/duel.ts'
+import {
+  DUEL_POOL,
+  DUEL_POOL_IDS,
+  LEGACY_DUEL_POOL,
+  LEGACY_DUEL_POOL_IDS,
+} from '../src/data/duelPool.ts'
+import {
+  deal,
+  isWild,
+  LADDER_PTS,
+  meldRung,
+  TIER_POINTS,
+  MELD_POINTS_PER_CARD,
+  WILD_IDS,
+} from '../src/lib/duel.ts'
 import { linkTier, type SharedPerson } from '../src/lib/solver.ts'
 import type { Movie } from '../src/data/types.ts'
 import { makeRng } from './rng.ts'
@@ -122,7 +135,7 @@ function checkSeedingAndPairing(): void {
     flow.piles[1]?.[0] === shipped.deck[0],
     `${flow.piles[1]?.[0]} vs ${shipped.deck[0]}`,
   )
-  // Compare REAL cards only: the 3 wilds splice into each deck at rng-dependent
+  // Compare REAL cards only: wilds splice into each deck at rng-dependent
   // positions (deck lengths differ by the lifted card), so they don't line up —
   // but the canonical shuffle underneath must still be shipped-minus-one.
   const reals = (ids: string[]) => ids.filter((id) => !isWild(id))
@@ -152,40 +165,53 @@ function checkSeedingAndPairing(): void {
   const noSeed = playGame(HUMAN_CASUAL, KNOBS.feature)
   check('no-seed game still runs (Math.random path)', noSeed === 'A' || noSeed === 'B' || noSeed === 'draw')
 
-  // Deal integrity: the 89 canonical cards plus the 3 wilds (now base game) are
-  // all present and unique in the opening deal — 92 physical cards, no dupes.
+  // Deal integrity: every current real card and wild is present once.
   const all = [shipped.starter, ...shipped.handA, ...shipped.handB, ...shipped.deck]
   const realCards = all.filter((id) => !isWild(id))
   const wildCards = all.filter(isWild)
-  check('opening deal has 89 canonical cards + 3 wilds', realCards.length === 89 && wildCards.length === 3, `got ${realCards.length}+${wildCards.length}`)
-  check('opening deal has no duplicates', new Set(all).size === 92, `${new Set(all).size} unique of ${all.length}`)
+  check(
+    'opening deal has 216 canonical cards + 16 wilds',
+    realCards.length === 216 && wildCards.length === 16,
+    `got ${realCards.length}+${wildCards.length}`,
+  )
+  check('opening deal has no duplicates', new Set(all).size === 232, `${new Set(all).size} unique of ${all.length}`)
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  #2  CONSERVATION — all 89 cards accounted for, every turn
+//  #2  CONSERVATION — all 216 cards accounted for, every turn
 // ═══════════════════════════════════════════════════════════════════════════
 function checkConservation(): void {
-  section('#2  Conservation (all 89 cards accounted for)')
+  section('#2  Conservation (all 216 real cards + 16 wilds accounted for)')
 
-  // Pool pin (WS2 split, 2026-07-05): Duel and the Solo daily deal from the
-  // frozen 89-film DUEL_POOL while MOVIES grows in content waves. An edit to
-  // the list — or a merge that breaks id resolution — trips this before it can
-  // shift the tuning or reshuffle published Solo dailies. Bump the hash only
-  // as a conscious cutover (retune + solo re-pin in the same pass).
+  // Independent pins: the old 89 remains the pre-cutover Daily content version;
+  // the approved 216 is Duel's current deal and the post-cutover Daily version.
   let poolHash = 0x811c9dc5
   for (const ch of [...DUEL_POOL_IDS].sort().join('|')) {
     poolHash = Math.imul(poolHash ^ ch.charCodeAt(0), 0x01000193) >>> 0
   }
   check(
-    'DUEL_POOL pinned to the tuned 89',
-    DUEL_POOL_IDS.length === 89 && DUEL_POOL.length === 89 && poolHash === 0x2fa00c8d,
-    `ids ${DUEL_POOL_IDS.length}, resolved ${DUEL_POOL.length}, fnv 0x${poolHash.toString(16)}`,
+    'approved 216 and legacy 89 pools are independently pinned',
+    (() => {
+      let legacyHash = 0x811c9dc5
+      for (const ch of [...LEGACY_DUEL_POOL_IDS].sort().join('|')) {
+        legacyHash = Math.imul(legacyHash ^ ch.charCodeAt(0), 0x01000193) >>> 0
+      }
+      return (
+        DUEL_POOL_IDS.length === 216 &&
+        DUEL_POOL.length === 216 &&
+        poolHash === 0x17128caf &&
+        LEGACY_DUEL_POOL_IDS.length === 89 &&
+        LEGACY_DUEL_POOL.length === 89 &&
+        legacyHash === 0x2fa00c8d
+      )
+    })(),
+    `current ${DUEL_POOL_IDS.length}/${DUEL_POOL.length}/0x${poolHash.toString(16)}; legacy ${LEGACY_DUEL_POOL_IDS.length}/${LEGACY_DUEL_POOL.length}`,
   )
 
   // First prove the DETECTOR works — it must reject drops, dups, and aliens,
   // or "no violations" in real games would be meaningless.
   const good = DUEL_POOL.map((m) => m.id)
-  check('detector passes a clean 89-card census', validateCensus(good) === null)
+  check('detector passes a clean 216-card census', validateCensus(good) === null)
   check('detector catches a dropped card', validateCensus(good.slice(1)) !== null)
   check('detector catches a duplicate', validateCensus([good[0], ...good]) !== null)
   check('detector catches an unknown id', validateCensus(['__ghost__', ...good.slice(1)]) !== null)
@@ -366,14 +392,21 @@ function checkNewCode(): void {
   const sD3 = baseState({ deck: [...four], rules: { draw3: true } })
   const keep3 = drawCards(sD3, 'A', [top0], KNOBS.feature)
   const offered = four.slice(0, 3)
+  const multiOffer = [WILD_IDS[0], WILD_IDS[1], four[0], four[1]]
+  const sMulti = baseState({ deck: [...multiOffer], rules: { draw3: true } })
+  const keepMulti = drawCards(sMulti, 'A', [top0], KNOBS.feature)
   check(
-    'draw-3 keeps 1 of the 3 offered, burns exactly the other 2',
+    'draw-3 keeps 1 normally; multi-wild draws keep every wild and burn non-wilds',
     offered.includes(keep3) &&
       sD3.deck.length === 1 &&
       sD3.deck[0] === four[3] &&
       sD3.burned.length === 2 &&
       new Set([keep3, ...sD3.burned]).size === 3 &&
-      [keep3, ...sD3.burned].every((id) => offered.includes(id)),
+      [keep3, ...sD3.burned].every((id) => offered.includes(id)) &&
+      keepMulti === WILD_IDS[0] &&
+      sMulti.hands.A.join() === WILD_IDS[1] &&
+      sMulti.burned.join() === four[0] &&
+      sMulti.deck.join() === four[1],
   )
 
   // ── burn accounting at the game level ──

@@ -1,9 +1,12 @@
 import { useState } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
+import { useDialogA11y } from './useDialogA11y.ts'
 import { matchCutShare } from '../lib/share.ts'
-import type { EventData } from '../lib/analytics.ts'
+import type { ModeIdentity } from '../lib/analytics.ts'
 import type { DailyFinish } from '../lib/progress.ts'
 import ShareCopy from './ShareCopy.tsx'
+import ResultActions from './ResultActions.tsx'
+import ResultMeaning from './ResultMeaning.tsx'
 
 interface SolutionStep {
   title: string
@@ -21,7 +24,8 @@ interface ResultsProps {
   emoji: string
   solution: SolutionStep[]
   daily: DailyFinish | null // streak readout — null on practice rounds
-  analytics: EventData // mode identity for the share event (SoloGame owns kind)
+  practice: boolean // practice hand: marks the share line, relabels replay
+  analytics: ModeIdentity // mode identity for the share event (SoloGame owns kind)
   onReset: () => void
   onMenu: () => void // back to the mode menu (W5d: every end screen routes home)
 }
@@ -37,29 +41,39 @@ export default function Results({
   emoji,
   solution,
   daily,
+  practice,
   analytics,
   onReset,
   onMenu,
 }: ResultsProps) {
   const reduce = useReducedMotion()
   const [showSolution, setShowSolution] = useState(false)
+  // Trap-only dialog (§7·7b a11y): terminal screen, routes via its buttons.
+  const dialogRef = useDialogA11y()
 
   const diff = score - par
   const golf = diff === 0 ? 'even par' : diff < 0 ? `${-diff} under par` : `${diff} over par`
 
   // Family share format (see lib/share.ts): mode line, golf score line, emoji row.
   // A stuck run is still shareable — the 🧱 already ends the emoji row.
+  // Practice hands carry a marker (§7·7c) so they can't pass for the daily;
+  // the brand line stays byte-identical for dailies.
   const shareLine =
     status === 'won'
       ? `score ${score}, par ${par} (${golf})`
       : `stuck — ${cardsLeft} left in hand, par ${par}`
-  const text = matchCutShare('Daily Puzzle', shareLine, emoji)
+  const text = matchCutShare('Daily Puzzle', `${practice ? 'practice · ' : ''}${shareLine}`, emoji)
 
   return (
     // overflow-y-auto + my-auto on the card (the App.tsx menu fix): centers
     // when the card fits, scrolls when the revealed solution makes it taller
     // than a 667px viewport — plain justify-center clips both ends.
     <motion.div
+      ref={dialogRef}
+      role="dialog"
+      aria-modal="true"
+      aria-label={status === 'won' ? 'Solved — results' : 'Stuck — results'}
+      tabIndex={-1}
       className="absolute inset-0 z-[100] flex flex-col items-center overflow-y-auto bg-stub-scrim px-6 py-6 text-center"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -96,6 +110,11 @@ export default function Results({
           </p>
         )}
 
+        <ResultMeaning
+          direction={status === 'won' ? 'Lower is better' : 'Round ended'}
+          detail={status === 'won' ? `Score ${score} vs par ${par}` : 'No legal connection remained'}
+        />
+
         <p className="mt-1 font-stub-ui text-sm text-stub-slate">
           {flips} {flips === 1 ? 'flip' : 'flips'} · {invalids} invalid{' '}
           {invalids === 1 ? 'play' : 'plays'}
@@ -119,14 +138,6 @@ export default function Results({
 
         <ShareCopy text={text} analytics={analytics} />
 
-        <button
-          type="button"
-          onClick={onReset}
-          className="mt-3 min-h-12 rounded-stub-pill bg-stub-amber px-7 py-3 font-stub-ui text-[15px] font-bold text-stub-navy shadow-stub-card-resting active:scale-95"
-        >
-          Play again
-        </button>
-
         {status === 'stuck' && !showSolution && (
           <button
             type="button"
@@ -137,13 +148,11 @@ export default function Results({
           </button>
         )}
 
-        <button
-          type="button"
-          onClick={onMenu}
-          className="mt-3 min-h-12 rounded-stub-pill border-2 border-stub-navy bg-stub-paper px-7 py-3 font-stub-ui text-[15px] font-bold text-stub-navy active:scale-95"
-        >
-          Menu
-        </button>
+        <ResultActions
+          primaryLabel={practice ? 'Replay this hand' : "Replay today's hand"}
+          onPrimary={onReset}
+          onMenu={onMenu}
+        />
 
         {showSolution && (
           <div className="mt-5 max-h-[300px] w-full max-w-[300px] overflow-y-auto rounded-stub-panel bg-stub-paper px-5 py-4 text-left shadow-stub-card-resting">

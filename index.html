@@ -12,24 +12,47 @@
     <meta name="theme-color" content="#f4efe6" />
     <!-- Quiet phase (WS1): keep the alias out of search indexes until launch. -->
     <meta name="robots" content="noindex, nofollow" />
-    <title>Match Cut</title>
-    <!-- Stub type stack: preloads land with the W1 port (the @font-face rules
-         in index.css were inert until the wired components referenced them). -->
-    <link rel="preload" href="/fonts/domine-700-latin.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="/fonts/inter-400-800-latin.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="/fonts/jetbrains-mono-600-700-latin.woff2" as="font" type="font/woff2" crossorigin />
-    <!-- Vercel Web Analytics via the script-tag route (deps are locked — no
-         @vercel/analytics). The stub queues events in window.vaq until the
-         deferred script loads; it silently never loads off-Vercel. Custom
-         events fire through src/lib/analytics.ts. -->
-    <script>
-      window.va =
-        window.va ||
-        function () {
-          ;(window.vaq = window.vaq || []).push(arguments)
-        }
-    </script>
-    <script defer src="/_vercel/insights/script.js"></script>
+    <title>Match Cut — Four movie games, one daily ritual</title>
+    <meta
+      name="description"
+      content="Connect movies by the people who made them. Play Daily Puzzle, Chronology, Connections, and Duel."
+    />
+    <link rel="canonical" href="https://matchcutdaily.com/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Match Cut" />
+    <meta property="og:title" content="Match Cut — Four movie games, one daily ritual" />
+    <meta
+      property="og:description"
+      content="Connect movies by the people who made them. Play Daily Puzzle, Chronology, Connections, and Duel."
+    />
+    <meta property="og:url" content="https://matchcutdaily.com/" />
+    <meta property="og:image" content="https://matchcutdaily.com/social-preview.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="Match Cut ticket-stub cards for Daily Puzzle, Chronology, Connections, and Duel"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Match Cut — Four movie games, one daily ritual" />
+    <meta
+      name="twitter:description"
+      content="Connect movies by the people who made them. Play Daily Puzzle, Chronology, Connections, and Duel."
+    />
+    <meta name="twitter:image" content="https://matchcutdaily.com/social-preview.png" />
+    <meta
+      name="twitter:image:alt"
+      content="Match Cut ticket-stub cards for Daily Puzzle, Chronology, Connections, and Duel"
+    />
+    <!-- Ticket-stub mark (§7·7c — there was no favicon at all). SVG first,
+         32px PNG for older tab strips, 180px for iOS home-screen saves (iOS
+         applies its own corner mask, so that one is full-bleed navy). -->
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <!-- The Stub fonts stay self-hosted through index.css. Do not preload them:
+         Safari reports all three as unused even on font-heavy first paint,
+         creating a false-red console before launch acceptance. -->
   </head>
   <body>
     <div id="root"></div>

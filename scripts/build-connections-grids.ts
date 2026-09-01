@@ -1,12 +1,12 @@
 // scripts/build-connections-grids.ts — bake the Connections daily grids.
 //
-//   node --max-old-space-size=12288 scripts/build-connections-grids.ts
+//   node --max-old-space-size=20480 scripts/build-connections-grids.ts
 //   (npm run build:connections-grids)
 //
 // WHY BAKE. The Connections dealer (src/lib/connections.ts dealGrid) is an
 // AUTHOR-TIME engine: to deal even one grid it first enumerates the entire
 // unambiguous key-quadruple space (~9.5M viable sets at the 237-film pool), which
-// needs ~12 GB of heap and several seconds — it OOMs a browser tab outright. So
+// needs a multi-gigabyte author-time heap and OOMs a browser tab outright. So
 // the runtime never runs the dealer. Instead this script runs it once, here, over
 // the SAME 365-day anchor window that sim/connections-verify.ts pins, and writes
 // the grids to src/data/connections-grids.json. The mode reads today's grid from

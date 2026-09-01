@@ -264,12 +264,13 @@ function checkDeterminism(): void {
   // being established at dealer birth, exactly as solo-verify's 2026-07-03 pin
   // was). PIN_DAY is a human-legible spot-check of one concrete grid so a
   // failure shows WHAT moved, not just that the digest differs.
-  // Established at dealer birth over the anchor window 2026-07-06 → 2027-07-05,
-  // pool 237 films. Bump ONLY with a conscious cutover.
+  // Re-pinned for the approved Daily / Duel 216-film cutover over the unchanged
+  // anchor window 2026-07-06 → 2027-07-05. Sixteen stub graduations move the
+  // credited Connections catalog from 304 to 320; Chronology remains 482.
   const digest = createHash('sha256')
     .update(seeds.map((s, i) => `${s}#${gridStr(grids[i])}`).join('\n'))
     .digest('hex')
-  const PIN_DIGEST = 'f21e79debb47d4e48034c08a471be6ec1857f9fa598f5ac294d2ab06487b8448'
+  const PIN_DIGEST = '0f333d3236fea7c2033f3b49577acfa9c9b9e9c199d3802b5e0d48e2e8c6cab6'
   check(
     `pinned digest over ${DAYS} grids from ${seeds[0]}`,
     digest === PIN_DIGEST,
@@ -280,13 +281,13 @@ function checkDeterminism(): void {
   // digest differs. The anchor's first day.
   const PIN_DAY = '2026-07-06'
   const PIN_DAY_STR =
-    'actor:Gary Oldman=batman-begins,oppenheimer,the-dark-knight,the-fifth-element|' +
-    'actor:Gene Hackman=crimson-tide,enemy-of-the-state,the-royal-tenenbaums,unforgiven|' +
-    'actor:Jonah Hill=django-unchained,moneyball,superbad,the-wolf-of-wall-street|' +
-    'actor:Josh Brolin=dune,no-country-for-old-men,sicario,the-goonies'
+    'actor:Emily Blunt=a-quiet-place,a-quiet-place-part-ii,edge-of-tomorrow,looper|' +
+    'actor:Jack Black=anchorman,enemy-of-the-state,school-of-rock,the-super-mario-galaxy-movie|' +
+    'actor:Ryan Gosling=barbie,blade-runner-2049,la-la-land,the-notebook|' +
+    'genre:Action=crouching-tiger-hidden-dragon,die-hard,godzilla-minus-one,the-batman'
   const pinnedGrid = dealGrid(PIN_DAY)
   check(
-    `pinned seed ${PIN_DAY} → its exact grid (4 actor groups)`,
+    `pinned seed ${PIN_DAY} → its exact grid (3 actor + 1 genre)`,
     gridStr(pinnedGrid) === PIN_DAY_STR,
     `got ${gridStr(pinnedGrid)}`,
   )
@@ -295,7 +296,8 @@ function checkDeterminism(): void {
 // ═══════════════════════════════════════════════════════════════════════════
 //  #6  BAKED RUNTIME PARITY — the app serves exactly what the dealer deals
 // ═══════════════════════════════════════════════════════════════════════════
-// The browser can't run dealGrid (it enumerates ~9.5M viable sets — OOM), so the
+// The browser can't run dealGrid (it enumerates tens of millions of viable sets
+// at the current pool — OOM), so the
 // mode reads baked grids from src/data/connections-grids.json (built by
 // scripts/build-connections-grids.ts over THIS window). This is the guard that
 // the baked file never drifts from the dealer: in seed order, the baked grids

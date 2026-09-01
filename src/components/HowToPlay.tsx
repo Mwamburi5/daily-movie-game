@@ -1,387 +1,415 @@
 import { useState } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
-import type { ReactNode } from 'react'
+import { MOTION } from '../lib/motion.ts'
+import Icon from './Icon.tsx'
+import { useDialogA11y } from './useDialogA11y.ts'
 
-const Section = ({ title, children }: { title: string; children: ReactNode }) => (
-  <section className="mb-7">
-    <h3 className="mb-2 font-stub-label text-[11px] font-bold uppercase tracking-wider text-stub-slate">
-      {title}
-    </h3>
-    <div className="space-y-2 text-[13.5px] leading-relaxed text-stub-navy">{children}</div>
-  </section>
-)
+export type HelpContext = 'overview' | 'solo' | 'chronology' | 'connections' | 'duel'
 
-const B = ({ children }: { children: ReactNode }) => (
-  <strong className="font-bold text-stub-navy">{children}</strong>
-)
+type HelpSection = {
+  title: string
+  items: string[]
+  ordered?: boolean
+}
 
-const TierPill = ({ tone, children }: { tone: 'navy' | 'amber' | 'red'; children: ReactNode }) => (
-  <span
-    className={`inline-block rounded-stub-pill px-2.5 py-1 font-stub-label text-[10px] font-bold uppercase tracking-wider ${
-      tone === 'navy'
-        ? 'bg-stub-navy text-stub-cream'
-        : tone === 'amber'
-          ? 'bg-stub-amber text-stub-navy'
-          : 'bg-stub-red text-stub-cream'
-    }`}
-  >
-    {children}
-  </span>
-)
+type ModeHelp = {
+  label: string
+  objective: string
+  sections: HelpSection[]
+  details: HelpSection[]
+}
 
-const TokenPill = ({ children }: { children: ReactNode }) => (
-  <span className="inline-block rounded-stub-pill bg-stub-navy px-2.5 py-1 font-stub-label text-[9px] font-bold uppercase tracking-wider text-stub-cream">
-    {children}
-  </span>
-)
+const MODE_HELP: Record<Exclude<HelpContext, 'overview'>, ModeHelp> = {
+  solo: {
+    label: 'Daily Puzzle',
+    objective: 'Connect every card in your hand to the pile in as few moves as possible.',
+    sections: [
+      {
+        title: 'What you do',
+        ordered: true,
+        items: [
+          'Choose a hand card, then tap it or press Enter to raise it.',
+          'Drag the raised card to the pile, or activate the pile by keyboard, when the movies share an actor, director, or writer.',
+          'If you need a clue, tap the pile or raised card to flip for credits. Keep connecting until your hand is empty.',
+        ],
+      },
+      {
+        title: 'Golf score and par',
+        items: [
+          'The first credits flip on a card costs +1. Flipping that card again is free.',
+          'An invalid play costs +2. Consecutive links through the same person can earn strokes back. Low score wins against the day’s computed par.',
+        ],
+      },
+      {
+        title: 'Actions and terms',
+        items: [
+          'Tap or press Enter to raise; drag to the pile or activate the pile to play; Escape returns a raised card to its rack slot.',
+          'A deep cut is a valid link through a notable credit that is not printed on the face. The round DEEP CUT stamp marks films that carry those hidden credits.',
+          'When no card can connect, the run is Stuck and you may reveal one valid solution.',
+        ],
+      },
+      {
+        title: 'Daily and practice',
+        items: [
+          'The daily is the same solver-proven hand for everyone on your local calendar day. Dates from September 27, 2026 use the expanded 216-film pool; practice replays the original hand-designed puzzle.',
+        ],
+      },
+    ],
+    details: [
+      {
+        title: 'Full rules for Daily Puzzle',
+        items: [
+          'Cards connect through shared actors, directors, or writers. The pile’s top card is the only card your next play must connect to.',
+          'A same-person chain keeps narrowing to the names shared by consecutive plays; each extra card after the first link earns one stroke back.',
+          'A daily replay deals the same board. A practice result is labelled practice, and share output stays URL-free.',
+        ],
+      },
+    ],
+  },
+  chronology: {
+    label: 'Chronology',
+    objective: 'Place ten hidden-year movie titles into one older-to-newer line.',
+    sections: [
+      {
+        title: 'What you do',
+        ordered: true,
+        items: [
+          'Choose a title without seeing its year, then tap it or press Enter to raise it.',
+          'Read the reel from older on the left to newer on the right and choose any legal gap.',
+          'Drag the raised card to that gap, or activate the gap by keyboard. Correct cards stay; mistakes reveal and move to their true place.',
+        ],
+      },
+      {
+        title: 'Strokes and streaks',
+        items: [
+          'A clean placement costs 0. A misfire costs +1 stroke. Three clean placements in a row earn one stroke back.',
+          'A clean placement in a gap whose neighbors are only a few years apart arms tight-call mercy: your next misfire keeps the streak but spends that shield.',
+        ],
+      },
+      {
+        title: 'Actions and terms',
+        items: [
+          'Every gap, including the older and newer ends, is legal and keyboard reachable. Swipe the reel when the placed line grows wider than the screen.',
+          'Escape returns the raised title to its tray slot. Years remain hidden until placement; same-year order is decided by exact release date.',
+        ],
+      },
+      {
+        title: 'Daily and practice',
+        items: [
+          'The daily line is shared for your local calendar day. Wide practice spreads films across decades; Tight practice bunches them into the same era. The dial changes only the deal, never the rules or score.',
+        ],
+      },
+    ],
+    details: [
+      {
+        title: 'Full rules for Chronology',
+        items: [
+          'The line is always kept in true chronological order. A wrong choice reveals the year, adds one stroke, and corrects itself so the next decision remains fair.',
+          'An open-ended start or end gap never arms mercy. When two films share a year, the feedback says that the exact date decided the order.',
+          'The round ends only when all ten hand cards are placed. A daily replay uses the same line; practice deals a fresh round.',
+        ],
+      },
+    ],
+  },
+  connections: {
+    label: 'Connections',
+    objective: 'Sort sixteen movie titles into four hidden groups of four.',
+    sections: [
+      {
+        title: 'What you do',
+        ordered: true,
+        items: [
+          'Select four movie tickets you think share one director, actor, series, or genre.',
+          'Use Deselect to clear the picks, Shuffle to reorder the board, and Submit when four are selected.',
+          'A solve locks and names the group. Keep going until all four groups are found or the mistakes run out.',
+        ],
+      },
+      {
+        title: 'Four mistakes',
+        items: [
+          'A wrong submission spends one of four mistakes. One away means three selected movies belong to the same hidden group; a miss means they do not.',
+          'A loss reveals the remaining groups on the board. It never claims that those groups were found.',
+        ],
+      },
+      {
+        title: 'Today’s Bill',
+        items: [
+          'Category types may repeat, and at most one group is a genre. Today’s Bill names the exact remaining category multiset, such as Actor ×3 · Genre ×1.',
+          'The Bill never maps a category to a particular tile, solved-band color, or share color. Every movie belongs to exactly one group.',
+        ],
+      },
+      {
+        title: 'Daily and practice',
+        items: [
+          'The daily grid is the same baked, verified board for everyone on your local calendar day. Random grid starts a fresh verified practice board.',
+        ],
+      },
+    ],
+    details: [
+      {
+        title: 'Full rules for Connections',
+        items: [
+          'Solved groups leave the 4×4 sorting field as labelled tickets. Selection order is shown only to help you revise a guess.',
+          'Shuffle changes presentation only. It does not change group membership, the deal, or the answer.',
+          'After a loss, See the revealed groups steps aside from the result ticket so every answer remains readable.',
+        ],
+      },
+    ],
+  },
+  duel: {
+    label: 'Duel vs Computer',
+    objective: 'Take turns linking movies across two marquees. Reaching 20 ends the show; highest net score wins.',
+    sections: [
+      {
+        title: 'What you do',
+        ordered: true,
+        items: [
+          'On your turn, play one hand card that shares an actor, director, or writer with either marquee, or draw three and keep one.',
+          'Score links, bank Melds, and use your one Final Cut and one Recast token when they matter.',
+          'Reaching 20 ends the show; highest net score wins. An empty hand or two passes with an empty deck also ends the show. Net means points minus cards still held.',
+        ],
+      },
+      {
+        title: 'Links and scoring',
+        items: [
+          'Standard links score +1, strong links +2, and super links +4 plus an encore. Meld cards score by their locked Auteur, Actor, Series, or Genre rung.',
+          'Series upgrades an otherwise legal person-linked play to a super link; a series-only pair is not an ordinary legal play. Series can also support a Meld.',
+        ],
+      },
+      {
+        title: 'Actions and terms',
+        items: [
+          'Flip any playable card for free to read its printed credits. A deep cut links only through a hidden notable credit.',
+          'Meld banks 3+ related films. Final Cut plays any card for +1. Recast cancels an opponent’s super link or Final Cut. Each token can be spent once.',
+          'A draw reveals three: normally keep one, then hold it, toss it to a marquee for no points, or play it if it connects. Every revealed wild is kept, so a multi-wild draw can grow your hand by more than one.',
+        ],
+      },
+      {
+        title: 'Difficulty',
+        items: [
+          'Matinee, Feature, and Director’s Cut change the rival’s knowledge, choices, and hint allowance. They do not change the rules, scoring, deck, or your legal actions.',
+        ],
+      },
+    ],
+    details: [
+      {
+        title: 'Full rules for Duel',
+        items: [
+          'A run may chain up to three cards through the same person. A super link grants an unrestricted encore instead.',
+          'Take lifts a marquee top that completes a Meld into your hand instead of drawing; bank it on a later turn. A wild covering the pile blocks Take.',
+          'A wild scores 0, plays anywhere, and may fill one slot in a person or series Meld. Pass is available only when the deck is empty.',
+        ],
+      },
+    ],
+  },
+}
 
-// Full-screen scrollable rules. Opaque on purpose: it can sit over a live
-// duel without losing any game state underneath.
-// Summary-first (feedback batch 1): a short per-mode card up top, the full
-// sections behind one tap — same content, layered. Distinct from the menu's
-// intro overlay, which stays high-level per the §7·5(iii) ruling.
-export default function HowToPlay({ onClose }: { onClose: () => void }) {
+const OVERVIEW = [
+  ['Daily Puzzle', 'Connect one hand to the pile. Golf scoring: low wins.'],
+  ['Chronology', 'Place ten hidden-year titles from older to newer.'],
+  ['Connections', 'Sort sixteen titles into four clean groups of four.'],
+  ['Duel vs Computer', 'Reaching 20 ends the show; highest net score wins.'],
+] as const
+
+const SUPPORT_URL = 'https://github.com/Mwamburi5/daily-movie-game/issues/new/choose'
+
+function Section({ section }: { section: HelpSection }) {
+  const List = section.ordered ? 'ol' : 'ul'
+  return (
+    <section className="rounded-stub-panel border border-stub-navy/15 bg-stub-paper p-4" data-help-section={section.title}>
+      <h3 className="font-stub-label text-[11px] font-bold uppercase tracking-[0.12em] text-stub-slate">
+        {section.title}
+      </h3>
+      <List className={`mt-2 space-y-2 pl-5 font-stub-ui text-[14px] leading-relaxed text-stub-navy ${section.ordered ? 'list-decimal' : 'list-disc'}`}>
+        {section.items.map((item) => <li key={item}>{item}</li>)}
+      </List>
+    </section>
+  )
+}
+
+export default function HowToPlay({
+  context,
+  onClose,
+  onReplayIntro,
+}: {
+  context: HelpContext
+  onClose: () => void
+  // Only the overview sheet passes this — the one place a player can ask for
+  // the first-run onboarding back. A plain text link, deliberately NOT an
+  // <article> or a second expand control: the overview sheet's shape (four
+  // cards, no expander) is a tested contract.
+  onReplayIntro?: () => void
+}) {
   const reduce = useReducedMotion()
   const [expanded, setExpanded] = useState(false)
+  const dialogRef = useDialogA11y(onClose)
+  const mode = context === 'overview' ? null : MODE_HELP[context]
+  const activeMode = mode as ModeHelp
+  const label = mode?.label ?? 'all modes'
+
   return (
     <motion.div
-      className="absolute inset-0 z-[120] overflow-y-auto overscroll-contain bg-stub-cream"
-      initial={{ opacity: 0, y: reduce ? 0 : 24 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: reduce ? 0 : 24 }}
-      transition={reduce ? { duration: 0.15 } : { type: 'spring', stiffness: 300, damping: 30 }}
+      ref={dialogRef}
+      role="dialog"
+      aria-modal="true"
+      aria-label={`How to play ${label}`}
+      tabIndex={-1}
+      className="fixed inset-0 z-[120] flex items-center justify-center bg-stub-scrim sm:p-4"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: reduce ? MOTION.duration.reduced : MOTION.duration.reveal }}
       data-rules
+      data-help-context={context}
     >
-      <div className="mx-auto w-full max-w-[420px] px-5 pb-16">
-        <header className="sticky top-0 z-10 -mx-5 mb-4 flex items-center justify-between bg-stub-cream/95 px-5 pb-2 pt-4 backdrop-blur-sm">
-          <h2 className="font-stub-display text-3xl font-bold tracking-tight text-stub-navy">
-            How to Play
-          </h2>
+      <motion.div
+        className="flex h-full w-full flex-col overflow-hidden bg-stub-cream sm:max-h-[min(760px,calc(100dvh-32px))] sm:max-w-[760px] sm:rounded-[22px] sm:border-2 sm:border-stub-navy sm:shadow-stub-modal"
+        initial={{ opacity: 0, y: reduce ? 0 : 18, scale: reduce ? 1 : 0.98 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        exit={{ opacity: 0, y: reduce ? 0 : 18, scale: reduce ? 1 : 0.98 }}
+        transition={reduce ? { duration: MOTION.duration.reduced } : MOTION.spring.overlay}
+      >
+        <header className="flex flex-none items-center justify-between border-b border-stub-navy/15 bg-stub-cream px-5 py-4 sm:px-7">
+          <div className="min-w-0">
+            <p className="font-stub-label text-[10px] font-bold uppercase tracking-[0.16em] text-stub-amber">Match Cut</p>
+            <h2 className="truncate font-stub-display text-[28px] font-bold leading-tight text-stub-navy sm:text-[32px]">
+              How to Play
+            </h2>
+            <p className="font-stub-ui text-[14px] font-semibold text-stub-slate">{label}</p>
+          </div>
           <button
             type="button"
             aria-label="Close rules"
             data-rules-close
             onClick={onClose}
-            className="flex h-11 w-11 items-center justify-center rounded-stub-pill bg-stub-navy text-lg text-stub-cream shadow-stub-card-resting active:scale-90"
+            className="flex h-11 w-11 flex-none items-center justify-center rounded-stub-pill bg-stub-navy text-lg text-stub-cream shadow-stub-card-resting active:scale-90"
           >
-            ✕
+            <Icon name="close" size={20} />
           </button>
         </header>
 
-        <Section title="The short version">
-          <p>
-            <B>Movies connect through the people who made them</B> — the actors, directors, and
-            writers they share. Four ways to play with those links:
-          </p>
-          <p>
-            <B>Duel vs Computer</B> · Take turns playing connected cards and banking melds. Race
-            to 20 — highest net score wins.
-          </p>
-          <p>
-            <B>Daily Puzzle</B> · One hand; chain every card onto the pile. Golf — low wins, and
-            peeking at credits costs +1.
-          </p>
-          <p>
-            <B>Chronology</B> · Slot each movie into the timeline where it belongs. Golf — misses
-            cost strokes.
-          </p>
-          <p>
-            <B>Connections</B> · Sixteen movies, four hidden groups of four. Four mistakes
-            allowed.
-          </p>
-        </Section>
+        <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-5 py-5 sm:px-7" data-rules-body>
+          {context === 'overview' ? (
+            <>
+              <p className="max-w-[620px] font-stub-ui text-[15px] leading-relaxed text-stub-navy">
+                Four ways to play with movies. Pick the kind of challenge you want; each game explains only its own rules once you enter.
+              </p>
+              <div className="mt-5 grid gap-3 sm:grid-cols-2" data-help-overview>
+                {OVERVIEW.map(([title, copy]) => (
+                  <article key={title} className="relative rounded-stub-panel border-2 border-stub-navy bg-stub-paper p-4 shadow-stub-card-resting">
+                    <h3 className="font-stub-display text-[18px] font-bold text-stub-navy">{title}</h3>
+                    <p className="mt-1 font-stub-ui text-[14px] leading-relaxed text-stub-slate">{copy}</p>
+                  </article>
+                ))}
+              </div>
+            </>
+          ) : (
+            <>
+              <p className="max-w-[650px] font-stub-ui text-[16px] font-semibold leading-relaxed text-stub-navy">
+                {activeMode.objective}
+              </p>
+              <div className="mt-5 grid gap-3 md:grid-cols-2">
+                {activeMode.sections.map((section) => <Section key={section.title} section={section} />)}
+              </div>
+              <button
+                type="button"
+                data-rules-expand
+                aria-expanded={expanded}
+                onClick={() => setExpanded((value) => !value)}
+                className="mt-4 min-h-12 w-full rounded-stub-pill border-2 border-stub-navy bg-stub-paper px-7 py-3 font-stub-ui text-[14px] font-bold text-stub-navy shadow-stub-card-resting active:scale-[0.99]"
+              >
+                {expanded ? 'Hide full rules' : `Full rules for ${activeMode.label}`}
+              </button>
+              {expanded && (
+                <div className="mt-3 grid gap-3 md:grid-cols-2" data-rules-expanded>
+                  {activeMode.details.map((section) => <Section key={section.title} section={section} />)}
+                </div>
+              )}
+            </>
+          )}
 
-        {!expanded && (
+          {context === 'overview' && onReplayIntro && (
+            <p className="mt-4 text-center">
+              <button
+                type="button"
+                data-replay-intro
+                onClick={onReplayIntro}
+                className="min-h-11 px-2 font-stub-ui text-[13px] font-semibold text-stub-slate underline underline-offset-4 active:text-stub-navy"
+              >
+                Watch the intro again
+              </button>
+            </p>
+          )}
+
+          <section
+            className="mt-5 rounded-stub-panel border-2 border-stub-navy bg-stub-paper p-4 shadow-stub-card-resting"
+            data-player-support
+          >
+            <h3 className="font-stub-display text-[18px] font-bold text-stub-navy">Help &amp; privacy</h3>
+            <p className="mt-1 font-stub-ui text-[13px] leading-relaxed text-stub-slate">
+              Report bad movie data, accessibility trouble, or a broken game through the public GitHub issue chooser.
+              GitHub sign-in is required, and the report will be public. Do not include personal information such as
+              your name, email address, account details, or private device information.
+            </p>
+            <a
+              href={SUPPORT_URL}
+              target="_blank"
+              rel="noreferrer noopener"
+              aria-label="Open public GitHub support (opens in a new tab)"
+              className="mt-3 inline-flex min-h-11 items-center rounded-stub-pill bg-stub-navy px-5 py-2 font-stub-ui text-[13px] font-bold text-stub-cream shadow-stub-card-resting active:scale-[0.99]"
+              data-support-link
+            >
+              Open public GitHub support
+            </a>
+            <details className="mt-4 border-t border-stub-slate-light/40 pt-3" data-privacy-disclosure>
+              <summary className="min-h-11 cursor-pointer py-2 font-stub-ui text-[13px] font-bold text-stub-navy underline decoration-stub-amber decoration-2 underline-offset-4">
+                What this site saves and measures
+              </summary>
+              <div className="mt-2 space-y-3 font-stub-ui text-[12px] leading-relaxed text-stub-slate">
+                <p>
+                  On this device, Match Cut stores per-mode streaks, whether you played today, personal bests, and
+                  your Duel record. This progress stays in your browser and does not affect deals or game rules.
+                </p>
+                <p>
+                  Vercel Web Analytics records anonymous page views and a small set of journey events so confusing
+                  or broken areas can be found. Provider context can include the page and time, general location,
+                  browser and operating system, and device type.
+                </p>
+                <p>
+                  Match Cut does not add your movie or person choices, typed text, name, email address, or a
+                  persistent cross-day player ID to those events. Analytics is cookieless; Vercel discards the
+                  visitor session used for deduplication after 24 hours, so it resets daily. Match Cut has no user
+                  identity export, drain, or D1/D7 player tracking.
+                </p>
+                <p>
+                  Analytics retention follows Vercel’s service and plan reporting policy and may be longer than the
+                  guaranteed reporting window.
+                </p>
+              </div>
+            </details>
+          </section>
+
+          <section className="mt-5 border-t border-stub-slate-light/40 pt-4" data-tmdb-attribution>
+            <h3 className="font-stub-label text-[11px] font-bold uppercase tracking-wider text-stub-slate">About the data</h3>
+            <img src="/tmdb-logo.svg" alt="TMDB" className="mb-2 mt-2 h-3 w-auto" />
+            <p className="font-stub-ui text-[12px] leading-relaxed text-stub-slate">
+              This product uses TMDB and the TMDB APIs but is not endorsed, certified, or otherwise approved by TMDB.
+            </p>
+          </section>
+
+        </div>
+
+        <footer className="flex-none border-t border-stub-navy/15 bg-stub-cream px-5 py-3 sm:px-7" data-rules-footer>
           <button
             type="button"
-            data-rules-expand
-            onClick={() => setExpanded(true)}
-            className="mb-7 min-h-12 w-full rounded-stub-pill border-2 border-stub-navy bg-stub-paper px-7 py-3 text-[14px] font-bold text-stub-navy shadow-stub-card-resting active:scale-95"
+            data-rules-primary
+            onClick={onClose}
+            className="min-h-12 w-full rounded-stub-pill bg-stub-amber px-7 py-3 font-stub-ui text-[15px] font-bold text-stub-navy shadow-stub-card-resting active:scale-[0.99]"
           >
-            Read the full rules
+            {context === 'overview' ? 'Got it — choose a mode' : 'Got it — keep playing'}
           </button>
-        )}
-
-        {expanded && (
-          <>
-        <Section title="The goal">
-          <p>
-            Connect movies through the people who made them — actors, directors, writers. Links
-            earn points, and every card still in your hand at the end costs <B>−1</B>.
-          </p>
-          <p>
-            The show ends the moment someone reaches <B>20 points</B>, someone plays their last
-            card, or the deck is empty and both players pass. Reaching 20 just rings the bell —{' '}
-            <B>highest net score wins</B> (points − cards held), even if the other player crossed
-            the line first.
-          </p>
-        </Section>
-
-        <Section title="Reading a card">
-          <p>
-            The front shows title, year, and genre — the color <B>is</B> the genre family (crime
-            reds, sci-fi navies, drama deep blues…).
-          </p>
-          <p>
-            <B>Tap any card to flip it.</B> The credits list the top-billed cast (+1 each) and
-            the director (+2).
-          </p>
-          <p>
-            <span className="font-stub-label text-[11px] font-bold uppercase tracking-wider text-stub-red">
-              +N deeper credits
-            </span>{' '}
-            means the film has more notable names than the card shows. They are hidden — but they
-            still count, if you know them.
-          </p>
-        </Section>
-
-        <Section title="Your turn — pick one">
-          <p>
-            <B>Play</B> · Tap a card to raise it, then drag it onto <B>either marquee</B> (the two
-            top cards — a double feature). It must share at least one person with that marquee's
-            top card.
-          </p>
-          <p>
-            <B>Draw</B> · Tap the deck to <B>reveal 3 cards and keep 1</B> (the other two are gone
-            for good). Then <B>Keep</B> it in hand, <B>Toss</B> it onto a marquee (no points —
-            unstick yourself, or hand your opponent a brick), or drag it to a marquee to play it
-            if it connects. If a <B>wild</B> turns up in the reveal, it's automatically the keep —
-            a wild is never burned.
-          </p>
-          <p>
-            <B>Meld</B> · Bank 3+ films that share a through-line — points per card by the{' '}
-            <B>ladder</B> below.
-          </p>
-          <p>
-            <B>Lay off</B> · Drag a matching card onto an open meld row for that row's locked
-            per-card points.
-          </p>
-          <p>
-            <B>Take</B> · When a marquee's top card would <B>finish a meld</B> for you, a{' '}
-            <B>↑ Take</B> button appears on it. Lift the card into your hand <B>instead of
-            drawing</B>, then bank the meld next turn. (You can't take a card hidden under a
-            wild.)
-          </p>
-          <p>
-            <B>Pass</B> · Only when the deck is empty. Two passes in a row ends the game.
-          </p>
-        </Section>
-
-        <Section title="Links & points">
-          <div className="flex flex-wrap items-center gap-1.5 pb-1">
-            <TierPill tone="navy">Standard +1</TierPill>
-            <TierPill tone="amber">Strong +2</TierPill>
-            <TierPill tone="red">Super +4</TierPill>
-          </div>
-          <p>
-            <B>Standard +1</B> — one shared actor.
-          </p>
-          <p>
-            <B>Strong +2</B> — a shared director or writer, or two shared people.
-          </p>
-          <p>
-            <B>Super +4</B> — same series, or three+ shared people. A super link is an{' '}
-            <B>encore</B>: you immediately play again.
-          </p>
-        </Section>
-
-        <Section title="Deep cuts">
-          <p>
-            <span className="mr-1.5 inline-block rounded-stub-pill bg-stub-teal px-2 py-0.5 font-stub-label text-[9px] font-bold uppercase tracking-wider text-stub-cream shadow-stub-glow-teal">
-              Deep cut
-            </span>
-            A link that runs <B>only through hidden credits</B> — the pile glows teal. Same
-            points, eternal respect.
-          </p>
-          <p>
-            The round <B>DEEP CUT</B> stamp on a card face marks a film that <B>carries hidden
-            credits</B> — more notable names than the card prints (the <B>+N deeper credits</B>{' '}
-            line on its flip side).
-          </p>
-        </Section>
-
-        <Section title="Runs">
-          <p>
-            After you play, if another card in your hand connects through the <B>same person</B>,
-            you may chain it — up to <B>3 cards in one turn</B>. The banner counts Run ×2, ×3.
-            Tap <B>End turn</B> to stop early.
-          </p>
-        </Section>
-
-        <Section title="Melds — a ladder">
-          <div className="mb-1 flex items-center gap-1 rounded-stub-panel bg-stub-paper px-2 py-1 shadow-stub-card-resting">
-            <span className="font-stub-label text-[8px] font-bold uppercase tracking-wider text-stub-slate">
-              De Niro ×3
-            </span>
-            <span className="h-10 w-7 rounded-stub-thumb ring-1 ring-inset ring-stub-navy/10" style={{ background: '#7a1f1f' }} />
-            <span className="h-10 w-7 rounded-stub-thumb ring-1 ring-inset ring-stub-navy/10" style={{ background: '#8c2430' }} />
-            <span className="h-10 w-7 rounded-stub-thumb ring-1 ring-inset ring-stub-navy/10" style={{ background: '#4a3960' }} />
-          </div>
-          <p>
-            Tap <B>Meld</B>, select 3+ films sharing a through-line, and bank them into a marquee
-            row. The stronger the link, the more each card is worth — <B>highest rung wins</B>:
-          </p>
-          <p>
-            🎬 <B>Auteur +3</B> — the same director or writer.
-            <br />⭐ <B>Actor +2</B> — the same actor.
-            <br />🎞️ <B>Series +1</B> — the same series or franchise.
-            <br />🎟️ <B>Genre +1</B> — 3+ of the same genre (a rescue for stranded cards).
-          </p>
-          <p>
-            A meld is <B>named and scored by its top rung the moment you bank it</B>, and it stays
-            that way — a Cillian-Murphy-and-Christopher-Nolan row is a Nolan (Auteur) meld for
-            good.
-          </p>
-          <p>
-            Rows are <B>open to both players</B>: on your turn, drag a matching card onto a row to
-            lay off for its locked per-card points. Rows light up when your raised card fits.
-          </p>
-          <p>
-            Banked cards leave your hand for good — they can't be played to a marquee, and they
-            don't count against you at the end.
-          </p>
-        </Section>
-
-        <Section title="Wild cards">
-          <p>
-            Three famous films — <B>12 Angry Men</B>, <B>Casablanca</B>, <B>Citizen Kane</B> — are
-            shuffled into the deck as <B>wilds</B> (gold cards). A wild is worth <B>0 points</B>,
-            but it's flexible:
-          </p>
-          <p>
-            <B>Plays anywhere</B> — drag it onto either marquee to get unstuck. It sits on top but
-            is see-through: the real card underneath still counts for connecting.
-          </p>
-          <p>
-            <B>Fills a meld</B> — one wild plus two real films that share a link make a 3-card
-            meld. The wild itself scores 0 (genre melds don't take wilds).
-          </p>
-        </Section>
-
-        <Section title="Powers — one of each per game">
-          <p>
-            <TokenPill>Final Cut</TokenPill>{' '}
-            Arm it, then play <B>any card</B>, connection or not (+1). If your card turns out to
-            connect on its own, the token isn't spent.
-          </p>
-          <p>
-            <TokenPill>Recast</TokenPill>{' '}
-            When your opponent lands a <B>super link</B> or a <B>Final Cut</B>, cancel it before
-            it resolves: the card goes back, no points, and their turn is spent.
-          </p>
-          <p>The CPU holds the same two — its pills sit next to its hand count.</p>
-        </Section>
-
-        <Section title="Difficulty & hints">
-          <p>
-            Pick your rival on the menu: <B>Matinee</B> plays casually and reads only the credits
-            printed on the cards, <B>Feature</B> is a fair fight, and <B>Director's Cut</B> sees
-            everything — including the hidden deeper credits — and plays to deny you.
-          </p>
-          <p>
-            On Matinee and Feature, the <B>◎ Hint</B> button (bottom right) pulses one card in
-            your hand that can play — unlimited on Matinee, <B>3 per game</B> on Feature.
-            Director's Cut has no hints — recall is the game.
-          </p>
-        </Section>
-
-        <Section title="The screen">
-          <p>
-            <B>Score chips</B> (top right) — live points; the ringed chip shows whose turn it is.
-          </p>
-          <p>
-            <B>Deck</B> — tap to draw 3 and keep 1; the number is cards left. Becomes <B>Pass</B>{' '}
-            when empty.
-          </p>
-          <p>
-            <B>The two marquees</B> — drag cards onto either one to play; tap a top card to study
-            its credits. A <B>↑ Take</B> button appears on a marquee when its top card finishes a
-            meld for you.
-          </p>
-          <p>
-            <B>Your hand</B> — tap a card to raise it; <B>press and hold</B>, then slide to
-            reorder it. On Matinee, the <B>⇲ Sort</B> button groups shared names together so
-            links and melds stand out.
-          </p>
-          <p>
-            <B>Bottom left</B> — your tokens and the Meld button. <B>Bottom right</B> — the Hint
-            button (easier difficulties). <B>Top</B> — the CPU's cards and its remaining tokens.
-          </p>
-        </Section>
-
-        <Section title="Daily puzzle (solo)">
-          <p>
-            One hand, golf scoring — <B>low wins</B>. Peeking isn't free: a card's{' '}
-            <B>first flip costs +1</B> (flipping it again later is free), an invalid play costs{' '}
-            <B>+2</B>, and chaining through the same person earns strokes back. Clear the whole
-            hand and beat par.
-          </p>
-          <p>
-            It's a true daily: everyone gets the <B>same hand on the same day</B> (your day rolls
-            over at your own midnight), and every daily is <B>guaranteed solvable</B>. <B>Par</B>{' '}
-            is set by a solver that prices the best possible line — a combo-rich hand means a
-            tougher par. The <B>practice</B> button on the menu replays the original hand-designed
-            puzzle any time.
-          </p>
-        </Section>
-
-        <Section title="Chronology (solo)">
-          <p>
-            No links at all — just <B>when</B>. Slot each movie into the line where you think it
-            belongs in time, older to the left. Right slot, it sticks; wrong slot, the card flips
-            to show its real year, snaps to where it goes, and costs <B>+1 stroke</B>.
-          </p>
-          <p>
-            Golf scoring — <B>low wins</B>. Three clean placements in a row earn a stroke back,
-            and a brave call (landing a card between two close years) shields your streak from
-            the next miss. The line only tightens: the first card is a gimme, the last might be
-            threading 1997 between 1995 and 1999.
-          </p>
-        </Section>
-
-        <Section title="Connections (solo)">
-          <p>
-            Sixteen movies, <B>four hidden groups of four</B>. Every group is joined by one thing —
-            a shared <B>director</B>, <B>actor</B>, <B>series</B>, or <B>genre</B>. The four groups
-            can <B>repeat a type</B> (two director groups happens), and <B>at most one</B> group is
-            ever a genre. Tap four you think belong together, then <B>Submit</B>.
-          </p>
-          <p>
-            Right, the group locks in and reveals its connection. Wrong, you lose one of your{' '}
-            <B>four guesses</B> — and if three of your four shared a group, it tells you{' '}
-            <B>one away</B>. Solve all four groups before the mistakes run out.
-          </p>
-          <p>
-            Every movie fits <B>exactly one</B> group — no card can honestly belong to two, so
-            there's always one clean answer. It's a true daily: the <B>same sixteen for everyone</B>{' '}
-            on the same day. <B>Random grid</B> on the menu deals a fresh board any time.
-          </p>
-        </Section>
-          </>
-        )}
-
-        {/* TMDB free-tier attribution — required alongside any TMDB-derived
-            data in the pool (docs/tmdb-plan.md "Obligations"). Sits OUTSIDE the
-            expand gate on purpose: the obligation holds even in summary view. */}
-        <section className="mb-7 border-t border-stub-slate-light/40 pt-5" data-tmdb-attribution>
-          <h3 className="mb-2 font-stub-label text-[11px] font-bold uppercase tracking-wider text-stub-slate">
-            About the data
-          </h3>
-          <img src="/tmdb-logo.svg" alt="TMDB" className="mb-2 h-3 w-auto" />
-          <p className="text-[11px] leading-relaxed text-stub-slate">
-            This product uses TMDB and the TMDB APIs but is not endorsed, certified, or otherwise
-            approved by TMDB.
-          </p>
-        </section>
-
-        <button
-          type="button"
-          onClick={onClose}
-          className="mt-2 min-h-12 w-full rounded-stub-pill bg-stub-amber px-7 py-3 text-[15px] font-bold text-stub-navy shadow-stub-card-resting active:scale-95"
-        >
-          Got it — deal me in
-        </button>
-      </div>
+        </footer>
+      </motion.div>
     </motion.div>
   )
 }

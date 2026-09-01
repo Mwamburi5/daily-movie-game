@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import type { Movie } from '../data/types.ts'
+import { useDialogA11y } from './useDialogA11y.ts'
 
 // RecastOffer — the 7c "drama moment" overlay ("The Stub" design language).
 //
@@ -55,9 +56,12 @@ export default function RecastOffer({
   const consequence = finalCut
     ? 'Final Cut — no connection needed'
     : 'Super link — +4 and an encore'
+  // Trap-only dialog (§7·7b a11y): recast-or-allow is a forced choice, no Esc.
+  const dialogRef = useDialogA11y()
 
   return (
     <motion.div
+      ref={dialogRef}
       // Full-board overlay. Keep the app's z-[90] slot (see file header on the
       // z-map). initial/animate/exit opacity so the parent's AnimatePresence
       // wrapper drives the fade with its existing timing.
@@ -69,6 +73,7 @@ export default function RecastOffer({
       role="dialog"
       aria-modal="true"
       aria-label={`CPU plays ${movie.title} — recast or allow`}
+      tabIndex={-1}
     >
       {/* Navy scrim + soft amber radial glow. These exact rgba values have no
           stub token (README §7c sanctions them verbatim). Glow is centered a

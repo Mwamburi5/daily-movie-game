@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Match Cut favicon (§7·7c): the ticket-stub mark. Navy tile, amber ticket
+       (amber = THE action color), edge notches + a dashed tear line — the
+       "cut". Hand-authored, zero-dep; PNG fallbacks are rasterized from this
+       file (see index.html). -->
+  <rect width="64" height="64" rx="14" fill="#1F3A52"/>
+  <rect x="7" y="21" width="50" height="22" rx="5" fill="#CF952A"/>
+  <circle cx="7" cy="32" r="4.5" fill="#1F3A52"/>
+  <circle cx="57" cy="32" r="4.5" fill="#1F3A52"/>
+  <line x1="41" y1="24" x2="41" y2="40" stroke="#1F3A52" stroke-width="2.5" stroke-dasharray="3.2 3.2" stroke-linecap="round"/>
+</svg>

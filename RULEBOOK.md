@@ -4,7 +4,11 @@
 > now*. Update it whenever a rule or mode changes, so the words here always match
 > the game. Written so anyone 12 and up can follow it.
 >
-> **Last updated:** 2026-07-10 — **The Stub card redesign** (poster-panel card faces, ticket-stub Connections tiles, framed menu cards) plus one rule alignment: a **wild in your draw-3 is kept automatically** (that was always the rule under the hood; the buttons now enforce it). Previous: Daily Puzzle real daily (2026-07-03), Funpass Update (Meld Ladder · Genre Melds · Wild Cards · Take-to-Meld), Flow Update (Double Feature · Draw-3 · Race-to-20).
+> **Last updated:** 2026-08-27 — **Daily / Duel pool cutover:** Daily uses the
+> original 89-film pool through 2026-09-26 and the approved 216-film pool from
+> 2026-09-27 forward; Duel uses 216 films and 16 Hall-of-Fame wilds. Previous:
+> keyboard play + housekeeping (2026-07-17), The Stub card redesign (2026-07-10),
+> Daily Puzzle real daily (2026-07-03), Funpass Update, and Flow Update.
 > **Modes:** Daily Puzzle (live, daily), Duel vs Computer (live), Chronology (live, daily — film pool still growing), Connections (live, daily).
 
 ---
@@ -14,6 +18,11 @@
 Every card is a **movie**, doing **more with less** is always the goal (fewest
 moves, fewest mistakes), and every mode ends with a little **emoji row** you can
 share. That is the family bond that ties all four together.
+
+**Playing by keyboard:** everything works without a mouse or touch. **Tab** moves
+between cards and targets, **Enter** (or Space) acts — raise a card, then Enter on
+a marquee / the pile / a gap plays it there — and **Esc** puts a raised card back
+down. Overlays keep your focus inside them until you choose a button.
 
 There are **four ways to play**:
 
@@ -29,7 +38,10 @@ There are **four ways to play**:
 ### How Modes 1, 2, and 4 connect movies
 
 Modes 1 and 2 share one idea. You **connect movies through the people who made
-them** (actors, directors, and writers), or because they are in the **same series**.
+them**: actors, directors, and writers. Daily Puzzle uses only those people
+links. Duel ordinary plays are also person-gated; a shared series upgrades the
+score of an otherwise legal link and can support a Meld, but a series-only pair
+is not an ordinary legal play.
 
 > Example: *Titanic* and *Inception* connect because **Leonardo DiCaprio** is in both.
 > *The Dark Knight* and *Inception* connect because **Christopher Nolan** directed both.
@@ -62,6 +74,12 @@ A quiet brain-teaser. No computer, no clock. Just you and one hand of cards.
   because a sharp player could earn more strokes back. Pars run about **7–12**.
 - **Practice:** the small button under it replays the **original hand-designed puzzle**
   (the Scorsese-clique hand, par 9) any time, as a fixed warm-up.
+- **Replay today's hand** on the end screen re-deals the **same** daily board — a retry,
+  not a new puzzle. And a practice share says `practice ·` before the score, so only the
+  daily shares as the daily.
+- **Pool version:** dates through **2026-09-26** keep the original 89-film deal;
+  dates from **2026-09-27** use the approved 216-film pool. Old Daily boards never
+  reshuffle when the catalog grows.
 
 ### What's on screen
 ```
@@ -90,12 +108,13 @@ A quiet brain-teaser. No computer, no clock. Just you and one hand of cards.
 ## Mode 2 — Duel vs Computer · LIVE
 
 The main event. You and the computer share **two marquees** (two top cards) and take turns
-scoring links, racing to a finish line.
+scoring links until the show reaches one of its end triggers.
 
 ### How to play in 30 seconds
 1. You each hold a hand; **two starter cards** sit out — the two **marquees**.
 2. On your turn, **play a card that connects** to **either** marquee and score points.
-3. First to **20 points** rings the bell — or someone empties their hand. **Highest net score wins.**
+3. **Reaching 20 ends the show; highest net score wins.** An empty hand or two
+   passes with an empty deck also ends it.
 
 ### What's on screen
 ```
@@ -117,9 +136,10 @@ rule; here, study all you like).
   marquee's top card. (A **run** stays on the marquee it started — see Runs.)
 - **Draw** — tap the deck to **reveal 3 cards** and tap one to **keep** (the other two are
   gone for good). Then **Keep** it in hand, **Toss** it onto a marquee (no points — to unstick
-  yourself or hand the computer a dead card), or **play** it if it connects. If a **wild**
-  turns up in the reveal, it is **always the keep** — wilds are never burned (the other
-  cards gray out; the computer follows the same rule).
+  yourself or hand the computer a dead card), or **play** it if it connects. If one or
+  more **wilds** turn up, **every wild is kept** and every non-wild is burned. A rare
+  multi-wild reveal can therefore grow your hand by two or three; the computer follows
+  the same rule.
 - **Meld** — bank **3+ films that share a link** (see Melds below) for points by **rung**.
 - **Lay off** — drag a matching card onto a melded row for that row's per-card points.
 - **Take** — when a marquee's top card would **finish a meld** for you, a
@@ -151,14 +171,17 @@ earn that locked per-card amount.
 |---|---|---|
 | **Standard** | **+1** | one shared actor |
 | **Strong** | **+2** | a shared director/writer, or two shared people |
-| **Super** | **+4** *and a free extra play* | same series, or 3+ shared people |
+| **Super** | **+4** *and a free extra play* | an otherwise legal link in the same series, or 3+ shared people |
 | **Meld / Lay off** | **+3 / +2 / +1** per card | by the meld's rung (above) |
 | **Final Cut** | **+1** | a wildcard play (see Powers) |
 | **Wild card** | **+0** | plays anywhere / fills a meld (see Wild Cards) |
 
 ### Wild cards
-Three famous films — **12 Angry Men**, **Casablanca**, **Citizen Kane** — are shuffled into the
-deck as **wilds** (gold cards). A wild is worth **0 points**, but it's flexible:
+Sixteen all-time films are shuffled into the deck as **wilds** (gold cards):
+**12 Angry Men, Casablanca, Citizen Kane, The Wizard of Oz, 2001: A Space
+Odyssey, Psycho, Seven Samurai, Singin’ in the Rain, Dr. Strangelove, Vertigo,
+Tokyo Story, Bicycle Thieves, In the Mood for Love, Spirited Away, Metropolis,**
+and **Pather Panchali**. A wild is worth **0 points**, but it's flexible:
 - **Plays anywhere** — drag it onto either marquee to get unstuck. It sits on top but is
   *see-through*: the real card underneath still counts for connecting.
 - **Fills a meld** — use **one** wild plus **two real** films that share a link to make a
@@ -265,6 +288,9 @@ until the gap you want comes into view.
   - **Wide** (easier) spreads the hand across the decades, so the gaps are roomy.
   - **Tight** (harder) bunches the hand into one narrow window (say, a single decade), so
     the gaps are small and the calls are close.
+- **Replay today's line** on the end screen re-deals the **same** daily board — a retry,
+  not a new puzzle; practice's **New round** deals fresh. And a practice share says
+  `practice ·` before the score, so only the daily shares as the daily.
 
 **The twist:** every card you place makes the next one harder, because the gaps get
 smaller. The first card is a gimme. The last one might be threading 1997 between 1995
@@ -284,7 +310,10 @@ game, you know the shape — here the connection is always about the *movies*.
 1. You see a **4×4 grid** of sixteen movie titles. Hidden inside are **four groups of
    four**, each joined by one thing: the same **director**, **actor**, **series**, or
    **genre**. It is *not* one group of each kind — types can **repeat** (two director
-   groups happens), and **at most one** group is ever a genre.
+   groups can happen), and **at most one** group is ever a genre. **Today's bill** above
+   the board names the exact mix before play (for example, **Actor ×3 · Genre ×1**)
+   and counts down the connection types still unsolved. It never points to particular
+   tiles.
 2. **Tap four** titles you think belong together, then tap **Submit**.
 3. **Right** — the group locks in and reveals its connection (e.g. *Director · Martin
    Scorsese*).
@@ -295,6 +324,7 @@ game, you know the shape — here the connection is always about the *movies*.
 ### What's on screen
 ```
    Connections            Mistakes left ● ● ● ●   (top bar)
+   Today's bill: Actor ×3 · Genre ×1
 
  ┌──────┐ ┌──────┐ ┌──────┐ ┌──────┐
  │TITLE │ │TITLE │ │TITLE │ │TITLE │             (16 title tiles, 4×4)
@@ -324,12 +354,16 @@ scenes the game checks this for a whole year of boards before any of them ship.)
 - **Daily:** the Connections card's main button. Everyone on the same calendar day gets
   the **same sixteen**, so you can compare. (Your day rolls over at your own local midnight.)
 - **Practice:** the **Random grid** pill deals a fresh, already-checked board any time.
+- **Replay today's grid** on the end screen re-deals the **same** daily board — a retry,
+  not a new puzzle; practice's **New grid** deals fresh. And a practice share says
+  `practice ·` before the score, so only the daily shares as the daily.
 
 ---
 
 ## Words to know
 
-- **Link** — a connection between two movies (a shared person, or same series).
+- **Link** — for ordinary Daily/Duel play, a shared actor, director, or writer.
+  In Duel, same-series can upgrade a legal person link and can support a Meld.
 - **Marquee** — a top card you play onto in the Duel; there are **two** (Double Feature), and
   only each one's **top card** matters for connecting. *(The Daily Puzzle has a single **pile**.)*
 - **Double Feature** — the Duel's two-marquee setup: two chances to connect every turn.
@@ -393,17 +427,20 @@ rules above:
    Series +1 > Genre +1), and a meld keeps its top rung.
 2. **Genre Melds** — 3+ films of the same genre form a low-value meld, so stranded cards
    aren't dead weight.
-3. **Wild Cards ×3** — three famous films play anywhere or fill a meld (worth 0).
+3. **Wild Cards** — originally three; the 2026-08-26 content cutover expands
+   the current deck to the sixteen all-time films listed above. They play
+   anywhere or fill a meld (worth 0).
 4. **Take-to-Meld** — grab a marquee's top card to finish a meld, instead of drawing.
 
 **The Flow Update shipped (2026-06-22)** — its three changes:
 
 1. **Double Feature** — two marquees instead of one, so there's almost always something to play.
 2. **Draw 3, Keep 1** — a draw reveals three and you keep the best; the game moves faster.
-3. **Race to 20** — a finish line, so matches run ~5–8 minutes and end on a beat.
+3. **Show ends at 20** — a finish trigger, so matches run ~5–8 minutes and end
+   on a beat; highest net score still decides the winner.
 
-Difficulties were re-tuned (2026-06-30) for the full game so a casual player wins about
-**65 / 50 / 41 %** vs Matinee / Feature / Director's.
+Difficulties were re-tuned again on 2026-08-26 for the 216+16 deck so a casual
+player wins about **65 / 50 / 41 %** vs Matinee / Feature / Director's.
 
 *Parked (decision **D1**):* the two un-kept draw cards stay **hidden** for now. We may add a
 visible discard area later — to be revisited after a play-and-feel pass.

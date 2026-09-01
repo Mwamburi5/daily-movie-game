@@ -34,19 +34,29 @@ export interface DuelMeta {
   wins: number
 }
 
-interface ProgressV1 {
+export interface ProgressV1 {
   v: 1
   solo: DailyMeta
   chronology: DailyMeta
   connections: DailyMeta
   duel: Record<Difficulty, DuelMeta>
-  // First-run framing dismissed. META ONLY — a one-shot UI gate (App.tsx), never
-  // read by a rule. Optional/additive: a pre-intro blob lacks it → treated as
-  // unseen (shows once, then persists). Same additive pattern as `connections`.
+  // RETIRED 2026-08, ignored. The one-card welcome overlay this gated is gone;
+  // the four-screen onboarding below carries its own flag. Kept on the interface
+  // so an existing blob still parses (and still round-trips) — never read.
   seenIntro?: boolean
   // Duel drag-to-play nudge dismissed (feedback batch 1: "drag it to play took
-  // me a sec"). META ONLY, same one-shot additive pattern as seenIntro.
+  // me a sec"). META ONLY, one-shot additive UI gate.
   seenDragPlay?: boolean
+  // First-run onboarding completed. META ONLY — a one-shot UI gate (App.tsx),
+  // never read by a rule. Optional/additive: a blob without it reads as unseen,
+  // so every device (including one that only ever saw the retired welcome card)
+  // gets the new flow exactly once. Same additive pattern as `connections`.
+  seenOnboarding?: boolean
+  // Last difficulty picked on the menu (§7·7c "difficulty reset on load").
+  // META ONLY — a picker default, never a rule input: App still hands the value
+  // to DuelGame as a prop exactly as if the chip had been tapped. Additive:
+  // absent → 'matinee', same as a fresh device.
+  lastDifficulty?: Difficulty
 }
 
 export type DailyMode = 'solo' | 'chronology' | 'connections'
@@ -63,9 +73,85 @@ const fresh = (): ProgressV1 => ({
     feature: { plays: 0, wins: 0 },
     directors: { plays: 0, wins: 0 },
   },
-  seenIntro: false,
   seenDragPlay: false,
+  seenOnboarding: false,
 })
+
+const MAX_STREAK_DAYS = 36_525 // 100 years: generous, finite display guard.
+const MAX_DUEL_GAMES = 1_000_000
+const BEST_BOUNDS: Record<DailyMode, readonly [number, number]> = {
+  // Bounds sit far outside ordinary play except Connections, whose score is
+  // exactly the 0..3 mistakes used on a win. Safe integers outside these
+  // display ranges are clamped; wrong types/non-finite values reset to null.
+  solo: [-100, 1_000],
+  chronology: [-10, 100],
+  connections: [0, 3],
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null && !Array.isArray(value)
+}
+
+function boundedInteger(value: unknown, min: number, max: number, fallback: number): number {
+  if (!Number.isSafeInteger(value)) return fallback
+  return Math.max(min, Math.min(max, value as number))
+}
+
+function validSeed(value: unknown): value is string {
+  if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return false
+  const [year, month, day] = value.split('-').map(Number)
+  if (year < 2000) return false
+  const date = new Date(Date.UTC(year, month - 1, day))
+  return date.getUTCFullYear() === year && date.getUTCMonth() === month - 1 && date.getUTCDate() === day
+}
+
+function sanitizeDaily(value: unknown, mode: DailyMode): DailyMeta {
+  if (!isRecord(value)) return freshDaily()
+  const lastSeed = validSeed(value.lastSeed) ? value.lastSeed : null
+  const streak = lastSeed === null
+    ? 0
+    : boundedInteger(value.streak, 1, MAX_STREAK_DAYS, 1)
+  const [bestMin, bestMax] = BEST_BOUNDS[mode]
+  const best = value.best === null
+    ? null
+    : Number.isSafeInteger(value.best)
+      ? boundedInteger(value.best, bestMin, bestMax, bestMin)
+      : null
+  return { lastSeed, streak, best }
+}
+
+function sanitizeDuel(value: unknown): DuelMeta {
+  if (!isRecord(value)) return { plays: 0, wins: 0 }
+  const plays = boundedInteger(value.plays, 0, MAX_DUEL_GAMES, 0)
+  const wins = boundedInteger(value.wins, 0, plays, 0)
+  return { plays, wins }
+}
+
+// Sanitize each nested record independently. A corrupt Chronology record must
+// not erase a valid Solo streak; missing Connections and newer optional fields
+// retain the existing additive-v1 migration behavior.
+export function sanitizeProgress(value: unknown): ProgressV1 {
+  if (!isRecord(value) || value.v !== 1) return fresh()
+  const duel = isRecord(value.duel) ? value.duel : {}
+  const clean: ProgressV1 = {
+    v: 1,
+    solo: sanitizeDaily(value.solo, 'solo'),
+    chronology: sanitizeDaily(value.chronology, 'chronology'),
+    connections: sanitizeDaily(value.connections, 'connections'),
+    duel: {
+      matinee: sanitizeDuel(duel.matinee),
+      feature: sanitizeDuel(duel.feature),
+      directors: sanitizeDuel(duel.directors),
+    },
+    seenDragPlay: value.seenDragPlay === true,
+    seenOnboarding: value.seenOnboarding === true,
+  }
+  if (typeof value.seenIntro === 'boolean') clean.seenIntro = value.seenIntro
+  if (value.lastDifficulty === 'matinee' || value.lastDifficulty === 'feature' || value.lastDifficulty === 'directors') {
+    clean.lastDifficulty = value.lastDifficulty
+  }
+  return clean
+}
 
 // localStorage can be absent or throwing (Safari private mode, storage full).
 // Meta-state is a nicety — every failure path degrades to "no memory", never
@@ -74,13 +160,7 @@ export function loadProgress(): ProgressV1 {
   try {
     const raw = window.localStorage.getItem(KEY)
     if (!raw) return fresh()
-    const p = JSON.parse(raw) as ProgressV1
-    if (p?.v !== 1 || !p.solo || !p.chronology || !p.duel) return fresh()
-    // connections is an additive v1 field (arrived with Mode 4). Backfill it on a
-    // pre-connections blob rather than requiring it — a missing mode must never
-    // wipe the solo/chronology streaks a player already earned.
-    if (!p.connections) p.connections = freshDaily()
-    return p
+    return sanitizeProgress(JSON.parse(raw))
   } catch {
     return fresh()
   }
@@ -177,20 +257,21 @@ export function duelRecord(difficulty: Difficulty): DuelMeta {
   return loadProgress().duel[difficulty] ?? { plays: 0, wins: 0 }
 }
 
-// ── first-run framing ─────────────────────────────────────────────────────────
-// A one-shot welcome overlay (App.tsx) — Buri's "minimal framing" call
-// (2026-07-08), NOT a tutorial funnel. Meta-state only: a UI gate, never a rule
-// input. A blob without the flag reads as unseen, so the intro shows exactly once
-// per device and then persists.
+// ── first-run onboarding ──────────────────────────────────────────────────────
+// The one-time four-screen flow (App.tsx → Onboarding.tsx), which replaced the
+// 2026-07-08 welcome card. Meta-state only: a UI gate, never a rule input. A
+// blob without the flag reads as unseen, so the flow auto-runs exactly once per
+// device and then persists; the help sheet can replay it on demand without
+// clearing the flag (a replay is not a first run).
 
-export function hasSeenIntro(): boolean {
-  return loadProgress().seenIntro === true
+export function hasSeenOnboarding(): boolean {
+  return loadProgress().seenOnboarding === true
 }
 
-export function markIntroSeen(): void {
+export function markOnboardingSeen(): void {
   const p = loadProgress()
-  if (p.seenIntro) return
-  p.seenIntro = true
+  if (p.seenOnboarding) return
+  p.seenOnboarding = true
   save(p)
 }
 
@@ -207,5 +288,22 @@ export function markDragPlaySeen(): void {
   const p = loadProgress()
   if (p.seenDragPlay) return
   p.seenDragPlay = true
+  save(p)
+}
+
+// ── difficulty picker memory ──────────────────────────────────────────────────
+// The menu's difficulty chips read this as their initial selection so a reload
+// doesn't silently drop a Director's Cut player back to Matinee. Guarded against
+// junk blobs: anything but a known difficulty falls back to the fresh default.
+
+export function lastDifficulty(): Difficulty {
+  const d = loadProgress().lastDifficulty
+  return d === 'matinee' || d === 'feature' || d === 'directors' ? d : 'matinee'
+}
+
+export function recordDifficultyPick(d: Difficulty): void {
+  const p = loadProgress()
+  if (p.lastDifficulty === d) return
+  p.lastDifficulty = d
   save(p)
 }

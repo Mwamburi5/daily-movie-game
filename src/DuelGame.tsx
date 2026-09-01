@@ -9,6 +9,7 @@ import {
   MELD_POINTS_PER_CARD,
   TARGET_SCORE,
   TIER_POINTS,
+  WILD_IDS,
   WILD_MOVIES,
   bestMeld,
   canLayOff,
@@ -16,6 +17,7 @@ import {
   cpuTossOrKeep,
   creditNames,
   deal,
+  forcedWildDraw,
   isValidMeld,
   isWild,
   ladderPtsPerCard,
@@ -46,11 +48,12 @@ import {
 } from './lib/difficulty.ts'
 import { hasSeenDragPlay, markDragPlaySeen, recordDuelFinish, type DuelMeta } from './lib/progress.ts'
 import { track } from './lib/analytics.ts'
+import { useJourneyAnalytics } from './lib/journeyAnalytics.ts'
 
-// Resolve a card id to its Movie — wild or canonical (the deck holds 3 wilds).
+// Resolve a card id to its Movie — wild or canonical.
 const mv = (id: string): Movie => wildMovie(id) ?? movieById.get(id)!
 
-// Deal a duel, then splice the 3 wilds into the DRAW deck only (never the opening
+// Deal a duel, then splice all wilds into the DRAW deck only (never the opening
 // piles/hands) so they're drawn naturally — mirrors the sim's playGame seeding.
 // d.deck[0] becomes the second Double Feature pile, so wilds go after it.
 function dealDuel(): Deal {
@@ -75,11 +78,16 @@ function ladderMeld(cards: Movie[], deep: boolean): { perCard: number; pts: numb
 import StubCard from './components/StubCard.tsx'
 import RecapReel from './components/RecapReel.tsx'
 import DrawChoice from './components/DrawChoice.tsx'
+import FixedDigits from './components/FixedDigits.tsx'
+import { useDialogA11y } from './components/useDialogA11y.ts'
 import Hand from './components/Hand.tsx'
 import HowToPlay from './components/HowToPlay.tsx'
+import Icon from './components/Icon.tsx'
 import IdleCue from './components/IdleCue.tsx'
 import MeldShelf, { meldLabel } from './components/MeldShelf.tsx'
 import PlayBanner, { LastPlayLine } from './components/PlayBanner.tsx'
+import ResultActions from './components/ResultActions.tsx'
+import ResultMeaning from './components/ResultMeaning.tsx'
 import RecastOffer from './components/RecastOffer.tsx'
 import ScoreRace from './components/ScoreRace.tsx'
 import ShareCopy from './components/ShareCopy.tsx'
@@ -89,6 +97,7 @@ import { matchCutShare } from './lib/share.ts'
 
 type DuelStatus = 'playerTurn' | 'cpuTurn' | 'recastOffer' | 'over'
 type EndReason = 'playerOut' | 'cpuOut' | 'stalemate' | 'target'
+type E2EDuelFixture = 'ordinary-draw' | 'no-play-draw' | 'one-wild-draw' | 'multi-wild-draw' | 'take-ready'
 
 interface Tokens {
   finalCut: boolean
@@ -185,6 +194,7 @@ export default function DuelGame({
   // Coerced to a plain boolean: the forged Stub components (IdleCue,
   // PlayBanner, ScoreRace…) take `reduce: boolean`, not framer's `| null`.
   const reduce = useReducedMotion() ?? false
+  const journey = useJourneyAnalytics({ mode: 'duel', difficulty })
   // 7e compact threshold: the SE class (≤700px tall) gets the one-row header
   // and ticket-strip booth; taller phones get the full 7a treatment. One JS
   // flag (not CSS hiding) because TazCorner's pips carry layoutId={id} —
@@ -192,9 +202,18 @@ export default function DuelGame({
   const [shortViewport, setShortViewport] = useState(
     () => window.matchMedia('(max-height: 700px)').matches,
   )
+  const [wideViewport, setWideViewport] = useState(
+    () => window.matchMedia('(min-width: 1024px)').matches,
+  )
   useEffect(() => {
     const mq = window.matchMedia('(max-height: 700px)')
     const onChange = (e: MediaQueryListEvent) => setShortViewport(e.matches)
+    mq.addEventListener('change', onChange)
+    return () => mq.removeEventListener('change', onChange)
+  }, [])
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 1024px)')
+    const onChange = (e: MediaQueryListEvent) => setWideViewport(e.matches)
     mq.addEventListener('change', onChange)
     return () => mq.removeEventListener('change', onChange)
   }, [])
@@ -223,8 +242,8 @@ export default function DuelGame({
   const [passStreak, setPassStreak] = useState(0)
   // Card just drawn, awaiting the keep / toss / play decision
   const [pendingDraw, setPendingDraw] = useState<string | null>(null)
-  // Draw-3-keep-1: the 3 revealed cards awaiting the player's pick (null = not choosing).
-  // The 2 not kept are burned (out of play, invisible per decision D1).
+  // Draw-3: the revealed cards awaiting the player's pick (null = not choosing).
+  // Normally one is kept. If wilds appear, every wild is kept and only reals burn.
   const [drawChoice, setDrawChoice] = useState<string[] | null>(null)
   const [playerTokens, setPlayerTokens] = useState<Tokens>({ finalCut: true, recast: true })
   const [cpuTokens, setCpuTokens] = useState<Tokens>({ finalCut: true, recast: true })
@@ -275,19 +294,29 @@ export default function DuelGame({
   const meldSeq = useRef(0)
   // Guards a recast offer so a held CPU play resolves at most once. A rapid
   // double-tap of Allow/Recast would otherwise re-enter the resolver from a
-  // stale closure and append the same card twice (89→90, a conservation break).
+  // stale closure and append the same card twice (a conservation break).
   const resolvingOffer = useRef(false)
 
   // The LINKING top of each Double Feature pile — skips wilds (transparent on a
   // pile; the real card beneath shows through). index 0 = starter pile, 1 = second.
   const tops = piles.map((p) => topForLinking(p.map(mv)))
   const gameOver = status === 'over'
+  // Game-over dialog behavior (§7·7b a11y): the overlay is inline-conditional,
+  // so the hook keys off gameOver instead of mount. Trap-only — no Esc close.
+  const gameOverDialogRef = useDialogA11y(undefined, gameOver)
   const drawnConnects =
     pendingDraw !== null &&
     tops.some((t) => sharedPeople(t, mv(pendingDraw)!).length > 0)
   const raisedMovie = raisedId !== null ? mv(raisedId)! : null
   const playerHandMovies = playerHand.map((id) => mv(id)!)
   const handHasMeld = bestMeld(playerHandMovies) !== null
+  const playerHasImmediateAction =
+    handHasMeld ||
+    playerHandMovies.some((card) =>
+      isWild(card.id) ||
+      tops.some((top) => sharedPeople(top, card).length > 0) ||
+      melds.some((meld) => canLayOff(card, meld)),
+    )
   // Rummy take-to-meld: a pile top the player may lift to complete a meld the
   // hand can't bank alone (purposeful take only — no free hoarding). Blocked when
   // a wild covers the top, or it'd empty the last pile with no deck to reseed.
@@ -352,6 +381,23 @@ export default function DuelGame({
   // Light up the lay-off targets, plus the row a meld-hint is pointing at
   const meldHighlights =
     hintMeldId !== null ? new Set<number>([...layOffTargets, hintMeldId]) : layOffTargets
+  // Presentation mirror of playerPlayPile's existing guards. This never feeds
+  // the rules; it only tells a raised card which marquee targets to emphasize.
+  const heldId = raisedId ?? pendingDraw
+  const pilePlayTargets = piles.map((_, targetIdx) => {
+    if (heldId === null || status !== 'playerTurn' || meldSelect) return false
+    if (pendingDraw !== null && heldId !== pendingDraw) return false
+    if (isWild(heldId)) return runState === null
+    if (runState !== null && targetIdx !== runState.pileIdx) return false
+    const targetTop = tops[targetIdx]
+    const heldMovie = mv(heldId)!
+    const shared = sharedPeople(targetTop, heldMovie)
+    const viaFinalCut = shared.length === 0 && fcArmed && playerTokens.finalCut && runState === null
+    const chainOk = runState === null || shared.some((credit) => runState.people.includes(credit.name))
+    return viaFinalCut || (shared.length > 0 && chainOk)
+  })
+  const hasPilePlayTarget = pilePlayTargets.some(Boolean)
+  const hasRaisedTarget = hasPilePlayTarget || layOffTargets.size > 0
 
   const say = (
     who: 'You' | 'CPU',
@@ -388,6 +434,7 @@ export default function DuelGame({
 
   const flipCard = (id: string) => {
     if (gameOver) return
+    journey.action('flip', true)
     setFaceUp((prev) => {
       const next = new Set(prev)
       if (next.has(id)) next.delete(id)
@@ -468,7 +515,53 @@ export default function DuelGame({
     )
   }
 
-  const playerPlay = (id: string, point: { x: number; y: number }) => {
+  // ── Play cores (§7·7b a11y): geometry-free ─────────────────────────────────
+  // playerPlay (further below) is the DRAG resolver — it hit-tests the drop
+  // point, then lands here. The keyboard paths (pile-top / shelf-row Enter)
+  // call these cores directly with explicit targets, so both input methods
+  // share one rules path by construction.
+
+  const playerLayOff = (id: string, meldHit: Meld) => {
+    if (status !== 'playerTurn' || meldSelect) return
+    // Lay-offs are barred mid-draw and mid-run (same conditions as the drop path)
+    if (pendingDraw !== null || runState !== null) return
+    const card = mv(id)!
+    if (!canLayOff(card, meldHit)) {
+      journey.action('play', false)
+      journey.friction('invalid_play')
+      // Keyboard-only feedback: the drag path never routes an ineligible row
+      // here (it falls through to the pile hit-test instead).
+      invalidShake()
+      return
+    }
+    journey.action('play', true)
+    dismissDragNudge()
+    const newHand = playerHand.filter((h) => h !== id)
+    setMelds((ms) =>
+      ms.map((m) =>
+        m.id === meldHit.id
+          ? {
+              ...m,
+              cardIds: [...m.cardIds, id],
+              people: m.people.filter((p) => creditNames(card).has(p)),
+              series: card.series === m.series ? m.series : null,
+            }
+          : m,
+      ),
+    )
+    const layoffPts = meldHit.rungPts ?? MELD_POINTS_PER_CARD // locked rung
+    setPlayerHand(newHand)
+    setPlayerScore((s) => s + layoffPts)
+    setRaisedId(null)
+    removeFaceUp(id)
+    setPassStreak(0)
+    setFcArmed(false)
+    say('You', `added ${card.title} to the ${meldLabel(meldHit)} meld`, null, layoffPts)
+    if (newHand.length === 0) endGame('playerOut')
+    else setStatus('cpuTurn')
+  }
+
+  const playerPlayPile = (id: string, landed: number) => {
     if (status !== 'playerTurn' || meldSelect) return
     // After a draw, only the drawn card may be played (UNO rule)
     if (pendingDraw !== null && id !== pendingDraw) return
@@ -477,8 +570,8 @@ export default function DuelGame({
     // A wild plays on any pile for +0 — the universal shed/unstick. It lands face
     // up but transparent (the real card beneath still links), no run, no lay-off.
     if (isWild(id) && runState === null) {
-      const landedWild = pileAt(point)
-      if (landedWild === null) return
+      journey.action('play', true)
+      const landedWild = landed
       dismissDragNudge()
       const newHand = playerHand.filter((h) => h !== id)
       setPiles((ps) => ps.map((p, i) => (i === landedWild ? [...p, id] : p)))
@@ -495,43 +588,9 @@ export default function DuelGame({
       return
     }
 
-    // Lay-off: dropped onto a meld row (not mid-draw, not mid-run)
-    const meldHit = findMeldAt(point)
-    if (meldHit && pendingDraw === null && runState === null) {
-      if (canLayOff(card, meldHit)) {
-        dismissDragNudge()
-        const newHand = playerHand.filter((h) => h !== id)
-        setMelds((ms) =>
-          ms.map((m) =>
-            m.id === meldHit.id
-              ? {
-                  ...m,
-                  cardIds: [...m.cardIds, id],
-                  people: m.people.filter((p) => creditNames(card).has(p)),
-                  series: card.series === m.series ? m.series : null,
-                }
-              : m,
-          ),
-        )
-        const layoffPts = meldHit.rungPts ?? MELD_POINTS_PER_CARD // locked rung
-        setPlayerHand(newHand)
-        setPlayerScore((s) => s + layoffPts)
-        setRaisedId(null)
-        removeFaceUp(id)
-        setPassStreak(0)
-        setFcArmed(false)
-        say('You', `added ${card.title} to the ${meldLabel(meldHit)} meld`, null, layoffPts)
-        if (newHand.length === 0) endGame('playerOut')
-        else setStatus('cpuTurn')
-        return
-      }
-      // No match — maybe they meant the pile just above; fall through
-    }
-
-    // Route the drop to the Double Feature pile it landed on. Mid-run, the play
-    // stays on the pile the run is building (a run can't hop marquees).
-    const landed = pileAt(point)
-    if (landed === null) return
+    // Route the play to the pile it targeted. Mid-run, the play stays on the
+    // pile the run is building (a run can't hop marquees). The nudge retires on
+    // reaching a target even if the link misfires (C3 teaches the gesture).
     dismissDragNudge()
     const pileIdx = runState !== null ? runState.pileIdx : landed
     const top = tops[pileIdx]
@@ -541,7 +600,10 @@ export default function DuelGame({
       shared.length === 0 && fcArmed && playerTokens.finalCut && runState === null
     // Mid-run, only cards chaining through the run's person are legal
     const chainOk = runState === null || shared.some((s) => runState.people.includes(s.name))
-    if ((shared.length === 0 && !viaFinalCut) || (shared.length > 0 && !chainOk)) {
+    const validPlay = viaFinalCut || (shared.length > 0 && chainOk)
+    journey.action(viaFinalCut ? 'final_cut' : 'play', validPlay)
+    if (!validPlay) {
+      journey.friction('invalid_play')
       invalidShake()
       return
     }
@@ -628,6 +690,42 @@ export default function DuelGame({
     }
   }
 
+  // The DRAG resolver: map the drop point to a target, then run the shared
+  // cores above. Semantics preserved verbatim from the pre-§7·7b single
+  // function: wilds only land on piles; a drop on an ineligible meld row falls
+  // through to the pile hit-test ("maybe they meant the pile just above").
+  const playerPlay = (id: string, point: { x: number; y: number }) => {
+    if (status !== 'playerTurn' || meldSelect) return
+    if (pendingDraw !== null && id !== pendingDraw) return
+    const card = mv(id)!
+
+    if (isWild(id) && runState === null) {
+      const landedWild = pileAt(point)
+      if (landedWild === null) return
+      playerPlayPile(id, landedWild)
+      return
+    }
+
+    const meldHit = findMeldAt(point)
+    if (meldHit && pendingDraw === null && runState === null && canLayOff(card, meldHit)) {
+      playerLayOff(id, meldHit)
+      return
+    }
+
+    const landed = pileAt(point)
+    if (landed === null) return
+    playerPlayPile(id, landed)
+  }
+
+  // Pointer, touch, and keyboard all share this target activation. With a held
+  // card it enters the same play core as drag; without one it preserves the
+  // marquee's established flip-for-credits behavior.
+  const activatePile = (pileIdx: number, topId: string) => {
+    const held = raisedId ?? pendingDraw
+    if (held !== null) playerPlayPile(held, pileIdx)
+    else flipCard(topId)
+  }
+
   // Draw-3-keep-1: drawing reveals the top 3; the player taps one to keep (the
   // other 2 are burned, invisible per D1), then it enters the keep/toss/play flow.
   const playerDraw = () => {
@@ -640,6 +738,8 @@ export default function DuelGame({
       runState !== null
     )
       return
+    journey.action('draw', true)
+    if (!playerHasImmediateAction) journey.friction('no_play_draw')
     const take = deck.slice(0, 3)
     setDeck(deck.slice(take.length))
     setDrawChoice(take)
@@ -648,25 +748,28 @@ export default function DuelGame({
 
   // Player keeps one of the revealed cards; the rest leave play. The kept card
   // comes up raised for the usual keep / toss / play decision.
-  // Wilds are kept, never burned (RULESET §11) — the sim and the CPU's draw3
-  // both force-keep a revealed wild, so the human path must too or parity (and
-  // the 3-wilds invariant the tuning rides on) breaks. DrawChoice disables the
-  // other cards when a wild shows; this guard is the rule's enforcement.
+  // Wilds are kept, never burned (RULESET §11). If draw-3 reveals more than one,
+  // every wild enters the hand; the tapped wild alone continues through the
+  // normal keep/toss/play flow while its siblings remain held. Non-wilds burn.
   const playerPickDraw = (id: string) => {
     if (drawChoice === null) return
-    const wildId = drawChoice.find(isWild)
-    const keep = wildId ?? id
+    journey.action('keep', true)
+    const forced = forcedWildDraw(drawChoice, id)
+    const keep = forced?.keep ?? id
+    const keptIds = forced ? [forced.keep, ...forced.extras] : [keep]
     setDrawChoice(null)
-    setPlayerHand((h) => [...h, keep])
+    setPlayerHand((h) => [...h, ...keptIds])
     setPendingDraw(keep)
     setRaisedId(keep)
     say(
       'You',
-      wildId !== undefined
-        ? 'kept the wild — never burned'
-        : tops.some((t) => sharedPeople(t, mv(keep)!).length > 0)
-          ? 'kept it — it connects!'
-          : 'kept the card',
+      forced && forced.extras.length > 0
+        ? `kept all ${forced.extras.length + 1} wilds — never burned`
+        : forced
+          ? 'kept the wild — never burned'
+          : tops.some((t) => sharedPeople(t, mv(keep)!).length > 0)
+            ? 'kept it — it connects!'
+            : 'kept the card',
     )
   }
 
@@ -676,6 +779,7 @@ export default function DuelGame({
   const doTakePile = (pileIdx: number) => {
     const T = takeTargets[pileIdx]
     if (!T) return
+    journey.action('take', true)
     const reseed = piles[pileIdx].length === 1 && deck.length > 0
     setPiles((ps) => ps.map((p, i) => (i === pileIdx ? (reseed ? [deck[0]] : p.slice(0, -1)) : p)))
     if (reseed) setDeck((d) => d.slice(1))
@@ -691,6 +795,7 @@ export default function DuelGame({
 
   const playerKeep = () => {
     if (pendingDraw === null) return
+    journey.action('keep', true)
     setPendingDraw(null)
     setRaisedId(null)
     setFcArmed(false)
@@ -699,10 +804,25 @@ export default function DuelGame({
     setStatus('cpuTurn')
   }
 
+  // Escape = the keyboard's tap-elsewhere (§7·7b a11y): lowers the raised card,
+  // or keeps a pending draw — exactly the backdrop's onPointerDown. The ref
+  // keeps the handler fresh without re-subscribing every render; dialogs
+  // (rules/recast/draw picker) capture Escape first and stop propagation.
+  const escActionRef = useRef<() => void>(() => {})
+  escActionRef.current = () => (pendingDraw !== null ? playerKeep() : setRaisedId(null))
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') escActionRef.current()
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [])
+
   // Toss: the drawn card becomes the new pile top — no points, no connection
   // needed. The unstick mechanism, and a tactical brick for the opponent.
   const playerToss = () => {
     if (pendingDraw === null) return
+    journey.action('toss', true)
     const id = pendingDraw
     // Bury the brick on the most-connective marquee (denial — degrades the CPU's
     // best top). With two Double Feature piles the toss needs a target.
@@ -729,6 +849,7 @@ export default function DuelGame({
       meldSelect
     )
       return
+    journey.action('pass', true)
     setRaisedId(null)
     setFcArmed(false)
     setRunState(null)
@@ -763,6 +884,7 @@ export default function DuelGame({
       runState !== null
     )
       return
+    journey.action('hint', true)
     // Consider both Double Feature tops: pulse the first card playable on either.
     let id: string | null = null
     for (const t of tops) {
@@ -795,6 +917,7 @@ export default function DuelGame({
 
   const enterMeldSelect = () => {
     if (status !== 'playerTurn' || pendingDraw !== null || runState !== null) return
+    journey.action('meld', true)
     setMeldSelect(true)
     setSelected(new Set())
     setRaisedId(null)
@@ -806,16 +929,19 @@ export default function DuelGame({
     setSelected(new Set())
   }
 
-  const toggleSelect = (id: string) =>
+  const toggleSelect = (id: string) => {
+    journey.action('select', true)
     setSelected((prev) => {
       const next = new Set(prev)
       if (next.has(id)) next.delete(id)
       else next.add(id)
       return next
     })
+  }
 
   const bankMeld = () => {
     if (!selectionValid) return
+    journey.action('meld', true)
     const ids = [...selected]
     const cards = ids.map((i) => mv(i)!)
     const reals = cards.filter((c) => !isWild(c.id)) // wilds: filler, score 0
@@ -921,12 +1047,14 @@ export default function DuelGame({
 
   const allowCpuPlay = () => {
     if (resolvingOffer.current || !recastOffer) return
+    journey.action('recast', true)
     resolvingOffer.current = true
     resolveCpuPlay(recastOffer)
   }
 
   const playerRecast = () => {
     if (resolvingOffer.current || recastOffer === null) return
+    journey.action('recast', true)
     resolvingOffer.current = true
     setPlayerTokens((t) => ({ ...t, recast: false }))
     if (recastOffer.finalCut) setCpuTokens((t) => ({ ...t, finalCut: false }))
@@ -949,15 +1077,16 @@ export default function DuelGame({
         const seen = new Set([...piles.flat(), ...cpuHand, ...extra])
         return DUEL_POOL.filter((m) => !seen.has(m.id))
       }
-      // Draw-3-keep-1: reveal the top 3, keep the best (pickDraw), burn the rest.
-      // Returns the kept card id; the others just leave the deck (invisible per D1).
+      // Draw-3: reveal the top 3, keep the best (pickDraw), burn the rest. Wilds
+      // are never burned: return one for this turn and hold any additional wilds.
       const draw3 = () => {
         const take = deck.slice(0, 3)
         setDeck(deck.slice(take.length))
-        // A wild has 0 connectivity, so pickDraw would burn it as the "worst" card
-        // — but a universal wild is obviously kept. Keep it, burn the other two.
-        const wildInTake = take.find(isWild)
-        if (wildInTake !== undefined) return wildInTake
+        const forced = forcedWildDraw(take)
+        if (forced) {
+          if (forced.extras.length > 0) setCpuHand((h) => [...h, ...forced.extras])
+          return forced.keep
+        }
         const { keep } = pickDraw(take.map((id) => mv(id)!), tops, k, unseenWith(take))
         return keep.id
       }
@@ -1237,9 +1366,7 @@ export default function DuelGame({
   }, [playerScore, cpuScore])
 
   const newGame = () => {
-    // a replay is a new game for analytics — the mount effect only covers the
-    // first deal, so re-fire here to keep mode_start ↔ mode_finish paired 1:1
-    track('mode_start', { mode: 'duel', difficulty })
+    journey.replay()
     window.clearTimeout(lowerTimer.current)
     const d = dealDuel()
     setPiles([[d.starterId], [d.deck[0]]])
@@ -1281,11 +1408,6 @@ export default function DuelGame({
   const cpuNet = cpuScore - cpuHand.length
   const winner = playerNet > cpuNet ? 'player' : cpuNet > playerNet ? 'cpu' : 'draw'
 
-  useEffect(() => {
-    track('mode_start', { mode: 'duel', difficulty })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
   // Every finished duel counts toward the per-difficulty record (no daily to
   // gate on — replays ARE the return signal). newGame resets status, so the
   // next finish records its own game.
@@ -1309,6 +1431,74 @@ export default function DuelGame({
         ? 'You'
         : 'CPU'
   const offerMovie = recastOffer ? mv(recastOffer.id)! : null
+
+  // Deterministic browser-only states for the release gate. Each fixture uses
+  // real cards and the real rule helpers; it controls only which valid state is
+  // presented so coverage cannot depend on Math.random(). The dead VITE_E2E
+  // branch and these marker strings are erased from a normal production build.
+  const applyE2EFixture = (fixture: E2EDuelFixture) => {
+    if (import.meta.env.VITE_E2E !== '1') return
+    const quietHand = [
+      'the-return-of-the-king',
+      'mission-impossible-2',
+      'the-hurt-locker',
+      'children-of-men',
+      'nightcrawler',
+      'avengers-infinity-war',
+      'fight-club',
+    ]
+    const noPlayHand = [
+      'the-departed',
+      'inception',
+      'the-dark-knight',
+      'pulp-fiction',
+      'inglourious-basterds',
+      'forrest-gump',
+      'jurassic-park',
+    ]
+    const nextPiles = fixture === 'take-ready'
+      ? [['heat', 'goodfellas'], ['alien']]
+      : [['heat'], ['alien']]
+    const nextPlayerHand = fixture === 'take-ready'
+      ? ['casino', 'the-irishman']
+      : fixture === 'no-play-draw'
+        ? noPlayHand
+        : quietHand
+    const forcedDraw = fixture === 'ordinary-draw' || fixture === 'no-play-draw'
+      ? ['goodfellas', 'casino', 'taxi-driver']
+      : fixture === 'one-wild-draw'
+        ? [WILD_IDS[0], 'goodfellas', 'casino']
+        : fixture === 'multi-wild-draw'
+          ? [WILD_IDS[3], WILD_IDS[4], WILD_IDS[0]]
+          : []
+    const used = new Set([...nextPiles.flat(), ...nextPlayerHand, ...forcedDraw])
+    const remaining = [...DUEL_POOL.map((movie) => movie.id), ...WILD_IDS].filter((id) => !used.has(id))
+    const nextCpuHand = remaining.slice(0, 7)
+    nextCpuHand.forEach((id) => used.add(id))
+
+    setPiles(nextPiles)
+    setPlayerHand(nextPlayerHand)
+    setCpuHand(nextCpuHand)
+    setDeck([...forcedDraw, ...remaining.filter((id) => !used.has(id))])
+    setStatus('playerTurn')
+    setEndReason(null)
+    setPlayerScore(0)
+    setCpuScore(0)
+    setPassStreak(0)
+    setPendingDraw(null)
+    setDrawChoice(null)
+    setMelds([])
+    setMeldSelect(false)
+    setSelected(new Set())
+    setRunState(null)
+    setCpuRun(null)
+    setRaisedId(null)
+    setHintId(null)
+    setHintMeldId(null)
+    setBanner(null)
+    setLastPlay(null)
+    setLastCpuQuote('')
+  }
 
   // Hint pill label ("HINT · PACINO"): hintCard returns an id only, so name the
   // shared person here. Only label a genuine pile link — a lay-off-only hint
@@ -1353,7 +1543,7 @@ export default function DuelGame({
   )
 
   return (
-    <div className="relative h-full overflow-hidden bg-stub-cream">
+    <div className="duel-stage-shell relative h-full overflow-hidden bg-stub-cream">
       {/* ── Desktop theater (lg+ only) ────────────────────────────────────────
           Kills the 420px letterbox: the phone column becomes a LIT SCREEN
           mounted in a navy movie house, the dead margin becomes an ambient
@@ -1392,7 +1582,7 @@ export default function DuelGame({
       {/* Marquee-bulb frame hugging the screen (lg+ only), centred on the
           420px column so a rail of amber bulbs runs down each side — the
           cinema-marquee motif that gives the table a home. */}
-      <div className="pointer-events-none absolute inset-y-0 left-1/2 hidden w-[440px] -translate-x-1/2 lg:block">
+      <div className="duel-marquee-frame pointer-events-none absolute inset-y-0 left-1/2 hidden -translate-x-1/2 lg:block">
         {(['left-0', 'right-0'] as const).map((side) => (
           <div
             key={side}
@@ -1415,14 +1605,14 @@ export default function DuelGame({
           soft shadow so it reads as a lit screen on the theater — on mobile
           none of the lg: classes apply, so the board still inherits the outer
           cream exactly as before. */}
-      <div className="relative mx-auto flex h-full w-full max-w-[420px] flex-col pb-[225px] lg:bg-stub-cream lg:shadow-[0_0_64px_rgba(0,0,0,.5)] lg:ring-1 lg:ring-stub-amber/20">
+      <div className="app-shell duel-board relative mx-auto flex h-full w-full max-w-[420px] flex-col pb-[225px] lg:bg-stub-cream lg:shadow-[0_0_64px_rgba(0,0,0,.5)] lg:ring-1 lg:ring-stub-amber/20" data-mode-stage="duel">
         {/* 7a navy header: nav row + the race-to-20 block. Bottom corners
             only per the token sheet (rounded-b, never the top). ScoreRace owns
             scores/caption/bar/target-hint — and the data-score/data-turn
             attrs, in their NEW value-carrying shape (ui-contracts Appendix
             A4). */}
         <header
-          className={`rounded-b-stub-header bg-stub-navy px-4 ${
+          className={`app-shell-header duel-header relative bg-stub-navy px-4 ${
             shortViewport ? 'pb-2 pt-1' : 'pb-3.5 pt-3'
           }`}
         >
@@ -1431,9 +1621,9 @@ export default function DuelGame({
               type="button"
               aria-label="Back to menu"
               onClick={onExit}
-              className="flex h-11 w-9 items-center justify-center text-2xl text-stub-cream/80 active:scale-90"
+              className="app-back-button daily-icon-button text-stub-cream/80 active:scale-90"
             >
-              ‹
+              <Icon name="back" size={24} />
             </button>
             {shortViewport ? (
               /* 7e one-row header: the compact race replaces the wordmark —
@@ -1456,10 +1646,13 @@ export default function DuelGame({
               type="button"
               aria-label="How to play"
               data-rules-open
-              onClick={() => setShowRules(true)}
-              className="ml-2 flex h-7 w-7 items-center justify-center rounded-stub-pill text-[12px] font-extrabold text-stub-cream/80 ring-1 ring-inset ring-stub-slate-light/50 active:scale-90"
+              onClick={() => {
+                journey.helpOpen(gameOver ? 'result' : 'playing')
+                setShowRules(true)
+              }}
+              className="app-help-button daily-icon-button ml-2 active:scale-90"
             >
-              ?
+              <Icon name="help" size={20} />
             </button>
           </div>
           {!shortViewport && (
@@ -1472,13 +1665,14 @@ export default function DuelGame({
               TARGET_SCORE={TARGET_SCORE}
             />
           )}
+          <span className="app-shell-header-tab" aria-hidden="true" />
         </header>
 
         {/* 7a "last play" strip — persistent readout of the most recent move,
             distinct from the transient banner mid-board. Sits directly under the
             score header per the reference; hidden until the first move. */}
         {lastPlay && (
-          <div className={shortViewport ? 'mt-1' : 'mt-1.5'}>
+          <div className={`duel-last-play ${shortViewport ? 'mt-1' : 'mt-1.5'}`}>
             <LastPlayLine text={lastPlay.text} delta={lastPlay.delta} />
           </div>
         )}
@@ -1489,7 +1683,7 @@ export default function DuelGame({
             (keeping both blocks would duplicate layoutIds and silently break
             Framer's cross-zone card animations). Booth owns the CPU token
             pills (W0d ruling). */}
-        <div className={`relative z-[var(--z-resting)] mx-3 ${shortViewport ? 'mt-2' : 'mt-3'}`}>
+        <div className={`duel-cpu-booth relative z-[var(--z-resting)] mx-3 ${shortViewport ? 'mt-2' : 'mt-3'}`}>
           <TazCorner
             cpuHand={cpuHand}
             cpuTokens={cpuTokens}
@@ -1500,7 +1694,11 @@ export default function DuelGame({
         </div>
 
         {/* Draw deck + the two Double Feature marquees */}
-        <section className="relative z-[var(--z-resting)] mt-3 flex items-start justify-center gap-4">
+        <section
+          className={`duel-play-stage relative mt-3 flex items-start justify-center gap-4 ${
+            raisedId !== null || pendingDraw !== null ? 'z-auto' : 'z-[var(--z-resting)]'
+          }`}
+        >
           <button
             type="button"
             aria-label={deck.length > 0 ? 'Draw a card' : 'Pass turn'}
@@ -1536,8 +1734,10 @@ export default function DuelGame({
                     >
                       DECK
                     </span>
-                    <span className="font-stub-display text-[22px] font-bold leading-none tabular-nums text-stub-cream">
-                      {deck.length}
+                    {/* FixedDigits: the countdown ticks in Domine (no tnum) —
+                        1ch digit boxes keep the DECK pair steady (§7·7b). */}
+                    <span className="font-stub-display text-[22px] font-bold leading-none text-stub-cream">
+                      <FixedDigits value={deck.length} />
                     </span>
                   </div>
                 </div>
@@ -1564,9 +1764,24 @@ export default function DuelGame({
                   ref={(el) => {
                     pileZoneRefs.current[idx] = el
                   }}
-                  className="relative"
+                  className={`relative ${
+                    raisedId !== null || pendingDraw !== null ? 'z-[var(--z-traveling)]' : ''
+                  } ${
+                    heldId !== null
+                      ? pilePlayTargets[idx]
+                        ? 'duel-pile-target duel-pile-target--active'
+                        : 'duel-pile-target duel-pile-target--blocked'
+                      : ''
+                  }`}
                   data-pile={idx}
+                  data-play-target={`marquee-${idx + 1}`}
+                  data-target-active={heldId !== null ? pilePlayTargets[idx] : undefined}
                 >
+                  {heldId !== null && pilePlayTargets[idx] && (
+                    <span className="duel-pile-target-label" aria-hidden="true">
+                      Tap or drag
+                    </span>
+                  )}
                   {unders.map((id, i) => (
                     <div
                       key={id}
@@ -1582,7 +1797,26 @@ export default function DuelGame({
                   <motion.div
                     layoutId={tId}
                     data-card={`pile-top-${idx}`}
-                    onTap={() => flipCard(tId)}
+                    data-movie-id={tId}
+                    onClick={() => activatePile(idx, tId)}
+                    // One explicit keyboard path avoids Framer's accessible
+                    // onTap synthesizing a second activation after this one.
+                    role="button"
+                    tabIndex={0}
+                    aria-pressed={
+                      raisedId === null && pendingDraw === null ? faceUp.has(tId) : undefined
+                    }
+                    aria-label={
+                      raisedId !== null || pendingDraw !== null
+                        ? `Play ${mv((raisedId ?? pendingDraw)!)!.title} on marquee ${idx + 1} — top card ${tMovie.title}`
+                        : `Marquee ${idx + 1}: ${tMovie.title}, ${tMovie.year} — flip for credits`
+                    }
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault()
+                        if (!e.repeat) activatePile(idx, tId)
+                      }
+                    }}
                   >
                     <motion.div
                       key={reduce ? 'static' : `${idx}-${superKey}`}
@@ -1649,7 +1883,7 @@ export default function DuelGame({
                           }}
                           className="absolute -bottom-8 inset-x-0 z-[var(--z-traveling)] mx-auto w-max rounded-full bg-[#d8b24a] px-3 py-1.5 text-[11px] font-black uppercase tracking-wider text-[#23211c] shadow-lg ring-2 ring-white/70 active:scale-95"
                         >
-                          ↑ Take to finish meld
+                          ↑ Take for meld
                         </button>
                       </>
                     ) : (
@@ -1674,7 +1908,7 @@ export default function DuelGame({
         {/* Mid band: the flex-1 breathing zone between the piles and the shelf.
             Banner and idle cue anchor to it instead of fixed pixel tops, so
             they stay mid-board on any viewport height. */}
-        <div className="relative min-h-0 flex-1" data-mid-band>
+        <div className="duel-mid-band relative min-h-0 flex-1" data-mid-band>
         {/* Turn banner — the say() narration channel. Wrapper owns the band
             pin (PlayBanner renders in flow, W0d); the 2400ms auto-dismiss
             effect stays the parent's, per contract. On short viewports the
@@ -1687,6 +1921,13 @@ export default function DuelGame({
           }`}
         >
           <PlayBanner banner={banner} reduce={reduce} />
+        </div>
+        {/* SR live mirror (§7·7b a11y): the say() narration is the game's one
+            commentary channel — announce it. Always mounted (a live region
+            that unmounts never speaks); banner text only, so a play isn't
+            read twice via LastPlayLine too. */}
+        <div className="sr-only" role="status" aria-live="polite">
+          {banner ? `${banner.who === 'You' ? 'You' : 'CPU'}: ${banner.text}` : ''}
         </div>
 
         {/* One-move-per-turn cue: sits in the empty mid-board band, idle turns
@@ -1707,23 +1948,35 @@ export default function DuelGame({
               drawChoice === null &&
               !meldSelect &&
               raisedId === null &&
+              !takeTargets.some(Boolean) &&
               !gameOver
             }
             reduce={reduce}
+            text={lastPlay === null ? 'first turn — choose a hand card or draw' : undefined}
           />
         </div>
 
         </div>
 
         {/* Banked melds — open to lay-offs from both sides */}
-        <MeldShelf
-          melds={melds}
-          highlightIds={meldHighlights}
-          setRowRef={(id, el) => {
-            if (el) meldRowRefs.current.set(id, el)
-            else meldRowRefs.current.delete(id)
-          }}
-        />
+        <div className="duel-meld-shelf">
+          <MeldShelf
+            melds={melds}
+            highlightIds={meldHighlights}
+            setRowRef={(id, el) => {
+              if (el) meldRowRefs.current.set(id, el)
+              else meldRowRefs.current.delete(id)
+            }}
+            // Keyboard lay-off (§7·7b a11y): Enter on a row lays the raised card
+            // off there via the same core as the drag drop; ineligible rows
+            // shake. Lay-offs stay barred mid-draw (core guard), matching drag.
+            onRowActivate={(meldId) => {
+              if (raisedId === null) return
+              const meld = melds.find((m) => m.id === meldId)
+              if (meld) playerLayOff(raisedId, meld)
+            }}
+          />
+        </div>
 
         {/* Super-link celebration flash */}
         {superKey > 0 && !reduce && (
@@ -1750,7 +2003,7 @@ export default function DuelGame({
 
         {/* Keep / toss choice for the drawn card */}
         {pendingDraw !== null && status === 'playerTurn' && (
-          <div className="absolute inset-x-0 bottom-[96px] z-[var(--z-contextual)] flex flex-col items-center gap-2">
+          <div className="duel-contextual absolute inset-x-0 bottom-[96px] z-[var(--z-contextual)] flex flex-col items-center gap-2">
             {drawnConnects && (
               <span className="rounded-full bg-[#2c5240] px-3 py-1 text-[11px] font-bold text-white shadow-sm">
                 It connects — drag it onto the pile to play it
@@ -1779,7 +2032,7 @@ export default function DuelGame({
 
         {/* Run continuation: keep chaining or end the turn */}
         {runState !== null && status === 'playerTurn' && (
-          <div className="absolute inset-x-0 bottom-[96px] z-[var(--z-contextual)] flex flex-col items-center gap-2">
+          <div className="duel-contextual absolute inset-x-0 bottom-[96px] z-[var(--z-contextual)] flex flex-col items-center gap-2">
             <span className="rounded-full bg-[#7a5a10] px-3 py-1 text-[11px] font-bold text-white shadow-sm">
               Run ×{runState.count + 1}? Play another via {runState.people[0]}
               {runState.people.length > 1 ? '…' : ''}
@@ -1797,15 +2050,15 @@ export default function DuelGame({
 
         {/* Meld selection bar */}
         {meldSelect && (
-          <div className="absolute inset-x-0 bottom-[96px] z-[var(--z-contextual)] flex flex-col items-center gap-2">
-            <span className="rounded-full bg-[#23211c] px-3 py-1 text-[11px] font-bold text-white shadow-sm">
+          <div className="duel-contextual absolute inset-x-0 bottom-[96px] z-[var(--z-contextual)] flex flex-col items-center gap-2" data-meld-selection-readout>
+            <span className="max-w-[calc(100%_-_24px)] rounded-full bg-[#23211c] px-3 py-1 text-center text-[11px] font-bold text-white shadow-sm" aria-live="polite">
               {selected.size < 3
                 ? genrePairStuck
                   ? `Genre melds need ${GENRE_FLOOR} — add a third ${selectedMovies[0].genre} film`
-                  : `Pick ${3 - selected.size} more — a person, series, or ${GENRE_FLOOR}+ of a genre`
+                  : `${selected.size} selected · choose ${3 - selected.size} more with a shared person, series, or genre`
                 : selectionMeld
-                  ? `${selectionMeld.rungName} ×${selected.size}`
-                  : 'No shared link — adjust your picks'}
+                  ? `${selected.size} selected · ${selectionMeld.rungName} · +${selectionMeld.pts} ready`
+                  : `${selected.size} selected · no shared link — adjust your picks`}
             </span>
             <div className="flex gap-2">
               <button
@@ -1834,48 +2087,57 @@ export default function DuelGame({
             owns the booth pills). Final Cut's say() stays here, parent-side,
             per the TokenChips contract boundary. */}
         <div
-          className={`absolute left-3 z-[var(--z-hud)] flex flex-col items-start gap-1.5 ${
-            shortViewport ? 'bottom-[200px]' : 'bottom-[240px]'
+          className={`duel-controls-panel absolute z-[var(--z-hud)] ${
+            raisedId !== null || pendingDraw !== null || drawChoice !== null || meldSelect || runState !== null
+              ? 'duel-controls-panel--contextual'
+              : ''
           }`}
         >
-          <TokenChips
-            side="player"
-            compact={shortViewport}
-            finalCut={playerTokens.finalCut}
-            recast={playerTokens.recast}
-            fcArmed={fcArmed}
-            finalCutDisabled={status !== 'playerTurn' || meldSelect || runState !== null}
-            onToggleFinalCut={() => {
-              const arming = !fcArmed
-              setFcArmed(arming)
-              if (arming) say('You', 'Final Cut armed — play any card')
-            }}
-          />
-          {!meldSelect && (
-            <button
-              type="button"
-              data-token="meld"
-              disabled={
-                status !== 'playerTurn' ||
-                pendingDraw !== null ||
-                runState !== null ||
-                playerHand.length < 3
-              }
-              onClick={enterMeldSelect}
-              className={`rounded-full px-2.5 py-1 text-[9px] font-extrabold uppercase tracking-wider shadow-sm transition-transform active:scale-95 disabled:opacity-50 ${
-                handHasMeld
-                  ? 'bg-stub-amber text-stub-navy ring-2 ring-stub-amber/40'
-                  : 'bg-stub-navy text-stub-cream'
-              }`}
-            >
-              Meld
-            </button>
-          )}
-        </div>
+          <div className="duel-controls-group">
+            <span className="duel-controls-label">Your tools</span>
+            <div className="duel-controls-row">
+              <TokenChips
+                side="player"
+                compact={shortViewport}
+                finalCut={playerTokens.finalCut}
+                recast={playerTokens.recast}
+                fcArmed={fcArmed}
+                finalCutDisabled={status !== 'playerTurn' || meldSelect || runState !== null}
+                onToggleFinalCut={() => {
+                  const arming = !fcArmed
+                  journey.action('final_cut', true)
+                  setFcArmed(arming)
+                  if (arming) say('You', 'Final Cut armed — play any card')
+                }}
+              />
+              {!meldSelect && (
+                <button
+                  type="button"
+                  data-token="meld"
+                  disabled={
+                    status !== 'playerTurn' ||
+                    pendingDraw !== null ||
+                    runState !== null ||
+                    playerHand.length < 3
+                  }
+                  onClick={enterMeldSelect}
+                  className={`duel-tool-button rounded-stub-pill px-2.5 font-stub-label font-extrabold uppercase tracking-wider shadow-sm transition-transform active:scale-95 disabled:opacity-50 ${
+                    handHasMeld
+                      ? 'bg-stub-amber text-stub-navy ring-2 ring-stub-amber/40'
+                      : 'bg-stub-navy text-stub-cream'
+                  }`}
+                >
+                  Meld
+                </button>
+              )}
+            </div>
+          </div>
 
+          <div className="duel-controls-group">
+            <span className="duel-controls-label">Hand aids</span>
+            <div className="duel-controls-row">
         {/* Auto-sort (Matinee only): group the hand so links & melds line up */}
         {autoSortEnabled && (
-          <div className="absolute right-3 bottom-[284px] z-[var(--z-hud)] flex flex-col items-end">
             <button
               type="button"
               data-sort
@@ -1886,17 +2148,18 @@ export default function DuelGame({
                 meldSelect ||
                 playerHand.length < 3
               }
-              onClick={() => setPlayerHand((h) => autoSortHand(h))}
-              className="flex items-center gap-1 rounded-full bg-stub-navy px-2.5 py-1 text-[9px] font-extrabold uppercase tracking-wider text-stub-cream shadow-sm transition-transform active:scale-95 disabled:opacity-40"
+              onClick={() => {
+                journey.action('sort', true)
+                setPlayerHand((h) => autoSortHand(h))
+              }}
+              className="duel-tool-button flex items-center gap-1 rounded-stub-pill bg-stub-navy px-2.5 font-stub-label font-extrabold uppercase tracking-wider text-stub-cream shadow-sm transition-transform active:scale-95 disabled:opacity-40"
             >
-              ⇲ Sort
+              <Icon name="sort" size={16} /> Sort
             </button>
-          </div>
         )}
 
         {/* Hint (Matinee/Feature only): pulse a playable card */}
         {hintEnabled && (
-          <div className="absolute right-3 bottom-[240px] z-[var(--z-hud)] flex flex-col items-end">
             <button
               type="button"
               data-hint
@@ -1908,16 +2171,18 @@ export default function DuelGame({
                 runState !== null
               }
               onClick={showHint}
-              className={`flex items-center gap-1 rounded-full px-2.5 py-1 text-[9px] font-extrabold uppercase tracking-wider shadow-sm transition-transform active:scale-95 ${
+              className={`duel-tool-button flex items-center gap-1 rounded-stub-pill px-2.5 font-stub-label font-extrabold uppercase tracking-wider shadow-sm transition-transform active:scale-95 ${
                 hintsLeft <= 0
                   ? 'bg-transparent text-stub-slate ring-1 ring-stub-disabled line-through'
                   : 'bg-stub-teal text-stub-cream disabled:opacity-40'
               }`}
             >
-              ◎ Hint{Number.isFinite(hintBudget) ? ` ·${hintsLeft}` : ''}
+              <Icon name="hint" size={16} /> Hint{Number.isFinite(hintBudget) ? ` ·${hintsLeft}` : ''}
             </button>
-          </div>
         )}
+            </div>
+          </div>
+        </div>
 
         {/* One-shot drag nudge (C3, feedback batch 1): a raised card on a
             fresh device is the "now what?" moment. Root-level absolute like
@@ -1931,17 +2196,18 @@ export default function DuelGame({
           raisedId !== null &&
           pendingDraw === null &&
           !meldSelect &&
+          !hasRaisedTarget &&
           !gameOver && (
             <div
               className="pointer-events-none absolute inset-x-0 z-[60] flex justify-center px-6"
-              style={{ bottom: 443 }}
+              style={{ bottom: wideViewport ? 472 : 443 }}
             >
               <motion.span
                 animate={reduce ? undefined : { opacity: [0.7, 1, 0.7] }}
                 transition={reduce ? undefined : { duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
                 className="rounded-stub-pill border-2 border-stub-amber bg-stub-navy px-3 py-1 font-stub-label text-[10px] font-bold uppercase tracking-[.1em] text-stub-amber"
               >
-                drag it onto a marquee to play
+                no link · flip or lower
               </motion.span>
             </div>
           )}
@@ -1953,12 +2219,15 @@ export default function DuelGame({
           hintLabel={hintLabel}
           faceUp={faceUp}
           invalidNonce={invalidNonce}
-          raisedBottom={190}
+          raisedBottom={wideViewport ? 220 : 190}
+          wideFan={wideViewport}
+          fanClassName="duel-hand-tray"
           selectMode={meldSelect}
           selectedIds={selected}
           onToggleSelect={toggleSelect}
           onRaise={(id) => {
             if (status === 'playerTurn' && pendingDraw === null) {
+              journey.action('select', true)
               setHintId(null)
               setHintMeldId(null)
               setRaisedId(id)
@@ -1966,7 +2235,10 @@ export default function DuelGame({
           }}
           onFlip={flipCard}
           onDrop={playerPlay}
-          onReorder={(id, toIndex) => setPlayerHand((h) => moveId(h, id, toIndex))}
+          onReorder={(id, toIndex) => {
+            journey.action('sort', true)
+            setPlayerHand((h) => moveId(h, id, toIndex))
+          }}
         />
 
         {/* Draw-3-keep-1: pick one of the revealed cards; the rest leave play.
@@ -2013,10 +2285,69 @@ export default function DuelGame({
           )}
         </AnimatePresence>
 
+        {/* Test-only terminal and deterministic state seams. VITE_E2E is
+            undefined for normal builds, so Vite/Rollup erase this branch. */}
+        {import.meta.env.VITE_E2E === '1' && (
+          <>
+            <button
+              type="button"
+              data-testid="matchcut-e2e-complete"
+              className="hidden"
+              onClick={() => {
+                setPlayerScore(TARGET_SCORE)
+                setCpuScore(0)
+                setEndReason('target')
+                setStatus('over')
+              }}
+            />
+            <button
+              type="button"
+              data-testid="matchcut-e2e-ordinary-draw"
+              className="hidden"
+              onClick={() => applyE2EFixture('ordinary-draw')}
+            />
+            <button
+              type="button"
+              data-testid="matchcut-e2e-no-play-draw"
+              className="hidden"
+              onClick={() => applyE2EFixture('no-play-draw')}
+            />
+            <button
+              type="button"
+              data-testid="matchcut-e2e-one-wild-draw"
+              className="hidden"
+              onClick={() => applyE2EFixture('one-wild-draw')}
+            />
+            <button
+              type="button"
+              data-testid="matchcut-e2e-wild-draw"
+              className="hidden"
+              onClick={() => applyE2EFixture('multi-wild-draw')}
+            />
+            <button
+              type="button"
+              data-testid="matchcut-e2e-take-ready"
+              className="hidden"
+              onClick={() => applyE2EFixture('take-ready')}
+            />
+            <output data-testid="matchcut-e2e-player-hand" className="hidden">
+              {playerHand.length}
+            </output>
+            <output data-testid="matchcut-e2e-deck" className="hidden">
+              {deck.length}
+            </output>
+          </>
+        )}
+
         <AnimatePresence>
           {gameOver && (
             <motion.div
-              className="absolute inset-0 z-[100] flex flex-col items-center overflow-y-auto bg-stub-cream/95 px-8 text-center"
+              ref={gameOverDialogRef}
+              role="dialog"
+              aria-modal="true"
+              aria-label="Game over — results"
+              tabIndex={-1}
+              className="duel-result-overlay absolute inset-0 z-[100] flex flex-col items-center overflow-y-auto px-5 text-center"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: reduce ? 0.2 : 0.8, duration: reduce ? 0.15 : 0.35 }}
@@ -2026,7 +2357,7 @@ export default function DuelGame({
                   justify-center clipped BOTH ends at 667 once the recap reel ran
                   long (flex centering overflows both ways; the top half can
                   never be scrolled to). */}
-              <div className="my-auto flex w-full flex-col items-center py-6">
+              <div className="duel-result-panel my-auto flex w-full flex-col items-center rounded-stub-header bg-stub-cream px-6 py-6 shadow-stub-modal">
                 <h2 className="font-stub-display text-4xl font-bold text-stub-navy" data-result>
                   {winner === 'player' && 'You win!'}
                   {winner === 'cpu' && 'CPU wins.'}
@@ -2039,9 +2370,10 @@ export default function DuelGame({
                   {endReason === 'target' &&
                     `${racerLabel} hit ${TARGET_SCORE} — the show goes to the higher net.`}
                 </p>
-                <p className="mt-4 font-stub-label text-[11px] font-bold uppercase tracking-wider text-stub-slate">
-                  Highest net wins · played − cards held
-                </p>
+                <ResultMeaning
+                  direction="Higher is better"
+                  detail={`Net ${playerNet} vs ${cpuNet} · played − held`}
+                />
                 <div className="mt-2 w-full max-w-[260px] space-y-1.5">
                   {[
                     { label: 'You', score: playerScore, held: playerHand.length, net: playerNet, win: winner === 'player' },
@@ -2090,27 +2422,22 @@ export default function DuelGame({
 
                 <ShareCopy text={shareDuel} analytics={{ mode: 'duel', difficulty }} />
 
-                <button
-                  type="button"
-                  onClick={newGame}
-                  className="mt-3 min-h-12 rounded-stub-pill bg-stub-amber px-7 py-3 text-[15px] font-bold text-stub-navy shadow-stub-card-resting active:scale-95"
-                >
-                  Deal again
-                </button>
-                <button
-                  type="button"
-                  onClick={onExit}
-                  className="mt-3 min-h-12 rounded-stub-pill border-2 border-stub-navy bg-stub-paper px-7 py-3 text-[15px] font-bold text-stub-navy active:scale-95"
-                >
-                  Menu
-                </button>
+                <ResultActions primaryLabel="Deal again" onPrimary={newGame} onMenu={onExit} />
               </div>
             </motion.div>
           )}
         </AnimatePresence>
 
         <AnimatePresence>
-          {showRules && <HowToPlay onClose={() => setShowRules(false)} />}
+          {showRules && (
+            <HowToPlay
+              context="duel"
+              onClose={() => {
+                journey.helpClose()
+                setShowRules(false)
+              }}
+            />
+          )}
         </AnimatePresence>
       </div>
     </div>

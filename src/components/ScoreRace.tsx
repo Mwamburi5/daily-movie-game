@@ -15,6 +15,7 @@ import {
   useSpring,
   type MotionValue,
 } from 'framer-motion'
+import FixedDigits from './FixedDigits.tsx'
 
 // DuelStatus / RunState are structurally identical to their DuelGame.tsx
 // definitions (DuelGame.tsx:82, :101). Redeclared here so the component stays
@@ -198,9 +199,11 @@ export default function ScoreRace({
   )
 }
 
-// Domine display numeral with tabular-nums (scores must not reflow width as they
-// tick). The reduced-motion path swaps the count-up travel for a 150ms opacity
-// crossfade on value change — no numeric travel, matching the token sheet.
+// Domine display numeral (scores must not reflow width as they tick). Domine
+// has no tnum, so the old tabular-nums declarations were silent no-ops — the
+// stability now comes from FixedDigits' per-digit 1ch boxes (§7·7b). The
+// reduced-motion path swaps the count-up travel for a 150ms opacity crossfade
+// on value change — no numeric travel, matching the token sheet.
 function ScoreNumeral({
   value,
   className,
@@ -221,20 +224,16 @@ function ScoreNumeral({
         initial={changed ? { opacity: 0.4 } : false}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.15 }} // var(--dur-reduced)
-        className={`font-stub-display font-bold leading-[0.9] tabular-nums ${className}`}
-        style={{ fontVariantNumeric: 'tabular-nums' }}
+        className={`font-stub-display font-bold leading-[0.9] ${className}`}
       >
-        {value}
+        <FixedDigits value={value} />
       </motion.span>
     )
   }
 
   return (
-    <span
-      className={`font-stub-display font-bold leading-[0.9] tabular-nums ${className}`}
-      style={{ fontVariantNumeric: 'tabular-nums' }}
-    >
-      {value}
+    <span className={`font-stub-display font-bold leading-[0.9] ${className}`}>
+      <FixedDigits value={value} />
     </span>
   )
 }

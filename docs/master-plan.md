@@ -74,21 +74,19 @@ remaining surfaces are composed from them (§2.4).
 
 | | entry | pool | daily | sim/data | Stub UI |
 |---|---|---|---|---|---|
-| Solo | `SoloGame.tsx` | `DUEL_POOL` 89 (frozen; cutover = Buri, W5) | constructive walk, solver par | `verify:solo` 8/8 + append-only pin | ✗ (W3) |
-| Duel | `DuelGame.tsx` **1,999 ln / 35 useState** | `DUEL_POOL` 89 (frozen, fnv pin) | none (by design) | `verify` 64/64 · eval tune 66.7/49.2/43.5 · tilt in band (A 53.6/B 44.1) | components forged, unwired (W1–W2) |
-| Chronology | `ChronologyGame.tsx` | `chronology-pool.json` 162 | `dealRoundShaped(seed)` | `verify:chronology` 42/42 (**no published-daily pin yet** — W5) | ✗ (W3) |
-| Connections | **no app code** | — | — | `sim/connections-gen.ts` exists (ambiguity gate, deterministic dealGrid, yield 9.86M/≈3.05M strict @237) | ✗ (W4) |
+| Solo | `SoloGame.tsx` | legacy 89 through 2026-09-26; 216 from 2026-09-27; practice 89 | constructive walk, solver par | `verify:solo` 8/8 + boundary/legacy pins | ✓ |
+| Duel | `DuelGame.tsx` **2,309 ln / 41 useState** | 216 real + 16 wilds (ordered digest pinned) | none (by design) | `verify` 64/64 · eval tune 65.9/50.3/41.4 · tilt in band (A 50.1/B 47.2) | ✓ |
+| Chronology | `ChronologyGame.tsx` | `chronology-pool.json` 482 | `dealRoundShaped(seed)` | `verify:chronology` 42/42 | ✓ |
+| Connections | `ConnectionsGame.tsx` | `MOVIES` 320; 365 baked grids | `dealGrid(seed)` | `verify:connections` 14/14 + baked digest/pin | ✓ |
 
-**Shared substrate:** `MOVIES` = 237 credited films; A4 unification designed +
-signed off, **not implemented** (P1); Stage B growth plan written (P2); TMDB
-tooling live, 24 rulings + 3 standing policies; attribution shipped in
-HowToPlay. **The Connections dealer lock existed only in session memory until
-this doc** — now recorded in §4·W4.
+**Shared substrate:** `MOVIES` = 320 credited films; the dated Chronology catalog
+remains 482. Daily/Duel's current 216 and legacy 89 are explicit ordered
+versions. TMDB tooling, standing rulings, name/date audits, attribution, and the
+Connections dealer/baked-runtime lock are all live.
 
-**Stale facts corrected by this doc:** DuelGame is 1,999/35 (not 1,300/31 nor
-1,989/31) · gates are 64/64 (not 60/60) · RULEBOOK Mode 3 exists (old open item
-dead) · the Wave-D "double-tap Allow It guard" already exists
-(`resolvingOffer`, DuelGame.tsx:243) · `tsc` is not a separate gate (build runs it).
+**Current facts:** DuelGame is 2,309/41 · gates are 64/64 (not 60/60) ·
+RULEBOOK covers all four modes · the Wave-D "double-tap Allow It guard" exists
+(`resolvingOffer`, DuelGame.tsx:295) · `tsc` is not a separate gate (build runs it).
 
 ## 2. Operating rules (the constitution)
 
@@ -106,8 +104,8 @@ dead) · the Wave-D "double-tap Allow It guard" already exists
    before more UI work. Deploys always wait.
 3. **Gate policy:** quick suite (`build` + `verify:solo` + `verify:chronology`,
    ≈5s) freely, after any change. Full `verify` (2m37s) at every wave close and
-   after any change touching `sim/`, `src/lib/`, or deal paths. `eval` tune only
-   on content merges into the frozen 89 (expected byte-identical). New gates
+   after any change touching `sim/`, `src/lib/`, or deal paths. `eval` tune on
+   any Daily/Duel content or mechanic change. New gates
    join, never replace: `verify:connections` from W4 on.
 4. **UI acceptance:** every UI wave produces screenshot pairs — app vs the
    reference PNG in `design_handoff_screenshots/` — at **390×844 and 375×667**,
@@ -127,10 +125,10 @@ dead) · the Wave-D "double-tap Allow It guard" already exists
    each, quick suite between. No reducer refactor — the 35-useState soup is
    load-bearing. Contract line pins have drifted +5..+11 below :1300 since the
    flex-zone pass — re-verify pins at wire time, don't trust them blind.
-6. **Freezes:** deps locked (React 18 / Vite / Tailwind 4 / Framer only) ·
-   `DUEL_POOL_IDS` stays the tuned 89 this build · Duel/Solo rules and
-   `sim/RULESET.md` untouched (new *additive* Connections sim files are allowed
-   and get their own contract section in RULESET when the mode lands) ·
+6. **Freezes:** deps locked (React 18 / Vite / Tailwind 4 / Framer only) · the
+   legacy 89 and current 216 ordered pools are independently pinned · the
+   2026-09-27 seed boundary and 16-wild keep-all rule now require an explicit
+   owner-approved change plus full retune/parity gates ·
    localStorage = meta-state only (`matchcut:v1`) · **card faces are
    typographic this build (Buri re-ruled 2026-07-06):** the comps show
    scene-art cards, but the build renders the exact Stub frame (genre-colored
@@ -841,6 +839,215 @@ what's ready-to-review per sitting.
 - [ ] **POST-SEND · P2-LOCK docket grill (§7·4b, at LOCK)** — chrono pin ·
       Solo cutover · Duel cutover+re-tune · Connections diversity floor ·
       bundle intern; convene as a grill-me session with real feedback in hand.
+- [x] **PRE-LAUNCH POLISH · direction lock (§9·P0) — SELECTED + BUILT
+      2026-08-07:** Premiere Reel (concept 2) selected. Real 390×844 + 375×667
+      Chronology checkpoint uses a 25KB filmstrip asset, native momentum rail,
+      shared Stub card anatomy, tap/keyboard gaps, and the existing scoring
+      core; `design-qa.md` passed. Cross-mode contract is now
+      `docs/ui-contracts.md` Appendix B.
+- [x] **PRE-LAUNCH POLISH · daily-mode consistency wave — BUILT + VERIFIED
+      2026-08-07:** one shared marquee header now owns the navy texture, Domine
+      title scale, amber daily label/keyline, center ticket tab, and back target
+      across Daily Puzzle, Chronology, and Connections. Daily Puzzle gains a
+      staged pile, explanatory center beat, responsive fan scale, compact mobile
+      tally/actions, and entry motion. Connections gains 72px phone / 90px
+      desktop near-square tickets, a 760px desktop canvas, and staggered deal
+      motion. QA fixed one real 390px title collision and increased the first
+      grid scale before passing 390×844, 375×667, desktop, selected, and raised
+      states. Local console is clean; build + 64/64 + 8/8 + 42/42 + 14/14.
+      Next visual slice = local icon family and shared motion tokens, then menu;
+      no rule/scoring change entered this wave.
+- [x] **PRE-LAUNCH POLISH · Daily Puzzle ticket-rack refinement — BUILT +
+      VERIFIED 2026-08-07:** Buri selected the Cinematic Spotlight direction,
+      then replaced the squeezed fan with a larger equal-proportion 4+3 cinema
+      rack. `Hand` gains a Solo-only `rack` presentation while Duel's fan stays
+      byte-behavior equivalent; seven cards render 4+3, six render 3+3, and
+      smaller hands reflow without horizontal compression. A raised ticket keeps
+      its visible slot, scales modestly between pile and rack, and retains tap,
+      drag, flip, Escape, and keyboard-pile play. Added optimized real assets:
+      63KB paper/projector background + 17KB alpha ticket ledges. QA caught and
+      fixed compact double-scaling, oversized raised overlap, desktop spacing,
+      and a repeat motion delay that could mis-target a rapid second tap.
+      Browser-verified at 390×844, 375×667, and 1280×720; no overflow or console
+      warnings; build + Solo 8/8 green. `design-qa.md` passes. No rule, scoring,
+      deal, persistence, or content change.
+- [x] **PRE-LAUNCH POLISH · Connections sorting-marquee refinement — BUILT +
+      VERIFIED 2026-08-07:** the loose upper-page grid is now one centered paper
+      sorting stage with responsive square tickets, numbered selection order,
+      inline one-away/miss coaching, marquee-style solved tickets, and a
+      ticket-shaped result/share panel. Player feedback exposed the false
+      one-of-each assumption, so Buri selected **Option A**: `Today's bill`
+      names the exact category multiset before play (`Actor ×3 · Genre ×1` on
+      the current daily) and counts down only the unsolved categories. The bill
+      is derived from `grid.groups`; it never maps a category to a tile, hue, or
+      share color and does not constrain or re-bake the dealer. How To Play,
+      RULEBOOK, and RULESET are synced. QA caught and fixed action-row toast
+      overlap, short-desktop clipping, solved-red semantic drift, and loss copy
+      that incorrectly said every group was found. Browser-verified at 390×844,
+      375×667, and 1280×720 through selected, one-away, solve, loss, share, and
+      revealed-board states; no overflow or console warnings. `design-qa.md`
+      passes; build + 64/64 + 8/8 + 42/42 + 14/14 green. No scoring, deal,
+      persistence, pool, or baked-grid change.
+- [ ] **PRE-LAUNCH POLISH · foundations (§9·P1) — IMPLEMENTATION BUILT,
+      REMOTE/OPS OPEN.** Route-level code/data
+      splitting · asset manifest and budgets · CI + browser smoke tests · shared
+      spacing/type/motion/icon tokens. No new production dependency; no rule
+      change. **BUILD SUBSET COMPLETE 2026-08-08:** four React.lazy mode/data
+      boundaries, production Vite manifest, honest transitive gzip/session
+      budgets, the initial CI workflow, seven Playwright browser journeys, and
+      shared spacing/type/motion/icon conventions are implemented. The original
+      local matrix—build + budgets + browser 7/7 + 64/64 +
+      8/8 + 42/42 + 14/14 are green. Production-preview network evidence
+      confirms zero mode/data chunks on the menu and selective fetch after
+      start; 390×844, 375×667, 1280×720, reduced motion, and dev `?mode=` are
+      clean. Buri approved development-only `@playwright/test`; normal production
+      builds are additionally gated against leakage of the isolated E2E seam.
+      **2026-08-08 repair:** the cancelled Wave 3 run was traced to the serial
+      exhaustive Connections verifier, not a failed assertion. Node is now
+      repository-pinned to 24.x, Actions use v6, and unchanged coverage is split
+      across parallel jobs locally. Remote green proof, monitoring, Web Vitals,
+      spend limits, rollback, and the future art manifest remain open. Evidence
+      and exact before/after bytes: `docs/delivery-foundations-report.md`.
+- [x] **CONTENT EXCEPTION · Wave 3 pool expansion — DEPLOYED 2026-08-08
+      (`a710fff`).** Buri explicitly reopened the §9 pause and
+      selected 67 full cards: A+B+C01–C17+E+F; C18 and D skipped. Merge:
+      237→304 credited Movies, 22 stubs graduated, 438→482 dated pool with
+      spread 34/62/98/112/115/61. Connections viable key sets
+      9,562,667→37,260,495 (strict estimate ≈2,868,800→≈11,228,450); 365 grids
+      re-baked and consciously re-pinned for pool 304. Gates green: build,
+      bundle, 64/64, 8/8, 42/42, 14/14, browser 7/7, names, TMDB/date review,
+      diff check.
+      Frozen Duel/Solo 89, rules, persistence, and art are untouched. The larger
+      author-time graph requires a 20 GB Node ceiling; runtime still reads baked
+      JSON only. Full handoff: `docs/wave3-report.md`. The initial review stopped
+      before publication as required; Buri subsequently approved and published
+      `a710fff`. The further-expansion pause resumes at 482.
+- [x] **PRE-LAUNCH POLISH · mode waves (§9·P2–P4)** — **Phases 1–3 approved;
+      full local release candidate completed 2026-08-09.** Mode-specific How to Play and the Chronology title-first tray
+      are approved. The approved menu uses a reachable phone stack and deliberate
+      2×2 tablet/desktop program; Daily Puzzle keeps the Solo-only 4+3 rack while
+      separating pile, travel, and hand zones on desktop, replacing essential
+      6px counters with 12px labels, and making flip/invalid cost explicit.
+      Connections' accepted board was re-proven unchanged across idle, selected,
+      one-away, solve, loss, reveal, and result states. Duel now uses grouped
+      phone tools and a real 1180px desktop table with distinct CPU, play, tool,
+      commentary, shelf, and readable fan zones. The shared local SVG family and
+      bounded/scrollable result treatment are complete. The final local matrix
+      passes build, budgets, Duel 64/64, Solo 8/8, Chronology 42/42,
+      Connections 14/14, browser 14/14, and diff checks. **Input/scoring parity
+      resolved 2026-08-18:** pile targets now use one pointer/touch activation
+      plus an explicit non-repeating Enter/Space path, and raised-card targets
+      clear the dismiss backdrop. Direct successful-play coverage proves click,
+      Enter, Space, touch, and drag in both Daily Puzzle and Duel; target-only
+      activation still flips exactly once. The post-fix matrix is build + bundle
+      + Duel 64/64 + Solo 8/8 + Chronology 42/42 + Connections 14/14 + browser
+      20/20, with fresh 390×844 successful-play screenshots inspected. Every
+      visual phase received Buri's approval. The candidate remains uncommitted,
+      unpushed, and undeployed; remote CI, attended accessibility/devices, and
+      operational launch gates remain in their separate rows below.
+- [x] **PRE-LAUNCH POLISH · Goal 3 mode-specific onboarding — LOCALLY VERIFIED
+      2026-08-18:** Daily Puzzle and Duel now teach the first meaningful action
+      in context, and a raised card emphasizes its action-local playable pile,
+      marquee, or existing Meld-row targets. Duel Meld picks gain numbered,
+      raised selection states, faded non-picks, and a non-overlapping readout.
+      Connections keeps the accepted 4×4 board and adds quiet desktop task/
+      progress marquees in the surrounding space. A shared result key makes
+      lower/fewer/higher semantics explicit; CTA order is copy result → replay/
+      deal → Menu in all four modes. The menu adds a local-only 0/3 daily
+      passport from existing once-per-seed meta records plus skill-labelled
+      practice prompts. No storage schema, mechanic, scoring, deal, pool, share,
+      board, or fan contract changed. Local gates: build, budgets, Duel 64/64,
+      Solo 8/8, Chronology 42/42, Connections 14/14, browser 20/20, and diff
+      checks. Evidence: `docs/goal-3-mode-specific-qa.md`. Work remains
+      uncommitted, unpushed, and undeployed; attended human/device approval
+      stays in the launch gate.
+- [x] **PRE-LAUNCH POLISH · first-run welcome + menu follow-through — LOCALLY
+      VERIFIED 2026-08-24:** the old welcome overlay is now a four-screen,
+      static first-run introduction with mode-specific GOLF labels, replayable
+      from How to play. Dismissal returns keyboard focus to the menu help
+      button; the replay link precedes the TMDB attribution; and the 3/3 Daily
+      Passport resolves into a distinct Triple Feature completion state. Menu
+      spacing and label contrast were tightened without changing rules,
+      scoring, deals, pools, persistence schema, or sharing. Local gates: build
+      + 97.36 KiB menu-shell budget, security 199/26, Duel 64/64, Solo 8/8,
+      Chronology 42/42, Connections 14/14, browser 25/25, and diff checks. Work
+      remains uncommitted, unpushed, and undeployed; attended accessibility,
+      real-device, production, and indexing gates remain separate.
+- [x] **CONTENT CUTOVER · Daily Puzzle / Duel 216 + 16 — RELEASE CHECKPOINT
+      2026-08-26:** Buri approved the exact 216 Keep / 0 Maybe / 6 Strike slate,
+      the all-time-film 16-wild roster, keep-all multi-wild behavior, and
+      `2026-09-27` as the first expanded Daily. Seeds through 2026-09-26 remain
+      byte-pinned to the legacy 89; Duel uses 216 after release. The 16 full
+      Movie records and two approved series-continuity tags are live in the
+      local candidate. Existing difficulty controls were retuned to
+      65.9/50.3/41.4 over 8,000 seeded games per tier without changing scoring,
+      deals, hand size, target, melds, or Recast. Chronology stays byte-identical
+      at 482 dated films; Connections is rebaked and re-pinned for 320 credited
+      films. Local gates: build, budgets, security, Duel 64/64, Solo 8/8,
+      Chronology 42/42, Connections 14/14, browser 27/27, names, and diff check.
+      Full evidence: `docs/daily-duel-216-release-checkpoint.md`. Work is stopped
+      uncommitted, unpushed, undeployed, and unindexed for owner review.
+- [x] **CONTENT CUTOVER · 216 + 16 Now fix review — LOCALLY VERIFIED
+      2026-08-27:** the browser gate now uses real-card, `VITE_E2E`-only states
+      for ordinary/one-wild/multi-wild Draw 3 and the reduced-motion no-helper/
+      Take-helper split; affected coverage passed 60/60 and the normal build
+      contains no fixture marker. Chronology's 320 px title no longer collides
+      with `STROKES`; current menu/onboarding/Help/result surfaces use CPU and
+      the exact 20/net promise; Daily/Duel series wording matches the existing
+      person-gated helper, backed by a synthetic series-only characterization.
+      Node 24 gates: build, bundle, security, Duel 64/64, Solo 8/8, Chronology
+      42/42, Connections 14/14, browser 31/31 twice, and live-flow tune
+      65.9/50.3/41.4 with zero stalemates. Evidence:
+      `docs/daily-duel-216-now-fix-pass-checkpoint.md`. Work remains unstaged,
+      uncommitted, unpushed, undeployed, and unindexed; launch readiness is a
+      separate approval-gated pass.
+- [x] **PRE-LAUNCH POLISH · Goal 4 security hardening — LOCALLY + PREVIEW
+      VERIFIED; ATTENDED ACCOUNTS OPEN 2026-08-18:** `vercel.json` now carries a
+      restrictive CSP and defense-in-depth headers, mirrored into Vite preview
+      so the browser suite runs under the enforced policy. The Vercel Analytics
+      queue/loader moved out of inline HTML into `src/lib/analytics.ts`. CI
+      actions are immutable-SHA pinned, dependency review and weekly Dependabot
+      updates are configured, and the dependency-free `check:security` gate
+      checks secrets, sourcemaps, prod test seams, action pins, header drift,
+      inline script, and bundled analytics. Protected Preview
+      `dpl_ECTuDQiuZcWnCa8fCxSJ3jVTK6bk` passed 9/9 exact headers, zero CSP and
+      console faults, analytics loader/event 200, and remote production-asset
+      hygiene; the local CSP browser/gameplay matrix is 21/21 + 64/64 + 8/8 +
+      42/42 + 14/14, with `npm audit` at zero. The owner-attended Vercel,
+      GitHub, registrar/DNS, four-mode remote play, and Analytics dashboard
+      receipt remain open in `docs/security-launch-checklist.md`. The Preview is
+      an uncommitted working-tree receipt, not a production candidate; no
+      production, account, domain, push, or merge mutation was performed.
+- [ ] **PRE-LAUNCH POLISH · card-art pilot (§9·P5)** — 18–24 original,
+      posterless cards across eras/genres/title lengths; approve the system and
+      production pipeline before generating the 482-card pool.
+- [ ] **PRE-LAUNCH SCALE · measurement + leaderboard (§9·P6–P7)** — verify
+      event receipt and funnel first; then anonymous casual daily leaderboard
+      with server-validated receipts, rate limits, moderation, and no accounts.
+- [ ] **PRE-LAUNCH SCALE · launch gate (§9·P8)** — real-device/accessibility,
+      performance, rollback, spend alerts, privacy/credits, TMDB commercial-use
+      decision, and URL-in-share/front-door cutover. Further movie expansion
+      stays paused until this gate is green. **Goal 5 in progress 2026-08-19:**
+      complete canonical/Open Graph/X metadata and a 1200×630 Stub-native social
+      card are locally gated while `noindex, nofollow` remains. Build, budgets,
+      security, audits, 64/64 + 8/8 + 42/42 + 14/14, browser 24/24, current
+      Chrome 151, current WebKit 26.5, and the 63-shot viewport/result matrix are
+      green. The browser gate now includes keyboard-only four-mode entry/return,
+      named controls/dialogs, contrast-safe focus, and static reduced-motion
+      feedback. A read-only receipt identifies the live `c063f26` production
+      baseline, edge/security smoke, domain/TLS posture, and rollback target;
+      it is not Goal 5 release approval. Buri approved the Goal 5 viewport and
+      social-preview screenshot checkpoint on 2026-08-19. Branded Safari
+      26.5.2 then passed all four mode/action checks; its attendance exposed
+      and verified the fix for identical spoken names on Duel's three hidden
+      draw choices, using ordinal/hint-only labels with no title leak. Actual
+      Safari 200% zoom also passed menu reflow and mode reachability. Buri then
+      enabled VoiceOver for an actual Safari spot-check: headings, named
+      controls, pressed state/live feedback, the Duel choice dialog, and the
+      rules hierarchy passed. Real iPhone/Android + TalkBack + attended motion/
+      focus, dashboard/account controls, protected Preview, production, and
+      indexing remain distinct open gates in
+      `docs/goal-5-public-launch-acceptance.md`.
 - [ ] **D1 Duel deep-cut reveal as a difficulty lever** (PARKED, concept
       approved 2026-07-06; §3·D1) — deepCast TMDB content pass (P2-adjacent) →
       deep-cut flip face (W3) → difficulty knob + re-tune (W5); needs its own
@@ -1102,7 +1309,265 @@ push freely, deploys batch to window close. Circle feedback lands in
 docs/feedback-log.md as it arrives.
 ```
 
-## 9. Amendment log
+## 9. Pre-launch polish and scale plan (2026-08-07)
+
+### The decision
+
+Pause further movie expansion after the current 482-film pool. Buri explicitly
+reopened the original 438-film pause for the locally completed 67-card Wave 3 on
+2026-08-08; that controlled exception does not change the plan's underlying call.
+The next constraint is not content volume; it is presentation, comprehension,
+delivery weight, and launch operations. The game can keep the ticket-stub/movie-
+house identity while feeling materially more modern by sharpening hierarchy,
+making empty space intentional, enlarging the active object, and giving every
+state change a single clear motion beat. This is a polish program, not a visual
+rebrand and not a rules rewrite.
+
+The 2026-08-07 concept set holds the palette, typography, paper texture, navy
+borders, ticket notches, and physical-card metaphor constant while testing three
+different Chronology compositions. The selected direction becomes a reusable
+system for all four modes. It must first survive implementation on real screens;
+the generated image is a direction reference, not a pixel contract.
+
+### What exists now
+
+| Track | Current state | Launch implication |
+|---|---|---|
+| Core game | Four playable modes; all four verification suites green in the 2026-08-07 audit | Rules are stable enough to polish around; avoid casual mechanic changes |
+| Content | 482 dated films in the unified pool; 304 fully credited | Enough for launch validation; more films add QA, author-time graph cost, and bundle weight before they add meaningful readiness |
+| Visual system | Strong Stub ingredients, but no complete spacing/type/icon system; density and hierarchy vary by mode | The motif is good; composition and finish are the problem |
+| Chronology | Most repeated feedback target: horizontal overflow/scroll discovery, card sizing, Wide/Tight language, same-year ambiguity; an approved reel branch is not integrated | First mode to redesign and the system's hardest responsive test |
+| Solo | Drag/flip onboarding and hand-title readability were improved in the dirty feedback wave | Preserve those gains while increasing card presence and state clarity |
+| Connections | A favorite in feedback, but non-buffs hit a difficulty/comprehension wall | Polish feedback/reveal states before considering rule or hint changes |
+| Duel | Most complex surface; one tester reported total comprehension failure | Do last, after the component system is proven elsewhere; do not refactor the state architecture during polish |
+| Icons and motion | Icon and Framer passes are already approved but unbuilt | Zero new dependency: local SVGs plus the Framer dependency already in the app |
+| Personas | Not built; existing difficulty presets already provide three mechanical profiles | Start as character/voice skins over unchanged knobs; re-tune only if knobs change |
+| Tracking | `mode_start`, `mode_finish`, and `share` hooks exist; dashboard receipt remains an explicit open check | Not yet enough to make launch decisions confidently |
+| Leaderboards | No backend and no leaderboard | Add only after score receipts can be validated server-side; accounts are not a prerequisite |
+
+### Design rules for the polish pass
+
+1. **Bigger active object, fewer competing objects.** In Chronology the anchor,
+   raised card, and legal gaps must dominate. Secondary help, score, and deck
+   information step back.
+2. **Empty space must explain the interaction.** Reserve the center as a
+   projection stage/reel lane; do not leave an undifferentiated cream void.
+3. **One visual grammar.** The same card frame, icon weight, borders, shadows,
+   radii, labels, and motion curves appear in every mode.
+4. **Modern means precise, not glossy.** Crisp typography, disciplined alignment,
+   restrained depth, responsive card scales, and clean motion preserve the print
+   identity better than gradients or glass effects.
+5. **Motion communicates state.** Every animation answers what moved, why, and
+   where it landed. Decoration never delays input.
+6. **Accessibility is part of polish.** Keyboard paths, dialog focus, readable
+   labels, 200% zoom, reduced motion, and the 44px touch target are acceptance
+   criteria, not a later cleanup.
+
+### P0 — Choose and prove the direction (1–2 days)
+
+- Choose one of the three Chronology concepts or request a narrow refinement.
+- Translate it into real Stub tokens: spacing scale, type scale, card sizes at
+  375/390/768/1440 widths, icon weight, shadow levels, and motion durations.
+- Build only one static/playable Chronology slice first: idle, raised card,
+  legal-gap hover, correct placement, incorrect placement, and reduced motion.
+- Acceptance: side-by-sides at 390×844 and 375×667; no clipped controls, no
+  hidden legal gap, title legible at the worst-case length, 60fps target on a
+  real iPhone. Stop for visual approval.
+
+### P1 — Delivery foundation before art (3–5 days)
+
+- Split the four mode routes and their data so the menu does not eagerly load the
+  whole game. The audit bundle is about 711KB raw / 177KB gzip before card art;
+  the goal is a small menu shell and on-demand mode chunks.
+- Move card art behind a versioned manifest with immutable hashed filenames,
+  explicit dimensions, local fallbacks, and a `contentVersion` that can roll back.
+- Budget the first mode load at **≤250KB compressed JS**, the menu shell at
+  **≤100KB**, and a typical played session at **≤2MB transferred after cold
+  cache**. Treat these as initial budgets to measure, not claims already met.
+- Add CI for build + all four verification suites and browser smoke coverage for
+  menu → start → one action → finish/share in each mode.
+- Add Web Vitals/error monitoring, a spend ceiling, and a documented one-command
+  rollback. Keep daily deals seed-derived and game-rule state out of persistence.
+
+### P2 — Shared visual system: card, icon, and motion (4–7 days)
+
+**Card anatomy**
+
+- Preserve the Stub frame, perforation, credit rail, genre spine, and ticket
+  notch, but define `compact`, `hand`, `board`, and `hero` sizes instead of
+  allowing each mode to invent dimensions.
+- Lock title clamping, credit priority, focus/selected/disabled states, and art
+  crop behavior. Every variant must work without art as a fallback.
+
+**Icon pass**
+
+- Create one local zero-dependency SVG `Icon` component and copy only the roughly
+  ten approved Phosphor or Lucide paths into the repo. Choose the family against
+  a real StubCard, then replace functional emoji/text glyphs. Daily share emoji
+  remain intentionally untouched.
+- Define 16/20/24px optical sizes, 2px or visually equivalent stroke weight, and
+  semantic labels for icon-only buttons.
+
+**Framer polish**
+
+- Use the existing Framer dependency; incremental software cost is $0.
+- Standardize four beats: press (80–120ms), deal/stagger (up to 60ms between
+  cards), place/settle (roughly 320ms spring), and result/reveal (250–400ms).
+- Animate transforms and opacity first; avoid layout-thrashing height/width
+  sequences. Input remains available as soon as the rule state permits.
+- Reduced motion collapses movement to a ≤150ms crossfade and never removes
+  meaning.
+
+### P3 — Mode-by-mode polish waves (7–12 days)
+
+1. **Chronology:** integrate the approved reel work only after reconciling it
+   with the selected direction; enlarge cards; make scroll/reel position
+   explicit; preserve every legal gap; design same-year month disclosure without
+   leaking answers or altering scoring; rename/clarify practice controls.
+2. **Menu + launch surface:** landing-page-quality hierarchy, immediate four-mode
+   comprehension, streak/played-today states, credits/privacy, and a clear daily
+   call to action. This becomes mandatory when URL-in-share turns on.
+3. **Solo + Connections:** make the hand/grid the hero; retain the approved drag
+   nudge and title readability; clarify genre floor and Connections group logic;
+   polish one-away, solve, loss, and share transitions.
+4. **Duel:** reuse the proven system, then fix HUD/shelf collisions, draw and
+   deep-cut comprehension, keyboard play, and 667px end-screen behavior. Keep
+   edits surgical in `DuelGame.tsx`.
+
+Every wave: 390×844 + 375×667 + desktop, keyboard, reduced motion, VoiceOver
+spot-check, played-through end state, build and all applicable verification
+gates, then Buri's visual checkpoint. A rule/scoring change leaves this track and
+requires RULEBOOK sync, parity verification, and re-tuning.
+
+### P4 — Personas without destabilizing difficulty (2–4 days)
+
+- Map the three existing difficulty presets to memorable projectionist/opponent
+  personas first. Give each a name, portrait/mark, booth treatment, two or three
+  tone rules, and restrained reaction animation.
+- Do not change AI knobs in the first pass. This makes personas a presentation
+  layer with no re-tune and no backend cost.
+- Test whether players can predict the difference between personas from the
+  selection screen. Only if feedback says the personalities do not match the
+  play should mechanics change; that becomes a separate tuning wave.
+
+### P5 — Card-art pilot, then production (pilot 5–8 days; full pool 2–6 weeks)
+
+- Do **not** generate 482 images in one batch. Pick 18–24 films covering every
+  decade, light/dark scenes, long/short titles, animation/live action, genres,
+  duplicate/remake titles, and mobile crop stress.
+- Use original, posterless editorial art: symbolic objects, locations, lighting,
+  texture, and color language. Do not reproduce posters, actor likenesses, logos,
+  or film stills. The title/credits remain HTML, never baked into the image.
+- Develop 6–10 reusable art-direction families so the pool feels authored but
+  not mechanically templated. Export responsive AVIF/WebP, roughly 35–70KB for
+  the common mobile card, with a lightweight placeholder.
+- Keep a provenance manifest per asset: prompt/source, generation date, reviewer,
+  crop focal point, rights note, and approved/rejected status.
+- Gate the pilot on recognition without copyrighted key art, crop survival,
+  title contrast, era/genre variety, and a blind “which version?” test for remakes.
+- Planning estimate: **$150–$500 one-time generation/regeneration spend plus
+  30–80 hours of art direction and QA** for a generated 482-card set. A bespoke
+  illustrator-led set is more plausibly **$5,000–$25,000+**. Labor and review,
+  not file hosting, are the dominant cost; validate quotes before committing.
+
+### P6 — Tracking that answers launch questions (2–3 days)
+
+First verify that the three existing events arrive in the production dashboard.
+Then use one small, documented taxonomy:
+
+`app_open` · `mode_impression` · `mode_start` · `tutorial_open` · `first_action`
+· `mode_abandon` · `mode_finish` · `replay` · `share` · `leaderboard_view`
+
+- Required dimensions only: build/content version, mode, daily/practice, device
+  class, completion outcome, and coarse duration bucket. No movie-choice trail,
+  free text, exact IP, or advertising profile.
+- Success dashboard: menu → start → first action → finish → next-day return,
+  split by mode and build version. This directly answers front-door choice,
+  onboarding failure, and retention.
+- Add a privacy/retention note and a manual receipt test in the release checklist.
+  Never treat client queueing as proof that an event reached the dashboard.
+
+### P7 — Casual leaderboard, not an account system (4–7 days)
+
+- V1 is anonymous and daily: optional display name, per-mode score, percentile,
+  and top results. Existing local streaks/personal bests remain local.
+- The server derives the valid daily seed/content version, validates the submitted
+  result envelope, accepts one best submission per anonymous installation and
+  mode/day, rate-limits abuse, and stores a signed receipt. Never trust a raw
+  client score. This deters casual cheating; it does not promise esports-grade
+  integrity.
+- Add nickname length/character rules, a reserved-word/filter list, report/hide
+  controls, and an operator delete path before public names appear.
+- Defer email/social auth, profiles, friends, seasons, and prizes until retention
+  proves they are worth the privacy, support, and anti-cheat burden.
+
+### P8 — Launch gate (4–7 days)
+
+- Full gate matrix green: build; Duel 64/64; Solo 8/8; Chronology 42/42;
+  Connections 14/14; browser smoke suite.
+- Real iPhone and Android play-throughs at small and modern phone sizes; keyboard,
+  focus order/dialog trap, screen-reader labels/live regions, 200% zoom, contrast,
+  and reduced motion.
+- Performance budgets met on cold 4G and warm repeat visit; art lazy-load verified;
+  no mode downloads another mode's pool.
+- Analytics receipt, error reporting, database backup/restore, leaderboard delete,
+  rate-limit, spend-alert/hard-limit, and rollback drills completed.
+- Credits/privacy ready. TMDB attribution is present; if Match Cut's primary
+  purpose becomes revenue, obtain commercial terms before monetizing. TMDB says
+  non-commercial API use is free with attribution, while commercial use requires
+  contacting sales: [TMDB API FAQ](https://developer.themoviedb.org/docs/faq).
+- Buri approves production deploy and URL-in-share. Only after this gate should
+  the movie pool grow again.
+
+### 1,000-player cost model
+
+Use **1,000 daily players**, not 1,000 total users, as the conservative planning
+case. At 1.3 sessions per player per day that is about **39,000 sessions/month**.
+
+| Resource assumption | Monthly load | Capacity/cost implication |
+|---|---:|---|
+| Static delivery at 1–2MB/session | 39–78GB | Well below Vercel Pro's current 1TB included transfer; the current Pro base is $20/month with $20 usage credit ([Vercel pricing](https://vercel.com/pricing)) |
+| Edge requests at ~20/session | ~780,000 | Below Vercel Pro's current 10M included |
+| Product analytics at 4 events/session | ~156,000 events | 50K included, then $3/100K; roughly **$3.18 overage/month** at today's posted rate ([Vercel pricing](https://vercel.com/pricing)) |
+| Leaderboard at 1 write + 2 indexed reads/session | 39K writes + 78K reads | Tiny: Cloudflare D1 Free allows 100K rows written/day and 5M read/day ([D1 pricing](https://developers.cloudflare.com/d1/platform/pricing/)); Supabase Free also covers 50K MAU ([Supabase pricing](https://supabase.com/pricing)) |
+| Card images | Included in 1–2MB session target | Hash/cache locally served art; load only visible/nearby cards, never all 482 |
+
+**Expected monthly run rate at 1,000 DAU**
+
+- **Private/non-commercial beta:** potentially $0 incremental, but Vercel Hobby is
+  explicitly for personal/non-commercial use and has hard caps.
+- **Lean public launch:** about **$20–$30/month** — Vercel Pro, free-tier
+  leaderboard database, small analytics overage, and normal margin.
+- **Managed production backend:** about **$45–$55/month** — Vercel Pro plus
+  Supabase Pro at $25/month (100K MAU, 8GB database, 250GB egress) and analytics
+  margin ([Supabase pricing](https://supabase.com/pricing)).
+- **Unknown outside the infrastructure model:** TMDB commercial licensing if the
+  game's primary purpose becomes revenue, commissioned illustration, legal/privacy
+  review, and the value of development/QA time.
+
+Bottom line: **1,000 daily players will not make hosting expensive.** At this
+scale the financial risk is art production, QA time, and an unpriced commercial
+data license—not CDN or leaderboard traffic. Start with a $20–$30/month ceiling,
+hard spend alerts, and the anonymous leaderboard; upgrade the database only when
+backups/support or measured usage justify it.
+
+### Recommended sequence and calendar
+
+| Week | Outcome | Ship gate |
+|---|---|---|
+| 1 | P0 direction lock + P1 budgets/CI/code split | Approved Chronology slice and measurable cold-load baseline |
+| 2 | P2 card/icon/motion system + Chronology | Both phone sizes, reduced motion, no hidden gap, all gates green |
+| 3 | Menu, Solo, Connections | Front door coherent; feedback states and onboarding verified |
+| 4 | Duel + personas | Comprehensible Duel, no 667px collision, unchanged difficulty knobs |
+| 5 | Card-art pilot + tracking | 18–24 approved cards; production funnel receiving events |
+| 6 | Anonymous leaderboard + launch QA | Abuse/privacy/rollback/spend tests; Buri launch approval |
+| After launch gate | Scale art to 482, then resume movie additions | Asset QA and content gates remain green |
+
+This is approximately **4–6 focused solo-development weeks before full art
+production**, assuming no scoring/rule change. Card-art production can overlap
+after the pilot is approved, but further movie additions should not.
+
+## 10. Amendment log
 
 - v1 (2026-07-06): created from the six-auditor recon + Buri's four rulings
   (finish line · one live plan · keep-and-wire-visibly · gate-split autonomy).
@@ -1122,3 +1587,25 @@ docs/feedback-log.md as it arrives.
   Stage B long-pole) · `docs/feedback-log.md` created (append-only circle
   ledger, pointed from §0) · CLAUDE.md gate line gains verify:connections
   14/14 + DuelGame stats refreshed (~2,060 ln / 39 useState).
+- v4 (2026-08-07): added the pre-launch polish/scale ledger and §9 execution
+  plan after the full status audit and three-direction Chronology concept pass.
+  Further movie expansion pauses behind the visual, delivery, measurement,
+  leaderboard, rights, and launch gates. Cost model assumes 1,000 daily players.
+- v5 (2026-08-31): launch-readiness pass COMPLETE through its local stop point
+  (Goals 0–3 on 08-28; R0+4–8 on 08-31, all receipted in
+  `audit/daily-duel-216-launch-readiness-2026-08-27/manifest.md`). F05/F06/F09/
+  F10/F11/F12 resolved locally (support route + privacy disclosure · journey
+  analytics dictionary with exact-once proofs · full Node 24 matrix ·
+  path-by-path security-count reconciliation incl. the `bundle-report.json`
+  gate-order artifact · progress sanitization · measured long-title/hint fixes
+  with regression tests); F07 partial (automated Chromium/WebKit/200% closed;
+  five attended lanes `ATTENDED NOT RUN` with continuation scripts in
+  `docs/daily-duel-216-attended-acceptance.md`); F08 open by design.
+  ⚠ menu shell at 99.85/100 KiB gzip — budget effectively spent. Verdict and
+  the exact-path staging proposal (A+B+C release commit, promo excluded,
+  audit/ force-add = Buri decision):
+  `docs/daily-duel-216-launch-readiness-checkpoint.md`. Next: Buri's
+  Approval 1 (stage → commit → push for exact-SHA CI), then PR → merge to
+  `main` (priority directive 2026-08-31), then Preview / deploy / indexing as
+  separate gates. First 216 Daily stays pinned to 2026-09-27 — 27-day runway
+  at writing.

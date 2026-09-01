@@ -14,7 +14,6 @@
 // analysis and rule variants (e.g. draw-3-keep-1).
 
 import type { Movie } from '../src/data/types.ts'
-import { movieById } from '../src/data/movies.ts'
 import { DUEL_POOL } from '../src/data/duelPool.ts'
 import { sharedPeople, linkTier, type LinkTier } from '../src/lib/solver.ts'
 import {
@@ -27,13 +26,12 @@ import {
   cpuTossOrKeep,
   deal,
   GENRE_FLOOR,
-  isWild,
+  forcedWildDraw,
   ladderPtsPerCard,
   meldCommon,
   meldRung,
   mostConnectiveTop,
-  wildMovie,
-  WILD_IDS,
+  WILD_MOVIES,
 } from '../src/lib/duel.ts'
 import {
   type Knobs,
@@ -82,11 +80,30 @@ export type Ev =
   | { t: 'layoff'; who: Who; id: string }
   | { t: 'draw'; who: Who; id: string; connected: boolean; kept: boolean; tossed: boolean }
   | { t: 'take'; who: Who; id: string; pileIdx: number; reseeded: boolean }
-  | { t: 'wild'; who: Who; id: string; via: 'play' | 'meld' }
+  | { t: 'wild'; who: Who; id: string; via: 'play' | 'meld'; wentOut: boolean }
+  | { t: 'wild-multi-draw'; who: Who; count: number }
+  | { t: 'wild-block-take'; who: Who; id: string; pileIdx: number }
   | { t: 'pass'; who: Who }
   | { t: 'recast'; who: Who; against: 'super' | 'finalCut' }
   | { t: 'fc'; who: Who; id: string }
-  | { t: 'end'; reason: string; netA: number; netB: number; scoreA: number; scoreB: number; handA: number; handB: number; turns: number; burned: number }
+  | {
+      t: 'end'
+      reason: string
+      netA: number
+      netB: number
+      scoreA: number
+      scoreB: number
+      handA: number
+      handB: number
+      turns: number
+      burned: number
+      wildHeldA: number
+      wildHeldB: number
+      wildCoveringPiles: number
+      wildBurned: number
+      wildCensus: number
+      uniqueWildCensus: number
+    }
 
 export type Recorder = (e: Ev) => void
 
@@ -113,12 +130,50 @@ export interface State {
   rec?: Recorder
 }
 
-// Wild cards (`wilds`) — identity, the blank Movies and per-card scoring all live
-// in the shared engine (src/lib/duel.ts) so React recognises & scores them the
-// same. The sim resolves ids → Movies via `mv` (wild or canonical) and keeps the
-// id-array `topOf` below: the same skip-trailing-wilds algorithm as the engine's
-// topForLinking, kept on ids here to stay off the per-turn Movie-mapping hot path.
-const mv = (id: string): Movie => wildMovie(id) ?? movieById.get(id)!
+// The default catalog remains the exact live pool + live wild shells. Authoring
+// audits can inject another real pool and blank wild catalog through playGame;
+// no runtime data array changes and all rule logic below stays shared. Calls are
+// synchronous, so a tiny module-local catalog avoids threading configuration
+// through every hot-path helper without permitting cross-game state leakage.
+let simulationPool: Movie[] = DUEL_POOL
+let simulationPoolSource: Movie[] = DUEL_POOL
+let simulationWildSource: Movie[] = WILD_MOVIES
+let simulationRealById = new Map(simulationPool.map((movie) => [movie.id, movie]))
+let simulationWildById = new Map(WILD_MOVIES.map((movie) => [movie.id, movie]))
+let simulationWildIds = WILD_MOVIES.map((movie) => movie.id)
+
+function configureSimulationCatalog(pool: Movie[], wildMovies: Movie[]): void {
+  if (pool === simulationPoolSource && wildMovies === simulationWildSource) return
+  const realIds = pool.map((movie) => movie.id)
+  const wildIds = wildMovies.map((movie) => movie.id)
+  if (new Set(realIds).size !== realIds.length) throw new Error('simulation pool contains duplicate real IDs')
+  if (new Set(wildIds).size !== wildIds.length) throw new Error('simulation wild catalog contains duplicate IDs')
+  if (wildIds.some((id) => realIds.includes(id))) throw new Error('simulation real and wild IDs collide')
+  if (
+    wildMovies.some(
+      (movie) =>
+        movie.topCast.length > 0 ||
+        (movie.deepCast?.length ?? 0) > 0 ||
+        movie.director.length > 0 ||
+        movie.writers.length > 0,
+    )
+  ) {
+    throw new Error('simulation wild shells must have blank credits')
+  }
+  simulationPool = pool
+  simulationPoolSource = pool
+  simulationWildSource = wildMovies
+  simulationRealById = new Map(pool.map((movie) => [movie.id, movie]))
+  simulationWildById = new Map(wildMovies.map((movie) => [movie.id, movie]))
+  simulationWildIds = wildIds
+}
+
+const isWild = (id: string): boolean => simulationWildById.has(id)
+const mv = (id: string): Movie => {
+  const movie = simulationWildById.get(id) ?? simulationRealById.get(id)
+  if (!movie) throw new Error(`simulation catalog has no card "${id}"`)
+  return movie
+}
 const other = (w: Who): Who => (w === 'A' ? 'B' : 'A')
 const topOf = (pile: string[]): Movie => {
   for (let i = pile.length - 1; i >= 0; i--) if (!isWild(pile[i])) return mv(pile[i])
@@ -127,7 +182,7 @@ const topOf = (pile: string[]): Movie => {
 
 // ── Conservation (#2): every card lives in exactly one zone, always ─────────
 
-// All card ids across every zone. Sum must be the full 89-card deck, no more.
+// All card ids across every zone. Sum must be the full configured deck, no more.
 function cardCensus(s: State): string[] {
   return [
     ...s.piles.flat(),
@@ -142,29 +197,30 @@ function cardCensus(s: State): string[] {
 
 // Pure check on a census: returns an error string, or null if conserved.
 // Exported so the test suite can exercise the detector on crafted inputs.
-export function validateCensus(ids: string[]): string | null {
-  if (ids.length !== DUEL_POOL.length) return `card count ${ids.length} ≠ ${DUEL_POOL.length}`
+export function validateCensus(ids: string[], pool: Movie[] = DUEL_POOL): string | null {
+  if (ids.length !== pool.length) return `card count ${ids.length} ≠ ${pool.length}`
   const set = new Set(ids)
   if (set.size !== ids.length) return `${ids.length - set.size} duplicate card(s)`
-  for (const id of ids) if (!movieById.has(id)) return `unknown card id "${id}"`
+  const expected = new Set(pool.map((movie) => movie.id))
+  for (const id of ids) if (!expected.has(id)) return `unknown card id "${id}"`
   return null
 }
 
 function assertConservation(s: State, label: string): void {
   const census = cardCensus(s)
   // Wilds aren't in the canonical pool — validate the real cards on their own,
-  // then confirm the 3 wilds (always in play now) are each present exactly once.
+  // then confirm every configured wild is present exactly once.
   const reals = census.filter((id) => !isWild(id))
-  const err = validateCensus(reals)
+  const err = validateCensus(reals, simulationPool)
   if (err) throw new Error(`conservation violated at ${label}: ${err}`)
   const wilds = census.filter(isWild)
-  if (wilds.length !== WILD_IDS.length || new Set(wilds).size !== WILD_IDS.length)
+  if (wilds.length !== simulationWildIds.length || new Set(wilds).size !== simulationWildIds.length)
     throw new Error(`wild conservation violated at ${label}: have [${wilds.join(',')}]`)
 }
 
 function unseenFor(s: State, who: Who, extra: string[] = []): Movie[] {
   const seen = new Set([...s.piles.flat(), ...s.hands[who], ...extra])
-  return DUEL_POOL.filter((m) => !seen.has(m.id))
+  return simulationPool.filter((m) => !seen.has(m.id))
 }
 
 // The current top of each pile (one entry, or two under Double Feature).
@@ -239,7 +295,7 @@ function applyPlay(
 function bestMeld(_s: State, hand: Movie[], k: Knobs): Movie[] | null {
   // Always value-chasing under the meld ladder, with genre melds (floor 3) and
   // wild filler — the locked base game.
-  return ladderBestMeld(hand, k, GENRE_FLOOR, true)
+  return ladderBestMeld(hand, k, GENRE_FLOOR, true, isWild)
 }
 
 function bankMeld(s: State, who: Who, cards: Movie[]): void {
@@ -255,8 +311,11 @@ function bankMeld(s: State, who: Who, cards: Movie[]): void {
   s.scores[who] += pts
   s.passStreak = 0
   s.rec?.({ t: 'meld', who, n: cards.length, pts, rung })
-  for (const c of cards) if (isWild(c.id)) s.rec?.({ t: 'wild', who, id: c.id, via: 'meld' })
-  if (s.hands[who].length === 0) goOut(s, who)
+  const wentOut = s.hands[who].length === 0
+  for (const c of cards) {
+    if (isWild(c.id)) s.rec?.({ t: 'wild', who, id: c.id, via: 'meld', wentOut })
+  }
+  if (wentOut) goOut(s, who)
 }
 
 function doLayoff(s: State, who: Who, card: Movie, meld: SimMeld): void {
@@ -307,8 +366,9 @@ function playWild(s: State, who: Who): boolean {
   s.hands[who] = s.hands[who].filter((id) => id !== wildId)
   s.piles[0].push(wildId)
   s.passStreak = 0
-  s.rec?.({ t: 'wild', who, id: wildId, via: 'play' })
-  if (s.hands[who].length === 0) goOut(s, who)
+  const wentOut = s.hands[who].length === 0
+  s.rec?.({ t: 'wild', who, id: wildId, via: 'play', wentOut })
+  if (wentOut) goOut(s, who)
   return true
 }
 
@@ -383,13 +443,22 @@ export function drawCards(s: State, who: Who, ts: Movie[], k: Knobs): string {
   // a brick's connectivity isn't inflated by its own drawn siblings.
   const take = s.deck.slice(0, 3)
   s.deck = s.deck.slice(take.length)
-  // A wild has 0 connectivity, so pickDraw would always burn it as the "worst"
-  // card — but a player obviously KEEPS a universal wild. Override: keep a drawn
-  // wild, burn the other two (else wilds never reach a hand to be tested).
-  const wildInTake = take.find(isWild)
-  if (wildInTake !== undefined) {
-    s.burned.push(...take.filter((id) => id !== wildInTake))
-    return wildInTake
+  // A wild has 0 connectivity, so pickDraw would burn it as the "worst" card.
+  // The shared forced-wild rule instead keeps every revealed wild and burns the
+  // non-wilds (else wilds would rarely reach a hand to be tested).
+  const forced = forcedWildDraw(take)
+  if (forced) {
+    // The locked rule is stronger than draw-3/keep-1: EVERY revealed wild is
+    // kept. With 16 total, retain extras immediately and return the first
+    // through the normal caller path.
+    if (forced.extras.length > 0)
+      s.rec?.({ t: 'wild-multi-draw', who, count: forced.extras.length + 1 })
+    s.hands[who].push(...forced.extras)
+    for (const id of forced.extras) {
+      s.rec?.({ t: 'draw', who, id, connected: false, kept: true, tossed: false })
+    }
+    s.burned.push(...forced.burn)
+    return forced.keep
   }
   const { keep, burn } = pickDraw(take.map(mv), ts, k, unseenFor(s, who, take))
   // The cards we didn't keep leave play — track them so conservation holds.
@@ -415,7 +484,14 @@ function takeToMeld(s: State, who: Who, k: Knobs): { card: Movie; meldN: number;
     // A wild covering the marquee blocks the take: the linking top is the real
     // card BENEATH it (wilds are transparent), but it's not the physical top, so
     // it can't be lifted without disturbing the wild. Skip — take only the bare top.
-    if (isWild(pile[pile.length - 1])) return
+    if (isWild(pile[pile.length - 1])) {
+      const covered = topOf(pile)
+      const meldN = meldGainFromTake(hand, covered, k)
+      if (meldN > 0) {
+        s.rec?.({ t: 'wild-block-take', who, id: pile[pile.length - 1], pileIdx: i })
+      }
+      return
+    }
     // Lifting the last card empties the pile; only OK if the deck can reseed it
     // (keeps Double Feature's two anchors and keeps tops() well-defined).
     if (pile.length === 1 && s.deck.length === 0) return
@@ -672,8 +748,17 @@ function takeTurn(s: State, who: Who, rng: Rng): void {
 export function playGame(
   playerKnobs: Knobs,
   cpuKnobs: Knobs,
-  opts: { rules?: Rules; rec?: Recorder; seed?: number | string; index?: number; assert?: boolean } = {},
+  opts: {
+    rules?: Rules
+    rec?: Recorder
+    seed?: number | string
+    index?: number
+    assert?: boolean
+    pool?: Movie[]
+    wildMovies?: Movie[]
+  } = {},
 ): 'A' | 'B' | 'draw' {
+  configureSimulationCatalog(opts.pool ?? DUEL_POOL, opts.wildMovies ?? WILD_MOVIES)
   const rules = opts.rules ?? {}
   // Paired deals (Common Random Numbers): when a seed is given, the DEAL stream
   // is keyed ONLY by the game index — never by the rules — so every variant of
@@ -683,7 +768,7 @@ export function playGame(
   const idx = opts.index ?? 0
   const dealRng: Rng = seeded ? makeRng(opts.seed!, 'deal', idx) : Math.random
   const playRng: Rng = seeded ? makeRng(opts.seed!, 'play', idx) : Math.random
-  const d = deal(DUEL_POOL, 7, dealRng)
+  const d = deal(simulationPool, 7, dealRng)
   let deck = d.deck
   const piles: string[][] = [[d.starterId]]
   if (rules.doubleFeature) {
@@ -701,7 +786,7 @@ export function playGame(
   // hands), so they're drawn naturally. Spliced AFTER the pile/market seeds so the
   // real-card shuffle is untouched — paired (CRN) comparisons across the remaining
   // rule toggles stay valid.
-  for (const wid of WILD_IDS) {
+  for (const wid of simulationWildIds) {
     const pos = Math.floor(dealRng() * (deck.length + 1))
     deck = [...deck.slice(0, pos), wid, ...deck.slice(pos)]
   }
@@ -747,6 +832,8 @@ export function playGame(
   }
   const netA = s.scores.A - s.hands.A.length
   const netB = s.scores.B - s.hands.B.length
+  const census = cardCensus(s)
+  const wildCensus = census.filter(isWild)
   s.rec?.({
     t: 'end',
     reason: s.endReason ?? 'guard',
@@ -758,6 +845,12 @@ export function playGame(
     handB: s.hands.B.length,
     turns,
     burned: s.burned.length,
+    wildHeldA: s.hands.A.filter(isWild).length,
+    wildHeldB: s.hands.B.filter(isWild).length,
+    wildCoveringPiles: s.piles.filter((pile) => pile.length > 0 && isWild(pile[pile.length - 1])).length,
+    wildBurned: s.burned.filter(isWild).length,
+    wildCensus: wildCensus.length,
+    uniqueWildCensus: new Set(wildCensus).size,
   })
   return netA > netB ? 'A' : netB > netA ? 'B' : 'draw'
 }

@@ -1,6 +1,7 @@
 import { motion, useReducedMotion } from 'framer-motion'
 import { movieById } from '../data/movies.ts'
 import { isWild, wildMovie, type Meld } from '../lib/duel.ts'
+import { spineColor as genreSpine } from './StubCard.tsx'
 
 // The Stub replacement for MeldZone. Two faces, same chip DNA:
 //   • MeldShelf   — the 7a/7e horizontal shelf strip of banked marquee rows
@@ -17,13 +18,13 @@ import { isWild, wildMovie, type Meld } from '../lib/duel.ts'
 export const meldLabel = (m: Meld) =>
   m.rungName ?? (m.series ? m.series.split('-').join(' ') : m.people[0] ?? 'meld')
 
-// One 30px card thumbnail. Minimal inline frame this wave (StubCard is forged in
-// parallel and not importable): paper bg + navy border, with the movie's legacy
-// posterColor as a thin genre spine down the left edge — the ticket-stub spine
-// motif at thumb scale. `layoutId={cid}` is the SHARED FLIP namespace (hand /
-// pile / shelf); dropping it silently kills the fly-to-shelf animation. Wild ids
-// aren't in movieById, so callers branch on isWild BEFORE rendering a Thumb.
-// `spineColor` lets ineligible picker rows dim the border to slate to match 7b.
+// One 30px card thumbnail: paper bg + navy border, with the GENRE-family spine
+// down the left edge (StubCard's exported map — §7·7c retired the legacy
+// posterColor here, the last per-movie-color consumer in the UI). `layoutId=
+// {cid}` is the SHARED FLIP namespace (hand / pile / shelf); dropping it
+// silently kills the fly-to-shelf animation. Wild ids aren't in movieById, so
+// callers branch on isWild BEFORE rendering a Thumb. `spineColor` (the prop)
+// lets ineligible picker rows dim the border to slate to match 7b.
 function Thumb({ cid, spineColor }: { cid: string; spineColor: string }) {
   const m = movieById.get(cid)!
   return (
@@ -34,7 +35,7 @@ function Thumb({ cid, spineColor }: { cid: string; spineColor: string }) {
     >
       <div
         className="absolute inset-y-0 left-0 w-1"
-        style={{ background: m.posterColor }}
+        style={{ background: genreSpine(m.genre) }}
       />
     </motion.div>
   )
@@ -63,17 +64,25 @@ export default function MeldShelf({
   melds,
   highlightIds,
   setRowRef,
+  onRowActivate,
 }: {
   melds: Meld[]
   highlightIds: ReadonlySet<number>
   setRowRef: (id: number, el: HTMLDivElement | null) => void
+  // Keyboard path (§7·7b a11y): Enter/Space on a row asks the parent to lay
+  // the held card off here — the tap-free route to the drag's drop target.
+  onRowActivate?: (meldId: number) => void
 }) {
   // No empty-state shelf — return null when there's nothing banked (contract).
   if (melds.length === 0) return null
   return (
     // In-flow root, no self-pinning: the parent's column owns the position
     // (Appendix A·1 doctrine). Keep the resting z-layer var from MeldZone.
-    <div className="relative z-[var(--z-resting)] w-full">
+    <div
+      className={`relative w-full ${
+        highlightIds.size > 0 ? 'z-[var(--z-traveling)]' : 'z-[var(--z-resting)]'
+      }`}
+    >
       {/* Horizontal scroll strip. overflow-x-auto (not hidden) so the rows
           are actually swipeable on touch — the comp's `overflow:hidden` is a
           static-mockup artifact; the caption says SWIPE. */}
@@ -85,6 +94,18 @@ export default function MeldShelf({
               key={meld.id}
               ref={(el) => setRowRef(meld.id, el)}
               data-meld-row={meld.id}
+              role="button"
+              tabIndex={0}
+              aria-label={`${meldLabel(meld)} meld, ${meld.cardIds.length} cards${
+                lit ? ' — accepts the raised card, press Enter to lay off' : ''
+              }`}
+              onClick={() => onRowActivate?.(meld.id)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault()
+                  if (!e.repeat) onRowActivate?.(meld.id)
+                }
+              }}
               className={`flex-none rounded-stub-card border-2 bg-stub-paper px-2 py-[5px] ${
                 lit
                   ? 'border-stub-amber shadow-stub-glow-amber'

@@ -17,7 +17,12 @@
 // so the three gates read the same.
 
 import { movieById } from '../src/data/movies.ts'
-import { DUEL_POOL } from '../src/data/duelPool.ts'
+import {
+  DAILY_DUEL_POOL_EFFECTIVE_DATE,
+  DUEL_POOL,
+  LEGACY_DUEL_POOL,
+  dailyDuelPoolForSeed,
+} from '../src/data/duelPool.ts'
 import { dailySoloPuzzle, localDateSeed, SOLO_HAND_SIZE } from '../src/lib/daily.ts'
 import { isSolvable, sharedPeople } from '../src/lib/solver.ts'
 import type { Puzzle } from '../src/data/types.ts'
@@ -45,19 +50,22 @@ function note(msg: string): void {
 
 const DAYS = 365
 
-// The year of seeds under test: today forward, in the player's local zone —
-// exactly the strings SoloGame will feed dailySoloPuzzle on those days.
-const base = new Date()
+// The approved 216-card content-version year. Pinning the window to the exact
+// cutover makes the exposure and board evidence reproducible instead of sliding
+// every day; the boundary assertion below separately preserves legacy seeds.
+const [anchorY, anchorM, anchorD] = DAILY_DUEL_POOL_EFFECTIVE_DATE.split('-').map(Number)
+const base = new Date(anchorY, anchorM - 1, anchorD)
 const seeds: string[] = []
 for (let i = 0; i < DAYS; i++) {
   seeds.push(localDateSeed(new Date(base.getFullYear(), base.getMonth(), base.getDate() + i)))
 }
 
 console.log('\n  SOLO DAILY VERIFY')
-console.log(`  ${DAYS} days from ${seeds[0]}, pool ${DUEL_POOL.length} films, hand ${SOLO_HAND_SIZE} + 1 starter`)
+console.log(`  ${DAYS} days from ${seeds[0]} (cutover anchor), pool ${DUEL_POOL.length} films, hand ${SOLO_HAND_SIZE} + 1 starter`)
 
 // One generation pass shared by all sections.
-const puzzles: Puzzle[] = seeds.map((s) => dailySoloPuzzle(s, DUEL_POOL))
+const pools = seeds.map(dailyDuelPoolForSeed)
+const puzzles: Puzzle[] = seeds.map((s, i) => dailySoloPuzzle(s, pools[i]))
 
 // ═══════════════════════════════════════════════════════════════════════════
 //  #1  EVERY DAILY DEALS AND IS WINNABLE
@@ -69,20 +77,24 @@ function checkSolvable(): void {
   let solvedOk = true
   let lineOk = true
   let detail = ''
+  const exposed = new Set<string>()
   for (let i = 0; i < puzzles.length; i++) {
     const p = puzzles[i]
+    const pool = pools[i]
+    const poolIds = new Set(pool.map((movie) => movie.id))
     const board = [p.starterMovieId, ...p.handMovieIds]
     if (
       p.id !== `solo-${seeds[i]}` ||
       p.handMovieIds.length !== SOLO_HAND_SIZE ||
       new Set(board).size !== SOLO_HAND_SIZE + 1 ||
-      board.some((id) => !movieById.has(id))
+      board.some((id) => !movieById.has(id) || !poolIds.has(id))
     ) {
       formedOk = false
       detail = detail || `malformed puzzle for ${seeds[i]}`
       continue
     }
-    const order = isSolvable(p, DUEL_POOL)
+    board.forEach((id) => exposed.add(id))
+    const order = isSolvable(p, pool)
     if (!order) {
       solvedOk = false
       detail = detail || `unsolvable daily for ${seeds[i]}`
@@ -101,7 +113,9 @@ function checkSolvable(): void {
       detail = detail || `solver line fails re-validation for ${seeds[i]}`
     }
   }
-  check(`every puzzle well-formed (id, ${SOLO_HAND_SIZE}+1 unique pool cards)`, formedOk, detail)
+  const exposureOk = exposed.size === DUEL_POOL.length && DUEL_POOL.every((movie) => exposed.has(movie.id))
+  if (!exposureOk) detail = detail || `only ${exposed.size}/${DUEL_POOL.length} films exposed`
+  check(`every puzzle well-formed and all ${DUEL_POOL.length} films exposed`, formedOk && exposureOk, detail)
   check('every daily is solver-winnable', solvedOk, detail)
   check('every winning line re-validates move by move (sharedPeople > 0)', lineOk, detail)
 }
@@ -131,7 +145,9 @@ function checkDeterminism(): void {
   section('#3  Determinism, distinctness & the append-only pin')
 
   // Same seed → byte-identical puzzle, across the whole year.
-  const detOk = puzzles.every((p, i) => JSON.stringify(p) === JSON.stringify(dailySoloPuzzle(seeds[i], DUEL_POOL)))
+  const detOk = puzzles.every(
+    (p, i) => JSON.stringify(p) === JSON.stringify(dailySoloPuzzle(seeds[i], pools[i])),
+  )
   check(`deterministic per seed (${DAYS}× regenerated identically)`, detOk)
 
   // Different days → different boards (catches a seed-ignoring bug).
@@ -141,14 +157,20 @@ function checkDeterminism(): void {
   // PIN — the append-only guard. 2026-07-03's daily, recorded at generator
   // birth. If an algorithm/pool change reshuffles it, every already-published
   // daily shifted with it: bump this pin ONLY with a conscious cutover plan.
-  const pinned = dailySoloPuzzle('2026-07-03', DUEL_POOL)
+  const pinned = dailySoloPuzzle('2026-07-03', dailyDuelPoolForSeed('2026-07-03'))
+  const beforePool = dailyDuelPoolForSeed('2026-09-26')
+  const effectivePool = dailyDuelPoolForSeed('2026-09-27')
+  const afterPool = dailyDuelPoolForSeed('2026-09-28')
   check(
-    'pinned seed 2026-07-03 → Once Upon a Time in Hollywood board, par 9',
+    'legacy pin holds; 2026-09-26 → 89 and 2026-09-27/28 → 216',
     pinned.starterMovieId === 'once-upon-a-time-in-hollywood' &&
       pinned.par === 9 &&
       pinned.handMovieIds.join() ===
-        ['monsters-inc', 'joker', 'reservoir-dogs', 'the-irishman', 'the-godfather-part-ii', 'heat', 'taxi-driver'].join(),
-    `got ${pinned.starterMovieId}, par ${pinned.par}`,
+        ['monsters-inc', 'joker', 'reservoir-dogs', 'the-irishman', 'the-godfather-part-ii', 'heat', 'taxi-driver'].join() &&
+      beforePool === LEGACY_DUEL_POOL &&
+      effectivePool === DUEL_POOL &&
+      afterPool === DUEL_POOL,
+    `legacy ${pinned.starterMovieId}, par ${pinned.par}; boundary ${beforePool.length}/${effectivePool.length}/${afterPool.length}`,
   )
 }
 

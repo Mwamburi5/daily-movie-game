@@ -2,8 +2,12 @@ import { useEffect, useRef, useState } from 'react'
 import { motion, useAnimationControls, useReducedMotion } from 'framer-motion'
 import type { Movie } from '../data/types.ts'
 import StubCard from './StubCard.tsx'
+import Icon from './Icon.tsx'
 
 const CARD_W = 96
+const RACK_SCALE = 0.9
+const RACK_SLOT = 90
+const RACK_ROW_GAP = 132
 
 // The hand wears the Stub ticket frame. Every card renders as a StubCard —
 // including wilds, which StubCard now paints as its own amber-accented wild
@@ -53,6 +57,10 @@ interface HandProps {
   faceUp: ReadonlySet<string>
   invalidNonce: number
   raisedBottom?: number
+  fanClassName?: string
+  raisedClassName?: string
+  layout?: 'fan' | 'rack'
+  wideFan?: boolean
   // Meld selection mode: taps toggle membership instead of raising
   selectMode?: boolean
   selectedIds?: ReadonlySet<string>
@@ -72,6 +80,10 @@ export default function Hand({
   faceUp,
   invalidNonce,
   raisedBottom = 238,
+  fanClassName = '',
+  raisedClassName = '',
+  layout = 'fan',
+  wideFan = false,
   selectMode = false,
   selectedIds,
   onToggleSelect,
@@ -85,11 +97,25 @@ export default function Hand({
     ? ({ duration: 0.15 } as const)
     : ({ type: 'spring', stiffness: 380, damping: 30 } as const)
   const n = cards.length
-  // Fan tightens as the hand grows (duel draws can exceed 7 cards). Width 372
-  // (was 360) + cap 47: at 7 cards each covered card's visible sliver gains
-  // ~2px of title — part of the C4 readability pass (feedback batch 1); still
-  // clears the 375px viewport with margin at the outer cards' tilt.
-  const spacing = Math.min(47, (372 - CARD_W) / Math.max(n - 1, 1))
+  const rack = layout === 'rack'
+  const fanRef = useRef<HTMLDivElement>(null)
+  const [fanWidth, setFanWidth] = useState(() => Math.min(420, window.innerWidth))
+  useEffect(() => {
+    const node = fanRef.current
+    if (!node) return
+    const update = () => setFanWidth(node.clientWidth)
+    update()
+    const observer = new ResizeObserver(update)
+    observer.observe(node)
+    return () => observer.disconnect()
+  }, [])
+  // Fan tightens as the hand grows (duel draws can exceed 7 cards) and as its
+  // actual shell narrows. The 158px reserve includes the tilted outer ticket,
+  // so a 320px viewport never crops its title; the 47px cap preserves the
+  // approved spacing everywhere with enough room.
+  const spacing = wideFan
+    ? Math.min(92, (820 - CARD_W) / Math.max(n - 1, 1))
+    : Math.min(47, (fanWidth - 158) / Math.max(n - 1, 1))
   const raised = cards.find((c) => c.id === raisedId)
 
   // ── Long-press drag-to-reorder ───────────────────────────────────────────
@@ -97,7 +123,6 @@ export default function Hand({
   // so a horizontal slide can re-slot it. Off during meld selection. The resting
   // animate below stays identical to the no-reorder version — grab only swaps
   // which target a card animates toward, never how the fan is laid out.
-  const fanRef = useRef<HTMLDivElement>(null)
   const [grabbedId, setGrabbedId] = useState<string | null>(null)
   const [grabX, setGrabX] = useState(0)
   const grabCenter = useRef(0) // fan centre in screen px, captured when a grab starts
@@ -159,7 +184,7 @@ export default function Hand({
     <>
       {/* Raised card slot — only the raised card is draggable/playable */}
       <div
-        className="pointer-events-none absolute inset-x-0 z-50 flex justify-center"
+        className={`pointer-events-none absolute inset-x-0 z-50 flex justify-center ${raisedClassName}`}
         style={{ bottom: raisedBottom }}
       >
         {raised && (
@@ -178,33 +203,74 @@ export default function Hand({
       {/* Fan — raised card keeps its slot as a gap until played or lowered */}
       <div
         ref={fanRef}
-        className="absolute inset-x-0 bottom-0 z-30 h-[225px]"
-        style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
+        data-hand-layout={layout}
+        data-selection-mode={selectMode || undefined}
+        className={`absolute inset-x-0 bottom-0 z-30 h-[225px] ${fanClassName}`}
       >
         {cards.map((m, i) => {
           if (m.id === raisedId) return null
           const off = i - (n - 1) / 2
+          const topCount = n <= 4 ? n : Math.ceil(n / 2)
+          const rackRow = i < topCount ? 0 : 1
+          const rackRowCount = rackRow === 0 ? topCount : n - topCount
+          const rackColumn = rackRow === 0 ? i : i - topCount
+          const rackX = (rackColumn - (rackRowCount - 1) / 2) * RACK_SLOT
+          const rackY = n <= 4 ? RACK_ROW_GAP : 8 + rackRow * RACK_ROW_GAP
           const selected = selectMode && !!selectedIds?.has(m.id)
+          const selectedIndex = selected ? [...(selectedIds ?? [])].indexOf(m.id) : -1
           const hinted = m.id === hintId
           const grabbed = m.id === grabbedId
-          const lift = selected ? 26 : hinted ? 22 : 0
+          const lift = selected ? 34 : hinted ? 22 : 0
           return (
             <motion.div
               key={m.id}
               layoutId={m.id}
               data-card={m.id}
-              className="absolute left-1/2 top-6"
+              className={`absolute left-1/2 ${rack ? 'top-0' : 'top-6'}`}
+              // Keyboard path (§7·7b a11y): each fan card is a real tab stop.
+              // Enter/Space mirrors the tap branch of upPress exactly — raise,
+              // or toggle membership in meld-select mode. Reorder stays a
+              // pointer gesture (a keyboard hand order is a follow-up, not a
+              // blocker — plays don't depend on slot order).
+              role="button"
+              tabIndex={0}
+              aria-label={
+                selectMode
+                  ? `${m.title} — ${selected ? 'selected for meld' : 'select for meld'}`
+                  : `${m.title}, ${m.year} — raise`
+              }
+              aria-pressed={selectMode ? selected : undefined}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault()
+                  if (selectMode) onToggleSelect?.(m.id)
+                  else onRaise(m.id)
+                }
+              }}
               style={{
                 marginLeft: -CARD_W / 2,
                 zIndex: grabbed ? 60 : hinted ? 40 : 10 + i,
                 touchAction: 'none',
               }}
+              initial={rack && !reduce ? { opacity: 0, y: rackY + 28 } : undefined}
               animate={
                 grabbed
-                  ? { x: grabX - grabCenter.current, y: -48 }
-                  : { x: off * spacing, y: Math.abs(off) ** 1.7 * 5 - lift }
+                  ? { opacity: 1, x: grabX - grabCenter.current, y: -48 }
+                  : rack
+                    ? { opacity: selectMode && !selected ? 0.56 : 1, x: rackX, y: rackY - lift }
+                    : {
+                        opacity: selectMode && !selected ? 0.56 : 1,
+                        x: off * spacing,
+                        y: Math.abs(off) ** 1.7 * 5 - lift,
+                      }
               }
-              transition={grabbed ? { type: 'spring', stiffness: 700, damping: 42 } : spring}
+              transition={
+                grabbed
+                  ? { type: 'spring', stiffness: 700, damping: 42 }
+                  : rack && !reduce
+                    ? { type: 'spring', stiffness: 360, damping: 28 }
+                    : spring
+              }
               onPointerDown={(e) => {
                 if (reorderable) {
                   try {
@@ -222,7 +288,10 @@ export default function Hand({
               <motion.div
                 // Tilt 3.5°/slot (was 5): the flatter fan keeps neighboring
                 // title bands parallel enough to scan (C4 readability pass).
-                animate={{ rotate: grabbed ? 0 : off * 3.5, scale: grabbed ? 1.06 : 1 }}
+                animate={{
+                  rotate: rack || grabbed ? 0 : off * (wideFan ? 1.4 : 3.5),
+                  scale: rack ? RACK_SCALE * (grabbed ? 1.06 : 1) : grabbed ? 1.06 : 1,
+                }}
                 transition={spring}
                 className="relative"
               >
@@ -234,7 +303,12 @@ export default function Hand({
                   hintLabel={hinted ? hintLabel : undefined}
                 />
                 {selected && (
-                  <div className="pointer-events-none absolute inset-0 rounded-xl ring-4 ring-stub-amber/80" />
+                  <>
+                    <div className="pointer-events-none absolute inset-0 rounded-xl bg-stub-amber/5 ring-4 ring-stub-amber" />
+                    <span className="pointer-events-none absolute -top-7 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded-stub-pill border-2 border-stub-amber bg-stub-navy px-2 py-1 font-stub-label text-[8px] font-bold uppercase tracking-[.1em] text-stub-amber shadow-stub-card-resting">
+                      Pick {selectedIndex + 1}
+                    </span>
+                  </>
                 )}
                 {hinted && !reduce && (
                   <motion.div
@@ -322,7 +396,7 @@ function RaisedCard({
           onFlip(movie.id)
         }}
       >
-        ⇄
+        <Icon name="flip" size={20} />
       </button>
     </motion.div>
   )

@@ -7,8 +7,8 @@ David Webb Peoples split). Every cluster below is a QUESTION for a
 human — two real people can share a near-identical name. Never bulk-fix.
 Ruled-distinct pairs belong in docs/tmdb-rulings.md (field nameSplit).
 
-- credit occurrences swept: **2034**
-- distinct spellings: **1076**
+- credit occurrences swept: **2797**
+- distinct spellings: **1421**
 - suspicious clusters: **0** (0 fold-identical, 0 structural)
 
 ## All clear

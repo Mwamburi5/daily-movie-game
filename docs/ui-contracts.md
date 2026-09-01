@@ -558,3 +558,55 @@ records post-freeze rulings. On conflict, the appendix wins.
    stub-red family. Full genre→spine mapping is a W2 StubCard forge
    decision: snap to the nearest existing token where a family neighbor
    exists; only purple earned a mint.
+
+---
+
+## Appendix B — Daily-mode visual consistency contract (2026-08-07)
+
+The selected Chronology Premiere Reel is the first implementation checkpoint
+for the pre-launch polish system. “Consistent” means one movie-house family,
+not one layout pasted onto unrelated games.
+
+### Shared across Daily Puzzle, Chronology, and Connections
+
+- **Header:** navy ticket header, cream Domine mode title, amber daily label and
+  bottom keyline, mono score/status copy, identical 44px navigation targets.
+- **Canvas:** warm cream paper, restrained navy halftone, paper/navy/amber token
+  palette, no glass or glossy gradient treatment.
+- **Card language:** 2px navy ticket frame, paper body, left information rail,
+  dotted perforation, whole-title Domine typography, restrained monogram art
+  slot, resting/raised shadows, amber selection and teal hint semantics.
+- **Motion:** existing Framer spring family; one clear raise/place/reveal beat;
+  no decorative animation that delays input; reduced motion remains a 150ms
+  crossfade.
+- **Feedback:** navy coach pills, amber earned/action highlights, red only for
+  negative state, live-region mirror for transient messages.
+- **Responsive gate:** 390×844 and 375×667, then desktop. No persistent control,
+  playable card, or legal target may clip.
+
+### Mode-specific composition
+
+- **Chronology:** the filmstrip is the ordered, native momentum-scrolling line.
+  It is not a different deck. `ChronoCardView` maps its hidden-year data onto
+  the same hand/raised proportions and frame anatomy as `StubCard`; the reel
+  may use a smaller board variant so three cards remain readable. The ruler in
+  the concept image is not implemented because the actual line is ordinal, not
+  proportionally spaced by year; a literal ruler would make a false gameplay
+  promise.
+- **Daily Puzzle:** retains its central pile and playable hand. It inherits the
+  shared header/keyline, card anatomy, spacing scale, and motion polish; it does
+  not inherit the reel because its task is linking, not ordering.
+- **Connections:** retains the 4×4 ticket-tile grid. A square tile is the one
+  sanctioned shape exception because sixteen 3:4 cards would harm scanning and
+  touch targets. Typography, borders, materials, states, reveal motion, and
+  result treatment still follow the shared system.
+
+### Implementation order
+
+1. Chronology reel checkpoint and swipe/tap/keyboard validation.
+2. Extract only the proven header, spacing, and motion tokens; do not refactor
+   gameplay state while doing so.
+3. Apply the proven tokens to Daily Puzzle and Connections, preserving their
+   mode-specific board geometry.
+4. Run side-by-sides and complete play-throughs at both phone gates before the
+   system reaches Duel.

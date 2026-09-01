@@ -1,0 +1,98 @@
+corpus: 315 unique titles across 365 grids (pool 320, anchor 2026-07-06)
+fit distribution: 7px×9  8px×11  9px×22  10px×29
+width-floor breaches (segment > 13 chars): 1
+  blackkklansman "BlacKkKlansman" seg=14 len=14
+clamp-floor breaches (totalLen > 65): 0
+
+worst 15 by fit then length:
+  7px  len=24  seg=13  estLines=2  The Matrix Resurrections
+  7px  len=19  seg=12  estLines=2  Frankenstein (2025)
+  7px  len=17  seg=12  estLines=2  Miss Congeniality
+  7px  len=16  seg=12  estLines=2  The Untouchables
+  7px  len=14  seg=14  estLines=2  BlacKkKlansman
+  7px  len=12  seg=12  estLines=1  Philadelphia
+  7px  len=12  seg=12  estLines=1  Nightcrawler
+  7px  len=12  seg=12  estLines=1  Ghostbusters
+  7px  len=12  seg=12  estLines=1  Interstellar
+  8px  len=54  seg=10  estLines=5  Pirates of the Caribbean: The Curse of the Black Pearl
+  8px  len=26  seg=11  estLines=3  E.T. the Extra-Terrestrial
+  8px  len=22  seg=11  estLines=2  The Matrix Revolutions
+  8px  len=20  seg=11  estLines=2  Inglourious Basterds
+  8px  len=19  seg=11  estLines=2  Lost in Translation
+  8px  len=16  seg=11  estLines=2  Schindler's List
+
+densest 8 grids (tiles at ≤8px | summed shrink | serving daily date):
+  grid  81  2026-09-25  dense=4  score=15.5  longest="Harry Potter and the Deathly Hallows – Part 2"
+  grid 325  2027-05-27  dense=4  score=14.5  longest="Pirates of the Caribbean: The Curse of the Black Pearl"
+  grid 212  2027-02-03  dense=4  score=12.5  longest="The Matrix Resurrections"
+  grid  46  2026-08-21  dense=3  score=14.5  longest="The Good, the Bad and the Ugly"
+  grid 307  2027-05-09  dense=3  score=14.5  longest="Harry Potter and the Deathly Hallows – Part 2"
+  grid  21  2026-07-27  dense=3  score=13.5  longest="The Hobbit: An Unexpected Journey"
+  grid 241  2027-03-04  dense=3  score=13  longest="Mission: Impossible — Rogue Nation"
+  grid 228  2027-02-19  dense=3  score=12  longest="Once Upon a Time in Hollywood"
+
+grids carrying the 6 worst titles:
+  grid   2  2026-07-08  carries: the-untouchables
+  grid  12  2026-07-18  carries: blackkklansman, the-matrix-resurrections
+  grid  16  2026-07-22  carries: philadelphia
+  grid  19  2026-07-25  carries: blackkklansman
+  grid  20  2026-07-26  carries: miss-congeniality
+  grid  27  2026-08-02  carries: the-matrix-resurrections
+  grid  29  2026-08-04  carries: the-untouchables
+  grid  45  2026-08-20  carries: the-untouchables
+  grid  46  2026-08-21  carries: the-matrix-resurrections
+  grid  48  2026-08-23  carries: the-untouchables
+  grid  51  2026-08-26  carries: blackkklansman
+  grid  52  2026-08-27  carries: the-matrix-resurrections
+  grid  55  2026-08-30  carries: blackkklansman, philadelphia
+  grid  58  2026-09-02  carries: the-untouchables
+  grid  59  2026-09-03  carries: the-matrix-resurrections
+  grid  70  2026-09-14  carries: blackkklansman
+  grid  80  2026-09-24  carries: the-matrix-resurrections
+  grid  81  2026-09-25  carries: blackkklansman
+  grid  82  2026-09-26  carries: miss-congeniality
+  grid  86  2026-09-30  carries: miss-congeniality
+  grid  96  2026-10-10  carries: the-matrix-resurrections
+  grid 104  2026-10-18  carries: the-matrix-resurrections
+  grid 106  2026-10-20  carries: the-matrix-resurrections
+  grid 130  2026-11-13  carries: the-matrix-resurrections
+  grid 143  2026-11-26  carries: the-matrix-resurrections
+  grid 147  2026-11-30  carries: the-untouchables
+  grid 148  2026-12-01  carries: the-matrix-resurrections
+  grid 154  2026-12-07  carries: the-matrix-resurrections
+  grid 167  2026-12-20  carries: blackkklansman
+  grid 168  2026-12-21  carries: blackkklansman
+  grid 177  2026-12-30  carries: the-untouchables
+  grid 184  2027-01-06  carries: the-untouchables
+  grid 188  2027-01-10  carries: the-matrix-resurrections
+  grid 191  2027-01-13  carries: blackkklansman
+  grid 197  2027-01-19  carries: the-matrix-resurrections
+  grid 212  2027-02-03  carries: the-matrix-resurrections
+  grid 216  2027-02-07  carries: miss-congeniality
+  grid 221  2027-02-12  carries: miss-congeniality
+  grid 222  2027-02-13  carries: miss-congeniality
+  grid 224  2027-02-15  carries: the-matrix-resurrections
+  grid 226  2027-02-17  carries: the-matrix-resurrections
+  grid 227  2027-02-18  carries: miss-congeniality
+  grid 231  2027-02-22  carries: blackkklansman
+  grid 241  2027-03-04  carries: the-matrix-resurrections
+  grid 244  2027-03-07  carries: the-untouchables
+  grid 246  2027-03-09  carries: frankenstein-2025
+  grid 251  2027-03-14  carries: the-untouchables
+  grid 255  2027-03-18  carries: blackkklansman
+  grid 262  2027-03-25  carries: blackkklansman
+  grid 266  2027-03-29  carries: frankenstein-2025
+  grid 267  2027-03-30  carries: frankenstein-2025
+  grid 271  2027-04-03  carries: frankenstein-2025
+  grid 273  2027-04-05  carries: the-untouchables
+  grid 285  2027-04-17  carries: blackkklansman
+  grid 295  2027-04-27  carries: philadelphia
+  grid 299  2027-05-01  carries: the-untouchables
+  grid 307  2027-05-09  carries: the-matrix-resurrections
+  grid 318  2027-05-20  carries: miss-congeniality
+  grid 334  2027-06-05  carries: the-untouchables
+  grid 338  2027-06-09  carries: the-untouchables
+  grid 339  2027-06-10  carries: miss-congeniality
+  grid 340  2027-06-11  carries: frankenstein-2025
+  grid 349  2027-06-20  carries: the-untouchables
+  grid 362  2027-07-03  carries: the-matrix-resurrections

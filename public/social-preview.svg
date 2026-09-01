@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Match Cut — four movie games, one daily ritual</title>
+  <desc id="desc">A navy and cream Match Cut marquee with ticket stubs for Daily Puzzle, Chronology, Connections, and Duel.</desc>
+  <defs>
+    <pattern id="navy-dots" width="10" height="10" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1.15" fill="#557086" opacity="0.55" />
+    </pattern>
+    <pattern id="paper-dots" width="12" height="12" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1" fill="#d7cdbd" opacity="0.5" />
+    </pattern>
+    <filter id="ticket-shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="6" stdDeviation="5" flood-color="#17364e" flood-opacity="0.16" />
+    </filter>
+  </defs>
+
+  <rect width="1200" height="630" fill="#f4efe6" />
+  <rect width="1200" height="630" fill="url(#paper-dots)" />
+  <path d="M0 0H1200V190C1200 211 1183 228 1162 228H38C17 228 0 211 0 190Z" fill="#17364e" />
+  <path d="M0 0H1200V190C1200 211 1183 228 1162 228H38C17 228 0 211 0 190Z" fill="url(#navy-dots)" />
+  <path d="M0 213H1200" stroke="#dda321" stroke-width="4" />
+  <circle cx="600" cy="213" r="22" fill="#17364e" stroke="#dda321" stroke-width="4" />
+
+  <text x="62" y="104" fill="#fffaf0" font-family="Georgia, serif" font-size="72" font-weight="700" font-style="italic">Match Cut</text>
+  <text x="66" y="154" fill="#e7edf0" font-family="Arial, sans-serif" font-size="23" font-weight="600" letter-spacing="1.2">FOUR MOVIE GAMES · ONE DAILY RITUAL</text>
+
+  <text x="64" y="318" fill="#dda321" font-family="Courier New, monospace" font-size="16" font-weight="700" letter-spacing="3">TONIGHT'S PROGRAM</text>
+  <text x="62" y="380" fill="#17364e" font-family="Georgia, serif" font-size="46" font-weight="700">Make the</text>
+  <text x="62" y="430" fill="#17364e" font-family="Georgia, serif" font-size="46" font-weight="700">connection.</text>
+  <text x="64" y="485" fill="#53697a" font-family="Arial, sans-serif" font-size="22">Connect movies by the people</text>
+  <text x="64" y="516" fill="#53697a" font-family="Arial, sans-serif" font-size="22">who made them.</text>
+  <rect x="62" y="548" width="358" height="46" rx="23" fill="#dda321" />
+  <text x="241" y="577" text-anchor="middle" fill="#17364e" font-family="Courier New, monospace" font-size="15" font-weight="700" letter-spacing="1.8">PLAY AT MATCHCUTDAILY.COM</text>
+
+  <g filter="url(#ticket-shadow)">
+    <g transform="translate(478 270)">
+      <rect width="308" height="142" rx="18" fill="#fffdf9" stroke="#17364e" stroke-width="3" />
+      <rect width="16" height="142" rx="8" fill="#dda321" />
+      <circle cx="0" cy="71" r="10" fill="#f4efe6" stroke="#17364e" stroke-width="2" />
+      <circle cx="308" cy="71" r="10" fill="#f4efe6" stroke="#17364e" stroke-width="2" />
+      <text x="38" y="44" fill="#dda321" font-family="Courier New, monospace" font-size="13" font-weight="700" letter-spacing="2">DAILY · GOLF</text>
+      <text x="38" y="81" fill="#17364e" font-family="Georgia, serif" font-size="27" font-weight="700">Daily Puzzle</text>
+      <text x="38" y="112" fill="#53697a" font-family="Arial, sans-serif" font-size="15">Play the whole hand. Low score wins.</text>
+    </g>
+
+    <g transform="translate(824 270)">
+      <rect width="308" height="142" rx="18" fill="#fffdf9" stroke="#17364e" stroke-width="3" />
+      <rect width="16" height="142" rx="8" fill="#6ea6a0" />
+      <circle cx="0" cy="71" r="10" fill="#f4efe6" stroke="#17364e" stroke-width="2" />
+      <circle cx="308" cy="71" r="10" fill="#f4efe6" stroke="#17364e" stroke-width="2" />
+      <text x="38" y="44" fill="#6a8f8b" font-family="Courier New, monospace" font-size="13" font-weight="700" letter-spacing="2">DAILY · ORDER</text>
+      <text x="38" y="81" fill="#17364e" font-family="Georgia, serif" font-size="27" font-weight="700">Chronology</text>
+      <text x="38" y="112" fill="#53697a" font-family="Arial, sans-serif" font-size="15">Place movies in release order.</text>
+    </g>
+
+    <g transform="translate(478 444)">
+      <rect width="308" height="142" rx="18" fill="#fffdf9" stroke="#17364e" stroke-width="3" />
+      <rect width="16" height="142" rx="8" fill="#b66b79" />
+      <circle cx="0" cy="71" r="10" fill="#f4efe6" stroke="#17364e" stroke-width="2" />
+      <circle cx="308" cy="71" r="10" fill="#f4efe6" stroke="#17364e" stroke-width="2" />
+      <text x="38" y="44" fill="#a85c6b" font-family="Courier New, monospace" font-size="13" font-weight="700" letter-spacing="2">DAILY · GROUP</text>
+      <text x="38" y="81" fill="#17364e" font-family="Georgia, serif" font-size="27" font-weight="700">Connections</text>
+      <text x="38" y="112" fill="#53697a" font-family="Arial, sans-serif" font-size="15">Find four groups of four.</text>
+    </g>
+
+    <g transform="translate(824 444)">
+      <rect width="308" height="142" rx="18" fill="#fffdf9" stroke="#17364e" stroke-width="3" />
+      <rect width="16" height="142" rx="8" fill="#755b99" />
+      <circle cx="0" cy="71" r="10" fill="#f4efe6" stroke="#17364e" stroke-width="2" />
+      <circle cx="308" cy="71" r="10" fill="#f4efe6" stroke="#17364e" stroke-width="2" />
+      <text x="38" y="44" fill="#755b99" font-family="Courier New, monospace" font-size="13" font-weight="700" letter-spacing="2">HEAD-TO-HEAD</text>
+      <text x="38" y="81" fill="#17364e" font-family="Georgia, serif" font-size="27" font-weight="700">Duel</text>
+      <text x="38" y="112" fill="#53697a" font-family="Arial, sans-serif" font-size="15">Race the computer to 20.</text>
+    </g>
+  </g>
+</svg>

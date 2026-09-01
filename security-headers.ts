@@ -1,0 +1,47 @@
+export const CONTENT_SECURITY_POLICY = [
+  "default-src 'none'",
+  "base-uri 'none'",
+  "connect-src 'self'",
+  "font-src 'self'",
+  "form-action 'none'",
+  "frame-ancestors 'none'",
+  "frame-src 'none'",
+  "img-src 'self' data:",
+  "manifest-src 'self'",
+  "media-src 'none'",
+  "object-src 'none'",
+  "script-src 'self'",
+  "script-src-attr 'none'",
+  "style-src 'self'",
+  // React and Framer Motion set layout/animation values as style attributes.
+  // Keep that exception scoped to attributes; scripts remain self-only.
+  "style-src-attr 'unsafe-inline'",
+  "worker-src 'none'",
+].join('; ')
+
+export const SECURITY_HEADERS = {
+  'Content-Security-Policy': CONTENT_SECURITY_POLICY,
+  'Cross-Origin-Opener-Policy': 'same-origin',
+  'Cross-Origin-Resource-Policy': 'same-origin',
+  'Permissions-Policy': [
+    'accelerometer=()',
+    'autoplay=()',
+    'camera=()',
+    'display-capture=()',
+    'encrypted-media=()',
+    'fullscreen=(self)',
+    'geolocation=()',
+    'gyroscope=()',
+    'magnetometer=()',
+    'microphone=()',
+    'payment=()',
+    'picture-in-picture=()',
+    'publickey-credentials-get=()',
+    'usb=()',
+  ].join(', '),
+  'Referrer-Policy': 'strict-origin-when-cross-origin',
+  'X-Content-Type-Options': 'nosniff',
+  'X-DNS-Prefetch-Control': 'off',
+  'X-Frame-Options': 'DENY',
+  'X-XSS-Protection': '0',
+} as const

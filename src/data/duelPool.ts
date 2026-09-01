@@ -1,14 +1,10 @@
 import type { Movie } from './types.ts'
 import { MOVIES } from './movies.ts'
 
-// The tuned Duel deal, FROZEN 2026-07-05 (WS2 grill call #6). Duel — and, until
-// the WS5 pin-cutover, the Solo daily — deal from exactly these 89 films.
-// Content waves grow MOVIES; they must never touch this list. Editing it
-// invalidates the difficulty tuning like a rule change (the verify pool-pin
-// check + eval tune gate any change), and reshuffles published Solo dailies
-// (the solo-verify append-only pin). Chronology has its own pool; Connections
-// deals from the full credited MOVIES.
-export const DUEL_POOL_IDS: readonly string[] = [
+// The original tuned 89-film pool remains a permanent content version for every
+// Daily seed before the approved cutover. Duel itself uses the current 216-film
+// pool; Daily routes by seed with no persisted rule state.
+export const LEGACY_DUEL_POOL_IDS: readonly string[] = [
   'goodfellas', 'casino', 'taxi-driver', 'the-departed',
   'inception', 'the-dark-knight', 'interstellar', 'the-martian',
   'pulp-fiction', 'django-unchained', 'inglourious-basterds', 'once-upon-a-time-in-hollywood',
@@ -34,9 +30,156 @@ export const DUEL_POOL_IDS: readonly string[] = [
   'toy-story-3',
 ]
 
-const inPool = new Set(DUEL_POOL_IDS)
+// Buri-approved 216 real-film slate. Order is part of the deterministic deal
+// contract and matches the authoring digest in the cutover checkpoint.
+export const DUEL_POOL_IDS: readonly string[] = [
+  ...LEGACY_DUEL_POOL_IDS,
+  'oceans-thirteen',
+  'contagion',
+  'oceans-twelve',
+  'true-grit',
+  'cloud-atlas',
+  '12-years-a-slave',
+  'twelve-monkeys',
+  'the-avengers',
+  'the-insider',
+  'carlitos-way',
+  'the-bourne-identity',
+  'toy-story-4',
+  'sleepless-in-seattle',
+  'cars',
+  'one-battle-after-another',
+  'the-revenant',
+  'cast-away',
+  'youve-got-mail',
+  'f1',
+  'dune-part-two',
+  'dune',
+  'children-of-men',
+  'magnolia',
+  'mission-impossible-rogue-nation',
+  'boogie-nights',
+  'edge-of-tomorrow',
+  'looper',
+  'armageddon',
+  'days-of-thunder',
+  'top-gun',
+  'mission-impossible-ghost-protocol',
+  'jerry-maguire',
+  'the-fifth-element',
+  'rain-man',
+  'panic-room',
+  'vice',
+  'crimson-tide',
+  'mystic-river',
+  'apocalypse-now',
+  'the-incredibles',
+  'steve-jobs',
+  'the-hateful-eight',
+  'kill-bill-vol-2',
+  'do-the-right-thing',
+  'malcolm-x',
+  'crazy-stupid-love',
+  'the-fugitive',
+  'moonrise-kingdom',
+  'the-grand-budapest-hotel',
+  'glass-onion-a-knives-out-mystery',
+  'skyfall',
+  'x-men-first-class',
+  'the-force-awakens',
+  'witness',
+  'indiana-jones-and-the-last-crusade',
+  'blade-runner',
+  'knives-out',
+  'selma',
+  'boyz-n-the-hood',
+  'enemy-of-the-state',
+  'the-royal-tenenbaums',
+  'bruce-almighty',
+  'star-wars-the-last-jedi',
+  'the-hobbit-an-unexpected-journey',
+  'the-hurt-locker',
+  'spider-man-brand-new-day',
+  'birdman',
+  'spotlight',
+  'remember-the-titans',
+  'harry-potter-and-the-goblet-of-fire',
+  'kill-bill-vol-1',
+  'the-goonies',
+  'step-brothers',
+  'mickey-17',
+  'the-italian-job',
+  'a-beautiful-mind',
+  'the-rock',
+  'gattaca',
+  'argo',
+  'gone-girl',
+  'the-matrix-resurrections',
+  'alien',
+  'steel-magnolias',
+  'ratatouille',
+  'ali',
+  'gravity',
+  'miss-congeniality',
+  'oceans-8',
+  'julie-and-julia',
+  'the-devil-wears-prada',
+  'when-harry-met-sally',
+  'sherlock-holmes',
+  'tombstone',
+  'the-doors',
+  'finding-nemo',
+  'spider-man',
+  'wall-e',
+  'the-princess-bride',
+  'blackkklansman',
+  'million-dollar-baby',
+  'point-break',
+  'lost-in-translation',
+  'harry-potter-and-the-prisoner-of-azkaban',
+  'e-t-the-extra-terrestrial',
+  'jaws',
+  'barbie',
+  'batman',
+  'marty-supreme',
+  'donnie-darko',
+  'superbad',
+  'nightcrawler',
+  'a-quiet-place-part-ii',
+  'harry-potter-and-the-deathly-hallows-part-2',
+  'speed',
+  'die-hard',
+  'ghostbusters',
+  'top-gun-maverick',
+  'john-wick',
+  'john-wick-chapter-4',
+  'mission-impossible-dead-reckoning-part-one',
+  'avengers-infinity-war',
+  'avengers-endgame',
+  'guardians-of-the-galaxy',
+  'spider-man-no-way-home',
+  'hidden-figures',
+  'thelma-and-louise',
+  'the-batman',
+]
 
-// filter() keeps MOVIES order, so while MOVIES is exactly the 89 this is
-// byte-identical to dealing from MOVIES — and stays identical after waves
-// merge as long as new films are appended (the 89 keep their relative order).
-export const DUEL_POOL: Movie[] = MOVIES.filter((m) => inPool.has(m.id))
+export const DAILY_DUEL_POOL_EFFECTIVE_DATE = '2026-09-27'
+
+const movieById = new Map(MOVIES.map((movie) => [movie.id, movie]))
+
+function resolvePool(ids: readonly string[]): Movie[] {
+  return ids.map((id) => {
+    const movie = movieById.get(id)
+    if (!movie) throw new Error(`duelPool: unknown movie id "${id}"`)
+    return movie
+  })
+}
+
+export const LEGACY_DUEL_POOL: Movie[] = resolvePool(LEGACY_DUEL_POOL_IDS)
+export const DUEL_POOL: Movie[] = resolvePool(DUEL_POOL_IDS)
+
+// ISO local-calendar seeds sort lexically, so the content-version boundary is
+// pure and timezone-independent after localDateSeed() has produced the date.
+export function dailyDuelPoolForSeed(seed: string): Movie[] {
+  return seed < DAILY_DUEL_POOL_EFFECTIVE_DATE ? LEGACY_DUEL_POOL : DUEL_POOL
+}

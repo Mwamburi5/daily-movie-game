@@ -10,7 +10,16 @@ export interface SharedPerson {
   deep: boolean
 }
 
+// Movie records are immutable runtime data. Duel repeatedly asks the same
+// pairwise questions (especially in seeded balance sims), so retain the parsed
+// credit roles and directional shared-person result by object identity. The
+// direction matters because output ordering follows `a`'s visible-credit order.
+const rolesCache = new WeakMap<Movie, Map<string, Set<Role>>>()
+const sharedPeopleCache = new WeakMap<Movie, WeakMap<Movie, SharedPerson[]>>()
+
 function rolesOf(m: Movie): Map<string, Set<Role>> {
+  const cached = rolesCache.get(m)
+  if (cached) return cached
   const map = new Map<string, Set<Role>>()
   const add = (name: string, role: Role) => {
     const set = map.get(name) ?? new Set<Role>()
@@ -21,12 +30,15 @@ function rolesOf(m: Movie): Map<string, Set<Role>> {
   m.deepCast?.forEach((n) => add(n, 'Actor'))
   m.director.forEach((n) => add(n, 'Director'))
   m.writers.forEach((n) => add(n, 'Writer'))
+  rolesCache.set(m, map)
   return map
 }
 
 // People credited on both movies. Ordered top-billing-first so banners prefer
 // famous names; display role precedence: Director > Actor > Writer.
 export function sharedPeople(a: Movie, b: Movie): SharedPerson[] {
+  const cached = sharedPeopleCache.get(a)?.get(b)
+  if (cached) return cached
   const ra = rolesOf(a)
   const rb = rolesOf(b)
   const out: SharedPerson[] = []
@@ -40,6 +52,9 @@ export function sharedPeople(a: Movie, b: Movie): SharedPerson[] {
     const deep = (a.deepCast?.includes(name) ?? false) || (b.deepCast?.includes(name) ?? false)
     out.push({ name, role, deep })
   }
+  const bySecond = sharedPeopleCache.get(a) ?? new WeakMap<Movie, SharedPerson[]>()
+  bySecond.set(b, out)
+  sharedPeopleCache.set(a, bySecond)
   return out
 }
 

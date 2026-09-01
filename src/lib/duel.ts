@@ -180,14 +180,48 @@ export function bestMeld(hand: Movie[], genreFloor: number = GENRE_FLOOR): Movie
 }
 
 // ── Wild cards ──────────────────────────────────────────────────────────────
-// Three famous films act as pure mechanical wilds: play on anything for +0 (shed
+// Sixteen all-time films act as pure mechanical wilds: play on anything for +0 (shed
 // to unstick) or fill a meld (≤1/meld, ≥2 real, wild scores 0). Modeled as blank
 // Movies — empty credits so they share nothing (shared-engine calls return []
-// instead of crashing), each a UNIQUE private genre so 3 wilds can't form a genre
+// instead of crashing), each a UNIQUE private genre so wilds can't form a genre
 // meld. They never enter the canonical pool; the sim/React splice them into the
 // deck at game start. Shared so React and the sim recognise & score them the same.
-export const WILD_TITLES = ['12 Angry Men', 'Casablanca', 'Citizen Kane']
-export const WILD_IDS = ['wild-12angry', 'wild-casablanca', 'wild-kane']
+export const WILD_TITLES = [
+  '12 Angry Men',
+  'Casablanca',
+  'Citizen Kane',
+  'The Wizard of Oz',
+  '2001: A Space Odyssey',
+  'Psycho',
+  'Seven Samurai',
+  'Singin’ in the Rain',
+  'Dr. Strangelove',
+  'Vertigo',
+  'Tokyo Story',
+  'Bicycle Thieves',
+  'In the Mood for Love',
+  'Spirited Away',
+  'Metropolis',
+  'Pather Panchali',
+]
+export const WILD_IDS = [
+  'wild-12angry',
+  'wild-casablanca',
+  'wild-kane',
+  'wild-wizard-oz',
+  'wild-2001',
+  'wild-psycho',
+  'wild-seven-samurai',
+  'wild-singin-in-the-rain',
+  'wild-dr-strangelove',
+  'wild-vertigo',
+  'wild-tokyo-story',
+  'wild-bicycle-thieves',
+  'wild-in-the-mood-for-love',
+  'wild-spirited-away',
+  'wild-metropolis',
+  'wild-pather-panchali',
+]
 const WILD_SET = new Set(WILD_IDS)
 export const isWild = (id: string): boolean => WILD_SET.has(id)
 export const WILD_MOVIES: Movie[] = WILD_IDS.map((id, i) => ({
@@ -203,6 +237,24 @@ export const WILD_MOVIES: Movie[] = WILD_IDS.map((id, i) => ({
 }))
 const wildById = new Map(WILD_MOVIES.map((m) => [m.id, m]))
 export const wildMovie = (id: string): Movie | undefined => wildById.get(id)
+
+// Draw-3's forced-wild rule, shared by React and the sim. Every revealed wild
+// is kept; non-wilds burn. `preferredId` lets the UI make the tapped wild the
+// card that continues through its normal play/hold/toss flow without changing
+// the final kept set.
+export function forcedWildDraw(
+  ids: string[],
+  preferredId?: string,
+): { keep: string; extras: string[]; burn: string[] } | null {
+  const wilds = ids.filter(isWild)
+  if (wilds.length === 0) return null
+  const keep = preferredId && wilds.includes(preferredId) ? preferredId : wilds[0]
+  return {
+    keep,
+    extras: wilds.filter((id) => id !== keep),
+    burn: ids.filter((id) => !isWild(id)),
+  }
+}
 
 // The top card FOR LINKING — skips trailing wilds, which are transparent on a
 // pile (the real card beneath shows through). An all-wild pile can't happen (the

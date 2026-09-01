@@ -1,0 +1,2347 @@
+{
+ "connections": [
+  {
+   "board": "grid81-densest",
+   "seed": "2026-09-25",
+   "viewport": "320x568",
+   "tiles": [
+    {
+     "id": "the-help",
+     "title": "The Help",
+     "tileW": 67.5,
+     "tileH": 67.5,
+     "fontPx": 6.5,
+     "lineH": 6.5,
+     "lines": 1,
+     "truncated": false,
+     "spanH": 6.5,
+     "headroom": 61
+    },
+    {
+     "id": "harry-potter-and-the-deathly-hallows-part-2",
+     "title": "Harry Potter and the Deathly Hallows – Part 2",
+     "tileW": 67.5,
+     "tileH": 67.5,
+     "fontPx": 6.5,
+     "lineH": 6.5,
+     "lines": 5,
+     "truncated": false,
+     "spanH": 32.5,
+     "headroom": 35
+    },
+    {
+     "id": "inside-man",
+     "title": "Inside Man",
+     "tileW": 67.5,
+     "tileH": 67.5,
+     "fontPx": 6.5,
+     "lineH": 6.5,
+     "lines": 1,
+     "truncated": false,
+     "spanH": 6.5,
+     "headroom": 61
+    },
+    {
+     "id": "interstellar",
+     "title": "Interstellar",
+     "tileW": 67.5,
+     "tileH": 67.5,
+     "fontPx": 6.5,
+     "lineH": 6.5,
+     "lines": 1,
+     "truncated": false,
+     "spanH": 6.5,
+     "headroom": 61
+    },
+    {
+     "id": "harry-potter-and-the-chamber-of-secrets",
+     "title": "Harry Potter and the Chamber of Secrets",
+     "tileW": 67.5,
+     "tileH": 67.5,
+     "fontPx": 6.5,
+     "lineH": 6.5,
+     "lines": 4,
+     "truncated": false,
+     "spanH": 26,
+     "headroom": 41.5
+    },
+    {
+     "id": "blackkklansman",
+     "title": "BlacKkKlansman",
+     "tileW": 67.5,
+     "tileH": 67.5,
+     "fontPx": 6.5,
+     "lineH": 6.5,
+     "lines": 2,
+     "truncated": false,
+     "spanH": 13,
+     "headroom": 54.5
+    },
+    {
+     "id": "zero-dark-thirty",
+     "title": "Zero Dark Thirty",
+     "tileW": 67.5,
+     "tileH": 67.5,
+     "fontPx": 6.5,
+     "lineH": 6.5,
+     "lines": 2,
+     "truncated": false,
+     "spanH": 13,
+     "headroom": 54.5
+    },
+    {
+     "id": "the-martian",
+     "title": "The Martian",
+     "tileW": 67.5,
+     "tileH": 67.5,
+     "fontPx": 6.5,
+     "lineH": 6.5,
+     "lines": 1,
+     "truncated": false,
+     "spanH": 6.5,
+     "headroom": 61
+    },
+    {
+     "id": "the-iron-giant",
+     "title": "The Iron Giant",
+     "tileW": 67.5,
+     "tileH": 67.5,
+     "fontPx": 6.5,
+     "lineH": 6.5,
+     "lines": 2,
+     "truncated": false,
+     "spanH": 13,
+     "headroom": 54.5
+    },
+    {
+     "id": "malcolm-x",
+     "title": "Malcolm X",
+     "tileW": 67.5,
+     "tileH": 67.5,
+     "fontPx": 6.5,
+     "lineH": 6.5,
+     "lines": 1,
+     "truncated": false,
+     "spanH": 6.5,
+     "headroom": 61
+    },
+    {
+     "id": "harry-potter-and-the-sorcerers-stone",
+     "title": "Harry Potter and the Sorcerer's Stone",
+     "tileW": 67.5,
+     "tileH": 67.5,
+     "fontPx": 6.5,
+     "lineH": 6.5,
+     "lines": 4,
+     "truncated": false,
+     "spanH": 26,
+     "headroom": 41.5
+    },
+    {
+     "id": "the-incredibles",
+     "title": "The Incredibles",
+     "tileW": 67.5,
+     "tileH": 67.5,
+     "fontPx": 6.5,
+     "lineH": 6.5,
+     "lines": 2,
+     "truncated": false,
+     "spanH": 13,
+     "headroom": 54.5
+    },
+    {
+     "id": "mission-impossible-ghost-protocol",
+     "title": "Mission: Impossible — Ghost Protocol",
+     "tileW": 67.5,
+     "tileH": 67.5,
+     "fontPx": 6.5,
+     "lineH": 6.5,
+     "lines": 4,
+     "truncated": false,
+     "spanH": 26,
+     "headroom": 41.5
+    },
+    {
+     "id": "do-the-right-thing",
+     "title": "Do the Right Thing",
+     "tileW": 67.5,
+     "tileH": 67.5,
+     "fontPx": 6.5,
+     "lineH": 6.5,
+     "lines": 2,
+     "truncated": false,
+     "spanH": 13,
+     "headroom": 54.5
+    },
+    {
+     "id": "harry-potter-and-the-prisoner-of-azkaban",
+     "title": "Harry Potter and the Prisoner of Azkaban",
+     "tileW": 67.5,
+     "tileH": 67.5,
+     "fontPx": 6.5,
+     "lineH": 6.5,
+     "lines": 4,
+     "truncated": false,
+     "spanH": 26,
+     "headroom": 41.5
+    },
+    {
+     "id": "ratatouille",
+     "title": "Ratatouille",
+     "tileW": 67.5,
+     "tileH": 67.5,
+     "fontPx": 6.5,
+     "lineH": 6.5,
+     "lines": 1,
+     "truncated": false,
+     "spanH": 6.5,
+     "headroom": 61
+    }
+   ],
+   "badge": {
+    "found": true,
+    "overlapArea": 0,
+    "badge": {
+     "w": 27.3,
+     "h": 10.5
+    }
+   },
+   "zoomTruncated": [
+    "harry-potter-and-the-deathly-hallows-part-2",
+    "harry-potter-and-the-chamber-of-secrets",
+    "blackkklansman",
+    "zero-dark-thirty",
+    "harry-potter-and-the-sorcerers-stone",
+    "mission-impossible-ghost-protocol",
+    "do-the-right-thing",
+    "harry-potter-and-the-prisoner-of-azkaban"
+   ],
+   "zoomBoardOverflow": false
+  },
+  {
+   "board": "grid81-densest",
+   "seed": "2026-09-25",
+   "viewport": "360x800",
+   "tiles": [
+    {
+     "id": "the-help",
+     "title": "The Help",
+     "tileW": 74.5,
+     "tileH": 74.5,
+     "fontPx": 10.5,
+     "lineH": 11.13,
+     "lines": 1,
+     "truncated": false,
+     "spanH": 11.1,
+     "headroom": 63.4
+    },
+    {
+     "id": "harry-potter-and-the-deathly-hallows-part-2",
+     "title": "Harry Potter and the Deathly Hallows – Part 2",
+     "tileW": 74.5,
+     "tileH": 74.5,
+     "fontPx": 10,
+     "lineH": 10.6,
+     "lines": 6,
+     "truncated": false,
+     "spanH": 63.6,
+     "headroom": 10.9
+    },
+    {
+     "id": "inside-man",
+     "title": "Inside Man",
+     "tileW": 74.5,
+     "tileH": 74.5,
+     "fontPx": 10.5,
+     "lineH": 11.13,
+     "lines": 2,
+     "truncated": false,
+     "spanH": 22.3,
+     "headroom": 52.3
+    },
+    {
+     "id": "interstellar",
+     "title": "Interstellar",
+     "tileW": 74.5,
+     "tileH": 74.5,
+     "fontPx": 7,
+     "lineH": 7.42,
+     "lines": 1,
+     "truncated": false,
+     "spanH": 7.4,
+     "headroom": 67.1
+    },
+    {
+     "id": "harry-potter-and-the-chamber-of-secrets",
+     "title": "Harry Potter and the Chamber of Secrets",
+     "tileW": 74.5,
+     "tileH": 74.5,
+     "fontPx": 10.5,
+     "lineH": 11.13,
+     "lines": 6,
+     "truncated": false,
+     "spanH": 66.8,
+     "headroom": 7.8
+    },
+    {
+     "id": "blackkklansman",
+     "title": "BlacKkKlansman",
+     "tileW": 74.5,
+     "tileH": 74.5,
+     "fontPx": 7,
+     "lineH": 7.42,
+     "lines": 2,
+     "truncated": false,
+     "spanH": 14.8,
+     "headroom": 59.7
+    },
+    {
+     "id": "zero-dark-thirty",
+     "title": "Zero Dark Thirty",
+     "tileW": 74.5,
+     "tileH": 74.5,
+     "fontPx": 10.5,
+     "lineH": 11.13,
+     "lines": 3,
+     "truncated": false,
+     "spanH": 33.4,
+     "headroom": 41.1
+    },
+    {
+     "id": "the-martian",
+     "title": "The Martian",
+     "tileW": 74.5,
+     "tileH": 74.5,
+     "fontPx": 10.5,
+     "lineH": 11.13,
+     "lines": 2,
+     "truncated": false,
+     "spanH": 22.3,
+     "headroom": 52.3
+    },
+    {
+     "id": "the-iron-giant",
+     "title": "The Iron Giant",
+     "tileW": 74.5,
+     "tileH": 74.5,
+     "fontPx": 10.5,
+     "lineH": 11.13,
+     "lines": 2,
+     "truncated": false,
+     "spanH": 22.3,
+     "headroom": 52.3
+    },
+    {
+     "id": "malcolm-x",
+     "title": "Malcolm X",
+     "tileW": 74.5,
+     "tileH": 74.5,
+     "fontPx": 10.5,
+     "lineH": 11.13,
+     "lines": 2,
+     "truncated": false,
+     "spanH": 22.3,
+     "headroom": 52.3
+    },
+    {
+     "id": "harry-potter-and-the-sorcerers-stone",
+     "title": "Harry Potter and the Sorcerer's Stone",
+     "tileW": 74.5,
+     "tileH": 74.5,
+     "fontPx": 9,
+     "lineH": 9.54,
+     "lines": 5,
+     "truncated": false,
+     "spanH": 47.7,
+     "headroom": 26.8
+    },
+    {
+     "id": "the-incredibles",
+     "title": "The Incredibles",
+     "tileW": 74.5,
+     "tileH": 74.5,
+     "fontPx": 8,
+     "lineH": 8.48,
+     "lines": 2,
+     "truncated": false,
+     "spanH": 16.9,
+     "headroom": 57.6
+    },
+    {
+     "id": "mission-impossible-ghost-protocol",
+     "title": "Mission: Impossible — Ghost Protocol",
+     "tileW": 74.5,
+     "tileH": 74.5,
+     "fontPx": 9,
+     "lineH": 9.54,
+     "lines": 4,
+     "truncated": false,
+     "spanH": 38.1,
+     "headroom": 36.4
+    },
+    {
+     "id": "do-the-right-thing",
+     "title": "Do the Right Thing",
+     "tileW": 74.5,
+     "tileH": 74.5,
+     "fontPx": 10.5,
+     "lineH": 11.13,
+     "lines": 3,
+     "truncated": false,
+     "spanH": 33.4,
+     "headroom": 41.1
+    },
+    {
+     "id": "harry-potter-and-the-prisoner-of-azkaban",
+     "title": "Harry Potter and the Prisoner of Azkaban",
+     "tileW": 74.5,
+     "tileH": 74.5,
+     "fontPx": 10.5,
+     "lineH": 11.13,
+     "lines": 6,
+     "truncated": false,
+     "spanH": 66.8,
+     "headroom": 7.8
+    },
+    {
+     "id": "ratatouille",
+     "title": "Ratatouille",
+     "tileW": 74.5,
+     "tileH": 74.5,
+     "fontPx": 8,
+     "lineH": 8.48,
+     "lines": 1,
+     "truncated": false,
+     "spanH": 8.5,
+     "headroom": 66
+    }
+   ],
+   "badge": {
+    "found": true,
+    "overlapArea": 0,
+    "badge": {
+     "w": 27.3,
+     "h": 10.5
+    }
+   },
+   "zoomTruncated": [
+    "harry-potter-and-the-deathly-hallows-part-2",
+    "harry-potter-and-the-chamber-of-secrets",
+    "zero-dark-thirty",
+    "the-martian",
+    "the-iron-giant",
+    "harry-potter-and-the-sorcerers-stone",
+    "the-incredibles",
+    "mission-impossible-ghost-protocol",
+    "do-the-right-thing",
+    "harry-potter-and-the-prisoner-of-azkaban"
+   ],
+   "zoomBoardOverflow": false
+  },
+  {
+   "board": "grid81-densest",
+   "seed": "2026-09-25",
+   "viewport": "390x844",
+   "tiles": [
+    {
+     "id": "the-help",
+     "title": "The Help",
+     "tileW": 82,
+     "tileH": 82,
+     "fontPx": 10.5,
+     "lineH": 11.13,
+     "lines": 1,
+     "truncated": false,
+     "spanH": 11.1,
+     "headroom": 70.9
+    },
+    {
+     "id": "harry-potter-and-the-deathly-hallows-part-2",
+     "title": "Harry Potter and the Deathly Hallows – Part 2",
+     "tileW": 82,
+     "tileH": 82,
+     "fontPx": 10,
+     "lineH": 10.6,
+     "lines": 6,
+     "truncated": false,
+     "spanH": 63.6,
+     "headroom": 18.4
+    },
+    {
+     "id": "inside-man",
+     "title": "Inside Man",
+     "tileW": 82,
+     "tileH": 82,
+     "fontPx": 10.5,
+     "lineH": 11.13,
+     "lines": 2,
+     "truncated": false,
+     "spanH": 22.3,
+     "headroom": 59.8
+    },
+    {
+     "id": "interstellar",
+     "title": "Interstellar",
+     "tileW": 82,
+     "tileH": 82,
+     "fontPx": 7,
+     "lineH": 7.42,
+     "lines": 1,
+     "truncated": false,
+     "spanH": 7.4,
+     "headroom": 74.6
+    },
+    {
+     "id": "harry-potter-and-the-chamber-of-secrets",
+     "title": "Harry Potter and the Chamber of Secrets",
+     "tileW": 82,
+     "tileH": 82,
+     "fontPx": 10.5,
+     "lineH": 11.13,
+     "lines": 5,
+     "truncated": false,
+     "spanH": 55.6,
+     "headroom": 26.4
+    },
+    {
+     "id": "blackkklansman",
+     "title": "BlacKkKlansman",
+     "tileW": 82,
+     "tileH": 82,
+     "fontPx": 7,
+     "lineH": 7.42,
+     "lines": 2,
+     "truncated": false,
+     "spanH": 14.8,
+     "headroom": 67.2
+    },
+    {
+     "id": "zero-dark-thirty",
+     "title": "Zero Dark Thirty",
+     "tileW": 82,
+     "tileH": 82,
+     "fontPx": 10.5,
+     "lineH": 11.13,
+     "lines": 2,
+     "truncated": false,
+     "spanH": 22.3,
+     "headroom": 59.8
+    },
+    {
+     "id": "the-martian",
+     "title": "The Martian",
+     "tileW": 82,
+     "tileH": 82,
+     "fontPx": 10.5,
+     "lineH": 11.13,
+     "lines": 2,
+     "truncated": false,
+     "spanH": 22.3,
+     "headroom": 59.8
+    },
+    {
+     "id": "the-iron-giant",
+     "title": "The Iron Giant",
+     "tileW": 82,
+     "tileH": 82,
+     "fontPx": 10.5,
+     "lineH": 11.13,
+     "lines": 2,
+     "truncated": false,
+     "spanH": 22.3,
+     "headroom": 59.8
+    },
+    {
+     "id": "malcolm-x",
+     "title": "Malcolm X",
+     "tileW": 82,
+     "tileH": 82,
+     "fontPx": 10.5,
+     "lineH": 11.13,
+     "lines": 1,
+     "truncated": false,
+     "spanH": 11.1,
+     "headroom": 70.9
+    },
+    {
+     "id": "harry-potter-and-the-sorcerers-stone",
+     "title": "Harry Potter and the Sorcerer's Stone",
+     "tileW": 82,
+     "tileH": 82,
+     "fontPx": 9,
+     "lineH": 9.54,
+     "lines": 5,
+     "truncated": false,
+     "spanH": 47.7,
+     "headroom": 34.3
+    },
+    {
+     "id": "the-incredibles",
+     "title": "The Incredibles",
+     "tileW": 82,
+     "tileH": 82,
+     "fontPx": 8,
+     "lineH": 8.48,
+     "lines": 2,
+     "truncated": false,
+     "spanH": 16.9,
+     "headroom": 65.1
+    },
+    {
+     "id": "mission-impossible-ghost-protocol",
+     "title": "Mission: Impossible — Ghost Protocol",
+     "tileW": 82,
+     "tileH": 82,
+     "fontPx": 9,
+     "lineH": 9.54,
+     "lines": 4,
+     "truncated": false,
+     "spanH": 38.1,
+     "headroom": 43.9
+    },
+    {
+     "id": "do-the-right-thing",
+     "title": "Do the Right Thing",
+     "tileW": 82,
+     "tileH": 82,
+     "fontPx": 10.5,
+     "lineH": 11.13,
+     "lines": 3,
+     "truncated": false,
+     "spanH": 33.4,
+     "headroom": 48.6
+    },
+    {
+     "id": "harry-potter-and-the-prisoner-of-azkaban",
+     "title": "Harry Potter and the Prisoner of Azkaban",
+     "tileW": 82,
+     "tileH": 82,
+     "fontPx": 10.5,
+     "lineH": 11.13,
+     "lines": 6,
+     "truncated": false,
+     "spanH": 66.8,
+     "headroom": 15.3
+    },
+    {
+     "id": "ratatouille",
+     "title": "Ratatouille",
+     "tileW": 82,
+     "tileH": 82,
+     "fontPx": 8,
+     "lineH": 8.48,
+     "lines": 1,
+     "truncated": false,
+     "spanH": 8.5,
+     "headroom": 73.5
+    }
+   ],
+   "badge": {
+    "found": true,
+    "overlapArea": 0,
+    "badge": {
+     "w": 27.3,
+     "h": 10.5
+    }
+   },
+   "zoomTruncated": [
+    "harry-potter-and-the-deathly-hallows-part-2",
+    "harry-potter-and-the-chamber-of-secrets",
+    "zero-dark-thirty",
+    "the-iron-giant",
+    "harry-potter-and-the-sorcerers-stone",
+    "mission-impossible-ghost-protocol",
+    "do-the-right-thing",
+    "harry-potter-and-the-prisoner-of-azkaban"
+   ],
+   "zoomBoardOverflow": false
+  },
+  {
+   "board": "grid81-densest",
+   "seed": "2026-09-25",
+   "viewport": "768x1024",
+   "tiles": [
+    {
+     "id": "the-help",
+     "title": "The Help",
+     "tileW": 114,
+     "tileH": 114,
+     "fontPx": 10.5,
+     "lineH": 11.13,
+     "lines": 1,
+     "truncated": false,
+     "spanH": 11.1,
+     "headroom": 102.9
+    },
+    {
+     "id": "harry-potter-and-the-deathly-hallows-part-2",
+     "title": "Harry Potter and the Deathly Hallows – Part 2",
+     "tileW": 114,
+     "tileH": 114,
+     "fontPx": 10,
+     "lineH": 10.6,
+     "lines": 3,
+     "truncated": false,
+     "spanH": 31.8,
+     "headroom": 82.2
+    },
+    {
+     "id": "inside-man",
+     "title": "Inside Man",
+     "tileW": 114,
+     "tileH": 114,
+     "fontPx": 10.5,
+     "lineH": 11.13,
+     "lines": 1,
+     "truncated": false,
+     "spanH": 11.1,
+     "headroom": 102.9
+    },
+    {
+     "id": "interstellar",
+     "title": "Interstellar",
+     "tileW": 114,
+     "tileH": 114,
+     "fontPx": 9.216,
+     "lineH": 9.77,
+     "lines": 1,
+     "truncated": false,
+     "spanH": 9.8,
+     "headroom": 104.2
+    },
+    {
+     "id": "harry-potter-and-the-chamber-of-secrets",
+     "title": "Harry Potter and the Chamber of Secrets",
+     "tileW": 114,
+     "tileH": 114,
+     "fontPx": 10.5,
+     "lineH": 11.13,
+     "lines": 4,
+     "truncated": false,
+     "spanH": 44.5,
+     "headroom": 69.5
+    },
+    {
+     "id": "blackkklansman",
+     "title": "BlacKkKlansman",
+     "tileW": 114,
+     "tileH": 114,
+     "fontPx": 9.216,
+     "lineH": 9.77,
+     "lines": 1,
+     "truncated": false,
+     "spanH": 9.8,
+     "headroom": 104.2
+    },
+    {
+     "id": "zero-dark-thirty",
+     "title": "Zero Dark Thirty",
+     "tileW": 114,
+     "tileH": 114,
+     "fontPx": 10.5,
+     "lineH": 11.13,
+     "lines": 2,
+     "truncated": false,
+     "spanH": 22.3,
+     "headroom": 91.8
+    },
+    {
+     "id": "the-martian",
+     "title": "The Martian",
+     "tileW": 114,
+     "tileH": 114,
+     "fontPx": 10.5,
+     "lineH": 11.13,
+     "lines": 1,
+     "truncated": false,
+     "spanH": 11.1,
+     "headroom": 102.9
+    },
+    {
+     "id": "the-iron-giant",
+     "title": "The Iron Giant",
+     "tileW": 114,
+     "tileH": 114,
+     "fontPx": 10.5,
+     "lineH": 11.13,
+     "lines": 1,
+     "truncated": false,
+     "spanH": 11.1,
+     "headroom": 102.9
+    },
+    {
+     "id": "malcolm-x",
+     "title": "Malcolm X",
+     "tileW": 114,
+     "tileH": 114,
+     "fontPx": 10.5,
+     "lineH": 11.13,
+     "lines": 1,
+     "truncated": false,
+     "spanH": 11.1,
+     "headroom": 102.9
+    },
+    {
+     "id": "harry-potter-and-the-sorcerers-stone",
+     "title": "Harry Potter and the Sorcerer's Stone",
+     "tileW": 114,
+     "tileH": 114,
+     "fontPx": 9.216,
+     "lineH": 9.77,
+     "lines": 3,
+     "truncated": false,
+     "spanH": 29.3,
+     "headroom": 84.7
+    },
+    {
+     "id": "the-incredibles",
+     "title": "The Incredibles",
+     "tileW": 114,
+     "tileH": 114,
+     "fontPx": 9.216,
+     "lineH": 9.77,
+     "lines": 1,
+     "truncated": false,
+     "spanH": 9.8,
+     "headroom": 104.2
+    },
+    {
+     "id": "mission-impossible-ghost-protocol",
+     "title": "Mission: Impossible — Ghost Protocol",
+     "tileW": 114,
+     "tileH": 114,
+     "fontPx": 9.216,
+     "lineH": 9.77,
+     "lines": 3,
+     "truncated": false,
+     "spanH": 29.3,
+     "headroom": 84.7
+    },
+    {
+     "id": "do-the-right-thing",
+     "title": "Do the Right Thing",
+     "tileW": 114,
+     "tileH": 114,
+     "fontPx": 10.5,
+     "lineH": 11.13,
+     "lines": 2,
+     "truncated": false,
+     "spanH": 22.3,
+     "headroom": 91.8
+    },
+    {
+     "id": "harry-potter-and-the-prisoner-of-azkaban",
+     "title": "Harry Potter and the Prisoner of Azkaban",
+     "tileW": 114,
+     "tileH": 114,
+     "fontPx": 10.5,
+     "lineH": 11.13,
+     "lines": 4,
+     "truncated": false,
+     "spanH": 44.5,
+     "headroom": 69.5
+    },
+    {
+     "id": "ratatouille",
+     "title": "Ratatouille",
+     "tileW": 114,
+     "tileH": 114,
+     "fontPx": 9.216,
+     "lineH": 9.77,
+     "lines": 1,
+     "truncated": false,
+     "spanH": 9.8,
+     "headroom": 104.2
+    }
+   ],
+   "badge": {
+    "found": true,
+    "overlapArea": 0,
+    "badge": {
+     "w": 27.3,
+     "h": 10.5
+    }
+   },
+   "zoomTruncated": [],
+   "zoomBoardOverflow": false
+  },
+  {
+   "board": "grid81-densest",
+   "seed": "2026-09-25",
+   "viewport": "1024x768",
+   "tiles": [
+    {
+     "id": "the-help",
+     "title": "The Help",
+     "tileW": 114,
+     "tileH": 114,
+     "fontPx": 12.288,
+     "lineH": 13.03,
+     "lines": 1,
+     "truncated": false,
+     "spanH": 13,
+     "headroom": 101
+    },
+    {
+     "id": "harry-potter-and-the-deathly-hallows-part-2",
+     "title": "Harry Potter and the Deathly Hallows – Part 2",
+     "tileW": 114,
+     "tileH": 114,
+     "fontPx": 12.288,
+     "lineH": 13.03,
+     "lines": 5,
+     "truncated": false,
+     "spanH": 65.1,
+     "headroom": 48.9
+    },
+    {
+     "id": "inside-man",
+     "title": "Inside Man",
+     "tileW": 114,
+     "tileH": 114,
+     "fontPx": 12.288,
+     "lineH": 13.03,
+     "lines": 1,
+     "truncated": false,
+     "spanH": 13,
+     "headroom": 101
+    },
+    {
+     "id": "interstellar",
+     "title": "Interstellar",
+     "tileW": 114,
+     "tileH": 114,
+     "fontPx": 11,
+     "lineH": 11.66,
+     "lines": 1,
+     "truncated": false,
+     "spanH": 11.7,
+     "headroom": 102.3
+    },
+    {
+     "id": "harry-potter-and-the-chamber-of-secrets",
+     "title": "Harry Potter and the Chamber of Secrets",
+     "tileW": 114,
+     "tileH": 114,
+     "fontPx": 12.288,
+     "lineH": 13.03,
+     "lines": 4,
+     "truncated": false,
+     "spanH": 52.1,
+     "headroom": 61.9
+    },
+    {
+     "id": "blackkklansman",
+     "title": "BlacKkKlansman",
+     "tileW": 114,
+     "tileH": 114,
+     "fontPx": 11,
+     "lineH": 11.66,
+     "lines": 2,
+     "truncated": false,
+     "spanH": 23.3,
+     "headroom": 90.7
+    },
+    {
+     "id": "zero-dark-thirty",
+     "title": "Zero Dark Thirty",
+     "tileW": 114,
+     "tileH": 114,
+     "fontPx": 12.288,
+     "lineH": 13.03,
+     "lines": 2,
+     "truncated": false,
+     "spanH": 26,
+     "headroom": 88
+    },
+    {
+     "id": "the-martian",
+     "title": "The Martian",
+     "tileW": 114,
+     "tileH": 114,
+     "fontPx": 12.288,
+     "lineH": 13.03,
+     "lines": 1,
+     "truncated": false,
+     "spanH": 13,
+     "headroom": 101
+    },
+    {
+     "id": "the-iron-giant",
+     "title": "The Iron Giant",
+     "tileW": 114,
+     "tileH": 114,
+     "fontPx": 12.288,
+     "lineH": 13.03,
+     "lines": 2,
+     "truncated": false,
+     "spanH": 26,
+     "headroom": 88
+    },
+    {
+     "id": "malcolm-x",
+     "title": "Malcolm X",
+     "tileW": 114,
+     "tileH": 114,
+     "fontPx": 12.288,
+     "lineH": 13.03,
+     "lines": 1,
+     "truncated": false,
+     "spanH": 13,
+     "headroom": 101
+    },
+    {
+     "id": "harry-potter-and-the-sorcerers-stone",
+     "title": "Harry Potter and the Sorcerer's Stone",
+     "tileW": 114,
+     "tileH": 114,
+     "fontPx": 12.288,
+     "lineH": 13.03,
+     "lines": 4,
+     "truncated": false,
+     "spanH": 52.1,
+     "headroom": 61.9
+    },
+    {
+     "id": "the-incredibles",
+     "title": "The Incredibles",
+     "tileW": 114,
+     "tileH": 114,
+     "fontPx": 12,
+     "lineH": 12.72,
+     "lines": 2,
+     "truncated": false,
+     "spanH": 25.4,
+     "headroom": 88.6
+    },
+    {
+     "id": "mission-impossible-ghost-protocol",
+     "title": "Mission: Impossible — Ghost Protocol",
+     "tileW": 114,
+     "tileH": 114,
+     "fontPx": 12.288,
+     "lineH": 13.03,
+     "lines": 4,
+     "truncated": false,
+     "spanH": 52.1,
+     "headroom": 61.9
+    },
+    {
+     "id": "do-the-right-thing",
+     "title": "Do the Right Thing",
+     "tileW": 114,
+     "tileH": 114,
+     "fontPx": 12.288,
+     "lineH": 13.03,
+     "lines": 2,
+     "truncated": false,
+     "spanH": 26,
+     "headroom": 88
+    },
+    {
+     "id": "harry-potter-and-the-prisoner-of-azkaban",
+     "title": "Harry Potter and the Prisoner of Azkaban",
+     "tileW": 114,
+     "tileH": 114,
+     "fontPx": 12.288,
+     "lineH": 13.03,
+     "lines": 4,
+     "truncated": false,
+     "spanH": 52.1,
+     "headroom": 61.9
+    },
+    {
+     "id": "ratatouille",
+     "title": "Ratatouille",
+     "tileW": 114,
+     "tileH": 114,
+     "fontPx": 12,
+     "lineH": 12.72,
+     "lines": 1,
+     "truncated": false,
+     "spanH": 12.7,
+     "headroom": 101.3
+    }
+   ],
+   "badge": {
+    "found": true,
+    "overlapArea": 0,
+    "badge": {
+     "w": 27.3,
+     "h": 10.5
+    }
+   },
+   "zoomTruncated": [],
+   "zoomBoardOverflow": false
+  },
+  {
+   "board": "grid325-longest",
+   "seed": "2027-05-27",
+   "viewport": "320x568",
+   "tiles": [
+    {
+     "id": "nightcrawler",
+     "title": "Nightcrawler",
+     "tileW": 67.5,
+     "tileH": 67.5,
+     "fontPx": 6.5,
+     "lineH": 6.5,
+     "lines": 2,
+     "truncated": false,
+     "spanH": 13,
+     "headroom": 54.5
+    },
+    {
+     "id": "the-fellowship-of-the-ring",
+     "title": "The Fellowship of the Ring",
+     "tileW": 67.5,
+     "tileH": 67.5,
+     "fontPx": 6.5,
+     "lineH": 6.5,
+     "lines": 3,
+     "truncated": false,
+     "spanH": 19.5,
+     "headroom": 48
+    },
+    {
+     "id": "the-good-the-bad-and-the-ugly",
+     "title": "The Good, the Bad and the Ugly",
+     "tileW": 67.5,
+     "tileH": 67.5,
+     "fontPx": 6.5,
+     "lineH": 6.5,
+     "lines": 3,
+     "truncated": false,
+     "spanH": 19.5,
+     "headroom": 48
+    },
+    {
+     "id": "million-dollar-baby",
+     "title": "Million Dollar Baby",
+     "tileW": 67.5,
+     "tileH": 67.5,
+     "fontPx": 6.5,
+     "lineH": 6.5,
+     "lines": 2,
+     "truncated": false,
+     "spanH": 13,
+     "headroom": 54.5
+    },
+    {
+     "id": "the-return-of-the-king",
+     "title": "The Return of the King",
+     "tileW": 67.5,
+     "tileH": 67.5,
+     "fontPx": 6.5,
+     "lineH": 6.5,
+     "lines": 2,
+     "truncated": false,
+     "spanH": 13,
+     "headroom": 54.5
+    },
+    {
+     "id": "unforgiven",
+     "title": "Unforgiven",
+     "tileW": 67.5,
+     "tileH": 67.5,
+     "fontPx": 6.5,
+     "lineH": 6.5,
+     "lines": 1,
+     "truncated": false,
+     "spanH": 6.5,
+     "headroom": 61
+    },
+    {
+     "id": "donnie-darko",
+     "title": "Donnie Darko",
+     "tileW": 67.5,
+     "tileH": 67.5,
+     "fontPx": 6.5,
+     "lineH": 6.5,
+     "lines": 2,
+     "truncated": false,
+     "spanH": 13,
+     "headroom": 54.5
+    },
+    {
+     "id": "saving-private-ryan",
+     "title": "Saving Private Ryan",
+     "tileW": 67.5,
+     "tileH": 67.5,
+     "fontPx": 6.5,
+     "lineH": 6.5,
+     "lines": 2,
+     "truncated": false,
+     "spanH": 13,
+     "headroom": 54.5
+    },
+    {
+     "id": "the-two-towers",
+     "title": "The Two Towers",
+     "tileW": 67.5,
+     "tileH": 67.5,
+     "fontPx": 6.5,
+     "lineH": 6.5,
+     "lines": 2,
+     "truncated": false,
+     "spanH": 13,
+     "headroom": 54.5
+    },
+    {
+     "id": "prisoners",
+     "title": "Prisoners",
+     "tileW": 67.5,
+     "tileH": 67.5,
+     "fontPx": 6.5,
+     "lineH": 6.5,
+     "lines": 1,
+     "truncated": false,
+     "spanH": 6.5,
+     "headroom": 61
+    },
+    {
+     "id": "schindlers-list",
+     "title": "Schindler's List",
+     "tileW": 67.5,
+     "tileH": 67.5,
+     "fontPx": 6.5,
+     "lineH": 6.5,
+     "lines": 2,
+     "truncated": false,
+     "spanH": 13,
+     "headroom": 54.5
+    },
+    {
+     "id": "zodiac",
+     "title": "Zodiac",
+     "tileW": 67.5,
+     "tileH": 67.5,
+     "fontPx": 6.5,
+     "lineH": 6.5,
+     "lines": 1,
+     "truncated": false,
+     "spanH": 6.5,
+     "headroom": 61
+    },
+    {
+     "id": "catch-me-if-you-can",
+     "title": "Catch Me If You Can",
+     "tileW": 67.5,
+     "tileH": 67.5,
+     "fontPx": 6.5,
+     "lineH": 6.5,
+     "lines": 2,
+     "truncated": false,
+     "spanH": 13,
+     "headroom": 54.5
+    },
+    {
+     "id": "gran-torino",
+     "title": "Gran Torino",
+     "tileW": 67.5,
+     "tileH": 67.5,
+     "fontPx": 6.5,
+     "lineH": 6.5,
+     "lines": 1,
+     "truncated": false,
+     "spanH": 6.5,
+     "headroom": 61
+    },
+    {
+     "id": "e-t-the-extra-terrestrial",
+     "title": "E.T. the Extra-Terrestrial",
+     "tileW": 67.5,
+     "tileH": 67.5,
+     "fontPx": 6.5,
+     "lineH": 6.5,
+     "lines": 3,
+     "truncated": false,
+     "spanH": 19.5,
+     "headroom": 48
+    },
+    {
+     "id": "pirates-of-the-caribbean-the-curse-of-the-black-pearl",
+     "title": "Pirates of the Caribbean: The Curse of the Black Pearl",
+     "tileW": 67.5,
+     "tileH": 67.5,
+     "fontPx": 6.5,
+     "lineH": 6.5,
+     "lines": 6,
+     "truncated": false,
+     "spanH": 39,
+     "headroom": 28.5
+    }
+   ],
+   "badge": {
+    "found": true,
+    "overlapArea": 116.1,
+    "badge": {
+     "w": 27.3,
+     "h": 10.5
+    }
+   },
+   "zoomTruncated": [
+    "the-fellowship-of-the-ring",
+    "the-good-the-bad-and-the-ugly",
+    "million-dollar-baby",
+    "the-return-of-the-king",
+    "saving-private-ryan",
+    "the-two-towers",
+    "schindlers-list",
+    "catch-me-if-you-can",
+    "e-t-the-extra-terrestrial",
+    "pirates-of-the-caribbean-the-curse-of-the-black-pearl"
+   ],
+   "zoomBoardOverflow": false
+  },
+  {
+   "board": "grid325-longest",
+   "seed": "2027-05-27",
+   "viewport": "360x800",
+   "tiles": [
+    {
+     "id": "nightcrawler",
+     "title": "Nightcrawler",
+     "tileW": 74.5,
+     "tileH": 74.5,
+     "fontPx": 7,
+     "lineH": 7.42,
+     "lines": 2,
+     "truncated": false,
+     "spanH": 14.8,
+     "headroom": 59.7
+    },
+    {
+     "id": "the-fellowship-of-the-ring",
+     "title": "The Fellowship of the Ring",
+     "tileW": 74.5,
+     "tileH": 74.5,
+     "fontPx": 9,
+     "lineH": 9.54,
+     "lines": 4,
+     "truncated": false,
+     "spanH": 38.1,
+     "headroom": 36.4
+    },
+    {
+     "id": "the-good-the-bad-and-the-ugly",
+     "title": "The Good, the Bad and the Ugly",
+     "tileW": 74.5,
+     "tileH": 74.5,
+     "fontPx": 10.5,
+     "lineH": 11.13,
+     "lines": 5,
+     "truncated": false,
+     "spanH": 55.6,
+     "headroom": 18.9
+    },
+    {
+     "id": "million-dollar-baby",
+     "title": "Million Dollar Baby",
+     "tileW": 74.5,
+     "tileH": 74.5,
+     "fontPx": 10.5,
+     "lineH": 11.13,
+     "lines": 3,
+     "truncated": false,
+     "spanH": 33.4,
+     "headroom": 41.1
+    },
+    {
+     "id": "the-return-of-the-king",
+     "title": "The Return of the King",
+     "tileW": 74.5,
+     "tileH": 74.5,
+     "fontPx": 10.5,
+     "lineH": 11.13,
+     "lines": 4,
+     "truncated": false,
+     "spanH": 44.5,
+     "headroom": 30
+    },
+    {
+     "id": "unforgiven",
+     "title": "Unforgiven",
+     "tileW": 74.5,
+     "tileH": 74.5,
+     "fontPx": 9,
+     "lineH": 9.54,
+     "lines": 2,
+     "truncated": false,
+     "spanH": 19.1,
+     "headroom": 55.4
+    },
+    {
+     "id": "donnie-darko",
+     "title": "Donnie Darko",
+     "tileW": 74.5,
+     "tileH": 74.5,
+     "fontPx": 10.5,
+     "lineH": 11.13,
+     "lines": 2,
+     "truncated": false,
+     "spanH": 22.3,
+     "headroom": 52.3
+    },
+    {
+     "id": "saving-private-ryan",
+     "title": "Saving Private Ryan",
+     "tileW": 74.5,
+     "tileH": 74.5,
+     "fontPx": 10.5,
+     "lineH": 11.13,
+     "lines": 3,
+     "truncated": false,
+     "spanH": 33.4,
+     "headroom": 41.1
+    },
+    {
+     "id": "the-two-towers",
+     "title": "The Two Towers",
+     "tileW": 74.5,
+     "tileH": 74.5,
+     "fontPx": 10.5,
+     "lineH": 11.13,
+     "lines": 2,
+     "truncated": false,
+     "spanH": 22.3,
+     "headroom": 52.3
+    },
+    {
+     "id": "prisoners",
+     "title": "Prisoners",
+     "tileW": 74.5,
+     "tileH": 74.5,
+     "fontPx": 10,
+     "lineH": 10.6,
+     "lines": 1,
+     "truncated": false,
+     "spanH": 10.6,
+     "headroom": 63.9
+    },
+    {
+     "id": "schindlers-list",
+     "title": "Schindler's List",
+     "tileW": 74.5,
+     "tileH": 74.5,
+     "fontPx": 8,
+     "lineH": 8.48,
+     "lines": 2,
+     "truncated": false,
+     "spanH": 16.9,
+     "headroom": 57.6
+    },
+    {
+     "id": "zodiac",
+     "title": "Zodiac",
+     "tileW": 74.5,
+     "tileH": 74.5,
+     "fontPx": 10.5,
+     "lineH": 11.13,
+     "lines": 1,
+     "truncated": false,
+     "spanH": 11.1,
+     "headroom": 63.4
+    },
+    {
+     "id": "catch-me-if-you-can",
+     "title": "Catch Me If You Can",
+     "tileW": 74.5,
+     "tileH": 74.5,
+     "fontPx": 10.5,
+     "lineH": 11.13,
+     "lines": 3,
+     "truncated": false,
+     "spanH": 33.4,
+     "headroom": 41.1
+    },
+    {
+     "id": "gran-torino",
+     "title": "Gran Torino",
+     "tileW": 74.5,
+     "tileH": 74.5,
+     "fontPx": 10.5,
+     "lineH": 11.13,
+     "lines": 2,
+     "truncated": false,
+     "spanH": 22.3,
+     "headroom": 52.3
+    },
+    {
+     "id": "e-t-the-extra-terrestrial",
+     "title": "E.T. the Extra-Terrestrial",
+     "tileW": 74.5,
+     "tileH": 74.5,
+     "fontPx": 8,
+     "lineH": 8.48,
+     "lines": 3,
+     "truncated": false,
+     "spanH": 25.4,
+     "headroom": 49.1
+    },
+    {
+     "id": "pirates-of-the-caribbean-the-curse-of-the-black-pearl",
+     "title": "Pirates of the Caribbean: The Curse of the Black Pearl",
+     "tileW": 74.5,
+     "tileH": 74.5,
+     "fontPx": 8,
+     "lineH": 8.48,
+     "lines": 6,
+     "truncated": false,
+     "spanH": 50.8,
+     "headroom": 23.7
+    }
+   ],
+   "badge": {
+    "found": true,
+    "overlapArea": 181.8,
+    "badge": {
+     "w": 27.3,
+     "h": 10.5
+    }
+   },
+   "zoomTruncated": [
+    "the-fellowship-of-the-ring",
+    "the-good-the-bad-and-the-ugly",
+    "million-dollar-baby",
+    "the-return-of-the-king",
+    "donnie-darko",
+    "saving-private-ryan",
+    "the-two-towers",
+    "schindlers-list",
+    "catch-me-if-you-can",
+    "gran-torino",
+    "e-t-the-extra-terrestrial",
+    "pirates-of-the-caribbean-the-curse-of-the-black-pearl"
+   ],
+   "zoomBoardOverflow": false
+  },
+  {
+   "board": "grid325-longest",
+   "seed": "2027-05-27",
+   "viewport": "390x844",
+   "tiles": [
+    {
+     "id": "nightcrawler",
+     "title": "Nightcrawler",
+     "tileW": 82,
+     "tileH": 82,
+     "fontPx": 7,
+     "lineH": 7.42,
+     "lines": 1,
+     "truncated": false,
+     "spanH": 7.4,
+     "headroom": 74.6
+    },
+    {
+     "id": "the-fellowship-of-the-ring",
+     "title": "The Fellowship of the Ring",
+     "tileW": 82,
+     "tileH": 82,
+     "fontPx": 9,
+     "lineH": 9.54,
+     "lines": 3,
+     "truncated": false,
+     "spanH": 28.6,
+     "headroom": 53.4
+    },
+    {
+     "id": "the-good-the-bad-and-the-ugly",
+     "title": "The Good, the Bad and the Ugly",
+     "tileW": 82,
+     "tileH": 82,
+     "fontPx": 10.5,
+     "lineH": 11.13,
+     "lines": 4,
+     "truncated": false,
+     "spanH": 44.5,
+     "headroom": 37.5
+    },
+    {
+     "id": "million-dollar-baby",
+     "title": "Million Dollar Baby",
+     "tileW": 82,
+     "tileH": 82,
+     "fontPx": 10.5,
+     "lineH": 11.13,
+     "lines": 3,
+     "truncated": false,
+     "spanH": 33.4,
+     "headroom": 48.6
+    },
+    {
+     "id": "the-return-of-the-king",
+     "title": "The Return of the King",
+     "tileW": 82,
+     "tileH": 82,
+     "fontPx": 10.5,
+     "lineH": 11.13,
+     "lines": 3,
+     "truncated": false,
+     "spanH": 33.4,
+     "headroom": 48.6
+    },
+    {
+     "id": "unforgiven",
+     "title": "Unforgiven",
+     "tileW": 82,
+     "tileH": 82,
+     "fontPx": 9,
+     "lineH": 9.54,
+     "lines": 1,
+     "truncated": false,
+     "spanH": 9.5,
+     "headroom": 72.5
+    },
+    {
+     "id": "donnie-darko",
+     "title": "Donnie Darko",
+     "tileW": 82,
+     "tileH": 82,
+     "fontPx": 10.5,
+     "lineH": 11.13,
+     "lines": 2,
+     "truncated": false,
+     "spanH": 22.3,
+     "headroom": 59.8
+    },
+    {
+     "id": "saving-private-ryan",
+     "title": "Saving Private Ryan",
+     "tileW": 82,
+     "tileH": 82,
+     "fontPx": 10.5,
+     "lineH": 11.13,
+     "lines": 3,
+     "truncated": false,
+     "spanH": 33.4,
+     "headroom": 48.6
+    },
+    {
+     "id": "the-two-towers",
+     "title": "The Two Towers",
+     "tileW": 82,
+     "tileH": 82,
+     "fontPx": 10.5,
+     "lineH": 11.13,
+     "lines": 2,
+     "truncated": false,
+     "spanH": 22.3,
+     "headroom": 59.8
+    },
+    {
+     "id": "prisoners",
+     "title": "Prisoners",
+     "tileW": 82,
+     "tileH": 82,
+     "fontPx": 10,
+     "lineH": 10.6,
+     "lines": 1,
+     "truncated": false,
+     "spanH": 10.6,
+     "headroom": 71.4
+    },
+    {
+     "id": "schindlers-list",
+     "title": "Schindler's List",
+     "tileW": 82,
+     "tileH": 82,
+     "fontPx": 8,
+     "lineH": 8.48,
+     "lines": 2,
+     "truncated": false,
+     "spanH": 16.9,
+     "headroom": 65.1
+    },
+    {
+     "id": "zodiac",
+     "title": "Zodiac",
+     "tileW": 82,
+     "tileH": 82,
+     "fontPx": 10.5,
+     "lineH": 11.13,
+     "lines": 1,
+     "truncated": false,
+     "spanH": 11.1,
+     "headroom": 70.9
+    },
+    {
+     "id": "catch-me-if-you-can",
+     "title": "Catch Me If You Can",
+     "tileW": 82,
+     "tileH": 82,
+     "fontPx": 10.5,
+     "lineH": 11.13,
+     "lines": 2,
+     "truncated": false,
+     "spanH": 22.3,
+     "headroom": 59.8
+    },
+    {
+     "id": "gran-torino",
+     "title": "Gran Torino",
+     "tileW": 82,
+     "tileH": 82,
+     "fontPx": 10.5,
+     "lineH": 11.13,
+     "lines": 2,
+     "truncated": false,
+     "spanH": 22.3,
+     "headroom": 59.8
+    },
+    {
+     "id": "e-t-the-extra-terrestrial",
+     "title": "E.T. the Extra-Terrestrial",
+     "tileW": 82,
+     "tileH": 82,
+     "fontPx": 8,
+     "lineH": 8.48,
+     "lines": 2,
+     "truncated": false,
+     "spanH": 16.9,
+     "headroom": 65.1
+    },
+    {
+     "id": "pirates-of-the-caribbean-the-curse-of-the-black-pearl",
+     "title": "Pirates of the Caribbean: The Curse of the Black Pearl",
+     "tileW": 82,
+     "tileH": 82,
+     "fontPx": 8,
+     "lineH": 8.48,
+     "lines": 6,
+     "truncated": false,
+     "spanH": 50.8,
+     "headroom": 31.2
+    }
+   ],
+   "badge": {
+    "found": true,
+    "overlapArea": 79.4,
+    "badge": {
+     "w": 27.3,
+     "h": 10.5
+    }
+   },
+   "zoomTruncated": [
+    "the-fellowship-of-the-ring",
+    "the-good-the-bad-and-the-ugly",
+    "million-dollar-baby",
+    "the-return-of-the-king",
+    "saving-private-ryan",
+    "the-two-towers",
+    "catch-me-if-you-can",
+    "e-t-the-extra-terrestrial",
+    "pirates-of-the-caribbean-the-curse-of-the-black-pearl"
+   ],
+   "zoomBoardOverflow": false
+  },
+  {
+   "board": "grid325-longest",
+   "seed": "2027-05-27",
+   "viewport": "768x1024",
+   "tiles": [
+    {
+     "id": "nightcrawler",
+     "title": "Nightcrawler",
+     "tileW": 114,
+     "tileH": 114,
+     "fontPx": 9.216,
+     "lineH": 9.77,
+     "lines": 1,
+     "truncated": false,
+     "spanH": 9.8,
+     "headroom": 104.2
+    },
+    {
+     "id": "the-fellowship-of-the-ring",
+     "title": "The Fellowship of the Ring",
+     "tileW": 114,
+     "tileH": 114,
+     "fontPx": 9.216,
+     "lineH": 9.77,
+     "lines": 2,
+     "truncated": false,
+     "spanH": 19.5,
+     "headroom": 94.5
+    },
+    {
+     "id": "the-good-the-bad-and-the-ugly",
+     "title": "The Good, the Bad and the Ugly",
+     "tileW": 114,
+     "tileH": 114,
+     "fontPx": 10.5,
+     "lineH": 11.13,
+     "lines": 3,
+     "truncated": false,
+     "spanH": 33.4,
+     "headroom": 80.6
+    },
+    {
+     "id": "million-dollar-baby",
+     "title": "Million Dollar Baby",
+     "tileW": 114,
+     "tileH": 114,
+     "fontPx": 10.5,
+     "lineH": 11.13,
+     "lines": 2,
+     "truncated": false,
+     "spanH": 22.3,
+     "headroom": 91.8
+    },
+    {
+     "id": "the-return-of-the-king",
+     "title": "The Return of the King",
+     "tileW": 114,
+     "tileH": 114,
+     "fontPx": 10.5,
+     "lineH": 11.13,
+     "lines": 2,
+     "truncated": false,
+     "spanH": 22.3,
+     "headroom": 91.8
+    },
+    {
+     "id": "unforgiven",
+     "title": "Unforgiven",
+     "tileW": 114,
+     "tileH": 114,
+     "fontPx": 9.216,
+     "lineH": 9.77,
+     "lines": 1,
+     "truncated": false,
+     "spanH": 9.8,
+     "headroom": 104.2
+    },
+    {
+     "id": "donnie-darko",
+     "title": "Donnie Darko",
+     "tileW": 114,
+     "tileH": 114,
+     "fontPx": 10.5,
+     "lineH": 11.13,
+     "lines": 1,
+     "truncated": false,
+     "spanH": 11.1,
+     "headroom": 102.9
+    },
+    {
+     "id": "saving-private-ryan",
+     "title": "Saving Private Ryan",
+     "tileW": 114,
+     "tileH": 114,
+     "fontPx": 10.5,
+     "lineH": 11.13,
+     "lines": 2,
+     "truncated": false,
+     "spanH": 22.3,
+     "headroom": 91.8
+    },
+    {
+     "id": "the-two-towers",
+     "title": "The Two Towers",
+     "tileW": 114,
+     "tileH": 114,
+     "fontPx": 10.5,
+     "lineH": 11.13,
+     "lines": 2,
+     "truncated": false,
+     "spanH": 22.3,
+     "headroom": 91.8
+    },
+    {
+     "id": "prisoners",
+     "title": "Prisoners",
+     "tileW": 114,
+     "tileH": 114,
+     "fontPx": 10,
+     "lineH": 10.6,
+     "lines": 1,
+     "truncated": false,
+     "spanH": 10.6,
+     "headroom": 103.4
+    },
+    {
+     "id": "schindlers-list",
+     "title": "Schindler's List",
+     "tileW": 114,
+     "tileH": 114,
+     "fontPx": 9.216,
+     "lineH": 9.77,
+     "lines": 1,
+     "truncated": false,
+     "spanH": 9.8,
+     "headroom": 104.2
+    },
+    {
+     "id": "zodiac",
+     "title": "Zodiac",
+     "tileW": 114,
+     "tileH": 114,
+     "fontPx": 10.5,
+     "lineH": 11.13,
+     "lines": 1,
+     "truncated": false,
+     "spanH": 11.1,
+     "headroom": 102.9
+    },
+    {
+     "id": "catch-me-if-you-can",
+     "title": "Catch Me If You Can",
+     "tileW": 114,
+     "tileH": 114,
+     "fontPx": 10.5,
+     "lineH": 11.13,
+     "lines": 2,
+     "truncated": false,
+     "spanH": 22.3,
+     "headroom": 91.8
+    },
+    {
+     "id": "gran-torino",
+     "title": "Gran Torino",
+     "tileW": 114,
+     "tileH": 114,
+     "fontPx": 10.5,
+     "lineH": 11.13,
+     "lines": 1,
+     "truncated": false,
+     "spanH": 11.1,
+     "headroom": 102.9
+    },
+    {
+     "id": "e-t-the-extra-terrestrial",
+     "title": "E.T. the Extra-Terrestrial",
+     "tileW": 114,
+     "tileH": 114,
+     "fontPx": 9.216,
+     "lineH": 9.77,
+     "lines": 2,
+     "truncated": false,
+     "spanH": 19.5,
+     "headroom": 94.5
+    },
+    {
+     "id": "pirates-of-the-caribbean-the-curse-of-the-black-pearl",
+     "title": "Pirates of the Caribbean: The Curse of the Black Pearl",
+     "tileW": 114,
+     "tileH": 114,
+     "fontPx": 9.216,
+     "lineH": 9.77,
+     "lines": 4,
+     "truncated": false,
+     "spanH": 39.1,
+     "headroom": 74.9
+    }
+   ],
+   "badge": {
+    "found": true,
+    "overlapArea": 0,
+    "badge": {
+     "w": 27.3,
+     "h": 10.5
+    }
+   },
+   "zoomTruncated": [
+    "pirates-of-the-caribbean-the-curse-of-the-black-pearl"
+   ],
+   "zoomBoardOverflow": false
+  },
+  {
+   "board": "grid325-longest",
+   "seed": "2027-05-27",
+   "viewport": "1024x768",
+   "tiles": [
+    {
+     "id": "nightcrawler",
+     "title": "Nightcrawler",
+     "tileW": 114,
+     "tileH": 114,
+     "fontPx": 11,
+     "lineH": 11.66,
+     "lines": 1,
+     "truncated": false,
+     "spanH": 11.7,
+     "headroom": 102.3
+    },
+    {
+     "id": "the-fellowship-of-the-ring",
+     "title": "The Fellowship of the Ring",
+     "tileW": 114,
+     "tileH": 114,
+     "fontPx": 12.288,
+     "lineH": 13.03,
+     "lines": 3,
+     "truncated": false,
+     "spanH": 39,
+     "headroom": 75
+    },
+    {
+     "id": "the-good-the-bad-and-the-ugly",
+     "title": "The Good, the Bad and the Ugly",
+     "tileW": 114,
+     "tileH": 114,
+     "fontPx": 12.288,
+     "lineH": 13.03,
+     "lines": 3,
+     "truncated": false,
+     "spanH": 39,
+     "headroom": 75
+    },
+    {
+     "id": "million-dollar-baby",
+     "title": "Million Dollar Baby",
+     "tileW": 114,
+     "tileH": 114,
+     "fontPx": 12.288,
+     "lineH": 13.03,
+     "lines": 2,
+     "truncated": false,
+     "spanH": 26,
+     "headroom": 88
+    },
+    {
+     "id": "the-return-of-the-king",
+     "title": "The Return of the King",
+     "tileW": 114,
+     "tileH": 114,
+     "fontPx": 12.288,
+     "lineH": 13.03,
+     "lines": 2,
+     "truncated": false,
+     "spanH": 26,
+     "headroom": 88
+    },
+    {
+     "id": "unforgiven",
+     "title": "Unforgiven",
+     "tileW": 114,
+     "tileH": 114,
+     "fontPx": 12.288,
+     "lineH": 13.03,
+     "lines": 1,
+     "truncated": false,
+     "spanH": 13,
+     "headroom": 101
+    },
+    {
+     "id": "donnie-darko",
+     "title": "Donnie Darko",
+     "tileW": 114,
+     "tileH": 114,
+     "fontPx": 12.288,
+     "lineH": 13.03,
+     "lines": 2,
+     "truncated": false,
+     "spanH": 26,
+     "headroom": 88
+    },
+    {
+     "id": "saving-private-ryan",
+     "title": "Saving Private Ryan",
+     "tileW": 114,
+     "tileH": 114,
+     "fontPx": 12.288,
+     "lineH": 13.03,
+     "lines": 2,
+     "truncated": false,
+     "spanH": 26,
+     "headroom": 88
+    },
+    {
+     "id": "the-two-towers",
+     "title": "The Two Towers",
+     "tileW": 114,
+     "tileH": 114,
+     "fontPx": 12.288,
+     "lineH": 13.03,
+     "lines": 2,
+     "truncated": false,
+     "spanH": 26,
+     "headroom": 88
+    },
+    {
+     "id": "prisoners",
+     "title": "Prisoners",
+     "tileW": 114,
+     "tileH": 114,
+     "fontPx": 12.288,
+     "lineH": 13.03,
+     "lines": 1,
+     "truncated": false,
+     "spanH": 13,
+     "headroom": 101
+    },
+    {
+     "id": "schindlers-list",
+     "title": "Schindler's List",
+     "tileW": 114,
+     "tileH": 114,
+     "fontPx": 12,
+     "lineH": 12.72,
+     "lines": 2,
+     "truncated": false,
+     "spanH": 25.4,
+     "headroom": 88.6
+    },
+    {
+     "id": "zodiac",
+     "title": "Zodiac",
+     "tileW": 114,
+     "tileH": 114,
+     "fontPx": 12.288,
+     "lineH": 13.03,
+     "lines": 1,
+     "truncated": false,
+     "spanH": 13,
+     "headroom": 101
+    },
+    {
+     "id": "catch-me-if-you-can",
+     "title": "Catch Me If You Can",
+     "tileW": 114,
+     "tileH": 114,
+     "fontPx": 12.288,
+     "lineH": 13.03,
+     "lines": 2,
+     "truncated": false,
+     "spanH": 26,
+     "headroom": 88
+    },
+    {
+     "id": "gran-torino",
+     "title": "Gran Torino",
+     "tileW": 114,
+     "tileH": 114,
+     "fontPx": 12.288,
+     "lineH": 13.03,
+     "lines": 1,
+     "truncated": false,
+     "spanH": 13,
+     "headroom": 101
+    },
+    {
+     "id": "e-t-the-extra-terrestrial",
+     "title": "E.T. the Extra-Terrestrial",
+     "tileW": 114,
+     "tileH": 114,
+     "fontPx": 12,
+     "lineH": 12.72,
+     "lines": 3,
+     "truncated": false,
+     "spanH": 38.2,
+     "headroom": 75.8
+    },
+    {
+     "id": "pirates-of-the-caribbean-the-curse-of-the-black-pearl",
+     "title": "Pirates of the Caribbean: The Curse of the Black Pearl",
+     "tileW": 114,
+     "tileH": 114,
+     "fontPx": 12,
+     "lineH": 12.72,
+     "lines": 6,
+     "truncated": false,
+     "spanH": 76.3,
+     "headroom": 37.7
+    }
+   ],
+   "badge": {
+    "found": true,
+    "overlapArea": 0,
+    "badge": {
+     "w": 27.3,
+     "h": 10.5
+    }
+   },
+   "zoomTruncated": [],
+   "zoomBoardOverflow": false
+  }
+ ],
+ "chronology": [
+  {
+   "viewport": "320x568",
+   "reducedMotion": "reduce",
+   "states": [
+    {
+     "state": "fresh",
+     "instrTop": 326,
+     "instrBottom": 338,
+     "instrVisible": true,
+     "trayTop": 336,
+     "ticketOverlaps": [],
+     "titleGlyphOverlaps": []
+    }
+   ]
+  },
+  {
+   "viewport": "360x800",
+   "reducedMotion": "reduce",
+   "states": [
+    {
+     "state": "fresh",
+     "instrTop": 514.5,
+     "instrBottom": 528,
+     "instrVisible": true,
+     "trayTop": 530,
+     "ticketOverlaps": [],
+     "titleGlyphOverlaps": []
+    }
+   ]
+  },
+  {
+   "viewport": "390x844",
+   "reducedMotion": "reduce",
+   "states": [
+    {
+     "state": "fresh",
+     "instrTop": 558.5,
+     "instrBottom": 572,
+     "instrVisible": true,
+     "trayTop": 574,
+     "ticketOverlaps": [],
+     "titleGlyphOverlaps": []
+    }
+   ]
+  },
+  {
+   "viewport": "768x1024",
+   "reducedMotion": "reduce",
+   "states": [
+    {
+     "state": "fresh",
+     "instrTop": 710,
+     "instrBottom": 723.5,
+     "instrVisible": true,
+     "trayTop": 842,
+     "ticketOverlaps": [],
+     "titleGlyphOverlaps": []
+    }
+   ]
+  },
+  {
+   "viewport": "1024x768",
+   "reducedMotion": "reduce",
+   "states": [
+    {
+     "state": "fresh",
+     "instrTop": 566,
+     "instrBottom": 579.5,
+     "instrVisible": true,
+     "trayTop": 586,
+     "ticketOverlaps": [],
+     "titleGlyphOverlaps": []
+    },
+    {
+     "state": "after-4-placements",
+     "instrTop": 566,
+     "instrBottom": 579.5,
+     "instrVisible": true,
+     "trayTop": 586,
+     "ticketOverlaps": [],
+     "titleGlyphOverlaps": []
+    },
+    {
+     "state": "card-raised",
+     "instrTop": 566,
+     "instrBottom": 579.5,
+     "instrVisible": true,
+     "trayTop": 586,
+     "ticketOverlaps": [],
+     "titleGlyphOverlaps": []
+    }
+   ]
+  },
+  {
+   "viewport": "1280x800",
+   "reducedMotion": "reduce",
+   "states": [
+    {
+     "state": "fresh",
+     "instrTop": 598,
+     "instrBottom": 611.5,
+     "instrVisible": true,
+     "trayTop": 618,
+     "ticketOverlaps": [],
+     "titleGlyphOverlaps": []
+    }
+   ]
+  },
+  {
+   "viewport": "1024x700",
+   "reducedMotion": "reduce",
+   "states": [
+    {
+     "state": "fresh",
+     "instrTop": 508,
+     "instrBottom": 520,
+     "instrVisible": true,
+     "trayTop": 518,
+     "ticketOverlaps": [],
+     "titleGlyphOverlaps": []
+    }
+   ]
+  },
+  {
+   "viewport": "1024x690",
+   "reducedMotion": "reduce",
+   "states": [
+    {
+     "state": "fresh",
+     "instrTop": 508,
+     "instrBottom": 520,
+     "instrVisible": true,
+     "trayTop": 508,
+     "ticketOverlaps": [],
+     "titleGlyphOverlaps": []
+    }
+   ]
+  },
+  {
+   "viewport": "1440x900",
+   "reducedMotion": "reduce",
+   "states": [
+    {
+     "state": "fresh",
+     "instrTop": 650,
+     "instrBottom": 663.5,
+     "instrVisible": true,
+     "trayTop": 718,
+     "ticketOverlaps": [],
+     "titleGlyphOverlaps": []
+    }
+   ]
+  },
+  {
+   "viewport": "1024x768",
+   "reducedMotion": "no-preference",
+   "states": [
+    {
+     "state": "fresh",
+     "instrTop": 566,
+     "instrBottom": 579.5,
+     "instrVisible": true,
+     "trayTop": 586,
+     "ticketOverlaps": [],
+     "titleGlyphOverlaps": []
+    },
+    {
+     "state": "after-2-placements",
+     "instrTop": 566,
+     "instrBottom": 579.5,
+     "instrVisible": true,
+     "trayTop": 586,
+     "ticketOverlaps": [],
+     "titleGlyphOverlaps": []
+    },
+    {
+     "state": "card-raised",
+     "instrTop": 566,
+     "instrBottom": 579.5,
+     "instrVisible": true,
+     "trayTop": 586,
+     "ticketOverlaps": [],
+     "titleGlyphOverlaps": []
+    }
+   ]
+  }
+ ]
+}

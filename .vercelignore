@@ -1,0 +1,12 @@
+# Local review evidence and private feedback are never deployment inputs.
+audit/
+Feedback Screenshots*/
+.agents/
+.codex/
+
+# Build/reference material not needed by the Vite production bundle.
+design_handoff_the_stub/
+docs/
+sim/
+scripts/
+*.md

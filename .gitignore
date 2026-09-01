@@ -1,9 +1,20 @@
 .vercel
 node_modules
 dist
+dist-e2e
 .DS_Store
 memory
 .claude/settings.local.json
 .env
 .env.local
 .env.*.local
+
+# Local tooling credentials and private review evidence.
+.codex/
+Feedback Screenshots*/
+audit/
+design-qa.md
+output/playwright/
+playwright-report/
+test-results/
+.playwright-cli/
