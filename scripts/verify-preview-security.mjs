@@ -50,6 +50,10 @@ function readNetscapeCookies(path) {
 const browser = await chromium.launch()
 const context = await browser.newContext({
   viewport: { width: 390, height: 844 },
+  // Vercel injects its Toolbar script into HTML served to authenticated Preview
+  // sessions; this documented header opts the verifier out so the gate measures
+  // the deployment's own shell under the restrictive CSP, not the platform overlay.
+  extraHTTPHeaders: { 'x-vercel-skip-toolbar': '1' },
   // Vercel intentionally suppresses analytics in synthetic browsers. Remove
   // the automation marker only for this attended analytics integration check.
   userAgent: `Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/${browser.version()} Safari/537.36`,
