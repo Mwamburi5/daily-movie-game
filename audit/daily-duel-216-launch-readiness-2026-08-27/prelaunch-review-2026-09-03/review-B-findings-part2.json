@@ -1,0 +1,3642 @@
+{
+  "SEED": "2026-09-03",
+  "findings": [
+    {
+      "screen": "chrono-miss",
+      "vp": "v390",
+      "small": [
+        {
+          "tag": "BUTTON",
+          "name": "How to play",
+          "w": 32,
+          "h": 32,
+          "cls": "app-help-button daily-icon-button daily-icon-md text-[12px] font-extrabold active:scale-90"
+        }
+      ],
+      "overflow": [
+        {
+          "kind": "CLIPPED",
+          "tag": "SPAN",
+          "t": "The Little Mermaid (Live-Action), movie 2 of 2",
+          "sw": 332,
+          "cw": 1,
+          "cls": "sr-only"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "DIV",
+          "t": "actually 2016",
+          "sw": 96,
+          "cw": 1,
+          "cls": "sr-only"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "TOMBSTONE",
+          "sw": 189,
+          "cw": 183,
+          "cls": "chrono-choice-ticket relative flex min-h-11 min-w-0 items-center justify-center "
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "HARRY POTTER AND THE DEATHLY HALLOWS – PART 2",
+          "sw": 189,
+          "cw": 183,
+          "cls": "chrono-choice-ticket relative flex min-h-11 min-w-0 items-center justify-center "
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "UP",
+          "sw": 189,
+          "cw": 183,
+          "cls": "chrono-choice-ticket relative flex min-h-11 min-w-0 items-center justify-center "
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "WRECK-IT RALPH",
+          "sw": 189,
+          "cw": 183,
+          "cls": "chrono-choice-ticket relative flex min-h-11 min-w-0 items-center justify-center "
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "JUMANJI",
+          "sw": 189,
+          "cw": 183,
+          "cls": "chrono-choice-ticket relative flex min-h-11 min-w-0 items-center justify-center "
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "LINCOLN",
+          "sw": 189,
+          "cw": 183,
+          "cls": "chrono-choice-ticket relative flex min-h-11 min-w-0 items-center justify-center "
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "MRS. DOUBTFIRE",
+          "sw": 189,
+          "cw": 183,
+          "cls": "chrono-choice-ticket relative flex min-h-11 min-w-0 items-center justify-center "
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "BLACK PANTHER",
+          "sw": 189,
+          "cw": 183,
+          "cls": "chrono-choice-ticket relative flex min-h-11 min-w-0 items-center justify-center "
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "GONE GIRL",
+          "sw": 189,
+          "cw": 183,
+          "cls": "chrono-choice-ticket relative flex min-h-11 min-w-0 items-center justify-center "
+        }
+      ],
+      "noLabel": [],
+      "contrast": [
+        {
+          "t": "daily",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 9,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(31,58,82)",
+          "cls": "mt-1 font-stub-label text-[9px] font-bold uppercase tracking-[0.16em] "
+        }
+      ]
+    },
+    {
+      "screen": "chrono-say",
+      "vp": "v390",
+      "text": "actually 2016"
+    },
+    {
+      "screen": "chrono-results",
+      "vp": "v390",
+      "small": [
+        {
+          "tag": "BUTTON",
+          "name": "How to play",
+          "w": 32,
+          "h": 32,
+          "cls": "app-help-button daily-icon-button daily-icon-md text-[12px] font-extrabold active:scale-90"
+        }
+      ],
+      "overflow": [
+        {
+          "kind": "CLIPPED",
+          "tag": "SPAN",
+          "t": "Gone Girl, movie 8 of 11",
+          "sw": 171,
+          "cw": 1,
+          "cls": "sr-only"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "OLDER MRS. DOUBTFIRE M 1993 1993 Mrs. Doubtfire TO",
+          "left": -681,
+          "right": 615,
+          "cls": "mx-auto flex w-max items-center"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "OLDER",
+          "left": -681,
+          "right": -653,
+          "cls": "chrono-gap relative flex shrink-0 items-center justify-center transition-[width]"
+        },
+        {
+          "kind": "viewport",
+          "tag": "SPAN",
+          "t": "OLDER",
+          "left": -681,
+          "right": -653,
+          "cls": "absolute bottom-1 font-stub-label text-[8px] font-bold uppercase tracking-[0.12e"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "MRS. DOUBTFIRE M 1993 1993 Mrs. Doubtfire",
+          "left": -653,
+          "right": -553,
+          "cls": "shrink-0"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "MRS. DOUBTFIRE M 1993 1993 Mrs. Doubtfire",
+          "left": 490,
+          "right": 584,
+          "cls": "origin-center transition-[transform,opacity] duration-200"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "MRS. DOUBTFIRE M 1993 1993 Mrs. Doubtfire",
+          "left": 490,
+          "right": 584,
+          "cls": "relative"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "MRS. DOUBTFIRE M 1993 1993 Mrs. Doubtfire",
+          "left": 490,
+          "right": 584,
+          "cls": "relative h-full w-full"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "MRS. DOUBTFIRE M 1993",
+          "left": 502,
+          "right": 583,
+          "cls": "flex min-w-0 flex-1 flex-col"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "MRS. DOUBTFIRE",
+          "left": 506,
+          "right": 567,
+          "cls": "flex-none"
+        },
+        {
+          "kind": "viewport",
+          "tag": "SPAN",
+          "t": "MRS. DOUBTFIRE",
+          "left": 506,
+          "right": 567,
+          "cls": "block min-w-0 break-words font-stub-display uppercase leading-[1.03] text-stub-n"
+        },
+        {
+          "kind": "viewport",
+          "tag": "SPAN",
+          "t": "M",
+          "left": 527,
+          "right": 557,
+          "cls": "relative font-stub-display font-bold leading-none"
+        },
+        {
+          "kind": "viewport",
+          "tag": "SPAN",
+          "t": "1993",
+          "left": 517,
+          "right": 576,
+          "cls": "flex-none font-stub-label uppercase tracking-wider text-stub-slate"
+        },
+        {
+          "kind": "viewport",
+          "tag": "SPAN",
+          "t": "1993",
+          "left": 505,
+          "right": 568,
+          "cls": "font-stub-display font-bold tabular-nums text-stub-navy text-[32px]"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "TOMBSTONE T 1993 1993 Tombstone",
+          "left": -539,
+          "right": -439,
+          "cls": "shrink-0"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "TOMBSTONE T 1993 1993 Tombstone",
+          "left": 490,
+          "right": 584,
+          "cls": "origin-center transition-[transform,opacity] duration-200"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "TOMBSTONE T 1993 1993 Tombstone",
+          "left": 490,
+          "right": 584,
+          "cls": "relative"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "TOMBSTONE T 1993 1993 Tombstone",
+          "left": 490,
+          "right": 584,
+          "cls": "relative h-full w-full"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "TOMBSTONE T 1993",
+          "left": 502,
+          "right": 583,
+          "cls": "flex min-w-0 flex-1 flex-col"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "TOMBSTONE",
+          "left": 506,
+          "right": 566,
+          "cls": "flex-none"
+        },
+        {
+          "kind": "viewport",
+          "tag": "SPAN",
+          "t": "TOMBSTONE",
+          "left": 506,
+          "right": 566,
+          "cls": "block min-w-0 break-words font-stub-display uppercase leading-[1.03] text-stub-n"
+        },
+        {
+          "kind": "viewport",
+          "tag": "SPAN",
+          "t": "T",
+          "left": 530,
+          "right": 552,
+          "cls": "relative font-stub-display font-bold leading-none"
+        },
+        {
+          "kind": "viewport",
+          "tag": "SPAN",
+          "t": "1993",
+          "left": 517,
+          "right": 576,
+          "cls": "flex-none font-stub-label uppercase tracking-wider text-stub-slate"
+        },
+        {
+          "kind": "viewport",
+          "tag": "SPAN",
+          "t": "1993",
+          "left": 505,
+          "right": 568,
+          "cls": "font-stub-display font-bold tabular-nums text-stub-navy text-[32px]"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "JUMANJI J 1995 1995 Jumanji",
+          "left": -425,
+          "right": -325,
+          "cls": "shrink-0"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "JUMANJI J 1995 1995 Jumanji",
+          "left": 490,
+          "right": 584,
+          "cls": "origin-center transition-[transform,opacity] duration-200"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "JUMANJI J 1995 1995 Jumanji",
+          "left": 490,
+          "right": 584,
+          "cls": "relative"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "JUMANJI J 1995 1995 Jumanji",
+          "left": 490,
+          "right": 584,
+          "cls": "relative h-full w-full"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "JUMANJI J 1995",
+          "left": 502,
+          "right": 583,
+          "cls": "flex min-w-0 flex-1 flex-col"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "JUMANJI",
+          "left": 506,
+          "right": 566,
+          "cls": "flex-none"
+        },
+        {
+          "kind": "viewport",
+          "tag": "SPAN",
+          "t": "JUMANJI",
+          "left": 506,
+          "right": 566,
+          "cls": "block min-w-0 break-words font-stub-display uppercase leading-[1.03] text-stub-n"
+        },
+        {
+          "kind": "viewport",
+          "tag": "SPAN",
+          "t": "J",
+          "left": 531,
+          "right": 551,
+          "cls": "relative font-stub-display font-bold leading-none"
+        },
+        {
+          "kind": "viewport",
+          "tag": "SPAN",
+          "t": "1995",
+          "left": 517,
+          "right": 576,
+          "cls": "flex-none font-stub-label uppercase tracking-wider text-stub-slate"
+        },
+        {
+          "kind": "viewport",
+          "tag": "SPAN",
+          "t": "1995",
+          "left": 506,
+          "right": 568,
+          "cls": "font-stub-display font-bold tabular-nums text-stub-navy text-[32px]"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "UP U 2009 2009 Up",
+          "left": -311,
+          "right": -211,
+          "cls": "shrink-0"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "UP U 2009 2009 Up",
+          "left": 490,
+          "right": 584,
+          "cls": "origin-center transition-[transform,opacity] duration-200"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "UP U 2009 2009 Up",
+          "left": 490,
+          "right": 584,
+          "cls": "relative"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "UP U 2009 2009 Up",
+          "left": 490,
+          "right": 584,
+          "cls": "relative h-full w-full"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "UP U 2009",
+          "left": 502,
+          "right": 583,
+          "cls": "flex min-w-0 flex-1 flex-col"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "UP",
+          "left": 506,
+          "right": 566,
+          "cls": "flex-none"
+        },
+        {
+          "kind": "viewport",
+          "tag": "SPAN",
+          "t": "UP",
+          "left": 506,
+          "right": 566,
+          "cls": "block min-w-0 break-words font-stub-display uppercase leading-[1.03] text-stub-n"
+        },
+        {
+          "kind": "viewport",
+          "tag": "SPAN",
+          "t": "U",
+          "left": 529,
+          "right": 554,
+          "cls": "relative font-stub-display font-bold leading-none"
+        },
+        {
+          "kind": "viewport",
+          "tag": "SPAN",
+          "t": "2009",
+          "left": 517,
+          "right": 576,
+          "cls": "flex-none font-stub-label uppercase tracking-wider text-stub-slate"
+        },
+        {
+          "kind": "viewport",
+          "tag": "SPAN",
+          "t": "2009",
+          "left": 501,
+          "right": 573,
+          "cls": "font-stub-display font-bold tabular-nums text-stub-navy text-[32px]"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "HARRY POTTER AND THE DEATHLY HALLOWS – PART 2 H 20",
+          "left": -197,
+          "right": -97,
+          "cls": "shrink-0"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "HARRY POTTER AND THE DEATHLY HALLOWS – PART 2 H 20",
+          "left": 490,
+          "right": 584,
+          "cls": "origin-center transition-[transform,opacity] duration-200"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "HARRY POTTER AND THE DEATHLY HALLOWS – PART 2 H 20",
+          "left": 490,
+          "right": 584,
+          "cls": "relative"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "HARRY POTTER AND THE DEATHLY HALLOWS – PART 2 H 20",
+          "left": 490,
+          "right": 584,
+          "cls": "relative h-full w-full"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "HARRY POTTER AND THE DEATHLY HALLOWS – PART 2 H 20",
+          "left": 502,
+          "right": 583,
+          "cls": "flex min-w-0 flex-1 flex-col"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "HARRY POTTER AND THE DEATHLY HALLOWS – PART 2",
+          "left": 506,
+          "right": 567,
+          "cls": "flex-none"
+        },
+        {
+          "kind": "viewport",
+          "tag": "SPAN",
+          "t": "HARRY POTTER AND THE DEATHLY HALLOWS – PART 2",
+          "left": 506,
+          "right": 566,
+          "cls": "block min-w-0 break-words font-stub-display uppercase leading-[1.03] text-stub-n"
+        },
+        {
+          "kind": "viewport",
+          "tag": "SPAN",
+          "t": "H",
+          "left": 529,
+          "right": 555,
+          "cls": "relative font-stub-display font-bold leading-none"
+        },
+        {
+          "kind": "viewport",
+          "tag": "SPAN",
+          "t": "2011",
+          "left": 517,
+          "right": 576,
+          "cls": "flex-none font-stub-label uppercase tracking-wider text-stub-slate"
+        },
+        {
+          "kind": "viewport",
+          "tag": "SPAN",
+          "t": "2011",
+          "left": 506,
+          "right": 566,
+          "cls": "font-stub-display font-bold tabular-nums text-stub-navy text-[32px]"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "SPAN",
+          "t": "Harry Potter and the Deathly Hallows – Part 2",
+          "sw": 86,
+          "cw": 84,
+          "cls": "mt-1 line-clamp-3 px-1 font-stub-ui text-[10px] font-semibold leading-tight text"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "WRECK-IT RALPH W 2012 2012 Wreck-It Ralph",
+          "left": -83,
+          "right": 17,
+          "cls": "shrink-0"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "WRECK-IT RALPH W 2012 2012 Wreck-It Ralph",
+          "left": 488,
+          "right": 586,
+          "cls": "origin-center transition-[transform,opacity] duration-200"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "WRECK-IT RALPH W 2012 2012 Wreck-It Ralph",
+          "left": 488,
+          "right": 586,
+          "cls": "relative"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "WRECK-IT RALPH W 2012 2012 Wreck-It Ralph",
+          "left": 488,
+          "right": 586,
+          "cls": "relative h-full w-full"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "WRECK-IT RALPH W 2012",
+          "left": 502,
+          "right": 584,
+          "cls": "flex min-w-0 flex-1 flex-col"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "WRECK-IT RALPH",
+          "left": 506,
+          "right": 572,
+          "cls": "flex-none"
+        },
+        {
+          "kind": "viewport",
+          "tag": "SPAN",
+          "t": "WRECK-IT RALPH",
+          "left": 506,
+          "right": 572,
+          "cls": "block min-w-0 break-words font-stub-display uppercase leading-[1.03] text-stub-n"
+        },
+        {
+          "kind": "viewport",
+          "tag": "SPAN",
+          "t": "W",
+          "left": 525,
+          "right": 559,
+          "cls": "relative font-stub-display font-bold leading-none"
+        },
+        {
+          "kind": "viewport",
+          "tag": "SPAN",
+          "t": "2012",
+          "left": 512,
+          "right": 577,
+          "cls": "flex-none font-stub-label uppercase tracking-wider text-stub-slate"
+        },
+        {
+          "kind": "viewport",
+          "tag": "SPAN",
+          "t": "2012",
+          "left": 502,
+          "right": 571,
+          "cls": "font-stub-display font-bold tabular-nums text-stub-navy text-[32px]"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "LINCOLN L 2012 2012 Lincoln",
+          "left": 487,
+          "right": 587,
+          "cls": "origin-center transition-[transform,opacity] duration-200"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "LINCOLN L 2012 2012 Lincoln",
+          "left": 487,
+          "right": 587,
+          "cls": "relative"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "LINCOLN L 2012 2012 Lincoln",
+          "left": 487,
+          "right": 587,
+          "cls": "relative h-full w-full"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "LINCOLN L 2012",
+          "left": 502,
+          "right": 585,
+          "cls": "flex min-w-0 flex-1 flex-col"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "LINCOLN",
+          "left": 506,
+          "right": 578,
+          "cls": "flex-none"
+        },
+        {
+          "kind": "viewport",
+          "tag": "SPAN",
+          "t": "LINCOLN",
+          "left": 506,
+          "right": 578,
+          "cls": "block min-w-0 break-words font-stub-display uppercase leading-[1.03] text-stub-n"
+        },
+        {
+          "kind": "viewport",
+          "tag": "SPAN",
+          "t": "L",
+          "left": 531,
+          "right": 553,
+          "cls": "relative font-stub-display font-bold leading-none"
+        },
+        {
+          "kind": "viewport",
+          "tag": "SPAN",
+          "t": "2012",
+          "left": 506,
+          "right": 578,
+          "cls": "flex-none font-stub-label uppercase tracking-wider text-stub-slate"
+        },
+        {
+          "kind": "viewport",
+          "tag": "SPAN",
+          "t": "2012",
+          "left": 500,
+          "right": 574,
+          "cls": "font-stub-display font-bold tabular-nums text-stub-navy text-[32px]"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "GONE GIRL G 2014 2014 Gone Girl",
+          "left": 487,
+          "right": 587,
+          "cls": "origin-center transition-[transform,opacity] duration-200"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "GONE GIRL G 2014 2014 Gone Girl",
+          "left": 487,
+          "right": 587,
+          "cls": "relative"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "GONE GIRL G 2014 2014 Gone Girl",
+          "left": 487,
+          "right": 587,
+          "cls": "relative h-full w-full"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "GONE GIRL G 2014",
+          "left": 502,
+          "right": 585,
+          "cls": "flex min-w-0 flex-1 flex-col"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "GONE GIRL",
+          "left": 506,
+          "right": 578,
+          "cls": "flex-none"
+        },
+        {
+          "kind": "viewport",
+          "tag": "SPAN",
+          "t": "GONE GIRL",
+          "left": 506,
+          "right": 578,
+          "cls": "block min-w-0 break-words font-stub-display uppercase leading-[1.03] text-stub-n"
+        },
+        {
+          "kind": "viewport",
+          "tag": "SPAN",
+          "t": "G",
+          "left": 529,
+          "right": 555,
+          "cls": "relative font-stub-display font-bold leading-none"
+        },
+        {
+          "kind": "viewport",
+          "tag": "SPAN",
+          "t": "2014",
+          "left": 506,
+          "right": 578,
+          "cls": "flex-none font-stub-label uppercase tracking-wider text-stub-slate"
+        },
+        {
+          "kind": "viewport",
+          "tag": "SPAN",
+          "t": "2014",
+          "left": 501,
+          "right": 573,
+          "cls": "font-stub-display font-bold tabular-nums text-stub-navy text-[32px]"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "DEADPOOL D 2016 2016 Deadpool",
+          "left": 487,
+          "right": 587,
+          "cls": "origin-center transition-[transform,opacity] duration-200"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "DEADPOOL D 2016 2016 Deadpool",
+          "left": 487,
+          "right": 587,
+          "cls": "relative"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "DEADPOOL D 2016 2016 Deadpool",
+          "left": 487,
+          "right": 587,
+          "cls": "relative h-full w-full"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "DEADPOOL D 2016",
+          "left": 502,
+          "right": 585,
+          "cls": "flex min-w-0 flex-1 flex-col"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "DEADPOOL",
+          "left": 506,
+          "right": 578,
+          "cls": "flex-none"
+        },
+        {
+          "kind": "viewport",
+          "tag": "SPAN",
+          "t": "DEADPOOL",
+          "left": 506,
+          "right": 578,
+          "cls": "block min-w-0 break-words font-stub-display uppercase leading-[1.03] text-stub-n"
+        },
+        {
+          "kind": "viewport",
+          "tag": "SPAN",
+          "t": "D",
+          "left": 529,
+          "right": 555,
+          "cls": "relative font-stub-display font-bold leading-none"
+        },
+        {
+          "kind": "viewport",
+          "tag": "SPAN",
+          "t": "2016",
+          "left": 506,
+          "right": 578,
+          "cls": "flex-none font-stub-label uppercase tracking-wider text-stub-slate"
+        },
+        {
+          "kind": "viewport",
+          "tag": "SPAN",
+          "t": "2016",
+          "left": 500,
+          "right": 574,
+          "cls": "font-stub-display font-bold tabular-nums text-stub-navy text-[32px]"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "BLACK PANTHER B 2018 2018 Black Panther",
+          "left": 373,
+          "right": 473,
+          "cls": "shrink-0"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "BLACK PANTHER B 2018 2018 Black Panther",
+          "left": 488,
+          "right": 586,
+          "cls": "origin-center transition-[transform,opacity] duration-200"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "BLACK PANTHER B 2018 2018 Black Panther",
+          "left": 488,
+          "right": 586,
+          "cls": "relative"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "BLACK PANTHER B 2018 2018 Black Panther",
+          "left": 488,
+          "right": 586,
+          "cls": "relative h-full w-full"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "BLACK PANTHER B 2018",
+          "left": 502,
+          "right": 584,
+          "cls": "flex min-w-0 flex-1 flex-col"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "BLACK PANTHER",
+          "left": 511,
+          "right": 577,
+          "cls": "flex-none"
+        },
+        {
+          "kind": "viewport",
+          "tag": "SPAN",
+          "t": "BLACK PANTHER",
+          "left": 511,
+          "right": 577,
+          "cls": "block min-w-0 break-words font-stub-display uppercase leading-[1.03] text-stub-n"
+        },
+        {
+          "kind": "viewport",
+          "tag": "SPAN",
+          "t": "B",
+          "left": 529,
+          "right": 553,
+          "cls": "relative font-stub-display font-bold leading-none"
+        },
+        {
+          "kind": "viewport",
+          "tag": "SPAN",
+          "t": "2018",
+          "left": 506,
+          "right": 571,
+          "cls": "flex-none font-stub-label uppercase tracking-wider text-stub-slate"
+        },
+        {
+          "kind": "viewport",
+          "tag": "SPAN",
+          "t": "2018",
+          "left": 503,
+          "right": 571,
+          "cls": "font-stub-display font-bold tabular-nums text-stub-navy text-[32px]"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "THE LITTLE MERMAID (LIVE-ACTION) L 2023 2023 The L",
+          "left": 487,
+          "right": 587,
+          "cls": "shrink-0"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "THE LITTLE MERMAID (LIVE-ACTION) L 2023 2023 The L",
+          "left": 487,
+          "right": 587,
+          "cls": ""
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "THE LITTLE MERMAID (LIVE-ACTION) L 2023 2023 The L",
+          "left": 490,
+          "right": 584,
+          "cls": "origin-center transition-[transform,opacity] duration-200"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "THE LITTLE MERMAID (LIVE-ACTION) L 2023 2023 The L",
+          "left": 490,
+          "right": 584,
+          "cls": "relative"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "THE LITTLE MERMAID (LIVE-ACTION) L 2023 2023 The L",
+          "left": 490,
+          "right": 584,
+          "cls": "relative h-full w-full"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "THE LITTLE MERMAID (LIVE-ACTION) L 2023",
+          "left": 502,
+          "right": 583,
+          "cls": "flex min-w-0 flex-1 flex-col"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "THE LITTLE MERMAID (LIVE-ACTION)",
+          "left": 515,
+          "right": 576,
+          "cls": "flex-none"
+        },
+        {
+          "kind": "viewport",
+          "tag": "SPAN",
+          "t": "THE LITTLE MERMAID (LIVE-ACTION)",
+          "left": 516,
+          "right": 576,
+          "cls": "block min-w-0 break-words font-stub-display uppercase leading-[1.03] text-stub-n"
+        },
+        {
+          "kind": "viewport",
+          "tag": "SPAN",
+          "t": "L",
+          "left": 530,
+          "right": 551,
+          "cls": "relative font-stub-display font-bold leading-none"
+        },
+        {
+          "kind": "viewport",
+          "tag": "SPAN",
+          "t": "2023",
+          "left": 506,
+          "right": 566,
+          "cls": "flex-none font-stub-label uppercase tracking-wider text-stub-slate"
+        },
+        {
+          "kind": "viewport",
+          "tag": "SPAN",
+          "t": "2023",
+          "left": 504,
+          "right": 573,
+          "cls": "font-stub-display font-bold tabular-nums text-stub-navy text-[32px]"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "NEWER",
+          "left": 587,
+          "right": 615,
+          "cls": "chrono-gap relative flex shrink-0 items-center justify-center transition-[width]"
+        },
+        {
+          "kind": "viewport",
+          "tag": "SPAN",
+          "t": "NEWER",
+          "left": 587,
+          "right": 615,
+          "cls": "absolute bottom-1 font-stub-label text-[8px] font-bold uppercase tracking-[0.12e"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "DIV",
+          "t": "clean",
+          "sw": 39,
+          "cw": 1,
+          "cls": "sr-only"
+        }
+      ],
+      "noLabel": [],
+      "contrast": [
+        {
+          "t": "daily",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 9,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(31,58,82)",
+          "cls": "mt-1 font-stub-label text-[9px] font-bold uppercase tracking-[0.16em] "
+        },
+        {
+          "t": "· − 2",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 10,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(31,58,82)",
+          "cls": "text-stub-amber"
+        },
+        {
+          "t": "Cleared!",
+          "ratio": 1.78,
+          "need": 3,
+          "px": 36,
+          "color": "rgb(31, 58, 82)",
+          "bg": "rgb(0.938879,0.00208431,0.0256565)",
+          "cls": "font-stub-display text-4xl font-bold text-stub-navy"
+        },
+        {
+          "t": "Final score 0",
+          "ratio": 1.78,
+          "need": 4.5,
+          "px": 18,
+          "color": "rgb(31, 58, 82)",
+          "bg": "rgb(0.938879,0.00208431,0.0256565)",
+          "cls": "mt-3 font-stub-display text-lg font-bold tabular-nums text-stub-navy"
+        },
+        {
+          "t": "Lower is better",
+          "ratio": 3.82,
+          "need": 4.5,
+          "px": 10,
+          "color": "rgb(91, 107, 122)",
+          "bg": "rgb(0.938879,0.00208431,0.0256565)",
+          "cls": ""
+        },
+        {
+          "t": "Score 0 = 2 strokes − 2 credits",
+          "ratio": 1.78,
+          "need": 4.5,
+          "px": 10,
+          "color": "rgb(31, 58, 82)",
+          "bg": "rgb(0.938879,0.00208431,0.0256565)",
+          "cls": ""
+        },
+        {
+          "t": "2 strokes · 2 streak credits",
+          "ratio": 3.82,
+          "need": 4.5,
+          "px": 14,
+          "color": "rgb(91, 107, 122)",
+          "bg": "rgb(0.938879,0.00208431,0.0256565)",
+          "cls": "mt-1 font-stub-ui text-sm text-stub-slate tabular-nums"
+        },
+        {
+          "t": "day 62 · streak 1 · best 0",
+          "ratio": 3.82,
+          "need": 4.5,
+          "px": 11,
+          "color": "rgb(91, 107, 122)",
+          "bg": "rgb(0.938879,0.00208431,0.0256565)",
+          "cls": "mt-1 font-stub-label text-[11px] font-semibold uppercase tracking-wide"
+        },
+        {
+          "t": "Replay today's line",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 15,
+          "color": "rgb(31, 58, 82)",
+          "bg": "rgb(207,149,42)",
+          "cls": "app-result-action app-result-action--primary active:scale-[0.98]"
+        }
+      ]
+    },
+    {
+      "screen": "chrono-results-text",
+      "vp": "v390",
+      "text": "Cleared! | Final score 0 | LOWER IS BETTER | Score 0 = 2 strokes − 2 credits | 2 strokes · 2 streak credits | DAY 62 · STREAK 1 · BEST 0 | 🎬🟥🟩🟩🟩🟩🟩🟩🟩🟥🟩 | copy result | Replay today's line | Menu"
+    },
+    {
+      "screen": "chrono-share",
+      "vp": "v390",
+      "text": "Match Cut · Chronology\nscore 0 (2 strokes, 2 back)\n🎬🟥🟩🟩🟩🟩🟩🟩🟩🟥🟩"
+    },
+    {
+      "screen": "conn-board",
+      "vp": "v390",
+      "small": [
+        {
+          "tag": "BUTTON",
+          "name": "How to play",
+          "w": 32,
+          "h": 32,
+          "cls": "app-help-button daily-icon-button daily-icon-md text-[12px] font-extrabold active:scale-90"
+        }
+      ],
+      "overflow": [
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "OPPENHEIMER",
+          "sw": 84,
+          "cw": 78,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "THE MATRIX RESURRECTIONS",
+          "sw": 84,
+          "cw": 78,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "THE MATRIX REVOLUTIONS",
+          "sw": 84,
+          "cw": 78,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "SKYFALL",
+          "sw": 84,
+          "cw": 78,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "CHINATOWN",
+          "sw": 84,
+          "cw": 78,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "DUNKIRK",
+          "sw": 84,
+          "cw": 78,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "THE GRAND BUDAPEST HOTEL",
+          "sw": 84,
+          "cw": 78,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "THE MATRIX",
+          "sw": 84,
+          "cw": 78,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "BATMAN BEGINS",
+          "sw": 84,
+          "cw": 78,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "THE MATRIX RELOADED",
+          "sw": 84,
+          "cw": 78,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "THE DEPARTED",
+          "sw": 84,
+          "cw": 78,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "A FEW GOOD MEN",
+          "sw": 84,
+          "cw": 78,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "HARRY POTTER AND THE DEATHLY HALLOWS – PART 2",
+          "sw": 84,
+          "cw": 78,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "THE HURT LOCKER",
+          "sw": 84,
+          "cw": 78,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "BATMAN",
+          "sw": 84,
+          "cw": 78,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "A QUIET PLACE PART II",
+          "sw": 84,
+          "cw": 78,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        }
+      ],
+      "noLabel": [],
+      "contrast": [
+        {
+          "t": "daily",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 9,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(31,58,82)",
+          "cls": "mt-1 font-stub-label text-[9px] font-bold uppercase tracking-[0.16em] "
+        },
+        {
+          "t": "Mistakes left",
+          "ratio": 1.7,
+          "need": 4.5,
+          "px": 10,
+          "color": "oklab(0.938879 -0.00208431 0.0256565 / 0.85)",
+          "bg": "rgb(31,58,82)",
+          "cls": "connections-counter-full"
+        },
+        {
+          "t": "Today's bill",
+          "ratio": 2.2,
+          "need": 4.5,
+          "px": 9,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(240,235,216)",
+          "cls": "font-stub-label text-[9px] font-bold uppercase tracking-[0.16em] text-"
+        }
+      ]
+    },
+    {
+      "screen": "conn-help",
+      "vp": "v390",
+      "small": [
+        {
+          "tag": "BUTTON",
+          "name": "How to play",
+          "w": 32,
+          "h": 32,
+          "cls": "app-help-button daily-icon-button daily-icon-md text-[12px] font-extrabold active:scale-90"
+        }
+      ],
+      "overflow": [
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "OPPENHEIMER",
+          "sw": 84,
+          "cw": 78,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "THE MATRIX RESURRECTIONS",
+          "sw": 84,
+          "cw": 78,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "THE MATRIX REVOLUTIONS",
+          "sw": 84,
+          "cw": 78,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "SKYFALL",
+          "sw": 84,
+          "cw": 78,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "CHINATOWN",
+          "sw": 84,
+          "cw": 78,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "DUNKIRK",
+          "sw": 84,
+          "cw": 78,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "THE GRAND BUDAPEST HOTEL",
+          "sw": 84,
+          "cw": 78,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "THE MATRIX",
+          "sw": 84,
+          "cw": 78,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "BATMAN BEGINS",
+          "sw": 84,
+          "cw": 78,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "THE MATRIX RELOADED",
+          "sw": 84,
+          "cw": 78,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "THE DEPARTED",
+          "sw": 84,
+          "cw": 78,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "A FEW GOOD MEN",
+          "sw": 84,
+          "cw": 78,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "HARRY POTTER AND THE DEATHLY HALLOWS – PART 2",
+          "sw": 84,
+          "cw": 78,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "THE HURT LOCKER",
+          "sw": 84,
+          "cw": 78,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "BATMAN",
+          "sw": 84,
+          "cw": 78,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "A QUIET PLACE PART II",
+          "sw": 84,
+          "cw": 78,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        }
+      ],
+      "noLabel": [],
+      "contrast": [
+        {
+          "t": "daily",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 9,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(31,58,82)",
+          "cls": "mt-1 font-stub-label text-[9px] font-bold uppercase tracking-[0.16em] "
+        },
+        {
+          "t": "Mistakes left",
+          "ratio": 1.7,
+          "need": 4.5,
+          "px": 10,
+          "color": "oklab(0.938879 -0.00208431 0.0256565 / 0.85)",
+          "bg": "rgb(31,58,82)",
+          "cls": "connections-counter-full"
+        },
+        {
+          "t": "Today's bill",
+          "ratio": 2.2,
+          "need": 4.5,
+          "px": 9,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(240,235,216)",
+          "cls": "font-stub-label text-[9px] font-bold uppercase tracking-[0.16em] text-"
+        },
+        {
+          "t": "Match Cut",
+          "ratio": 2.2,
+          "need": 4.5,
+          "px": 10,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(240,235,216)",
+          "cls": "font-stub-label text-[10px] font-bold uppercase tracking-[0.16em] text"
+        },
+        {
+          "t": "Got it — keep playing",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 15,
+          "color": "rgb(31, 58, 82)",
+          "bg": "rgb(207,149,42)",
+          "cls": "min-h-12 w-full rounded-stub-pill bg-stub-amber px-7 py-3 font-stub-ui"
+        }
+      ]
+    },
+    {
+      "screen": "conn-oneaway",
+      "vp": "v390",
+      "small": [
+        {
+          "tag": "BUTTON",
+          "name": "How to play",
+          "w": 32,
+          "h": 32,
+          "cls": "app-help-button daily-icon-button daily-icon-md text-[12px] font-extrabold active:scale-90"
+        }
+      ],
+      "overflow": [
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "OPPENHEIMER",
+          "sw": 84,
+          "cw": 78,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "PICK 3 THE MATRIX RESURRECTIONS",
+          "sw": 84,
+          "cw": 78,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "THE MATRIX REVOLUTIONS",
+          "sw": 84,
+          "cw": 78,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "SKYFALL",
+          "sw": 84,
+          "cw": 78,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "CHINATOWN",
+          "sw": 84,
+          "cw": 78,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "DUNKIRK",
+          "sw": 84,
+          "cw": 78,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "THE GRAND BUDAPEST HOTEL",
+          "sw": 84,
+          "cw": 78,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "PICK 1 THE MATRIX",
+          "sw": 84,
+          "cw": 78,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "BATMAN BEGINS",
+          "sw": 84,
+          "cw": 78,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "PICK 2 THE MATRIX RELOADED",
+          "sw": 84,
+          "cw": 78,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "THE DEPARTED",
+          "sw": 84,
+          "cw": 78,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "A FEW GOOD MEN",
+          "sw": 84,
+          "cw": 78,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "HARRY POTTER AND THE DEATHLY HALLOWS – PART 2",
+          "sw": 84,
+          "cw": 78,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "THE HURT LOCKER",
+          "sw": 84,
+          "cw": 78,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "BATMAN",
+          "sw": 84,
+          "cw": 78,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "PICK 4 A QUIET PLACE PART II",
+          "sw": 84,
+          "cw": 78,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "DIV",
+          "t": "one away — swap one ticket",
+          "sw": 203,
+          "cw": 1,
+          "cls": "sr-only"
+        }
+      ],
+      "noLabel": [],
+      "contrast": [
+        {
+          "t": "daily",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 9,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(31,58,82)",
+          "cls": "mt-1 font-stub-label text-[9px] font-bold uppercase tracking-[0.16em] "
+        },
+        {
+          "t": "Mistakes left",
+          "ratio": 1.7,
+          "need": 4.5,
+          "px": 10,
+          "color": "oklab(0.938879 -0.00208431 0.0256565 / 0.85)",
+          "bg": "rgb(31,58,82)",
+          "cls": "connections-counter-full"
+        },
+        {
+          "t": "Today's bill",
+          "ratio": 2.2,
+          "need": 4.5,
+          "px": 9,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(240,235,216)",
+          "cls": "font-stub-label text-[9px] font-bold uppercase tracking-[0.16em] text-"
+        },
+        {
+          "t": "PICK 3",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 7,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(31,58,82)",
+          "cls": "pointer-events-none absolute right-1.5 top-1.5 rounded-sm bg-stub-navy"
+        },
+        {
+          "t": "PICK 1",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 7,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(31,58,82)",
+          "cls": "pointer-events-none absolute right-1.5 top-1.5 rounded-sm bg-stub-navy"
+        },
+        {
+          "t": "PICK 2",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 7,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(31,58,82)",
+          "cls": "pointer-events-none absolute right-1.5 top-1.5 rounded-sm bg-stub-navy"
+        },
+        {
+          "t": "PICK 4",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 7,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(31,58,82)",
+          "cls": "pointer-events-none absolute right-1.5 top-1.5 rounded-sm bg-stub-navy"
+        },
+        {
+          "t": "Submit",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 11,
+          "color": "rgb(31, 58, 82)",
+          "bg": "rgb(207,149,42)",
+          "cls": "min-h-11 flex-1 rounded-stub-pill px-4 font-stub-label text-[11px] fon"
+        }
+      ]
+    },
+    {
+      "screen": "conn-toast",
+      "vp": "v390",
+      "text": "one away — swap one ticket"
+    },
+    {
+      "screen": "conn-results",
+      "vp": "v390",
+      "small": [
+        {
+          "tag": "BUTTON",
+          "name": "How to play",
+          "w": 32,
+          "h": 32,
+          "cls": "app-help-button daily-icon-button daily-icon-md text-[12px] font-extrabold active:scale-90"
+        }
+      ],
+      "overflow": [
+        {
+          "kind": "CLIPPED",
+          "tag": "DIV",
+          "t": "MATCH CUT · CONNECTIONS Solved! 1 mistake on the w",
+          "sw": 334,
+          "cw": 322,
+          "cls": "connections-result-ticket relative w-full overflow-hidden rounded-[22px] border-"
+        }
+      ],
+      "noLabel": [],
+      "contrast": [
+        {
+          "t": "daily",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 9,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(31,58,82)",
+          "cls": "mt-1 font-stub-label text-[9px] font-bold uppercase tracking-[0.16em] "
+        },
+        {
+          "t": "Mistakes left",
+          "ratio": 1.7,
+          "need": 4.5,
+          "px": 10,
+          "color": "oklab(0.938879 -0.00208431 0.0256565 / 0.85)",
+          "bg": "rgb(31,58,82)",
+          "cls": "connections-counter-full"
+        },
+        {
+          "t": "Bill cleared",
+          "ratio": 2.2,
+          "need": 4.5,
+          "px": 9,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(240,235,216)",
+          "cls": "font-stub-label text-[9px] font-bold uppercase tracking-[0.16em] text-"
+        },
+        {
+          "t": "Group 1 · Actor",
+          "ratio": 1.61,
+          "need": 4.5,
+          "px": 8,
+          "color": "oklab(0.938879 -0.00208431 0.0256565 / 0.7)",
+          "bg": "rgb(31,58,82)",
+          "cls": "font-stub-label text-[8px] font-bold uppercase tracking-[0.16em] text-"
+        },
+        {
+          "t": "The Matrix · The Matrix Reloaded · The Matri",
+          "ratio": 1.68,
+          "need": 4.5,
+          "px": 9,
+          "color": "oklab(0.938879 -0.00208431 0.0256565 / 0.82)",
+          "bg": "rgb(31,58,82)",
+          "cls": "mt-1 block font-stub-ui text-[9px] font-semibold leading-tight text-st"
+        },
+        {
+          "t": "Group 2 · Actor",
+          "ratio": 2.17,
+          "need": 4.5,
+          "px": 8,
+          "color": "oklab(0.938879 -0.00208431 0.0256565 / 0.7)",
+          "bg": "rgb(88,72,108)",
+          "cls": "font-stub-label text-[8px] font-bold uppercase tracking-[0.16em] text-"
+        },
+        {
+          "t": "A Quiet Place Part II · Batman Begins · Dunk",
+          "ratio": 2.35,
+          "need": 4.5,
+          "px": 9,
+          "color": "oklab(0.938879 -0.00208431 0.0256565 / 0.82)",
+          "bg": "rgb(88,72,108)",
+          "cls": "mt-1 block font-stub-ui text-[9px] font-semibold leading-tight text-st"
+        },
+        {
+          "t": "Group 3 · Actor",
+          "ratio": 2.36,
+          "need": 4.5,
+          "px": 8,
+          "color": "oklab(0.938879 -0.00208431 0.0256565 / 0.7)",
+          "bg": "rgb(65,88,110)",
+          "cls": "font-stub-label text-[8px] font-bold uppercase tracking-[0.16em] text-"
+        },
+        {
+          "t": "A Few Good Men · Batman · Chinatown · The De",
+          "ratio": 2.59,
+          "need": 4.5,
+          "px": 9,
+          "color": "oklab(0.938879 -0.00208431 0.0256565 / 0.82)",
+          "bg": "rgb(65,88,110)",
+          "cls": "mt-1 block font-stub-ui text-[9px] font-semibold leading-tight text-st"
+        },
+        {
+          "t": "Group 4 · Actor",
+          "ratio": 2.98,
+          "need": 4.5,
+          "px": 8,
+          "color": "oklab(0.938879 -0.00208431 0.0256565 / 0.7)",
+          "bg": "rgb(91,107,122)",
+          "cls": "font-stub-label text-[8px] font-bold uppercase tracking-[0.16em] text-"
+        },
+        {
+          "t": "Harry Potter and the Deathly Hallows – Part ",
+          "ratio": 3.39,
+          "need": 4.5,
+          "px": 9,
+          "color": "oklab(0.938879 -0.00208431 0.0256565 / 0.82)",
+          "bg": "rgb(91,107,122)",
+          "cls": "mt-1 block font-stub-ui text-[9px] font-semibold leading-tight text-st"
+        },
+        {
+          "t": "Match Cut · Connections",
+          "ratio": 2.51,
+          "need": 4.5,
+          "px": 9,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(252,249,248)",
+          "cls": "font-stub-label text-[9px] font-bold uppercase tracking-[0.2em] text-s"
+        },
+        {
+          "t": "Replay today's grid",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 15,
+          "color": "rgb(31, 58, 82)",
+          "bg": "rgb(207,149,42)",
+          "cls": "app-result-action app-result-action--primary active:scale-[0.98]"
+        }
+      ]
+    },
+    {
+      "screen": "conn-results-text",
+      "vp": "v390",
+      "text": "MATCH CUT · CONNECTIONS | Solved! | 1 mistake on the way. | FEWER MISTAKES IS BETTER | 1 of 4 used | DAY 62 · STREAK 1 · BEST 1 | YOUR GUESSES | 🟦🟦🟦🟪 | 🟦🟦🟦🟦 | 🟪🟪🟪🟪 | 🟥🟥🟥🟥 | 🟩🟩🟩🟩 | copy result | Replay today's grid | Menu"
+    },
+    {
+      "screen": "conn-share",
+      "vp": "v390",
+      "text": "Match Cut · Connections\nsolved · 1 mistake\n🟦🟦🟦🟪\n🟦🟦🟦🟦\n🟪🟪🟪🟪\n🟥🟥🟥🟥\n🟩🟩🟩🟩"
+    },
+    {
+      "screen": "menu-returning",
+      "vp": "v390",
+      "small": [
+        {
+          "tag": "BUTTON",
+          "name": "How to play",
+          "w": 32,
+          "h": 32,
+          "cls": "app-help-button daily-icon-button text-[13px] font-extrabold active:scale-90"
+        }
+      ],
+      "overflow": [],
+      "noLabel": [],
+      "contrast": [
+        {
+          "t": "Tonight's program",
+          "ratio": 2.2,
+          "need": 4.5,
+          "px": 11,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(240,235,216)",
+          "cls": "font-stub-label text-[11px] font-bold uppercase tracking-[0.16em] text"
+        },
+        {
+          "t": "Start here · daily",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 11,
+          "color": "rgb(31, 58, 82)",
+          "bg": "rgb(207,149,42)",
+          "cls": "menu-card-kicker mb-2 inline-flex rounded-stub-pill bg-stub-amber px-2"
+        },
+        {
+          "t": "✓ streak 1",
+          "ratio": 2.51,
+          "need": 4.5,
+          "px": 10,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(252,249,248)",
+          "cls": "rounded-stub-pill bg-stub-amber/15 px-2 py-0.5 font-stub-label text-[1"
+        },
+        {
+          "t": "Matinee",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 10,
+          "color": "rgb(31, 58, 82)",
+          "bg": "rgb(207,149,42)",
+          "cls": "min-h-11 flex-1 whitespace-nowrap rounded-stub-pill px-2 py-2 font-stu"
+        }
+      ]
+    },
+    {
+      "screen": "chrono-miss",
+      "vp": "v375",
+      "small": [
+        {
+          "tag": "BUTTON",
+          "name": "How to play",
+          "w": 32,
+          "h": 32,
+          "cls": "app-help-button daily-icon-button daily-icon-md text-[12px] font-extrabold active:scale-90"
+        }
+      ],
+      "overflow": [
+        {
+          "kind": "CLIPPED",
+          "tag": "SPAN",
+          "t": "Deadpool, movie 1 of 2",
+          "sw": 165,
+          "cw": 1,
+          "cls": "sr-only"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "DIV",
+          "t": "2016 Deadpool",
+          "sw": 63,
+          "cw": 60,
+          "cls": "absolute inset-0 flex flex-col items-center justify-center overflow-hidden text-"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "DIV",
+          "t": "2023 The Little Mermaid (Live-Action)",
+          "sw": 63,
+          "cw": 60,
+          "cls": "absolute inset-0 flex flex-col items-center justify-center overflow-hidden text-"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "DIV",
+          "t": "actually 2016",
+          "sw": 96,
+          "cw": 1,
+          "cls": "sr-only"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "TOMBSTONE",
+          "sw": 182,
+          "cw": 176,
+          "cls": "chrono-choice-ticket relative flex min-h-11 min-w-0 items-center justify-center "
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "HARRY POTTER AND THE DEATHLY HALLOWS – PART 2",
+          "sw": 182,
+          "cw": 176,
+          "cls": "chrono-choice-ticket relative flex min-h-11 min-w-0 items-center justify-center "
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "UP",
+          "sw": 182,
+          "cw": 176,
+          "cls": "chrono-choice-ticket relative flex min-h-11 min-w-0 items-center justify-center "
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "WRECK-IT RALPH",
+          "sw": 182,
+          "cw": 176,
+          "cls": "chrono-choice-ticket relative flex min-h-11 min-w-0 items-center justify-center "
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "JUMANJI",
+          "sw": 182,
+          "cw": 176,
+          "cls": "chrono-choice-ticket relative flex min-h-11 min-w-0 items-center justify-center "
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "LINCOLN",
+          "sw": 182,
+          "cw": 176,
+          "cls": "chrono-choice-ticket relative flex min-h-11 min-w-0 items-center justify-center "
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "MRS. DOUBTFIRE",
+          "sw": 182,
+          "cw": 176,
+          "cls": "chrono-choice-ticket relative flex min-h-11 min-w-0 items-center justify-center "
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "BLACK PANTHER",
+          "sw": 182,
+          "cw": 176,
+          "cls": "chrono-choice-ticket relative flex min-h-11 min-w-0 items-center justify-center "
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "GONE GIRL",
+          "sw": 182,
+          "cw": 176,
+          "cls": "chrono-choice-ticket relative flex min-h-11 min-w-0 items-center justify-center "
+        }
+      ],
+      "noLabel": [],
+      "contrast": [
+        {
+          "t": "daily",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 9,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(31,58,82)",
+          "cls": "mt-1 font-stub-label text-[9px] font-bold uppercase tracking-[0.16em] "
+        }
+      ]
+    },
+    {
+      "screen": "chrono-say",
+      "vp": "v375",
+      "text": "actually 2016"
+    },
+    {
+      "screen": "chrono-results",
+      "vp": "v375",
+      "small": [
+        {
+          "tag": "BUTTON",
+          "name": "How to play",
+          "w": 32,
+          "h": 32,
+          "cls": "app-help-button daily-icon-button daily-icon-md text-[12px] font-extrabold active:scale-90"
+        }
+      ],
+      "overflow": [
+        {
+          "kind": "CLIPPED",
+          "tag": "SPAN",
+          "t": "Gone Girl, movie 8 of 11",
+          "sw": 171,
+          "cw": 1,
+          "cls": "sr-only"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "OLDER MRS. DOUBTFIRE M 1993 1993 Mrs. Doubtfire TO",
+          "left": -419,
+          "right": 481,
+          "cls": "mx-auto flex w-max items-center"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "OLDER",
+          "left": -419,
+          "right": -391,
+          "cls": "chrono-gap relative flex shrink-0 items-center justify-center transition-[width]"
+        },
+        {
+          "kind": "viewport",
+          "tag": "SPAN",
+          "t": "OLDER",
+          "left": -419,
+          "right": -391,
+          "cls": "absolute bottom-1 font-stub-label text-[8px] font-bold uppercase tracking-[0.12e"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "MRS. DOUBTFIRE M 1993 1993 Mrs. Doubtfire",
+          "left": -391,
+          "right": -327,
+          "cls": "shrink-0"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "MRS. DOUBTFIRE M 1993 1993 Mrs. Doubtfire",
+          "left": -391,
+          "right": -327,
+          "cls": ""
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "MRS. DOUBTFIRE M 1993 1993 Mrs. Doubtfire",
+          "left": -390,
+          "right": -328,
+          "cls": "origin-center transition-[transform,opacity] duration-200"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "MRS. DOUBTFIRE M 1993 1993 Mrs. Doubtfire",
+          "left": -390,
+          "right": -328,
+          "cls": "relative"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "MRS. DOUBTFIRE M 1993 1993 Mrs. Doubtfire",
+          "left": -390,
+          "right": -328,
+          "cls": "relative h-full w-full"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "MRS. DOUBTFIRE M 1993",
+          "left": -380,
+          "right": -330,
+          "cls": "flex min-w-0 flex-1 flex-col"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "MRS. DOUBTFIRE",
+          "left": -377,
+          "right": -341,
+          "cls": "flex-none"
+        },
+        {
+          "kind": "viewport",
+          "tag": "SPAN",
+          "t": "MRS. DOUBTFIRE",
+          "left": -377,
+          "right": -341,
+          "cls": "block min-w-0 break-words font-stub-display uppercase leading-[1.03] text-stub-n"
+        },
+        {
+          "kind": "viewport",
+          "tag": "SPAN",
+          "t": "M",
+          "left": -365,
+          "right": -346,
+          "cls": "relative font-stub-display font-bold leading-none"
+        },
+        {
+          "kind": "viewport",
+          "tag": "SPAN",
+          "t": "1993",
+          "left": -370,
+          "right": -335,
+          "cls": "flex-none font-stub-label uppercase tracking-wider text-stub-slate"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "DIV",
+          "t": "1993 Mrs. Doubtfire",
+          "sw": 63,
+          "cw": 60,
+          "cls": "absolute inset-0 flex flex-col items-center justify-center overflow-hidden text-"
+        },
+        {
+          "kind": "viewport",
+          "tag": "SPAN",
+          "t": "1993",
+          "left": -381,
+          "right": -338,
+          "cls": "font-stub-display font-bold tabular-nums text-stub-navy text-[22px]"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "TOMBSTONE T 1993 1993 Tombstone",
+          "left": -313,
+          "right": -249,
+          "cls": "shrink-0"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "TOMBSTONE T 1993 1993 Tombstone",
+          "left": -313,
+          "right": -249,
+          "cls": ""
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "TOMBSTONE T 1993 1993 Tombstone",
+          "left": -312,
+          "right": -250,
+          "cls": "origin-center transition-[transform,opacity] duration-200"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "TOMBSTONE T 1993 1993 Tombstone",
+          "left": -312,
+          "right": -250,
+          "cls": "relative"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "TOMBSTONE T 1993 1993 Tombstone",
+          "left": -312,
+          "right": -250,
+          "cls": "relative h-full w-full"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "TOMBSTONE T 1993",
+          "left": -302,
+          "right": -252,
+          "cls": "flex min-w-0 flex-1 flex-col"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "TOMBSTONE",
+          "left": -299,
+          "right": -264,
+          "cls": "flex-none"
+        },
+        {
+          "kind": "viewport",
+          "tag": "SPAN",
+          "t": "TOMBSTONE",
+          "left": -299,
+          "right": -264,
+          "cls": "block min-w-0 break-words font-stub-display uppercase leading-[1.03] text-stub-n"
+        },
+        {
+          "kind": "viewport",
+          "tag": "SPAN",
+          "t": "T",
+          "left": -285,
+          "right": -271,
+          "cls": "relative font-stub-display font-bold leading-none"
+        },
+        {
+          "kind": "viewport",
+          "tag": "SPAN",
+          "t": "1993",
+          "left": -292,
+          "right": -257,
+          "cls": "flex-none font-stub-label uppercase tracking-wider text-stub-slate"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "DIV",
+          "t": "1993 Tombstone",
+          "sw": 67,
+          "cw": 60,
+          "cls": "absolute inset-0 flex flex-col items-center justify-center overflow-hidden text-"
+        },
+        {
+          "kind": "viewport",
+          "tag": "SPAN",
+          "t": "1993",
+          "left": -303,
+          "right": -260,
+          "cls": "font-stub-display font-bold tabular-nums text-stub-navy text-[22px]"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "JUMANJI J 1995 1995 Jumanji",
+          "left": -235,
+          "right": -171,
+          "cls": "shrink-0"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "JUMANJI J 1995 1995 Jumanji",
+          "left": -235,
+          "right": -171,
+          "cls": ""
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "JUMANJI J 1995 1995 Jumanji",
+          "left": -234,
+          "right": -172,
+          "cls": "origin-center transition-[transform,opacity] duration-200"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "JUMANJI J 1995 1995 Jumanji",
+          "left": -234,
+          "right": -172,
+          "cls": "relative"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "JUMANJI J 1995 1995 Jumanji",
+          "left": -234,
+          "right": -172,
+          "cls": "relative h-full w-full"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "JUMANJI J 1995",
+          "left": -224,
+          "right": -174,
+          "cls": "flex min-w-0 flex-1 flex-col"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "JUMANJI",
+          "left": -221,
+          "right": -185,
+          "cls": "flex-none"
+        },
+        {
+          "kind": "viewport",
+          "tag": "SPAN",
+          "t": "JUMANJI",
+          "left": -221,
+          "right": -186,
+          "cls": "block min-w-0 break-words font-stub-display uppercase leading-[1.03] text-stub-n"
+        },
+        {
+          "kind": "viewport",
+          "tag": "SPAN",
+          "t": "J",
+          "left": -206,
+          "right": -193,
+          "cls": "relative font-stub-display font-bold leading-none"
+        },
+        {
+          "kind": "viewport",
+          "tag": "SPAN",
+          "t": "1995",
+          "left": -214,
+          "right": -179,
+          "cls": "flex-none font-stub-label uppercase tracking-wider text-stub-slate"
+        },
+        {
+          "kind": "viewport",
+          "tag": "SPAN",
+          "t": "1995",
+          "left": -225,
+          "right": -182,
+          "cls": "font-stub-display font-bold tabular-nums text-stub-navy text-[22px]"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "UP U 2009 2009 Up",
+          "left": -157,
+          "right": -93,
+          "cls": "shrink-0"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "UP U 2009 2009 Up",
+          "left": -157,
+          "right": -93,
+          "cls": ""
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "UP U 2009 2009 Up",
+          "left": -156,
+          "right": -94,
+          "cls": "origin-center transition-[transform,opacity] duration-200"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "UP U 2009 2009 Up",
+          "left": -156,
+          "right": -94,
+          "cls": "relative"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "UP U 2009 2009 Up",
+          "left": -156,
+          "right": -94,
+          "cls": "relative h-full w-full"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "UP U 2009",
+          "left": -146,
+          "right": -96,
+          "cls": "flex min-w-0 flex-1 flex-col"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "UP",
+          "left": -143,
+          "right": -107,
+          "cls": "flex-none"
+        },
+        {
+          "kind": "viewport",
+          "tag": "SPAN",
+          "t": "UP",
+          "left": -143,
+          "right": -107,
+          "cls": "block min-w-0 break-words font-stub-display uppercase leading-[1.03] text-stub-n"
+        },
+        {
+          "kind": "viewport",
+          "tag": "SPAN",
+          "t": "U",
+          "left": -130,
+          "right": -113,
+          "cls": "relative font-stub-display font-bold leading-none"
+        },
+        {
+          "kind": "viewport",
+          "tag": "SPAN",
+          "t": "2009",
+          "left": -136,
+          "right": -101,
+          "cls": "flex-none font-stub-label uppercase tracking-wider text-stub-slate"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "DIV",
+          "t": "2009 Up",
+          "sw": 64,
+          "cw": 60,
+          "cls": "absolute inset-0 flex flex-col items-center justify-center overflow-hidden text-"
+        },
+        {
+          "kind": "viewport",
+          "tag": "SPAN",
+          "t": "2009",
+          "left": -150,
+          "right": -100,
+          "cls": "font-stub-display font-bold tabular-nums text-stub-navy text-[22px]"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "HARRY POTTER AND THE DEATHLY HALLOWS – PART 2 H 20",
+          "left": -79,
+          "right": -15,
+          "cls": "shrink-0"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "HARRY POTTER AND THE DEATHLY HALLOWS – PART 2 H 20",
+          "left": -79,
+          "right": -15,
+          "cls": ""
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "HARRY POTTER AND THE DEATHLY HALLOWS – PART 2 H 20",
+          "left": -78,
+          "right": -16,
+          "cls": "origin-center transition-[transform,opacity] duration-200"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "HARRY POTTER AND THE DEATHLY HALLOWS – PART 2 H 20",
+          "left": -78,
+          "right": -16,
+          "cls": "relative"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "HARRY POTTER AND THE DEATHLY HALLOWS – PART 2 H 20",
+          "left": -78,
+          "right": -16,
+          "cls": "relative h-full w-full"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "HARRY POTTER AND THE DEATHLY HALLOWS – PART 2 H 20",
+          "left": -68,
+          "right": -18,
+          "cls": "flex min-w-0 flex-1 flex-col"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "HARRY POTTER AND THE DEATHLY HALLOWS – PART 2",
+          "left": -65,
+          "right": -29,
+          "cls": "flex-none"
+        },
+        {
+          "kind": "viewport",
+          "tag": "SPAN",
+          "t": "HARRY POTTER AND THE DEATHLY HALLOWS – PART 2",
+          "left": -65,
+          "right": -29,
+          "cls": "block min-w-0 break-words font-stub-display uppercase leading-[1.03] text-stub-n"
+        },
+        {
+          "kind": "viewport",
+          "tag": "SPAN",
+          "t": "H",
+          "left": -52,
+          "right": -35,
+          "cls": "relative font-stub-display font-bold leading-none"
+        },
+        {
+          "kind": "viewport",
+          "tag": "SPAN",
+          "t": "2011",
+          "left": -58,
+          "right": -23,
+          "cls": "flex-none font-stub-label uppercase tracking-wider text-stub-slate"
+        },
+        {
+          "kind": "viewport",
+          "tag": "SPAN",
+          "t": "2011",
+          "left": -68,
+          "right": -27,
+          "cls": "font-stub-display font-bold tabular-nums text-stub-navy text-[22px]"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "SPAN",
+          "t": "Harry Potter and the Deathly Hallows – Part 2",
+          "sw": 50,
+          "cw": 48,
+          "cls": "mt-1 line-clamp-3 px-1 font-stub-ui text-[10px] font-semibold leading-tight text"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "DIV",
+          "t": "2016 Deadpool",
+          "sw": 63,
+          "cw": 60,
+          "cls": "absolute inset-0 flex flex-col items-center justify-center overflow-hidden text-"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "THE LITTLE MERMAID (LIVE-ACTION) L 2023 2023 The L",
+          "left": 389,
+          "right": 453,
+          "cls": "shrink-0"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "THE LITTLE MERMAID (LIVE-ACTION) L 2023 2023 The L",
+          "left": 389,
+          "right": 453,
+          "cls": ""
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "THE LITTLE MERMAID (LIVE-ACTION) L 2023 2023 The L",
+          "left": 390,
+          "right": 452,
+          "cls": "origin-center transition-[transform,opacity] duration-200"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "THE LITTLE MERMAID (LIVE-ACTION) L 2023 2023 The L",
+          "left": 390,
+          "right": 452,
+          "cls": "relative"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "THE LITTLE MERMAID (LIVE-ACTION) L 2023 2023 The L",
+          "left": 390,
+          "right": 452,
+          "cls": "relative h-full w-full"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "THE LITTLE MERMAID (LIVE-ACTION) L 2023",
+          "left": 400,
+          "right": 450,
+          "cls": "flex min-w-0 flex-1 flex-col"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "THE LITTLE MERMAID (LIVE-ACTION)",
+          "left": 409,
+          "right": 445,
+          "cls": "flex-none"
+        },
+        {
+          "kind": "viewport",
+          "tag": "SPAN",
+          "t": "THE LITTLE MERMAID (LIVE-ACTION)",
+          "left": 410,
+          "right": 445,
+          "cls": "block min-w-0 break-words font-stub-display uppercase leading-[1.03] text-stub-n"
+        },
+        {
+          "kind": "viewport",
+          "tag": "SPAN",
+          "t": "L",
+          "left": 417,
+          "right": 431,
+          "cls": "relative font-stub-display font-bold leading-none"
+        },
+        {
+          "kind": "viewport",
+          "tag": "SPAN",
+          "t": "2023",
+          "left": 403,
+          "right": 438,
+          "cls": "flex-none font-stub-label uppercase tracking-wider text-stub-slate"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "DIV",
+          "t": "2023 The Little Mermaid (Live-Action)",
+          "sw": 63,
+          "cw": 60,
+          "cls": "absolute inset-0 flex flex-col items-center justify-center overflow-hidden text-"
+        },
+        {
+          "kind": "viewport",
+          "tag": "SPAN",
+          "t": "2023",
+          "left": 398,
+          "right": 446,
+          "cls": "font-stub-display font-bold tabular-nums text-stub-navy text-[22px]"
+        },
+        {
+          "kind": "viewport",
+          "tag": "DIV",
+          "t": "NEWER",
+          "left": 453,
+          "right": 481,
+          "cls": "chrono-gap relative flex shrink-0 items-center justify-center transition-[width]"
+        },
+        {
+          "kind": "viewport",
+          "tag": "SPAN",
+          "t": "NEWER",
+          "left": 453,
+          "right": 481,
+          "cls": "absolute bottom-1 font-stub-label text-[8px] font-bold uppercase tracking-[0.12e"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "DIV",
+          "t": "streak ×3 — stroke back",
+          "sw": 175,
+          "cw": 1,
+          "cls": "sr-only"
+        }
+      ],
+      "noLabel": [],
+      "contrast": [
+        {
+          "t": "daily",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 9,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(31,58,82)",
+          "cls": "mt-1 font-stub-label text-[9px] font-bold uppercase tracking-[0.16em] "
+        },
+        {
+          "t": "· − 3",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 10,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(31,58,82)",
+          "cls": "text-stub-amber"
+        },
+        {
+          "t": "Cleared!",
+          "ratio": 1.78,
+          "need": 3,
+          "px": 36,
+          "color": "rgb(31, 58, 82)",
+          "bg": "rgb(0.938879,0.00208431,0.0256565)",
+          "cls": "font-stub-display text-4xl font-bold text-stub-navy"
+        },
+        {
+          "t": "Final score -2",
+          "ratio": 1.78,
+          "need": 4.5,
+          "px": 18,
+          "color": "rgb(31, 58, 82)",
+          "bg": "rgb(0.938879,0.00208431,0.0256565)",
+          "cls": "mt-3 font-stub-display text-lg font-bold tabular-nums text-stub-navy"
+        },
+        {
+          "t": "Lower is better",
+          "ratio": 3.82,
+          "need": 4.5,
+          "px": 10,
+          "color": "rgb(91, 107, 122)",
+          "bg": "rgb(0.938879,0.00208431,0.0256565)",
+          "cls": ""
+        },
+        {
+          "t": "Score -2 = 1 strokes − 3 credits",
+          "ratio": 1.78,
+          "need": 4.5,
+          "px": 10,
+          "color": "rgb(31, 58, 82)",
+          "bg": "rgb(0.938879,0.00208431,0.0256565)",
+          "cls": ""
+        },
+        {
+          "t": "1 stroke · 3 streak credits",
+          "ratio": 3.82,
+          "need": 4.5,
+          "px": 14,
+          "color": "rgb(91, 107, 122)",
+          "bg": "rgb(0.938879,0.00208431,0.0256565)",
+          "cls": "mt-1 font-stub-ui text-sm text-stub-slate tabular-nums"
+        },
+        {
+          "t": "day 62 · streak 1 · best -2",
+          "ratio": 3.82,
+          "need": 4.5,
+          "px": 11,
+          "color": "rgb(91, 107, 122)",
+          "bg": "rgb(0.938879,0.00208431,0.0256565)",
+          "cls": "mt-1 font-stub-label text-[11px] font-semibold uppercase tracking-wide"
+        },
+        {
+          "t": "Replay today's line",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 15,
+          "color": "rgb(31, 58, 82)",
+          "bg": "rgb(207,149,42)",
+          "cls": "app-result-action app-result-action--primary active:scale-[0.98]"
+        }
+      ]
+    },
+    {
+      "screen": "chrono-results-text",
+      "vp": "v375",
+      "text": "Cleared! | Final score -2 | LOWER IS BETTER | Score -2 = 1 strokes − 3 credits | 1 stroke · 3 streak credits | DAY 62 · STREAK 1 · BEST -2 | 🎬🟥🟩🟩🟩🟩🟩🟩🟩🟩🟩 | copy result | Replay today's line | Menu"
+    },
+    {
+      "screen": "chrono-share",
+      "vp": "v375",
+      "text": "Match Cut · Chronology\nscore -2 (1 stroke, 3 back)\n🎬🟥🟩🟩🟩🟩🟩🟩🟩🟩🟩"
+    },
+    {
+      "screen": "conn-board",
+      "vp": "v375",
+      "small": [
+        {
+          "tag": "BUTTON",
+          "name": "How to play",
+          "w": 32,
+          "h": 32,
+          "cls": "app-help-button daily-icon-button daily-icon-md text-[12px] font-extrabold active:scale-90"
+        }
+      ],
+      "overflow": [
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "OPPENHEIMER",
+          "sw": 81,
+          "cw": 75,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "THE MATRIX RESURRECTIONS",
+          "sw": 81,
+          "cw": 75,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "THE MATRIX REVOLUTIONS",
+          "sw": 81,
+          "cw": 75,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "SKYFALL",
+          "sw": 81,
+          "cw": 75,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "CHINATOWN",
+          "sw": 81,
+          "cw": 75,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "DUNKIRK",
+          "sw": 81,
+          "cw": 75,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "THE GRAND BUDAPEST HOTEL",
+          "sw": 81,
+          "cw": 75,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "THE MATRIX",
+          "sw": 81,
+          "cw": 75,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "BATMAN BEGINS",
+          "sw": 81,
+          "cw": 75,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "THE MATRIX RELOADED",
+          "sw": 81,
+          "cw": 75,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "THE DEPARTED",
+          "sw": 81,
+          "cw": 75,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "A FEW GOOD MEN",
+          "sw": 81,
+          "cw": 75,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "HARRY POTTER AND THE DEATHLY HALLOWS – PART 2",
+          "sw": 81,
+          "cw": 75,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "THE HURT LOCKER",
+          "sw": 81,
+          "cw": 75,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "BATMAN",
+          "sw": 81,
+          "cw": 75,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "A QUIET PLACE PART II",
+          "sw": 81,
+          "cw": 75,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        }
+      ],
+      "noLabel": [],
+      "contrast": [
+        {
+          "t": "daily",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 9,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(31,58,82)",
+          "cls": "mt-1 font-stub-label text-[9px] font-bold uppercase tracking-[0.16em] "
+        },
+        {
+          "t": "Mistakes left",
+          "ratio": 1.7,
+          "need": 4.5,
+          "px": 10,
+          "color": "oklab(0.938879 -0.00208431 0.0256565 / 0.85)",
+          "bg": "rgb(31,58,82)",
+          "cls": "connections-counter-full"
+        },
+        {
+          "t": "Today's bill",
+          "ratio": 2.2,
+          "need": 4.5,
+          "px": 9,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(240,235,216)",
+          "cls": "font-stub-label text-[9px] font-bold uppercase tracking-[0.16em] text-"
+        }
+      ]
+    },
+    {
+      "screen": "conn-help",
+      "vp": "v375",
+      "small": [
+        {
+          "tag": "BUTTON",
+          "name": "How to play",
+          "w": 32,
+          "h": 32,
+          "cls": "app-help-button daily-icon-button daily-icon-md text-[12px] font-extrabold active:scale-90"
+        }
+      ],
+      "overflow": [
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "OPPENHEIMER",
+          "sw": 81,
+          "cw": 75,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "THE MATRIX RESURRECTIONS",
+          "sw": 81,
+          "cw": 75,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "THE MATRIX REVOLUTIONS",
+          "sw": 81,
+          "cw": 75,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "SKYFALL",
+          "sw": 81,
+          "cw": 75,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "CHINATOWN",
+          "sw": 81,
+          "cw": 75,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "DUNKIRK",
+          "sw": 81,
+          "cw": 75,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "THE GRAND BUDAPEST HOTEL",
+          "sw": 81,
+          "cw": 75,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "THE MATRIX",
+          "sw": 81,
+          "cw": 75,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "BATMAN BEGINS",
+          "sw": 81,
+          "cw": 75,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "THE MATRIX RELOADED",
+          "sw": 81,
+          "cw": 75,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "THE DEPARTED",
+          "sw": 81,
+          "cw": 75,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "A FEW GOOD MEN",
+          "sw": 81,
+          "cw": 75,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "HARRY POTTER AND THE DEATHLY HALLOWS – PART 2",
+          "sw": 81,
+          "cw": 75,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "THE HURT LOCKER",
+          "sw": 81,
+          "cw": 75,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "BATMAN",
+          "sw": 81,
+          "cw": 75,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "A QUIET PLACE PART II",
+          "sw": 81,
+          "cw": 75,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        }
+      ],
+      "noLabel": [],
+      "contrast": [
+        {
+          "t": "daily",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 9,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(31,58,82)",
+          "cls": "mt-1 font-stub-label text-[9px] font-bold uppercase tracking-[0.16em] "
+        },
+        {
+          "t": "Mistakes left",
+          "ratio": 1.7,
+          "need": 4.5,
+          "px": 10,
+          "color": "oklab(0.938879 -0.00208431 0.0256565 / 0.85)",
+          "bg": "rgb(31,58,82)",
+          "cls": "connections-counter-full"
+        },
+        {
+          "t": "Today's bill",
+          "ratio": 2.2,
+          "need": 4.5,
+          "px": 9,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(240,235,216)",
+          "cls": "font-stub-label text-[9px] font-bold uppercase tracking-[0.16em] text-"
+        },
+        {
+          "t": "Match Cut",
+          "ratio": 2.2,
+          "need": 4.5,
+          "px": 10,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(240,235,216)",
+          "cls": "font-stub-label text-[10px] font-bold uppercase tracking-[0.16em] text"
+        },
+        {
+          "t": "Got it — keep playing",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 15,
+          "color": "rgb(31, 58, 82)",
+          "bg": "rgb(207,149,42)",
+          "cls": "min-h-12 w-full rounded-stub-pill bg-stub-amber px-7 py-3 font-stub-ui"
+        }
+      ]
+    },
+    {
+      "screen": "conn-oneaway",
+      "vp": "v375",
+      "small": [
+        {
+          "tag": "BUTTON",
+          "name": "How to play",
+          "w": 32,
+          "h": 32,
+          "cls": "app-help-button daily-icon-button daily-icon-md text-[12px] font-extrabold active:scale-90"
+        }
+      ],
+      "overflow": [
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "OPPENHEIMER",
+          "sw": 81,
+          "cw": 75,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "PICK 3 THE MATRIX RESURRECTIONS",
+          "sw": 81,
+          "cw": 75,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "THE MATRIX REVOLUTIONS",
+          "sw": 81,
+          "cw": 75,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "SKYFALL",
+          "sw": 81,
+          "cw": 75,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "CHINATOWN",
+          "sw": 81,
+          "cw": 75,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "DUNKIRK",
+          "sw": 81,
+          "cw": 75,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "THE GRAND BUDAPEST HOTEL",
+          "sw": 81,
+          "cw": 75,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "PICK 1 THE MATRIX",
+          "sw": 81,
+          "cw": 75,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "BATMAN BEGINS",
+          "sw": 81,
+          "cw": 75,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "PICK 2 THE MATRIX RELOADED",
+          "sw": 81,
+          "cw": 75,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "THE DEPARTED",
+          "sw": 81,
+          "cw": 75,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "A FEW GOOD MEN",
+          "sw": 81,
+          "cw": 75,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "HARRY POTTER AND THE DEATHLY HALLOWS – PART 2",
+          "sw": 81,
+          "cw": 75,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "THE HURT LOCKER",
+          "sw": 81,
+          "cw": 75,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "BATMAN",
+          "sw": 81,
+          "cw": 75,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "PICK 4 A QUIET PLACE PART II",
+          "sw": 81,
+          "cw": 75,
+          "cls": "connections-tile relative flex aspect-square min-h-0 items-center justify-center"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "DIV",
+          "t": "one away — swap one ticket",
+          "sw": 203,
+          "cw": 1,
+          "cls": "sr-only"
+        }
+      ],
+      "noLabel": [],
+      "contrast": [
+        {
+          "t": "daily",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 9,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(31,58,82)",
+          "cls": "mt-1 font-stub-label text-[9px] font-bold uppercase tracking-[0.16em] "
+        },
+        {
+          "t": "Mistakes left",
+          "ratio": 1.7,
+          "need": 4.5,
+          "px": 10,
+          "color": "oklab(0.938879 -0.00208431 0.0256565 / 0.85)",
+          "bg": "rgb(31,58,82)",
+          "cls": "connections-counter-full"
+        },
+        {
+          "t": "Today's bill",
+          "ratio": 2.2,
+          "need": 4.5,
+          "px": 9,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(240,235,216)",
+          "cls": "font-stub-label text-[9px] font-bold uppercase tracking-[0.16em] text-"
+        },
+        {
+          "t": "PICK 3",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 7,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(31,58,82)",
+          "cls": "pointer-events-none absolute right-1.5 top-1.5 rounded-sm bg-stub-navy"
+        },
+        {
+          "t": "PICK 1",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 7,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(31,58,82)",
+          "cls": "pointer-events-none absolute right-1.5 top-1.5 rounded-sm bg-stub-navy"
+        },
+        {
+          "t": "PICK 2",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 7,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(31,58,82)",
+          "cls": "pointer-events-none absolute right-1.5 top-1.5 rounded-sm bg-stub-navy"
+        },
+        {
+          "t": "PICK 4",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 7,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(31,58,82)",
+          "cls": "pointer-events-none absolute right-1.5 top-1.5 rounded-sm bg-stub-navy"
+        },
+        {
+          "t": "Submit",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 11,
+          "color": "rgb(31, 58, 82)",
+          "bg": "rgb(207,149,42)",
+          "cls": "min-h-11 flex-1 rounded-stub-pill px-4 font-stub-label text-[11px] fon"
+        }
+      ]
+    },
+    {
+      "screen": "conn-toast",
+      "vp": "v375",
+      "text": "one away — swap one ticket"
+    },
+    {
+      "screen": "conn-results",
+      "vp": "v375",
+      "small": [
+        {
+          "tag": "BUTTON",
+          "name": "How to play",
+          "w": 32,
+          "h": 32,
+          "cls": "app-help-button daily-icon-button daily-icon-md text-[12px] font-extrabold active:scale-90"
+        }
+      ],
+      "overflow": [
+        {
+          "kind": "CLIPPED",
+          "tag": "DIV",
+          "t": "MATCH CUT · CONNECTIONS Solved! 1 mistake on the w",
+          "sw": 319,
+          "cw": 307,
+          "cls": "connections-result-ticket relative w-full overflow-hidden rounded-[22px] border-"
+        }
+      ],
+      "noLabel": [],
+      "contrast": [
+        {
+          "t": "daily",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 9,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(31,58,82)",
+          "cls": "mt-1 font-stub-label text-[9px] font-bold uppercase tracking-[0.16em] "
+        },
+        {
+          "t": "Mistakes left",
+          "ratio": 1.7,
+          "need": 4.5,
+          "px": 10,
+          "color": "oklab(0.938879 -0.00208431 0.0256565 / 0.85)",
+          "bg": "rgb(31,58,82)",
+          "cls": "connections-counter-full"
+        },
+        {
+          "t": "Bill cleared",
+          "ratio": 2.2,
+          "need": 4.5,
+          "px": 9,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(240,235,216)",
+          "cls": "font-stub-label text-[9px] font-bold uppercase tracking-[0.16em] text-"
+        },
+        {
+          "t": "Group 1 · Actor",
+          "ratio": 1.61,
+          "need": 4.5,
+          "px": 8,
+          "color": "oklab(0.938879 -0.00208431 0.0256565 / 0.7)",
+          "bg": "rgb(31,58,82)",
+          "cls": "font-stub-label text-[8px] font-bold uppercase tracking-[0.16em] text-"
+        },
+        {
+          "t": "The Matrix · The Matrix Reloaded · The Matri",
+          "ratio": 1.68,
+          "need": 4.5,
+          "px": 9,
+          "color": "oklab(0.938879 -0.00208431 0.0256565 / 0.82)",
+          "bg": "rgb(31,58,82)",
+          "cls": "mt-1 block font-stub-ui text-[9px] font-semibold leading-tight text-st"
+        },
+        {
+          "t": "Group 2 · Actor",
+          "ratio": 2.17,
+          "need": 4.5,
+          "px": 8,
+          "color": "oklab(0.938879 -0.00208431 0.0256565 / 0.7)",
+          "bg": "rgb(88,72,108)",
+          "cls": "font-stub-label text-[8px] font-bold uppercase tracking-[0.16em] text-"
+        },
+        {
+          "t": "A Quiet Place Part II · Batman Begins · Dunk",
+          "ratio": 2.35,
+          "need": 4.5,
+          "px": 9,
+          "color": "oklab(0.938879 -0.00208431 0.0256565 / 0.82)",
+          "bg": "rgb(88,72,108)",
+          "cls": "mt-1 block font-stub-ui text-[9px] font-semibold leading-tight text-st"
+        },
+        {
+          "t": "Group 3 · Actor",
+          "ratio": 2.36,
+          "need": 4.5,
+          "px": 8,
+          "color": "oklab(0.938879 -0.00208431 0.0256565 / 0.7)",
+          "bg": "rgb(65,88,110)",
+          "cls": "font-stub-label text-[8px] font-bold uppercase tracking-[0.16em] text-"
+        },
+        {
+          "t": "A Few Good Men · Batman · Chinatown · The De",
+          "ratio": 2.59,
+          "need": 4.5,
+          "px": 9,
+          "color": "oklab(0.938879 -0.00208431 0.0256565 / 0.82)",
+          "bg": "rgb(65,88,110)",
+          "cls": "mt-1 block font-stub-ui text-[9px] font-semibold leading-tight text-st"
+        },
+        {
+          "t": "Group 4 · Actor",
+          "ratio": 2.98,
+          "need": 4.5,
+          "px": 8,
+          "color": "oklab(0.938879 -0.00208431 0.0256565 / 0.7)",
+          "bg": "rgb(91,107,122)",
+          "cls": "font-stub-label text-[8px] font-bold uppercase tracking-[0.16em] text-"
+        },
+        {
+          "t": "Harry Potter and the Deathly Hallows – Part ",
+          "ratio": 3.39,
+          "need": 4.5,
+          "px": 9,
+          "color": "oklab(0.938879 -0.00208431 0.0256565 / 0.82)",
+          "bg": "rgb(91,107,122)",
+          "cls": "mt-1 block font-stub-ui text-[9px] font-semibold leading-tight text-st"
+        },
+        {
+          "t": "Match Cut · Connections",
+          "ratio": 2.51,
+          "need": 4.5,
+          "px": 9,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(252,249,248)",
+          "cls": "font-stub-label text-[9px] font-bold uppercase tracking-[0.2em] text-s"
+        },
+        {
+          "t": "Replay today's grid",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 15,
+          "color": "rgb(31, 58, 82)",
+          "bg": "rgb(207,149,42)",
+          "cls": "app-result-action app-result-action--primary active:scale-[0.98]"
+        }
+      ]
+    },
+    {
+      "screen": "conn-results-text",
+      "vp": "v375",
+      "text": "MATCH CUT · CONNECTIONS | Solved! | 1 mistake on the way. | FEWER MISTAKES IS BETTER | 1 of 4 used | DAY 62 · STREAK 1 · BEST 1 | YOUR GUESSES | 🟦🟦🟦🟪 | 🟦🟦🟦🟦 | 🟪🟪🟪🟪 | 🟥🟥🟥🟥 | 🟩🟩🟩🟩 | copy result | Replay today's grid | Menu"
+    },
+    {
+      "screen": "conn-share",
+      "vp": "v375",
+      "text": "Match Cut · Connections\nsolved · 1 mistake\n🟦🟦🟦🟪\n🟦🟦🟦🟦\n🟪🟪🟪🟪\n🟥🟥🟥🟥\n🟩🟩🟩🟩"
+    },
+    {
+      "screen": "menu-returning",
+      "vp": "v375",
+      "small": [
+        {
+          "tag": "BUTTON",
+          "name": "How to play",
+          "w": 32,
+          "h": 32,
+          "cls": "app-help-button daily-icon-button text-[13px] font-extrabold active:scale-90"
+        }
+      ],
+      "overflow": [],
+      "noLabel": [],
+      "contrast": [
+        {
+          "t": "Tonight's program",
+          "ratio": 2.2,
+          "need": 4.5,
+          "px": 11,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(240,235,216)",
+          "cls": "font-stub-label text-[11px] font-bold uppercase tracking-[0.16em] text"
+        },
+        {
+          "t": "Start here · daily",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 11,
+          "color": "rgb(31, 58, 82)",
+          "bg": "rgb(207,149,42)",
+          "cls": "menu-card-kicker mb-2 inline-flex rounded-stub-pill bg-stub-amber px-2"
+        },
+        {
+          "t": "✓ streak 1",
+          "ratio": 2.51,
+          "need": 4.5,
+          "px": 10,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(252,249,248)",
+          "cls": "rounded-stub-pill bg-stub-amber/15 px-2 py-0.5 font-stub-label text-[1"
+        },
+        {
+          "t": "Matinee",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 10,
+          "color": "rgb(31, 58, 82)",
+          "bg": "rgb(207,149,42)",
+          "cls": "min-h-11 flex-1 whitespace-nowrap rounded-stub-pill px-2 py-2 font-stu"
+        }
+      ]
+    }
+  ],
+  "consoleLog": []
+}

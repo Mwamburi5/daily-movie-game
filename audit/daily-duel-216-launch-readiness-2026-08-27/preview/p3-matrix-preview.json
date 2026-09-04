@@ -1,0 +1,97 @@
+{
+  "tag": "preview",
+  "base": "https://marquee-otlnd4c6f-mwamburi5s-projects.vercel.app",
+  "seed": "2026-09-02",
+  "startedAt": "2026-09-03T01:24:55.061Z",
+  "finishedAt": "2026-09-03T01:25:51.782Z",
+  "fatal": null,
+  "modes": [
+    {
+      "mode": "Daily Puzzle",
+      "load": "PASS — mode stage rendered; pile top = mission-impossible (matches the seed-derived deal for 2026-09-02)",
+      "action": "PASS — played A Few Good Men onto Mission: Impossible; pile top advanced and the hand dropped to 6 tickets",
+      "error": "PASS — played Fargo onto Mission: Impossible (no shared credit): rejected with the banner \"No shared credit · +2\", card returned to hand (6 tickets, was 7), penalty applied (Flips 2, score 2, par 11); play continued normally afterwards",
+      "terminal": "PASS — Solved (won). Result dialog \"Solved — results\": Solved! | Solved in 1, par 11 (10 under par) | LOWER IS BETTER | Score 1 vs par 11 | 2 flips · 1 invalid play · combo −1 | DAY 61 · STREAK 1 · BEST 1",
+      "share": {
+        "label": "copied ✓",
+        "route": "clipboard",
+        "text": "Match Cut · Daily Puzzle\nscore 1, par 11 (10 under par)\n🎬🟩🟩🟩🟩🟩🟩🟩"
+      },
+      "notes": []
+    },
+    {
+      "mode": "Chronology",
+      "load": "PASS — mode stage rendered; anchor = Indiana Jones and the Last Crusade (1989-05-24), matching the seed-derived deal",
+      "action": "PASS — raised Walk the Line (2005) and dropped it into the correct gap 1: accepted clean (\"clean\"), reel grew to 3 cards",
+      "error": "PASS — placed Whiplash (2014) in gap 0 when gap 1 was correct: the UI revealed the year (\"actually 2014\"), charged a stroke (Strokes 1) and re-slotted the card to its true position (index 1); the round continued",
+      "terminal": "PASS — Cleared. Result dialog \"Cleared — results\": Cleared! | Final score -2 | LOWER IS BETTER | Score -2 = 1 strokes − 3 credits | 1 stroke · 3 streak credits | DAY 61 · STREAK 1 · BEST -2",
+      "share": {
+        "label": "copied ✓",
+        "route": "clipboard",
+        "text": "Match Cut · Chronology\nscore -2 (1 stroke, 3 back)\n🎬🟥🟩🟩🟩🟩🟩🟩🟩🟩🟩"
+      },
+      "notes": []
+    },
+    {
+      "mode": "Connections",
+      "load": "PASS — mode stage rendered; the 16 tiles match the baked daily grid for 2026-09-02",
+      "action": "PASS — selected the four director films and submitted: accepted, the group locked to the solved rail",
+      "error": "PASS — submitted a deliberate one-away set (3 from group 1 + 1 from group 2): rejected with \"one away — swap one ticket\", mistake counted (4 mistakes left → 3 mistakes left), board stayed playable",
+      "terminal": "PASS — Solved (won, 1 mistake). Result dialog \"Solved — results\": MATCH CUT · CONNECTIONS | Solved! | 1 mistake on the way. | FEWER MISTAKES IS BETTER | 1 of 4 used | DAY 61 · STREAK 1 · BEST 1",
+      "share": {
+        "label": "copied ✓",
+        "route": "clipboard",
+        "text": "Match Cut · Connections\nsolved · 1 mistake\n🟦🟦🟦🟪\n🟦🟦🟦🟦\n🟪🟪🟪🟪\n🟥🟥🟥🟥\n🟩🟩🟩🟩"
+      },
+      "notes": []
+    },
+    {
+      "mode": "Duel",
+      "load": "PASS — duel board rendered; hand 7 cards, marquee tops Mission: Impossible / Prisoners, score 0-0, turn playerTurn",
+      "action": "PASS — played Sicario onto the Prisoners marquee via Denis Villeneuve: accepted (score 0-0 → 2-4, hand 7 → 6, \"CPU: banked 4 films via Drama\")",
+      "error": "PASS — dropped The Hobbit: An Unexpected Journey on the Mission: Impossible marquee with no shared credit and no Final Cut: refused (hand still 7, score still 0-0, turn still playerTurn — the turn was not consumed); play continued",
+      "terminal": "PASS — game reached its terminal screen after 69 driven steps. Dialog \"Game over — results\": CPU wins. | CPU hit 20 — the show goes to the higher net. | HIGHER IS BETTER | Net -4 vs 16 · played − held | You | 2 played − 6 held | -4 | CPU",
+      "share": {
+        "label": "copied ✓",
+        "route": "clipboard",
+        "text": "Match Cut · Duel\nlost vs Matinee · net -4 to 16\n🎬🟥🟥🟥🟥"
+      },
+      "notes": []
+    }
+  ],
+  "sanitized": [
+    {
+      "variant": "a-structured",
+      "sawOnboarding": false,
+      "chips": {
+        "solo": "✓ streak 5",
+        "chronology": null,
+        "connections": "✓ streak 1",
+        "duel": "3/3 won",
+        "passport": "Daily passport2/3 stamped",
+        "difficultyPressed": [
+          "matinee"
+        ],
+        "menuCards": 4
+      },
+      "faults": []
+    },
+    {
+      "variant": "b-garbage",
+      "sawOnboarding": true,
+      "chips": {
+        "solo": null,
+        "chronology": null,
+        "connections": null,
+        "duel": null,
+        "passport": "Daily passport0/3 stamped",
+        "difficultyPressed": [
+          "matinee"
+        ],
+        "menuCards": 4
+      },
+      "faults": []
+    }
+  ],
+  "faults": []
+}

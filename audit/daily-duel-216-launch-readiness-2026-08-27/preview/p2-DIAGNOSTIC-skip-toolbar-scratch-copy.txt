@@ -1,0 +1,5 @@
+[DIAGNOSTIC, x-vercel-skip-toolbar:1] Preview security verified: https://marquee-otlnd4c6f-mwamburi5s-projects.vercel.app
+- 9/9 required headers match
+- CSP violations: 0; console warnings/errors: 0
+- analytics loader: 200; browser event: 200
+- production test seams, secret names, and source map: absent

@@ -1,0 +1,19 @@
+# Static sub-checks of verify:preview-security, run outside the browser (curl with the
+# scratchpad jar + grep on the downloaded served files), 2026-09-01 ~23:40Z
+inline executable scripts in served HTML: 0
+vercel.live toolbar tags in served HTML (authenticated, no skip header): 1
+vercel.live toolbar tags with request header x-vercel-skip-toolbar: 1 -> 0
+GET /_vercel/insights/script.js: 200 1300B
+module marker matchcut-e2e-complete: 0
+module marker matchcut-e2e-stuck: 0
+module marker __matchcutProgress: 0
+module marker VITE_E2E: 0
+module marker (TMDB read-token env name): 0
+module marker (TMDB api-key env name): 0
+sourceMappingURL in module: 0
+GET /assets/index-mVMzX4p-.js.map: 404
+robots meta: <meta name="robots" content="noindex, nofollow" />
+required headers vs security-headers.ts (authenticated GET /): 9/9 MATCH
+served assets vs local rebuild of the .vercelignore-filtered 14a546e tree:
+  index-mVMzX4p-.js  byte-identical (sha256 2d76e26935ea3d09…)
+  index-C6yCZ_ke.css byte-identical (sha256 c4e9af1acaa7e51c…)

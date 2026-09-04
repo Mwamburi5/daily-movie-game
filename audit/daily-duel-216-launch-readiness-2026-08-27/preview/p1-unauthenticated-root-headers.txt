@@ -1,0 +1,12 @@
+HTTP/2 302 
+cache-control: no-store, max-age=0
+content-type: text/plain
+date: Tue, 01 Sep 2026 23:19:25 GMT
+location: https://vercel.com/sso-api?url=https%3A%2F%2Fmarquee-otlnd4c6f-mwamburi5s-projects.vercel.app%2F&nonce=<redacted>
+server: Vercel
+set-cookie: _vercel_sso_nonce=<redacted>; Max-Age=3600; Path=/; Secure; HttpOnly; SameSite=Lax
+strict-transport-security: max-age=63072000; includeSubDomains; preload
+x-frame-options: DENY
+x-robots-tag: noindex
+x-vercel-id: iad1::97tks-1788304765435-99f989f2040f
+
