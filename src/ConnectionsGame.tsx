@@ -97,8 +97,19 @@ const titleOf = (id: string): string => movieById.get(id)?.title ?? id
 // 375px viewport minus borders and the 5px padding → ~69px of line width (the
 // 9px side notches protrude only 3.6px inward — they never reach the content
 // box, so they cost no width); against measured wide Domine caps (~0.73px per
-// char per px) that's the 91 divisor (69/0.73 with margin). The 460 line divisor
-// is ~5·69/0.73: total chars five comfortable lines can hold. The clamp itself
+// char per px) that gave the original 91 divisor (69/0.73 with margin). The
+// ~69px estimate was optimistic: measured 2026-09-03 in Chromium with the real
+// Domine face, the 375 tile's content box is 65.25px, and 91 broke CHINATOWN
+// (and 12 more) mid-word. Every one of the 315 titles the 365 baked grids can
+// deal was re-rendered at 375 and 390 across divisors 91…86: 89 is the largest
+// that fits CHINATOWN, and it is also the best — it clears 12 of the 18 breaks
+// at 375 and adds none, while 87/86 push more titles onto the 7px floor and
+// break MORE (8 at both widths). The six that still break at 89 (BLACKKKLANSMAN,
+// GHOSTBUSTERS, INTERSTELLAR, NIGHTCRAWLER, PHILADELPHIA, and EDGE OF TOMORROW)
+// are pinned by the 7px floor / 10.5px cap, not by the divisor — no divisor
+// fixes them. The 460 line divisor is ~5·69/0.73: total chars five comfortable
+// lines can hold; it was left alone (the same sweep saw zero line-clamp
+// truncations at 89, both widths). The clamp itself
 // is 6 lines (matching the ≤340px override): the char-count estimate runs a
 // shade optimistic for wide-cap extremes on the narrower 360px tile (measured
 // 2026-08-31: the 54-char Pirates title and 45-char Deathly Hallows needed a
@@ -113,7 +124,7 @@ function tileFontSize(title: string): number {
     .split(/[\s-]+/)
     .reduce((a, w) => (w.length > a.length ? w : a), '')
   const totalLen = title.replace(/\s+/g, ' ').trim().length || 1
-  const raw = Math.min(91 / longest.length, 460 / totalLen)
+  const raw = Math.min(89 / longest.length, 460 / totalLen)
   return Math.max(7, Math.min(10.5, Math.floor(raw)))
 }
 
@@ -331,7 +342,7 @@ export default function ConnectionsGame({ onExit, start }: { onExit: () => void;
                 <span className="connections-counter-full">Mistakes left</span>
                 <span className="connections-counter-narrow">Misses</span>
               </div>
-              <div className="mt-1 flex items-center justify-end gap-1" aria-label={`${mistakesLeft} mistakes left`}>
+              <div className="mt-1 flex items-center justify-end gap-1" aria-label={`${mistakesLeft} mistake${mistakesLeft === 1 ? '' : 's'} left`}>
                 {Array.from({ length: MAX_MISTAKES }).map((_, i) => (
                   <span
                     key={i}
@@ -376,16 +387,16 @@ export default function ConnectionsGame({ onExit, start }: { onExit: () => void;
             <em>One shared credit</em>
           </aside>
           <aside className="connections-desktop-marquee connections-desktop-marquee--right" aria-hidden="true">
-            <span>Today&apos;s progress</span>
+            <span>Today’s progress</span>
             <strong>{solved.length} of 4 groups</strong>
-            <em>{mistakesLeft} mistakes left</em>
+            <em>{mistakesLeft} mistake{mistakesLeft === 1 ? '' : 's'} left</em>
           </aside>
           <div className="connections-workspace mx-auto my-auto flex w-full flex-col items-center gap-2.5">
             <div className="connections-coach w-full px-1">
               <div className="flex items-center justify-between gap-3">
                 <p className="font-stub-label text-[9px] font-bold uppercase tracking-[0.16em] text-stub-amber">
                   {solved.length === 0
-                    ? "Today's bill"
+                    ? 'Today’s bill'
                     : solved.length < 4
                       ? 'Still to find'
                       : status === 'lost'
@@ -814,7 +825,10 @@ function ConnectionsResults({
 
             {daily && (
               <p className="mt-2 font-stub-label text-[10px] font-semibold uppercase tracking-wider text-stub-slate tabular-nums" data-daily-meta>
+                {/* The streak counts finishing, not winning (RULEBOOK "showing up"), so a
+                    rising streak on a loss reads like a bug unless the line says why. */}
                 day {daily.day} · streak {daily.streak}
+                {!won && ' · showing up counts'}
                 {daily.best !== null && ` · best ${daily.best}`}
                 {daily.repeat && ' · already played today'}
               </p>
@@ -847,7 +861,7 @@ function ConnectionsResults({
             )}
 
             <ResultActions
-              primaryLabel={practice ? 'New grid' : "Replay today's grid"}
+              primaryLabel={practice ? 'New grid' : 'Replay today’s grid'}
               onPrimary={onReset}
               onMenu={onMenu}
             />

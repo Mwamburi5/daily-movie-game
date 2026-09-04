@@ -102,7 +102,9 @@ export default function Results({
 
         {status === 'won' ? (
           <p className="mt-3 font-stub-ui text-lg font-semibold text-stub-navy">
-            Solved in {score}, par {par} <span className="text-stub-slate">({golf})</span>
+            {/* "Solved in −1" reads like a bug once combo credits push the score
+                negative — it's a score, not a move count. Say so. */}
+            Score {score} · par {par} <span className="text-stub-slate">({golf})</span>
           </p>
         ) : (
           <p className="mt-3 font-stub-ui text-lg font-semibold text-stub-navy">
@@ -126,7 +128,10 @@ export default function Results({
             className="mt-1 font-stub-label text-[12px] font-bold uppercase tracking-wider text-stub-slate tabular-nums"
             data-daily-meta
           >
+            {/* The streak counts finishing, not winning (RULEBOOK "showing up"), so a
+                rising streak on a stuck hand reads like a bug unless the line says why. */}
             day {daily.day} · streak {daily.streak}
+            {status !== 'won' && ' · showing up counts'}
             {daily.best !== null && ` · best ${daily.best}`}
             {daily.repeat && ' · already played today'}
           </p>
@@ -149,7 +154,7 @@ export default function Results({
         )}
 
         <ResultActions
-          primaryLabel={practice ? 'Replay this hand' : "Replay today's hand"}
+          primaryLabel={practice ? 'Replay this hand' : 'Replay today’s hand'}
           onPrimary={onReset}
           onMenu={onMenu}
         />

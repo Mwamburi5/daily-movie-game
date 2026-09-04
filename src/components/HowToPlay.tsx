@@ -51,7 +51,7 @@ const MODE_HELP: Record<Exclude<HelpContext, 'overview'>, ModeHelp> = {
       {
         title: 'Daily and practice',
         items: [
-          'The daily is the same solver-proven hand for everyone on your local calendar day. Dates from September 27, 2026 use the expanded 216-film pool; practice replays the original hand-designed puzzle.',
+          'The daily is the same solver-proven hand for everyone on your local calendar day. The film catalogue grew on 27 September 2026 — earlier days use the older, smaller catalogue. Practice replays the original hand-designed puzzle.',
         ],
       },
     ],
@@ -132,10 +132,10 @@ const MODE_HELP: Record<Exclude<HelpContext, 'overview'>, ModeHelp> = {
         ],
       },
       {
-        title: 'Today’s Bill',
+        title: 'Today’s bill',
         items: [
-          'Category types may repeat, and at most one group is a genre. Today’s Bill names the exact remaining category multiset, such as Actor ×3 · Genre ×1.',
-          'The Bill never maps a category to a particular tile, solved-band color, or share color. Every movie belongs to exactly one group.',
+          'Category types may repeat, and at most one group is a genre. Today’s bill names the exact remaining category multiset, such as Actor ×3 · Genre ×1.',
+          'The bill never maps a category to a particular tile, solved-band color, or share color. Every movie belongs to exactly one group.',
         ],
       },
       {

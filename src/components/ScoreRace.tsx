@@ -138,12 +138,25 @@ export default function ScoreRace({
         data-score={`${playerScore}-${cpuScore}`}
         data-turn={status}
       >
-        <ScoreNumeral value={youDisplay} className="text-[17px] text-stub-cream" reduce={reduce} />
+        {/* The compact header drops the YOU/CPU labels and the "SHOW ENDS AT N"
+            eyebrow for space, so a screen reader hears a bare "0 0" and the goal is
+            never announced. Name both numerals; the CPU one carries the target. */}
+        <ScoreNumeral
+          value={youDisplay}
+          className="text-[17px] text-stub-cream"
+          reduce={reduce}
+          label={`You ${playerScore}`}
+        />
         <div className="flex h-2 flex-1 overflow-hidden rounded-stub-pill border border-stub-cream/45">
           <RaceFill share={playerShare} reduce={reduce} />
           <div className="h-full flex-1 bg-stub-navy-mid" />
         </div>
-        <ScoreNumeral value={tazDisplay} className="text-[17px] text-stub-slate-faint" reduce={reduce} />
+        <ScoreNumeral
+          value={tazDisplay}
+          className="text-[17px] text-stub-slate-faint"
+          reduce={reduce}
+          label={`CPU ${cpuScore} · show ends at ${TARGET_SCORE}`}
+        />
       </div>
     )
   }
@@ -204,18 +217,23 @@ export default function ScoreRace({
 // stability now comes from FixedDigits' per-digit 1ch boxes (§7·7b). The
 // reduced-motion path swaps the count-up travel for a 150ms opacity crossfade
 // on value change — no numeric travel, matching the token sheet.
+// `label` (compact header only) replaces the bare digits in the accessibility
+// tree — role="img" is what makes an aria-label stick to a plain span.
 function ScoreNumeral({
   value,
   className,
   reduce,
+  label,
 }: {
   value: number
   className: string
   reduce: boolean
+  label?: string
 }) {
   const prev = useRef(value)
   const changed = prev.current !== value
   prev.current = value
+  const a11y = label ? { role: 'img' as const, 'aria-label': label } : {}
 
   if (reduce) {
     return (
@@ -225,6 +243,7 @@ function ScoreNumeral({
         animate={{ opacity: 1 }}
         transition={{ duration: 0.15 }} // var(--dur-reduced)
         className={`font-stub-display font-bold leading-[0.9] ${className}`}
+        {...a11y}
       >
         <FixedDigits value={value} />
       </motion.span>
@@ -232,7 +251,7 @@ function ScoreNumeral({
   }
 
   return (
-    <span className={`font-stub-display font-bold leading-[0.9] ${className}`}>
+    <span className={`font-stub-display font-bold leading-[0.9] ${className}`} {...a11y}>
       <FixedDigits value={value} />
     </span>
   )
