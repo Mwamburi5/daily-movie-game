@@ -269,7 +269,9 @@ until the gap you want comes into view.
   years apart, and a hot streak survives your **next** misfire. It rewards the brave call.
 - **Same-year films** still have exactly one right slot, because the game knows the full
   release dates behind the scenes. On a same-year miss it tells you the years matched and
-  the date decided it.
+  the date decided it. Very rarely two films share the **exact same release day** — then
+  there is nothing to read the order from, so the game breaks the tie for you and says
+  so ("same release day, decided by tiebreak"). It is one stroke, and it is not your fault.
 - **Your score = strokes − streak credits.** Lower is better.
 
 ### How it ends

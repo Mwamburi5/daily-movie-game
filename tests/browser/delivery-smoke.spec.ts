@@ -188,6 +188,13 @@ test('privacy-safe journey analytics dedupes boundaries and never loads a localh
   await share.click()
   await expect(share).toHaveText('select below to copy')
 
+  // The fallback is the only escape hatch when the clipboard is blocked, so it must
+  // outlive the 2.2s "copied" revert timer — long enough to select the text by hand.
+  await expect(page.locator('[data-share-fallback]')).toBeVisible()
+  await page.waitForTimeout(2600)
+  await expect(page.locator('[data-share-fallback]')).toBeVisible()
+  await expect(share).toHaveText('select below to copy')
+
   const shareEvents = await readEvents()
   expect(shareEvents.filter((event) => event.name === 'share_attempt')).toEqual([
     { name: 'share_attempt', data: { mode: 'solo', result: 'copied' } },
@@ -195,7 +202,7 @@ test('privacy-safe journey analytics dedupes boundaries and never loads a localh
   ])
   expect(shareEvents.filter((event) => event.name === 'share')).toHaveLength(1)
 
-  await page.getByRole('button', { name: "Replay today's hand" }).click()
+  await page.getByRole('button', { name: 'Replay today’s hand' }).click()
   await expect(page.locator('[data-mode-stage="solo"]')).toBeVisible()
   const replayEvents = await readEvents()
   expect(replayEvents.filter((event) => event.name === 'replay')).toEqual([
@@ -1080,10 +1087,10 @@ test('reduced-motion Take helper intentionally replaces the generic Duel cue and
 test('each mode opens only its own rules', async ({ page, browserFaults }) => {
   void browserFaults
   const cases = [
-    { mode: 'solo', label: 'Daily Puzzle', unique: 'Golf score and par', absent: 'Today’s Bill' },
+    { mode: 'solo', label: 'Daily Puzzle', unique: 'Golf score and par', absent: 'Today’s bill' },
     { mode: 'chronology', label: 'Chronology', unique: 'tight-call mercy', absent: 'Final Cut' },
-    { mode: 'connections', label: 'Connections', unique: 'Today’s Bill', absent: 'tight-call mercy' },
-    { mode: 'duel', label: 'Duel vs Computer', unique: 'Final Cut', absent: 'Today’s Bill' },
+    { mode: 'connections', label: 'Connections', unique: 'Today’s bill', absent: 'tight-call mercy' },
+    { mode: 'duel', label: 'Duel vs Computer', unique: 'Final Cut', absent: 'Today’s bill' },
   ] as const
 
   for (const entry of cases) {

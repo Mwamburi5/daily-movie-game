@@ -346,11 +346,19 @@ export default function ChronologyGame({ onExit, start }: { onExit: () => void; 
     // Banner copy (lowercase, low-key house voice).
     if (placement.result === 'misfire') {
       const sameYear = line.some((c) => c.year === card.year)
+      // A neighbour of the correct slot can share the card's exact release date — then
+      // no date decided it, compareCards fell through to its id tiebreak. Saying
+      // "decided by exact date" there would be a straight lie, so name the tiebreak.
+      const sameDay = [line[placement.correctSlot - 1], line[placement.correctSlot]].some(
+        (n) => n && n.releaseDate === card.releaseDate,
+      )
       say(outcome.mercyUsed
         ? `actually ${card.year} — tight-call mercy, streak holds`
-        : sameYear
-          ? `actually ${card.year} — same year, decided by exact date`
-          : `actually ${card.year}`)
+        : sameDay
+          ? `actually ${card.year} — same release day, decided by tiebreak`
+          : sameYear
+            ? `actually ${card.year} — same year, decided by exact date`
+            : `actually ${card.year}`)
     } else {
       say(outcome.badge ? `streak ×${STREAK_TARGET} — stroke back` : tight <= 3 ? `nice — tight call` : `clean`)
     }
@@ -1051,7 +1059,7 @@ function ChronoResults({
         </p>
         <ResultMeaning
           direction="Lower is better"
-          detail={`Score ${score} = ${strokes} strokes − ${credits} credits`}
+          detail={`Score ${score} = ${strokes} ${strokes === 1 ? 'stroke' : 'strokes'} − ${credits} ${credits === 1 ? 'credit' : 'credits'}`}
         />
         <p className="mt-1 font-stub-ui text-sm text-stub-slate tabular-nums">
           {strokes} {strokes === 1 ? 'stroke' : 'strokes'}
@@ -1072,7 +1080,7 @@ function ChronoResults({
         <ShareCopy text={text} analytics={analytics} />
 
         <ResultActions
-          primaryLabel={practice ? 'New round' : "Replay today's line"}
+          primaryLabel={practice ? 'New round' : 'Replay today’s line'}
           onPrimary={onReset}
           onMenu={onMenu}
         />

@@ -156,7 +156,7 @@ export default function App() {
         <main className="menu-workspace my-auto flex w-full flex-col items-center gap-6 py-5">
         <section className="menu-intro text-center" aria-labelledby="menu-program-title">
           <p className="font-stub-label text-[11px] font-bold uppercase tracking-[0.16em] text-stub-amber">
-            Tonight&apos;s program
+            Tonight’s program
           </p>
           <h2 id="menu-program-title" className="mt-2 font-stub-display text-3xl font-bold text-stub-navy">
             Pick your feature.
@@ -196,7 +196,7 @@ export default function App() {
                 <StreakChip mode="solo" status={soloChip} />
               </span>
               <span className="mt-0.5 block font-stub-ui text-[12px] text-stub-slate">
-                Today's hand — same for everyone. Play out every card. Golf — low score wins.
+                Today’s hand — same for everyone. Play out every card. Golf — low score wins.
               </span>
             </button>
             {/* The daily is the button above; the original hand-designed puzzle
@@ -231,7 +231,7 @@ export default function App() {
                 <StreakChip mode="chronology" status={chronoChip} />
               </span>
               <span className="mt-0.5 block font-stub-ui text-[12px] text-stub-slate">
-                Today's lineup. Place the movies in release order. Golf — low score wins.
+                Today’s lineup. Place the movies in release order. Golf — low score wins.
               </span>
             </button>
             {/* The daily is the button above; practice is its own affordance —
@@ -275,7 +275,7 @@ export default function App() {
                 <StreakChip mode="connections" status={connChip} />
               </span>
               <span className="mt-0.5 block font-stub-ui text-[12px] text-stub-slate">
-                Today's sixteen. Find four groups of four — same director, actor, series, or genre.
+                Today’s sixteen. Find four groups of four — same director, actor, series, or genre.
               </span>
             </button>
             {/* The daily is the button above; practice deals a fresh verified grid. */}

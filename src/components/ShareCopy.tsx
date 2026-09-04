@@ -11,9 +11,10 @@ type CopyState = 'idle' | 'copied' | 'failed'
 export default function ShareCopy({ text, analytics }: { text: string; analytics?: ModeIdentity }) {
   const [copy, setCopy] = useState<CopyState>('idle')
 
-  // Revert the transient "copied" / "failed" label back to idle after a beat.
+  // Only the transient "copied" label reverts. 'failed' has to stay put: it's the
+  // manual-copy fallback, and 2.2s isn't long enough to long-press and select by hand.
   useEffect(() => {
-    if (copy === 'idle') return
+    if (copy !== 'copied') return
     const t = window.setTimeout(() => setCopy('idle'), 2200)
     return () => window.clearTimeout(t)
   }, [copy])
