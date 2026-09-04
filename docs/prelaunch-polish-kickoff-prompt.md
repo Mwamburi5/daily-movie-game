@@ -124,6 +124,79 @@ in a short receipt appended to this file.
 
 ---
 
+## Receipt — executed 2026-09-03 (all three batches merged)
+
+Three Opus sub-agents in isolated worktrees; coordinator merged in the order
+the PRs went green (safety → ops → copy; GitHub reported every merge CLEAN,
+the only shared file being non-overlapping regions of
+`tests/browser/delivery-smoke.spec.ts`). Production untouched: still
+`c063f26`. No rule/scoring/seed/pool/dealer change anywhere; `sim/` untouched;
+`src/DuelGame.tsx` untouched.
+
+| batch | PR | commit(s) | CI on tip | merge commit |
+|---|---|---|---|---|
+| Q-safety | #10 | `bd60af9` | ✅ run 33824740264 (+ PR run 33824813346) | `2fd71ea` |
+| Q-ops | #11 | `03dfab3` (o1–o5) · `bf2453c` (o6 evidence) | ✅ run 33825492348 | `ba021d6` |
+| Q-copy | #12 | `d27b682` | ✅ run 33825502405 | `b08d8db` |
+| **combined `main@b08d8db`** | — | — | **✅ run 33826836354 — all six jobs incl. browser-smoke** | — |
+
+**Q-copy (c1–c12):** c1 ✅ share fallback persists (smoke asserts ≥2.6 s) ·
+c2 ✅ · c3 ✅ · c4 ✅ "same release day, decided by tiebreak" branch + RULEBOOK
+(fires on exactly the 4 tied days/yr; `compareCards` untouched; 42/42) · c5 ✅
+· **c6 DROPPED** — premise stale: both Duel strings already use U+2212 ·
+c7 ✅ (share.ts has no apostrophe; format byte-identical) · c8 ✅ · c9 ✅ ·
+c10 ✅ "· showing up counts" on non-wins, arithmetic untouched · c11 ✅
+`role="img"` + labels · **c12 ✅ at divisor 89, not 86** — 315-title Playwright
+sweep at 375/390 (tile content box measures 65.25 px): 89 is the best of
+91→86 with zero regressions; 86 regresses (8 breaks). Menu shell 99.86 KiB
+before the budget bump.
+
+**Q-safety (s0–s4):** all ✅. Menu shell 102,246 → 102,913 B gzip (+667 B,
+100.50 KiB) under the new 104 KiB budget. `ErrorBoundary` sits outside App's
+Suspense; `vite:preloadError` one-shot reload guarded for unusable storage.
+New smoke case "a dead mode chunk recovers instead of blanking the page" was
+verified red with s1+s2 reverted. CI `daily-rules` now runs
+`verify:analytics` + `verify:progress`. 39/39 smoke.
+
+**Q-ops (o1–o6):** all ✅. Runbook §2 rewritten (clean clone · `whoami`
+first · `--prod` · served-SHA read-back + `.vercelignore`-filtered rebuild hash
+compare · post-deploy `verify:preview-security` + `smoke:prod` · rollback vs
+current `dpl_8SighytERqgygRYvbf1eMyLis6SL` · timing · watch list); §1 = D1
+Hobby accepted; release-checklist rollback target + Preview line fixed.
+`scripts/prod-smoke.mjs` + `npm run smoke:prod` (`--seed` via
+`clock.setFixedTime` at local noon — `clock.install` would freeze Framer's
+rAF; the page's own local date is read back and must match). **Dress
+rehearsal 2026-09-27/28/29/30 against a local serve: 4/4 PASS, 0 faults,
+pool 216 confirmed both by recompute and DOM match** → evidence in
+`audit/…/dress-rehearsal-2026-09-27/`. Workflows `prod-smoke.yml` +
+`prod-canary.yml` committed with cron **commented until Approval 4**; never
+run. `vercel.json` `/assets/(.*)` immutable cache rule (catch-all rule
+byte-identical; `check:security` PASS); `public/.well-known/security.txt`.
+Evidence commit: 6 docs + 36 force-added files (1.1 MB; no `review-B-shots/`;
+no promo; secret grep clean).
+
+**Follow-ups noticed, not done (need their own call):**
+1. `src/components/HowToPlay.tsx` Chronology sheet still says same-year order
+   is "decided by exact release date" — same falsehood c4 fixed in the banner
+   and RULEBOOK; one-line copy follow-up.
+2. GHOSTBUSTERS / INTERSTELLAR / NIGHTCRAWLER / PHILADELPHIA / BLACKKKLANSMAN /
+   EDGE OF TOMORROW still break mid-word in Connections tiles at any divisor
+   (pinned by the 7 px floor / 10.5 px cap) — needs a floor/cap or
+   `measureText` fit: design call.
+3. `npm audit` in CI has no retry; it flaked twice today on an npm registry
+   503 (`gh run rerun --failed` cleared it). A retry wrapper is a cheap CI
+   follow-up.
+4. Review-D §3 corrections for Approval 5 not yet in the runbook: `noindex`
+   removal is a **two-file** diff (`delivery-smoke.spec.ts:76` pins it); the
+   URL-in-share blast radius is smaller than the runbook says (prefix
+   assertion only), but `prod-smoke.mjs` asserts URL-free and must flip in the
+   same commit.
+5. `DuelGame.tsx` `lowerTimer` lacks unmount cleanup (review C #8) —
+   mention-only per CLAUDE.md.
+6. The rehearsal ran against an in-tree build, not the bytes a `--prod`
+   deploy produces; the runbook's post-deploy `smoke:prod` step is
+   load-bearing.
+
 Paste-able `/goal` block:
 
 ````text
