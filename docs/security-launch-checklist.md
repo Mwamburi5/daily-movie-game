@@ -41,6 +41,25 @@ and first-party console/network faults for every journey.
 - the CSP loses its no-inline/no-eval script posture, framing protection,
   plugin block, or base-URI protection.
 
+### `vercel.json` additions since the last live receipt
+
+- **2026-09-03 — a second `headers` rule, `/assets/(.*)` →
+  `Cache-Control: public, max-age=31536000, immutable`.** Vite content-hashes
+  everything it emits under `/assets/`, so the immutable year is safe and it
+  stops every warm repeat revalidating. **The security header SET is unchanged:**
+  the `/(.*)` rule stays byte-identical to `security-headers.ts`, which is the
+  only rule `check:security` compares. This checklist re-opens on header
+  changes, so re-run the live header verifier
+  (`npm run verify:preview-security -- --url=…`) against the next deployment and
+  additionally confirm `curl -I <origin>/assets/<hashed>.js` reports both the
+  nine security headers and the new `Cache-Control`.
+- **2026-09-03 — `public/.well-known/security.txt`** (RFC 9116: `Contact`,
+  `Expires` 2027-09-01, `Preferred-Languages`, `Canonical`). It ships as a
+  static public asset, not a header change; `.vercelignore` excludes `*.md` but
+  no `*.txt`, so `public/` copies through untouched. Confirm
+  `curl -sI <origin>/.well-known/security.txt` → 200 after the next deploy, and
+  renew the file before `Expires`.
+
 ## Preview deployment receipt
 
 Preview URL: `https://marquee-k3gi9nq6y-mwamburi5s-projects.vercel.app`

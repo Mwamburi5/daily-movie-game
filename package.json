@@ -13,6 +13,7 @@
     "check:bundle": "node scripts/check-bundle.mjs",
     "check:security": "node scripts/check-security.mjs",
     "verify:preview-security": "node scripts/verify-preview-security.mjs",
+    "smoke:prod": "node scripts/prod-smoke.mjs",
     "preview": "vite preview",
     "preview:e2e": "vite preview --outDir dist-e2e",
     "test:smoke": "playwright test",
