@@ -2,7 +2,27 @@ import { StrictMode, type ComponentType } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.tsx'
+import ErrorBoundary from './components/ErrorBoundary.tsx'
 import { installAnalytics } from './lib/analytics.ts'
+
+// A promoted deployment retires the previous build's content-hashed chunks, so a
+// tab left open across a deploy 404s the moment it asks for its first mode.
+// Vite dispatches this on that failure; preventDefault stops the lazy import
+// from rejecting into a blank root, and one reload picks up the new manifest.
+// The sessionStorage one-shot means a genuinely offline device can't spin.
+window.addEventListener('vite:preloadError', (event) => {
+  event.preventDefault()
+  let reloadedOnce = false
+  try {
+    reloadedOnce = sessionStorage.getItem('matchcut:reloaded-once') === '1'
+    if (!reloadedOnce) sessionStorage.setItem('matchcut:reloaded-once', '1')
+  } catch {
+    // Safari private mode throws on both read and write; without a guard we
+    // could loop, so treat an unusable store as "already reloaded".
+    reloadedOnce = true
+  }
+  if (!reloadedOnce) window.location.reload()
+})
 
 installAnalytics()
 
@@ -51,14 +71,18 @@ if (import.meta.env.DEV) {
   } else {
     createRoot(document.getElementById('root')!).render(
       <StrictMode>
-        <App />
+        <ErrorBoundary>
+          <App />
+        </ErrorBoundary>
       </StrictMode>,
     )
   }
 } else {
   createRoot(document.getElementById('root')!).render(
     <StrictMode>
-      <App />
+      <ErrorBoundary>
+        <App />
+      </ErrorBoundary>
     </StrictMode>,
   )
 }

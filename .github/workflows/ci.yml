@@ -80,6 +80,12 @@ jobs:
       - name: Verify Chronology
         run: npm run verify:chronology
 
+      - name: Verify analytics dictionary
+        run: npm run verify:analytics
+
+      - name: Verify progress meta-state
+        run: npm run verify:progress
+
   connections-rules:
     runs-on: ubuntu-latest
     timeout-minutes: 30

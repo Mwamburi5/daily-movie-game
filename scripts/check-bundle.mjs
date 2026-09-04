@@ -6,7 +6,8 @@ const DIST = 'dist'
 const MANIFEST_PATH = join(DIST, '.vite', 'manifest.json')
 const KIB = 1024
 const BUDGETS = {
-  menuGzip: 100 * KIB,
+  // raised 2026-09-03 (prelaunch review D5) to admit the error boundary; the menu shell is otherwise frozen for launch
+  menuGzip: 104 * KIB,
   firstModeGzip: 250 * KIB,
   coldSessionTransfer: 2 * 1024 * KIB,
 }

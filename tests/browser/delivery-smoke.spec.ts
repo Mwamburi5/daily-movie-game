@@ -709,6 +709,58 @@ test('menu keeps every mode chunk lazy until Solo is selected', async ({ page, b
   expect(scripts.some((url) => /DuelGame-/.test(url))).toBe(false)
 })
 
+// Deliberately no `browserFaults`: this case *causes* a first-party request
+// failure, which is exactly the fault that fixture exists to catch. What is
+// under test is the recovery — a tab whose mode chunk 404s after a deploy must
+// never land on the blank root React 18 leaves behind when a lazy import
+// rejects with no boundary above it.
+test('a dead mode chunk recovers instead of blanking the page', async ({ page }) => {
+  let refusals = 0
+  await page.route('**/assets/SoloGame-*.js', async (route) => {
+    // Only the first ask dies, so the reload has a live chunk to land on and
+    // the case stays deterministic instead of racing an offline spin guard.
+    if (refusals === 0) {
+      refusals += 1
+      await route.abort()
+      return
+    }
+    await route.continue()
+  })
+
+  await openMenu(page)
+  await page.locator('[data-mode="solo"]').click()
+
+  // Two sanctioned shapes: main.tsx's vite:preloadError one-shot reloaded us
+  // back onto a working menu, or ErrorBoundary caught the rejected import and
+  // painted its card. A root with nothing in it is the failure.
+  await expect
+    .poll(
+      async () => {
+        try {
+          return await page.evaluate(() => {
+            const root = document.getElementById('root')
+            if (!root || root.childElementCount === 0) return 'blank'
+            if (root.querySelector('[data-error-boundary]')) return 'boundary'
+            if (root.querySelector('[data-mode="solo"]')) return 'menu'
+            if (root.querySelector('[data-mode-stage="solo"]')) return 'mode'
+            return 'other'
+          })
+        } catch {
+          // The reload tears the execution context down mid-evaluate.
+          return 'navigating'
+        }
+      },
+      { timeout: 15_000 },
+    )
+    .toMatch(/^(boundary|menu|mode)$/)
+  expect(refusals).toBe(1)
+
+  // And the app is genuinely usable afterwards, not just non-blank.
+  await openMenu(page)
+  await page.locator('[data-mode="solo"]').click()
+  await expect(page.locator('[data-mode-stage="solo"]')).toBeVisible()
+})
+
 test('Daily Puzzle starts, accepts a real action, completes, shares, and returns', async ({ page, browserFaults }) => {
   void browserFaults
   await openMenu(page)
