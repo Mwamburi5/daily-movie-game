@@ -1,0 +1,13 @@
+
+> matchcut@0.1.0 verify:preview-security
+> node scripts/verify-preview-security.mjs --url=https://marquee-otlnd4c6f-mwamburi5s-projects.vercel.app --cookie-jar=/private/tmp/claude-501/-Users-mwamburi-Projects-Daily-Movie-Game/***/scratchpad/preview-bypass.cookies.txt
+
+file:///Users/mwamburi/Projects/Daily%20Movie%20Game/scripts/verify-preview-security.mjs:22
+  if (!condition) throw new Error(message)
+                        ^
+
+Error: Vercel Toolbar script is present under the restrictive CSP.
+    at assert (file:///Users/mwamburi/Projects/Daily%20Movie%20Game/scripts/verify-preview-security.mjs:22:25)
+    at file:///Users/mwamburi/Projects/Daily%20Movie%20Game/scripts/verify-preview-security.mjs:103:3
+
+Node.js v24.14.0

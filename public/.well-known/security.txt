@@ -1,0 +1,8 @@
+# Match Cut — RFC 9116 security contact.
+# There is no private support mailbox for this project, so the public issue
+# tracker is the only route: open an issue WITHOUT exploit detail and ask for a
+# private channel in the first message.
+Contact: https://github.com/Mwamburi5/daily-movie-game/issues/new/choose
+Expires: 2027-09-01T00:00:00.000Z
+Preferred-Languages: en
+Canonical: https://matchcutdaily.com/.well-known/security.txt

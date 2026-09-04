@@ -1,0 +1,70 @@
+name: prod-smoke
+
+# Plays all four modes against production through the real UI, recomputing each
+# daily deal from src/lib and cross-checking it against the DOM before play —
+# the assertion that catches a broken daily, not just a blank page.
+#
+# Manual-only for now. The daily cron below is deliberately commented out:
+# production still serves the pre-cutover build, so the deal cross-check would
+# fail every night and train everyone to ignore the alert.
+# ENABLE AFTER APPROVAL 4 (the production deploy) — uncomment the schedule.
+on:
+  workflow_dispatch:
+  # schedule:
+  #   - cron: '20 4 * * *' # 00:20 America/New_York — enable after Approval 4
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      # The runner is UTC but the app's daily rolls at the player's LOCAL
+      # midnight, so pin the job to the zone the daily is authored for.
+      TZ: America/New_York
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Use repository Node.js version
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: package.json
+          cache: npm
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Install locked Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Play the production four-mode matrix
+        run: npm run smoke:prod -- --base=https://matchcutdaily.com --out=out --tag=prod
+
+      - name: Upload the run receipt
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: prod-smoke-${{ github.run_id }}
+          path: out/
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Open an issue on failure
+        if: failure()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          body=out/matrix-prod.md
+          if [ ! -f "$body" ]; then
+            printf 'The production smoke run failed before it could write a receipt.\nSee the run log: %s/%s/actions/runs/%s\n' \
+              "$GITHUB_SERVER_URL" "$GITHUB_REPOSITORY" "$GITHUB_RUN_ID" > /tmp/body.md
+            body=/tmp/body.md
+          fi
+          gh issue create \
+            --title "Production smoke failed $(date -u +%Y-%m-%d)" \
+            --body-file "$body"

@@ -30,7 +30,15 @@ own reviewed commit, push approval, and exact-SHA CI receipt.
 - [x] `npm run build`
 - [x] `npm run check:bundle`
 - [x] `npm run check:security`
-- [ ] Run `npm run verify:preview-security` against the protected Goal 5 Preview.
+- [x] Run `npm run verify:preview-security` against the protected Preview.
+      GREEN 2026-09-02 against `https://marquee-otlnd4c6f-mwamburi5s-projects.vercel.app`
+      (`dpl_FTnTRXPKr4V1Hyz8Fu68AfPymr75`, `meta.githubCommitSha = 14a546e…`):
+      9/9 required headers, 0 CSP violations, 0 console faults, insights loader
+      200 + browser event 200, no test seams / secret names / source map. Run 1
+      was red on exactly one assertion (the platform's Vercel Toolbar injection
+      into authenticated Preview HTML); Buri approved the `x-vercel-skip-toolbar`
+      harness opt-out and run 2 passed. Full record:
+      `docs/daily-duel-216-preview-verification-receipt.md` §P2.
 - [ ] Confirm `vercel.json` and the attended account checks in
       `docs/security-launch-checklist.md` are complete for the candidate.
 - [x] `npm run verify` — 64/64
@@ -99,10 +107,18 @@ listed no project environment variables. Apex HTTPS, HTTP-to-HTTPS, `www`-to-
 apex redirects, Vercel nameservers, public DNS answers, and TLS coverage were
 confirmed. No DS delegation was observed, so DNSSEC remains an attended
 decision. The previous Ready deployment
-`dpl_7Mk27AwKQ8vcN3CUPj666kfCPNx9` is the recorded rollback target; the
-documented command is `vercel rollback <deployment-id-or-url>`, and no rollback
-was executed. Dashboard analytics/Web Vitals, alerts, spend controls, account
-MFA/access, and the rollback drill remain open.
+`dpl_7Mk27AwKQ8vcN3CUPj666kfCPNx9` was recorded here on 2026-08-19, but that is
+the **predecessor** of the deployment now serving production and is the wrong
+thing to roll back to. **Corrected 2026-09-03: the rollback target is
+`dpl_8SighytERqgygRYvbf1eMyLis6SL`** — the live `c063f26` build aliased to
+matchcutdaily.com. The documented command is
+`npx --yes vercel@59.11.1 rollback dpl_8SighytERqgygRYvbf1eMyLis6SL --yes`
+(run `vercel whoami` first; the stored token expires). **This id must be
+updated as the last step of every production deploy** — see
+`docs/daily-duel-216-deploy-and-indexing-runbook.md` §2.5, which carries the
+same target and the verification commands. No rollback has been executed and no
+drill has been run. Dashboard analytics/Web Vitals, alerts, spend controls,
+account MFA/access, and the rollback drill remain open.
 
 ## Source-control and CI gates
 

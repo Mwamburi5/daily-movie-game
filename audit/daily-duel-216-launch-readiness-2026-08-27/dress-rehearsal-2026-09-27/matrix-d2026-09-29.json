@@ -1,0 +1,107 @@
+{
+  "tag": "d2026-09-29",
+  "base": "http://localhost:4175",
+  "seed": "2026-09-29",
+  "seedSource": "pinned clock (--seed)",
+  "pool": {
+    "size": 216,
+    "effectiveDate": "2026-09-27",
+    "era": "expanded"
+  },
+  "root": "/Users/mwamburi/Projects/Daily Movie Game/.claude/worktrees/agent-a6d1945f5e1e10307",
+  "startedAt": "2026-09-04T01:14:01.491Z",
+  "finishedAt": "2026-09-04T01:14:59.906Z",
+  "ok": true,
+  "fatal": null,
+  "counts": {
+    "modes": 4,
+    "fail": 0,
+    "notVerified": 0,
+    "faults": 0
+  },
+  "modes": [
+    {
+      "mode": "Daily Puzzle",
+      "load": "PASS — mode stage rendered; pile top = the-bourne-identity (matches the seed-derived deal for 2026-09-29 from the 216-film expanded pool)",
+      "action": "PASS — played Ocean's Thirteen onto The Bourne Identity; pile top advanced and the hand dropped to 6 tickets",
+      "error": "PASS — played Superbad onto The Bourne Identity (no shared credit): rejected with the banner \"No shared credit · +2\", card returned to hand (6 tickets, was 7), penalty applied (Flips 2, score 2, par 9); play continued normally afterwards",
+      "terminal": "PASS — Solved (won). Result dialog \"Solved — results\": Solved! | Solved in -1, par 9 (10 under par) | LOWER IS BETTER | Score -1 vs par 9 | 2 flips · 1 invalid play · combo −3 | DAY 88 · STREAK 1 · BEST -1",
+      "share": {
+        "label": "copied ✓",
+        "route": "clipboard",
+        "text": "Match Cut · Daily Puzzle\nscore -1, par 9 (10 under par)\n🎬🟩🟩🟩🟩🟩🟩🟩"
+      }
+    },
+    {
+      "mode": "Chronology",
+      "load": "PASS — mode stage rendered; anchor = X-Men: First Class (2011-06-03), matching the seed-derived deal",
+      "action": "PASS — raised Blade Runner 2049 (2017) and dropped it into the correct gap 2: accepted clean (\"clean\"), reel grew to 3 cards",
+      "error": "PASS — placed Zero Dark Thirty (2012) in gap 0 when gap 1 was correct: the UI revealed the year (\"actually 2012\"), charged a stroke (Strokes 1) and re-slotted the card to its true position (index 1); the round continued",
+      "terminal": "PASS — Cleared. Result dialog \"Cleared — results\": Cleared! | Final score -2 | LOWER IS BETTER | Score -2 = 1 strokes − 3 credits | 1 stroke · 3 streak credits | DAY 88 · STREAK 1 · BEST -2",
+      "share": {
+        "label": "copied ✓",
+        "route": "clipboard",
+        "text": "Match Cut · Chronology\nscore -2 (1 stroke, 3 back)\n🎬🟥🟩🟩🟩🟩🟩🟩🟩🟩🟩"
+      }
+    },
+    {
+      "mode": "Connections",
+      "load": "PASS — mode stage rendered; the 16 tiles match the baked daily grid for 2026-09-29",
+      "action": "PASS — selected the four actor films and submitted: accepted, the group locked to the solved rail",
+      "error": "PASS — submitted a deliberate one-away set (3 from group 1 + 1 from group 2): rejected with \"one away — swap one ticket\", mistake counted (4 mistakes left → 3 mistakes left), board stayed playable",
+      "terminal": "PASS — Solved (won, 1 mistake). Result dialog \"Solved — results\": MATCH CUT · CONNECTIONS | Solved! | 1 mistake on the way. | FEWER MISTAKES IS BETTER | 1 of 4 used | DAY 88 · STREAK 1 · BEST 1",
+      "share": {
+        "label": "copied ✓",
+        "route": "clipboard",
+        "text": "Match Cut · Connections\nsolved · 1 mistake\n🟦🟦🟦🟪\n🟦🟦🟦🟦\n🟪🟪🟪🟪\n🟥🟥🟥🟥\n🟩🟩🟩🟩"
+      }
+    },
+    {
+      "mode": "Duel",
+      "load": "PASS — duel board rendered; hand 7 cards, marquee tops Donnie Darko / John Wick: Chapter 4, score 0-0, turn playerTurn",
+      "action": "PASS (via Final Cut) — no printed link existed in the opening hand; armed Final Cut and played Forrest Gump: accepted (score 0-0 → 1-1)",
+      "error": "PASS — dropped A Few Good Men on the Donnie Darko marquee with no shared credit and no Final Cut: refused (hand still 7, score still 0-0, turn still playerTurn — the turn was not consumed); play continued",
+      "terminal": "PASS — game reached its terminal screen after 89 driven steps. Dialog \"Game over — results\": CPU wins. | CPU hit 20 — the show goes to the higher net. | HIGHER IS BETTER | Net -5 vs 19 · played − held | You | 1 played − 6 held | -5 | CPU",
+      "share": {
+        "label": "copied ✓",
+        "route": "clipboard",
+        "text": "Match Cut · Duel\nlost vs Matinee · net -5 to 19\n🎬🟩🟥🟥🟥"
+      }
+    }
+  ],
+  "sanitized": [
+    {
+      "variant": "a-structured",
+      "sawOnboarding": false,
+      "chips": {
+        "solo": "✓ streak 5",
+        "chronology": null,
+        "connections": "✓ streak 1",
+        "duel": "3/3 won",
+        "passport": "Daily passport2/3 stamped",
+        "difficultyPressed": [
+          "matinee"
+        ],
+        "menuCards": 4
+      },
+      "faults": []
+    },
+    {
+      "variant": "b-garbage",
+      "sawOnboarding": true,
+      "chips": {
+        "solo": null,
+        "chronology": null,
+        "connections": null,
+        "duel": null,
+        "passport": "Daily passport0/3 stamped",
+        "difficultyPressed": [
+          "matinee"
+        ],
+        "menuCards": 4
+      },
+      "faults": []
+    }
+  ],
+  "faults": []
+}

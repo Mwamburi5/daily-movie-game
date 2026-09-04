@@ -1,0 +1,48 @@
+name: prod-canary
+
+# A two-second curl check: is production up, is it serving an app shell with an
+# entry module, and does that hashed asset resolve? It catches an origin
+# outage, a detached alias, a TLS failure, and a deploy that lost its entry
+# script. It does NOT catch a broken daily deal — prod-smoke.yml does that.
+#
+# Manual-only for now; the 30-minute cron is deliberately commented out.
+# ENABLE AFTER APPROVAL 4 (the production deploy) — uncomment the schedule.
+on:
+  workflow_dispatch:
+  # schedule:
+  #   - cron: '*/30 * * * *' # every 30 minutes — enable after Approval 4
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  canary:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      ORIGIN: https://matchcutdaily.com
+    steps:
+      - name: Probe the production shell and its entry asset
+        run: |
+          set -euo pipefail
+          status=$(curl -sS --max-time 20 -o /tmp/body.html -w '%{http_code}' "$ORIGIN/")
+          echo "shell status: $status"
+          test "$status" = "200"
+          grep -q '<script type="module"' /tmp/body.html
+          asset=$(grep -o 'assets/index-[^"]*\.js' /tmp/body.html | head -1)
+          test -n "$asset"
+          echo "entry asset: $asset"
+          curl -sfS --max-time 20 -o /dev/null "$ORIGIN/$asset"
+
+      - name: Open an issue on failure
+        if: failure()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          printf 'The production canary failed at %s UTC.\n\nIt checks: apex 200, an entry `<script type="module">` in the shell, and a 200 on the hashed entry asset.\n\nRun log: %s/%s/actions/runs/%s\n' \
+            "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$GITHUB_SERVER_URL" "$GITHUB_REPOSITORY" "$GITHUB_RUN_ID" > /tmp/body.md
+          gh issue create \
+            --title "Production canary failed $(date -u +%Y-%m-%d)" \
+            --body-file /tmp/body.md

@@ -1,0 +1,2284 @@
+{
+  "SEED": "2026-09-03",
+  "findings": [
+    {
+      "screen": "onboarding-1",
+      "vp": "v390",
+      "small": [
+        {
+          "tag": "BUTTON",
+          "name": "How to play",
+          "w": 32,
+          "h": 32,
+          "cls": "app-help-button daily-icon-button text-[13px] font-extrabold active:scale-90"
+        }
+      ],
+      "overflow": [
+        {
+          "kind": "CLIPPED",
+          "tag": "P",
+          "t": "Screen 1 of 4",
+          "sw": 95,
+          "cw": 1,
+          "cls": "sr-only"
+        }
+      ],
+      "noLabel": [],
+      "contrast": [
+        {
+          "t": "Tonight's program",
+          "ratio": 2.2,
+          "need": 4.5,
+          "px": 11,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(240,235,216)",
+          "cls": "font-stub-label text-[11px] font-bold uppercase tracking-[0.16em] text"
+        },
+        {
+          "t": "Start here · daily",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 11,
+          "color": "rgb(31, 58, 82)",
+          "bg": "rgb(207,149,42)",
+          "cls": "menu-card-kicker mb-2 inline-flex rounded-stub-pill bg-stub-amber px-2"
+        },
+        {
+          "t": "Matinee",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 10,
+          "color": "rgb(31, 58, 82)",
+          "bg": "rgb(207,149,42)",
+          "cls": "min-h-11 flex-1 whitespace-nowrap rounded-stub-pill px-2 py-2 font-stu"
+        },
+        {
+          "t": "Skip",
+          "ratio": 1.49,
+          "need": 4.5,
+          "px": 11,
+          "color": "oklab(0.938879 -0.00208431 0.0256565 / 0.55)",
+          "bg": "rgb(31,58,82)",
+          "cls": "-mr-2 flex min-h-11 items-center px-2 font-stub-label text-[11px] font"
+        },
+        {
+          "t": "De Niro",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 9,
+          "color": "rgb(31, 58, 82)",
+          "bg": "rgb(207,149,42)",
+          "cls": "flex flex-none items-center gap-1 rounded-stub-pill bg-stub-amber px-2"
+        },
+        {
+          "t": "←",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 9,
+          "color": "rgb(31, 58, 82)",
+          "bg": "rgb(207,149,42)",
+          "cls": ""
+        },
+        {
+          "t": "→",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 9,
+          "color": "rgb(31, 58, 82)",
+          "bg": "rgb(207,149,42)",
+          "cls": ""
+        },
+        {
+          "t": "Screen 1 of 4",
+          "ratio": 1.37,
+          "need": 4.5,
+          "px": 16,
+          "color": "rgb(35, 33, 28)",
+          "bg": "rgb(31,58,82)",
+          "cls": "sr-only"
+        },
+        {
+          "t": "Next",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 13,
+          "color": "rgb(31, 58, 82)",
+          "bg": "rgb(207,149,42)",
+          "cls": "min-h-12 w-full rounded-stub-pill bg-stub-amber px-6 py-3 font-stub-la"
+        }
+      ]
+    },
+    {
+      "screen": "onboarding-2",
+      "vp": "v390",
+      "small": [
+        {
+          "tag": "BUTTON",
+          "name": "How to play",
+          "w": 32,
+          "h": 32,
+          "cls": "app-help-button daily-icon-button text-[13px] font-extrabold active:scale-90"
+        }
+      ],
+      "overflow": [
+        {
+          "kind": "CLIPPED",
+          "tag": "P",
+          "t": "Screen 2 of 4",
+          "sw": 97,
+          "cw": 1,
+          "cls": "sr-only"
+        }
+      ],
+      "noLabel": [],
+      "contrast": [
+        {
+          "t": "Tonight's program",
+          "ratio": 2.2,
+          "need": 4.5,
+          "px": 11,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(240,235,216)",
+          "cls": "font-stub-label text-[11px] font-bold uppercase tracking-[0.16em] text"
+        },
+        {
+          "t": "Start here · daily",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 11,
+          "color": "rgb(31, 58, 82)",
+          "bg": "rgb(207,149,42)",
+          "cls": "menu-card-kicker mb-2 inline-flex rounded-stub-pill bg-stub-amber px-2"
+        },
+        {
+          "t": "Matinee",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 10,
+          "color": "rgb(31, 58, 82)",
+          "bg": "rgb(207,149,42)",
+          "cls": "min-h-11 flex-1 whitespace-nowrap rounded-stub-pill px-2 py-2 font-stu"
+        },
+        {
+          "t": "Skip",
+          "ratio": 1.49,
+          "need": 4.5,
+          "px": 11,
+          "color": "oklab(0.938879 -0.00208431 0.0256565 / 0.55)",
+          "bg": "rgb(31,58,82)",
+          "cls": "-mr-2 flex min-h-11 items-center px-2 font-stub-label text-[11px] font"
+        },
+        {
+          "t": "golf",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 9,
+          "color": "rgb(31, 58, 82)",
+          "bg": "rgb(207,149,42)",
+          "cls": "ml-1.5 inline-flex rounded-stub-pill bg-stub-amber px-1.5 py-0.5 align"
+        },
+        {
+          "t": "Screen 2 of 4",
+          "ratio": 1.37,
+          "need": 4.5,
+          "px": 16,
+          "color": "rgb(35, 33, 28)",
+          "bg": "rgb(31,58,82)",
+          "cls": "sr-only"
+        },
+        {
+          "t": "Next",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 13,
+          "color": "rgb(31, 58, 82)",
+          "bg": "rgb(207,149,42)",
+          "cls": "min-h-12 w-full rounded-stub-pill bg-stub-amber px-6 py-3 font-stub-la"
+        }
+      ]
+    },
+    {
+      "screen": "onboarding-3",
+      "vp": "v390",
+      "small": [
+        {
+          "tag": "BUTTON",
+          "name": "How to play",
+          "w": 32,
+          "h": 32,
+          "cls": "app-help-button daily-icon-button text-[13px] font-extrabold active:scale-90"
+        }
+      ],
+      "overflow": [
+        {
+          "kind": "CLIPPED",
+          "tag": "P",
+          "t": "Screen 3 of 4",
+          "sw": 98,
+          "cw": 1,
+          "cls": "sr-only"
+        }
+      ],
+      "noLabel": [],
+      "contrast": [
+        {
+          "t": "Tonight's program",
+          "ratio": 2.2,
+          "need": 4.5,
+          "px": 11,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(240,235,216)",
+          "cls": "font-stub-label text-[11px] font-bold uppercase tracking-[0.16em] text"
+        },
+        {
+          "t": "Start here · daily",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 11,
+          "color": "rgb(31, 58, 82)",
+          "bg": "rgb(207,149,42)",
+          "cls": "menu-card-kicker mb-2 inline-flex rounded-stub-pill bg-stub-amber px-2"
+        },
+        {
+          "t": "Matinee",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 10,
+          "color": "rgb(31, 58, 82)",
+          "bg": "rgb(207,149,42)",
+          "cls": "min-h-11 flex-1 whitespace-nowrap rounded-stub-pill px-2 py-2 font-stu"
+        },
+        {
+          "t": "Skip",
+          "ratio": 1.49,
+          "need": 4.5,
+          "px": 11,
+          "color": "oklab(0.938879 -0.00208431 0.0256565 / 0.55)",
+          "bg": "rgb(31,58,82)",
+          "cls": "-mr-2 flex min-h-11 items-center px-2 font-stub-label text-[11px] font"
+        },
+        {
+          "t": "Screen 3 of 4",
+          "ratio": 1.37,
+          "need": 4.5,
+          "px": 16,
+          "color": "rgb(35, 33, 28)",
+          "bg": "rgb(31,58,82)",
+          "cls": "sr-only"
+        },
+        {
+          "t": "Next",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 13,
+          "color": "rgb(31, 58, 82)",
+          "bg": "rgb(207,149,42)",
+          "cls": "min-h-12 w-full rounded-stub-pill bg-stub-amber px-6 py-3 font-stub-la"
+        }
+      ]
+    },
+    {
+      "screen": "onboarding-4",
+      "vp": "v390",
+      "small": [
+        {
+          "tag": "BUTTON",
+          "name": "How to play",
+          "w": 32,
+          "h": 32,
+          "cls": "app-help-button daily-icon-button text-[13px] font-extrabold active:scale-90"
+        }
+      ],
+      "overflow": [
+        {
+          "kind": "CLIPPED",
+          "tag": "P",
+          "t": "Screen 4 of 4",
+          "sw": 98,
+          "cw": 1,
+          "cls": "sr-only"
+        }
+      ],
+      "noLabel": [],
+      "contrast": [
+        {
+          "t": "Tonight's program",
+          "ratio": 2.2,
+          "need": 4.5,
+          "px": 11,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(240,235,216)",
+          "cls": "font-stub-label text-[11px] font-bold uppercase tracking-[0.16em] text"
+        },
+        {
+          "t": "Start here · daily",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 11,
+          "color": "rgb(31, 58, 82)",
+          "bg": "rgb(207,149,42)",
+          "cls": "menu-card-kicker mb-2 inline-flex rounded-stub-pill bg-stub-amber px-2"
+        },
+        {
+          "t": "Matinee",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 10,
+          "color": "rgb(31, 58, 82)",
+          "bg": "rgb(207,149,42)",
+          "cls": "min-h-11 flex-1 whitespace-nowrap rounded-stub-pill px-2 py-2 font-stu"
+        },
+        {
+          "t": "✓",
+          "ratio": 2.51,
+          "need": 4.5,
+          "px": 10,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(252,249,248)",
+          "cls": "font-stub-label text-[10px] font-bold text-stub-amber"
+        },
+        {
+          "t": "Triple Feature",
+          "ratio": 2.2,
+          "need": 4.5,
+          "px": 10,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(240,235,216)",
+          "cls": "mt-3 block border-t border-dashed border-stub-navy/25 pt-2 text-center"
+        },
+        {
+          "t": "Screen 4 of 4",
+          "ratio": 1.37,
+          "need": 4.5,
+          "px": 16,
+          "color": "rgb(35, 33, 28)",
+          "bg": "rgb(31,58,82)",
+          "cls": "sr-only"
+        },
+        {
+          "t": "Let’s play!",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 13,
+          "color": "rgb(31, 58, 82)",
+          "bg": "rgb(207,149,42)",
+          "cls": "min-h-12 w-full rounded-stub-pill bg-stub-amber px-6 py-3 font-stub-la"
+        }
+      ]
+    },
+    {
+      "screen": "menu-fresh",
+      "vp": "v390",
+      "small": [
+        {
+          "tag": "BUTTON",
+          "name": "How to play",
+          "w": 32,
+          "h": 32,
+          "cls": "app-help-button daily-icon-button text-[13px] font-extrabold active:scale-90"
+        }
+      ],
+      "overflow": [],
+      "noLabel": [],
+      "contrast": [
+        {
+          "t": "Tonight's program",
+          "ratio": 2.2,
+          "need": 4.5,
+          "px": 11,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(240,235,216)",
+          "cls": "font-stub-label text-[11px] font-bold uppercase tracking-[0.16em] text"
+        },
+        {
+          "t": "Start here · daily",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 11,
+          "color": "rgb(31, 58, 82)",
+          "bg": "rgb(207,149,42)",
+          "cls": "menu-card-kicker mb-2 inline-flex rounded-stub-pill bg-stub-amber px-2"
+        },
+        {
+          "t": "Matinee",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 10,
+          "color": "rgb(31, 58, 82)",
+          "bg": "rgb(207,149,42)",
+          "cls": "min-h-11 flex-1 whitespace-nowrap rounded-stub-pill px-2 py-2 font-stu"
+        }
+      ]
+    },
+    {
+      "screen": "rules-overview",
+      "vp": "v390",
+      "small": [
+        {
+          "tag": "BUTTON",
+          "name": "How to play",
+          "w": 32,
+          "h": 32,
+          "cls": "app-help-button daily-icon-button text-[13px] font-extrabold active:scale-90"
+        }
+      ],
+      "overflow": [],
+      "noLabel": [],
+      "contrast": [
+        {
+          "t": "Tonight's program",
+          "ratio": 2.2,
+          "need": 4.5,
+          "px": 11,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(240,235,216)",
+          "cls": "font-stub-label text-[11px] font-bold uppercase tracking-[0.16em] text"
+        },
+        {
+          "t": "Start here · daily",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 11,
+          "color": "rgb(31, 58, 82)",
+          "bg": "rgb(207,149,42)",
+          "cls": "menu-card-kicker mb-2 inline-flex rounded-stub-pill bg-stub-amber px-2"
+        },
+        {
+          "t": "Matinee",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 10,
+          "color": "rgb(31, 58, 82)",
+          "bg": "rgb(207,149,42)",
+          "cls": "min-h-11 flex-1 whitespace-nowrap rounded-stub-pill px-2 py-2 font-stu"
+        },
+        {
+          "t": "Match Cut",
+          "ratio": 2.2,
+          "need": 4.5,
+          "px": 10,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(240,235,216)",
+          "cls": "font-stub-label text-[10px] font-bold uppercase tracking-[0.16em] text"
+        },
+        {
+          "t": "Got it — choose a mode",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 15,
+          "color": "rgb(31, 58, 82)",
+          "bg": "rgb(207,149,42)",
+          "cls": "min-h-12 w-full rounded-stub-pill bg-stub-amber px-7 py-3 font-stub-ui"
+        }
+      ]
+    },
+    {
+      "screen": "rules-overview-bottom",
+      "vp": "v390",
+      "small": [
+        {
+          "tag": "BUTTON",
+          "name": "How to play",
+          "w": 32,
+          "h": 32,
+          "cls": "app-help-button daily-icon-button text-[13px] font-extrabold active:scale-90"
+        }
+      ],
+      "overflow": [],
+      "noLabel": [],
+      "contrast": [
+        {
+          "t": "Tonight's program",
+          "ratio": 2.2,
+          "need": 4.5,
+          "px": 11,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(240,235,216)",
+          "cls": "font-stub-label text-[11px] font-bold uppercase tracking-[0.16em] text"
+        },
+        {
+          "t": "Start here · daily",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 11,
+          "color": "rgb(31, 58, 82)",
+          "bg": "rgb(207,149,42)",
+          "cls": "menu-card-kicker mb-2 inline-flex rounded-stub-pill bg-stub-amber px-2"
+        },
+        {
+          "t": "Matinee",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 10,
+          "color": "rgb(31, 58, 82)",
+          "bg": "rgb(207,149,42)",
+          "cls": "min-h-11 flex-1 whitespace-nowrap rounded-stub-pill px-2 py-2 font-stu"
+        },
+        {
+          "t": "Match Cut",
+          "ratio": 2.2,
+          "need": 4.5,
+          "px": 10,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(240,235,216)",
+          "cls": "font-stub-label text-[10px] font-bold uppercase tracking-[0.16em] text"
+        },
+        {
+          "t": "Got it — choose a mode",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 15,
+          "color": "rgb(31, 58, 82)",
+          "bg": "rgb(207,149,42)",
+          "cls": "min-h-12 w-full rounded-stub-pill bg-stub-amber px-7 py-3 font-stub-ui"
+        }
+      ]
+    },
+    {
+      "screen": "rules-trap",
+      "vp": "v390",
+      "trap": {
+        "hasDialog": true,
+        "activeIn": true
+      }
+    },
+    {
+      "screen": "solo-board",
+      "vp": "v390",
+      "small": [
+        {
+          "tag": "BUTTON",
+          "name": "How to play",
+          "w": 32,
+          "h": 32,
+          "cls": "app-help-button daily-icon-button text-[12px] font-extrabold active:scale-90"
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Restart game",
+          "w": 36,
+          "h": 36,
+          "cls": "daily-icon-button flex h-9 w-9 items-center justify-center rounded-stub-pill text-xl text-"
+        }
+      ],
+      "overflow": [],
+      "noLabel": [],
+      "contrast": [
+        {
+          "t": "daily",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 9,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(31,58,82)",
+          "cls": "mt-1 font-stub-label text-[9px] font-bold uppercase tracking-[0.16em] "
+        },
+        {
+          "t": "FLIP FOR CREDITS",
+          "ratio": 2.4,
+          "need": 4.5,
+          "px": 6.5,
+          "color": "rgb(143, 166, 188)",
+          "bg": "rgb(252,249,248)",
+          "cls": "flex flex-none items-center justify-center whitespace-nowrap font-stub"
+        },
+        {
+          "t": "⇄",
+          "ratio": 2.4,
+          "need": 4.5,
+          "px": 8.5,
+          "color": "rgb(143, 166, 188)",
+          "bg": "rgb(252,249,248)",
+          "cls": ""
+        }
+      ]
+    },
+    {
+      "screen": "solo-help",
+      "vp": "v390",
+      "small": [
+        {
+          "tag": "BUTTON",
+          "name": "How to play",
+          "w": 32,
+          "h": 32,
+          "cls": "app-help-button daily-icon-button text-[12px] font-extrabold active:scale-90"
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Restart game",
+          "w": 36,
+          "h": 36,
+          "cls": "daily-icon-button flex h-9 w-9 items-center justify-center rounded-stub-pill text-xl text-"
+        }
+      ],
+      "overflow": [],
+      "noLabel": [],
+      "contrast": [
+        {
+          "t": "daily",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 9,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(31,58,82)",
+          "cls": "mt-1 font-stub-label text-[9px] font-bold uppercase tracking-[0.16em] "
+        },
+        {
+          "t": "FLIP FOR CREDITS",
+          "ratio": 2.4,
+          "need": 4.5,
+          "px": 6.5,
+          "color": "rgb(143, 166, 188)",
+          "bg": "rgb(252,249,248)",
+          "cls": "flex flex-none items-center justify-center whitespace-nowrap font-stub"
+        },
+        {
+          "t": "⇄",
+          "ratio": 2.4,
+          "need": 4.5,
+          "px": 8.5,
+          "color": "rgb(143, 166, 188)",
+          "bg": "rgb(252,249,248)",
+          "cls": ""
+        },
+        {
+          "t": "Match Cut",
+          "ratio": 2.2,
+          "need": 4.5,
+          "px": 10,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(240,235,216)",
+          "cls": "font-stub-label text-[10px] font-bold uppercase tracking-[0.16em] text"
+        },
+        {
+          "t": "Got it — keep playing",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 15,
+          "color": "rgb(31, 58, 82)",
+          "bg": "rgb(207,149,42)",
+          "cls": "min-h-12 w-full rounded-stub-pill bg-stub-amber px-7 py-3 font-stub-ui"
+        }
+      ]
+    },
+    {
+      "screen": "solo-invalid",
+      "vp": "v390",
+      "small": [
+        {
+          "tag": "BUTTON",
+          "name": "How to play",
+          "w": 32,
+          "h": 32,
+          "cls": "app-help-button daily-icon-button text-[12px] font-extrabold active:scale-90"
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Restart game",
+          "w": 36,
+          "h": 36,
+          "cls": "daily-icon-button flex h-9 w-9 items-center justify-center rounded-stub-pill text-xl text-"
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Flip card",
+          "w": 27,
+          "h": 27,
+          "cls": "absolute -bottom-3 -right-3 z-10 flex h-12 w-12 items-center justify-center rounded-full b"
+        }
+      ],
+      "overflow": [
+        {
+          "kind": "CLIPPED",
+          "tag": "DIV",
+          "t": "No valid shared credit. Two-stroke penalty.",
+          "sw": 309,
+          "cw": 1,
+          "cls": "sr-only"
+        }
+      ],
+      "noLabel": [],
+      "contrast": [
+        {
+          "t": "daily",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 9,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(31,58,82)",
+          "cls": "mt-1 font-stub-label text-[9px] font-bold uppercase tracking-[0.16em] "
+        },
+        {
+          "t": "FLIP FOR CREDITS",
+          "ratio": 2.4,
+          "need": 4.5,
+          "px": 6.5,
+          "color": "rgb(143, 166, 188)",
+          "bg": "rgb(252,249,248)",
+          "cls": "flex flex-none items-center justify-center whitespace-nowrap font-stub"
+        },
+        {
+          "t": "⇄",
+          "ratio": 2.4,
+          "need": 4.5,
+          "px": 8.5,
+          "color": "rgb(143, 166, 188)",
+          "bg": "rgb(252,249,248)",
+          "cls": ""
+        },
+        {
+          "t": "FLIP FOR CREDITS",
+          "ratio": 2.4,
+          "need": 4.5,
+          "px": 8.5,
+          "color": "rgb(143, 166, 188)",
+          "bg": "rgb(252,249,248)",
+          "cls": "flex flex-none items-center justify-center whitespace-nowrap font-stub"
+        },
+        {
+          "t": "⇄",
+          "ratio": 2.4,
+          "need": 4.5,
+          "px": 10.5,
+          "color": "rgb(143, 166, 188)",
+          "bg": "rgb(252,249,248)",
+          "cls": ""
+        }
+      ]
+    },
+    {
+      "screen": "solo-invalid-text",
+      "vp": "v390",
+      "text": "No shared credit · +2"
+    },
+    {
+      "screen": "solo-results",
+      "vp": "v390",
+      "small": [
+        {
+          "tag": "BUTTON",
+          "name": "How to play",
+          "w": 32,
+          "h": 32,
+          "cls": "app-help-button daily-icon-button text-[12px] font-extrabold active:scale-90"
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Restart game",
+          "w": 36,
+          "h": 36,
+          "cls": "daily-icon-button flex h-9 w-9 items-center justify-center rounded-stub-pill text-xl text-"
+        }
+      ],
+      "overflow": [
+        {
+          "kind": "CLIPPED",
+          "tag": "DIV",
+          "t": "Connected via Tom Hanks (Actor)",
+          "sw": 244,
+          "cw": 1,
+          "cls": "sr-only"
+        }
+      ],
+      "noLabel": [],
+      "contrast": [
+        {
+          "t": "daily",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 9,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(31,58,82)",
+          "cls": "mt-1 font-stub-label text-[9px] font-bold uppercase tracking-[0.16em] "
+        },
+        {
+          "t": "FLIP FOR CREDITS",
+          "ratio": 2.4,
+          "need": 4.5,
+          "px": 6.5,
+          "color": "rgb(143, 166, 188)",
+          "bg": "rgb(252,249,248)",
+          "cls": "flex flex-none items-center justify-center whitespace-nowrap font-stub"
+        },
+        {
+          "t": "⇄",
+          "ratio": 2.4,
+          "need": 4.5,
+          "px": 8.5,
+          "color": "rgb(143, 166, 188)",
+          "bg": "rgb(252,249,248)",
+          "cls": ""
+        },
+        {
+          "t": "Replay today's hand",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 15,
+          "color": "rgb(31, 58, 82)",
+          "bg": "rgb(207,149,42)",
+          "cls": "app-result-action app-result-action--primary active:scale-[0.98]"
+        }
+      ]
+    },
+    {
+      "screen": "solo-results-text",
+      "vp": "v390",
+      "text": "Solved! | Solved in -1, par 9 (10 under par) | LOWER IS BETTER | Score -1 vs par 9 | 2 flips · 1 invalid play · combo −3 | DAY 62 · STREAK 1 · BEST -1 | 🎬🟩🟩🟩🟩🟩🟩🟩 | copy result | Replay today's hand | Menu"
+    },
+    {
+      "screen": "solo-share",
+      "vp": "v390",
+      "text": "Match Cut · Daily Puzzle\nscore -1, par 9 (10 under par)\n🎬🟩🟩🟩🟩🟩🟩🟩"
+    },
+    {
+      "screen": "menu-after-solo",
+      "vp": "v390",
+      "small": [
+        {
+          "tag": "BUTTON",
+          "name": "How to play",
+          "w": 32,
+          "h": 32,
+          "cls": "app-help-button daily-icon-button text-[13px] font-extrabold active:scale-90"
+        }
+      ],
+      "overflow": [],
+      "noLabel": [],
+      "contrast": [
+        {
+          "t": "Tonight's program",
+          "ratio": 2.2,
+          "need": 4.5,
+          "px": 11,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(240,235,216)",
+          "cls": "font-stub-label text-[11px] font-bold uppercase tracking-[0.16em] text"
+        },
+        {
+          "t": "Start here · daily",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 11,
+          "color": "rgb(31, 58, 82)",
+          "bg": "rgb(207,149,42)",
+          "cls": "menu-card-kicker mb-2 inline-flex rounded-stub-pill bg-stub-amber px-2"
+        },
+        {
+          "t": "✓ streak 1",
+          "ratio": 2.51,
+          "need": 4.5,
+          "px": 10,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(252,249,248)",
+          "cls": "rounded-stub-pill bg-stub-amber/15 px-2 py-0.5 font-stub-label text-[1"
+        },
+        {
+          "t": "Matinee",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 10,
+          "color": "rgb(31, 58, 82)",
+          "bg": "rgb(207,149,42)",
+          "cls": "min-h-11 flex-1 whitespace-nowrap rounded-stub-pill px-2 py-2 font-stu"
+        }
+      ]
+    },
+    {
+      "screen": "chrono-board",
+      "vp": "v390",
+      "small": [
+        {
+          "tag": "BUTTON",
+          "name": "How to play",
+          "w": 32,
+          "h": 32,
+          "cls": "app-help-button daily-icon-button daily-icon-md text-[12px] font-extrabold active:scale-90"
+        }
+      ],
+      "overflow": [
+        {
+          "kind": "CLIPPED",
+          "tag": "SPAN",
+          "t": "The Little Mermaid (Live-Action), movie 1 of 1",
+          "sw": 327,
+          "cw": 1,
+          "cls": "sr-only"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "DEADPOOL",
+          "sw": 189,
+          "cw": 183,
+          "cls": "chrono-choice-ticket relative flex min-h-11 min-w-0 items-center justify-center "
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "TOMBSTONE",
+          "sw": 189,
+          "cw": 183,
+          "cls": "chrono-choice-ticket relative flex min-h-11 min-w-0 items-center justify-center "
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "HARRY POTTER AND THE DEATHLY HALLOWS – PART 2",
+          "sw": 189,
+          "cw": 183,
+          "cls": "chrono-choice-ticket relative flex min-h-11 min-w-0 items-center justify-center "
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "UP",
+          "sw": 189,
+          "cw": 183,
+          "cls": "chrono-choice-ticket relative flex min-h-11 min-w-0 items-center justify-center "
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "WRECK-IT RALPH",
+          "sw": 189,
+          "cw": 183,
+          "cls": "chrono-choice-ticket relative flex min-h-11 min-w-0 items-center justify-center "
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "JUMANJI",
+          "sw": 189,
+          "cw": 183,
+          "cls": "chrono-choice-ticket relative flex min-h-11 min-w-0 items-center justify-center "
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "LINCOLN",
+          "sw": 189,
+          "cw": 183,
+          "cls": "chrono-choice-ticket relative flex min-h-11 min-w-0 items-center justify-center "
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "MRS. DOUBTFIRE",
+          "sw": 189,
+          "cw": 183,
+          "cls": "chrono-choice-ticket relative flex min-h-11 min-w-0 items-center justify-center "
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "BLACK PANTHER",
+          "sw": 189,
+          "cw": 183,
+          "cls": "chrono-choice-ticket relative flex min-h-11 min-w-0 items-center justify-center "
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "GONE GIRL",
+          "sw": 189,
+          "cw": 183,
+          "cls": "chrono-choice-ticket relative flex min-h-11 min-w-0 items-center justify-center "
+        }
+      ],
+      "noLabel": [],
+      "contrast": [
+        {
+          "t": "daily",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 9,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(31,58,82)",
+          "cls": "mt-1 font-stub-label text-[9px] font-bold uppercase tracking-[0.16em] "
+        }
+      ]
+    },
+    {
+      "screen": "chrono-help",
+      "vp": "v390",
+      "small": [
+        {
+          "tag": "BUTTON",
+          "name": "How to play",
+          "w": 32,
+          "h": 32,
+          "cls": "app-help-button daily-icon-button daily-icon-md text-[12px] font-extrabold active:scale-90"
+        }
+      ],
+      "overflow": [
+        {
+          "kind": "CLIPPED",
+          "tag": "SPAN",
+          "t": "The Little Mermaid (Live-Action), movie 1 of 1",
+          "sw": 327,
+          "cw": 1,
+          "cls": "sr-only"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "DEADPOOL",
+          "sw": 189,
+          "cw": 183,
+          "cls": "chrono-choice-ticket relative flex min-h-11 min-w-0 items-center justify-center "
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "TOMBSTONE",
+          "sw": 189,
+          "cw": 183,
+          "cls": "chrono-choice-ticket relative flex min-h-11 min-w-0 items-center justify-center "
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "HARRY POTTER AND THE DEATHLY HALLOWS – PART 2",
+          "sw": 189,
+          "cw": 183,
+          "cls": "chrono-choice-ticket relative flex min-h-11 min-w-0 items-center justify-center "
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "UP",
+          "sw": 189,
+          "cw": 183,
+          "cls": "chrono-choice-ticket relative flex min-h-11 min-w-0 items-center justify-center "
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "WRECK-IT RALPH",
+          "sw": 189,
+          "cw": 183,
+          "cls": "chrono-choice-ticket relative flex min-h-11 min-w-0 items-center justify-center "
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "JUMANJI",
+          "sw": 189,
+          "cw": 183,
+          "cls": "chrono-choice-ticket relative flex min-h-11 min-w-0 items-center justify-center "
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "LINCOLN",
+          "sw": 189,
+          "cw": 183,
+          "cls": "chrono-choice-ticket relative flex min-h-11 min-w-0 items-center justify-center "
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "MRS. DOUBTFIRE",
+          "sw": 189,
+          "cw": 183,
+          "cls": "chrono-choice-ticket relative flex min-h-11 min-w-0 items-center justify-center "
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "BLACK PANTHER",
+          "sw": 189,
+          "cw": 183,
+          "cls": "chrono-choice-ticket relative flex min-h-11 min-w-0 items-center justify-center "
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "GONE GIRL",
+          "sw": 189,
+          "cw": 183,
+          "cls": "chrono-choice-ticket relative flex min-h-11 min-w-0 items-center justify-center "
+        }
+      ],
+      "noLabel": [],
+      "contrast": [
+        {
+          "t": "daily",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 9,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(31,58,82)",
+          "cls": "mt-1 font-stub-label text-[9px] font-bold uppercase tracking-[0.16em] "
+        },
+        {
+          "t": "Match Cut",
+          "ratio": 2.2,
+          "need": 4.5,
+          "px": 10,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(240,235,216)",
+          "cls": "font-stub-label text-[10px] font-bold uppercase tracking-[0.16em] text"
+        },
+        {
+          "t": "Got it — keep playing",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 15,
+          "color": "rgb(31, 58, 82)",
+          "bg": "rgb(207,149,42)",
+          "cls": "min-h-12 w-full rounded-stub-pill bg-stub-amber px-7 py-3 font-stub-ui"
+        }
+      ]
+    },
+    {
+      "screen": "onboarding-1",
+      "vp": "v375",
+      "small": [
+        {
+          "tag": "BUTTON",
+          "name": "How to play",
+          "w": 32,
+          "h": 32,
+          "cls": "app-help-button daily-icon-button text-[13px] font-extrabold active:scale-90"
+        }
+      ],
+      "overflow": [
+        {
+          "kind": "CLIPPED",
+          "tag": "P",
+          "t": "Screen 1 of 4",
+          "sw": 95,
+          "cw": 1,
+          "cls": "sr-only"
+        }
+      ],
+      "noLabel": [],
+      "contrast": [
+        {
+          "t": "Tonight's program",
+          "ratio": 2.2,
+          "need": 4.5,
+          "px": 11,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(240,235,216)",
+          "cls": "font-stub-label text-[11px] font-bold uppercase tracking-[0.16em] text"
+        },
+        {
+          "t": "Start here · daily",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 11,
+          "color": "rgb(31, 58, 82)",
+          "bg": "rgb(207,149,42)",
+          "cls": "menu-card-kicker mb-2 inline-flex rounded-stub-pill bg-stub-amber px-2"
+        },
+        {
+          "t": "Matinee",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 10,
+          "color": "rgb(31, 58, 82)",
+          "bg": "rgb(207,149,42)",
+          "cls": "min-h-11 flex-1 whitespace-nowrap rounded-stub-pill px-2 py-2 font-stu"
+        },
+        {
+          "t": "Skip",
+          "ratio": 1.49,
+          "need": 4.5,
+          "px": 11,
+          "color": "oklab(0.938879 -0.00208431 0.0256565 / 0.55)",
+          "bg": "rgb(31,58,82)",
+          "cls": "-mr-2 flex min-h-11 items-center px-2 font-stub-label text-[11px] font"
+        },
+        {
+          "t": "De Niro",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 9,
+          "color": "rgb(31, 58, 82)",
+          "bg": "rgb(207,149,42)",
+          "cls": "flex flex-none items-center gap-1 rounded-stub-pill bg-stub-amber px-2"
+        },
+        {
+          "t": "←",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 9,
+          "color": "rgb(31, 58, 82)",
+          "bg": "rgb(207,149,42)",
+          "cls": ""
+        },
+        {
+          "t": "→",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 9,
+          "color": "rgb(31, 58, 82)",
+          "bg": "rgb(207,149,42)",
+          "cls": ""
+        },
+        {
+          "t": "Screen 1 of 4",
+          "ratio": 1.37,
+          "need": 4.5,
+          "px": 16,
+          "color": "rgb(35, 33, 28)",
+          "bg": "rgb(31,58,82)",
+          "cls": "sr-only"
+        },
+        {
+          "t": "Next",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 13,
+          "color": "rgb(31, 58, 82)",
+          "bg": "rgb(207,149,42)",
+          "cls": "min-h-12 w-full rounded-stub-pill bg-stub-amber px-6 py-3 font-stub-la"
+        }
+      ]
+    },
+    {
+      "screen": "onboarding-2",
+      "vp": "v375",
+      "small": [
+        {
+          "tag": "BUTTON",
+          "name": "How to play",
+          "w": 32,
+          "h": 32,
+          "cls": "app-help-button daily-icon-button text-[13px] font-extrabold active:scale-90"
+        }
+      ],
+      "overflow": [
+        {
+          "kind": "CLIPPED",
+          "tag": "P",
+          "t": "Screen 2 of 4",
+          "sw": 97,
+          "cw": 1,
+          "cls": "sr-only"
+        }
+      ],
+      "noLabel": [],
+      "contrast": [
+        {
+          "t": "Tonight's program",
+          "ratio": 2.2,
+          "need": 4.5,
+          "px": 11,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(240,235,216)",
+          "cls": "font-stub-label text-[11px] font-bold uppercase tracking-[0.16em] text"
+        },
+        {
+          "t": "Start here · daily",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 11,
+          "color": "rgb(31, 58, 82)",
+          "bg": "rgb(207,149,42)",
+          "cls": "menu-card-kicker mb-2 inline-flex rounded-stub-pill bg-stub-amber px-2"
+        },
+        {
+          "t": "Matinee",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 10,
+          "color": "rgb(31, 58, 82)",
+          "bg": "rgb(207,149,42)",
+          "cls": "min-h-11 flex-1 whitespace-nowrap rounded-stub-pill px-2 py-2 font-stu"
+        },
+        {
+          "t": "Skip",
+          "ratio": 1.49,
+          "need": 4.5,
+          "px": 11,
+          "color": "oklab(0.938879 -0.00208431 0.0256565 / 0.55)",
+          "bg": "rgb(31,58,82)",
+          "cls": "-mr-2 flex min-h-11 items-center px-2 font-stub-label text-[11px] font"
+        },
+        {
+          "t": "golf",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 9,
+          "color": "rgb(31, 58, 82)",
+          "bg": "rgb(207,149,42)",
+          "cls": "ml-1.5 inline-flex rounded-stub-pill bg-stub-amber px-1.5 py-0.5 align"
+        },
+        {
+          "t": "Screen 2 of 4",
+          "ratio": 1.37,
+          "need": 4.5,
+          "px": 16,
+          "color": "rgb(35, 33, 28)",
+          "bg": "rgb(31,58,82)",
+          "cls": "sr-only"
+        },
+        {
+          "t": "Next",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 13,
+          "color": "rgb(31, 58, 82)",
+          "bg": "rgb(207,149,42)",
+          "cls": "min-h-12 w-full rounded-stub-pill bg-stub-amber px-6 py-3 font-stub-la"
+        }
+      ]
+    },
+    {
+      "screen": "onboarding-3",
+      "vp": "v375",
+      "small": [
+        {
+          "tag": "BUTTON",
+          "name": "How to play",
+          "w": 32,
+          "h": 32,
+          "cls": "app-help-button daily-icon-button text-[13px] font-extrabold active:scale-90"
+        }
+      ],
+      "overflow": [
+        {
+          "kind": "CLIPPED",
+          "tag": "P",
+          "t": "Screen 3 of 4",
+          "sw": 98,
+          "cw": 1,
+          "cls": "sr-only"
+        }
+      ],
+      "noLabel": [],
+      "contrast": [
+        {
+          "t": "Tonight's program",
+          "ratio": 2.2,
+          "need": 4.5,
+          "px": 11,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(240,235,216)",
+          "cls": "font-stub-label text-[11px] font-bold uppercase tracking-[0.16em] text"
+        },
+        {
+          "t": "Start here · daily",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 11,
+          "color": "rgb(31, 58, 82)",
+          "bg": "rgb(207,149,42)",
+          "cls": "menu-card-kicker mb-2 inline-flex rounded-stub-pill bg-stub-amber px-2"
+        },
+        {
+          "t": "Matinee",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 10,
+          "color": "rgb(31, 58, 82)",
+          "bg": "rgb(207,149,42)",
+          "cls": "min-h-11 flex-1 whitespace-nowrap rounded-stub-pill px-2 py-2 font-stu"
+        },
+        {
+          "t": "Skip",
+          "ratio": 1.49,
+          "need": 4.5,
+          "px": 11,
+          "color": "oklab(0.938879 -0.00208431 0.0256565 / 0.55)",
+          "bg": "rgb(31,58,82)",
+          "cls": "-mr-2 flex min-h-11 items-center px-2 font-stub-label text-[11px] font"
+        },
+        {
+          "t": "Screen 3 of 4",
+          "ratio": 1.37,
+          "need": 4.5,
+          "px": 16,
+          "color": "rgb(35, 33, 28)",
+          "bg": "rgb(31,58,82)",
+          "cls": "sr-only"
+        },
+        {
+          "t": "Next",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 13,
+          "color": "rgb(31, 58, 82)",
+          "bg": "rgb(207,149,42)",
+          "cls": "min-h-12 w-full rounded-stub-pill bg-stub-amber px-6 py-3 font-stub-la"
+        }
+      ]
+    },
+    {
+      "screen": "onboarding-4",
+      "vp": "v375",
+      "small": [
+        {
+          "tag": "BUTTON",
+          "name": "How to play",
+          "w": 32,
+          "h": 32,
+          "cls": "app-help-button daily-icon-button text-[13px] font-extrabold active:scale-90"
+        }
+      ],
+      "overflow": [
+        {
+          "kind": "CLIPPED",
+          "tag": "P",
+          "t": "Screen 4 of 4",
+          "sw": 98,
+          "cw": 1,
+          "cls": "sr-only"
+        }
+      ],
+      "noLabel": [],
+      "contrast": [
+        {
+          "t": "Tonight's program",
+          "ratio": 2.2,
+          "need": 4.5,
+          "px": 11,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(240,235,216)",
+          "cls": "font-stub-label text-[11px] font-bold uppercase tracking-[0.16em] text"
+        },
+        {
+          "t": "Start here · daily",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 11,
+          "color": "rgb(31, 58, 82)",
+          "bg": "rgb(207,149,42)",
+          "cls": "menu-card-kicker mb-2 inline-flex rounded-stub-pill bg-stub-amber px-2"
+        },
+        {
+          "t": "Matinee",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 10,
+          "color": "rgb(31, 58, 82)",
+          "bg": "rgb(207,149,42)",
+          "cls": "min-h-11 flex-1 whitespace-nowrap rounded-stub-pill px-2 py-2 font-stu"
+        },
+        {
+          "t": "✓",
+          "ratio": 2.51,
+          "need": 4.5,
+          "px": 10,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(252,249,248)",
+          "cls": "font-stub-label text-[10px] font-bold text-stub-amber"
+        },
+        {
+          "t": "Triple Feature",
+          "ratio": 2.2,
+          "need": 4.5,
+          "px": 10,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(240,235,216)",
+          "cls": "mt-3 block border-t border-dashed border-stub-navy/25 pt-2 text-center"
+        },
+        {
+          "t": "Screen 4 of 4",
+          "ratio": 1.37,
+          "need": 4.5,
+          "px": 16,
+          "color": "rgb(35, 33, 28)",
+          "bg": "rgb(31,58,82)",
+          "cls": "sr-only"
+        },
+        {
+          "t": "Let’s play!",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 13,
+          "color": "rgb(31, 58, 82)",
+          "bg": "rgb(207,149,42)",
+          "cls": "min-h-12 w-full rounded-stub-pill bg-stub-amber px-6 py-3 font-stub-la"
+        }
+      ]
+    },
+    {
+      "screen": "menu-fresh",
+      "vp": "v375",
+      "small": [
+        {
+          "tag": "BUTTON",
+          "name": "How to play",
+          "w": 32,
+          "h": 32,
+          "cls": "app-help-button daily-icon-button text-[13px] font-extrabold active:scale-90"
+        }
+      ],
+      "overflow": [],
+      "noLabel": [],
+      "contrast": [
+        {
+          "t": "Tonight's program",
+          "ratio": 2.2,
+          "need": 4.5,
+          "px": 11,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(240,235,216)",
+          "cls": "font-stub-label text-[11px] font-bold uppercase tracking-[0.16em] text"
+        },
+        {
+          "t": "Start here · daily",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 11,
+          "color": "rgb(31, 58, 82)",
+          "bg": "rgb(207,149,42)",
+          "cls": "menu-card-kicker mb-2 inline-flex rounded-stub-pill bg-stub-amber px-2"
+        },
+        {
+          "t": "Matinee",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 10,
+          "color": "rgb(31, 58, 82)",
+          "bg": "rgb(207,149,42)",
+          "cls": "min-h-11 flex-1 whitespace-nowrap rounded-stub-pill px-2 py-2 font-stu"
+        }
+      ]
+    },
+    {
+      "screen": "rules-overview",
+      "vp": "v375",
+      "small": [
+        {
+          "tag": "BUTTON",
+          "name": "How to play",
+          "w": 32,
+          "h": 32,
+          "cls": "app-help-button daily-icon-button text-[13px] font-extrabold active:scale-90"
+        }
+      ],
+      "overflow": [],
+      "noLabel": [],
+      "contrast": [
+        {
+          "t": "Tonight's program",
+          "ratio": 2.2,
+          "need": 4.5,
+          "px": 11,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(240,235,216)",
+          "cls": "font-stub-label text-[11px] font-bold uppercase tracking-[0.16em] text"
+        },
+        {
+          "t": "Start here · daily",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 11,
+          "color": "rgb(31, 58, 82)",
+          "bg": "rgb(207,149,42)",
+          "cls": "menu-card-kicker mb-2 inline-flex rounded-stub-pill bg-stub-amber px-2"
+        },
+        {
+          "t": "Matinee",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 10,
+          "color": "rgb(31, 58, 82)",
+          "bg": "rgb(207,149,42)",
+          "cls": "min-h-11 flex-1 whitespace-nowrap rounded-stub-pill px-2 py-2 font-stu"
+        },
+        {
+          "t": "Match Cut",
+          "ratio": 2.2,
+          "need": 4.5,
+          "px": 10,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(240,235,216)",
+          "cls": "font-stub-label text-[10px] font-bold uppercase tracking-[0.16em] text"
+        },
+        {
+          "t": "Got it — choose a mode",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 15,
+          "color": "rgb(31, 58, 82)",
+          "bg": "rgb(207,149,42)",
+          "cls": "min-h-12 w-full rounded-stub-pill bg-stub-amber px-7 py-3 font-stub-ui"
+        }
+      ]
+    },
+    {
+      "screen": "rules-overview-bottom",
+      "vp": "v375",
+      "small": [
+        {
+          "tag": "BUTTON",
+          "name": "How to play",
+          "w": 32,
+          "h": 32,
+          "cls": "app-help-button daily-icon-button text-[13px] font-extrabold active:scale-90"
+        }
+      ],
+      "overflow": [],
+      "noLabel": [],
+      "contrast": [
+        {
+          "t": "Tonight's program",
+          "ratio": 2.2,
+          "need": 4.5,
+          "px": 11,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(240,235,216)",
+          "cls": "font-stub-label text-[11px] font-bold uppercase tracking-[0.16em] text"
+        },
+        {
+          "t": "Start here · daily",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 11,
+          "color": "rgb(31, 58, 82)",
+          "bg": "rgb(207,149,42)",
+          "cls": "menu-card-kicker mb-2 inline-flex rounded-stub-pill bg-stub-amber px-2"
+        },
+        {
+          "t": "Matinee",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 10,
+          "color": "rgb(31, 58, 82)",
+          "bg": "rgb(207,149,42)",
+          "cls": "min-h-11 flex-1 whitespace-nowrap rounded-stub-pill px-2 py-2 font-stu"
+        },
+        {
+          "t": "Match Cut",
+          "ratio": 2.2,
+          "need": 4.5,
+          "px": 10,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(240,235,216)",
+          "cls": "font-stub-label text-[10px] font-bold uppercase tracking-[0.16em] text"
+        },
+        {
+          "t": "Got it — choose a mode",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 15,
+          "color": "rgb(31, 58, 82)",
+          "bg": "rgb(207,149,42)",
+          "cls": "min-h-12 w-full rounded-stub-pill bg-stub-amber px-7 py-3 font-stub-ui"
+        }
+      ]
+    },
+    {
+      "screen": "rules-trap",
+      "vp": "v375",
+      "trap": {
+        "hasDialog": true,
+        "activeIn": true
+      }
+    },
+    {
+      "screen": "solo-board",
+      "vp": "v375",
+      "small": [
+        {
+          "tag": "BUTTON",
+          "name": "How to play",
+          "w": 32,
+          "h": 32,
+          "cls": "app-help-button daily-icon-button text-[12px] font-extrabold active:scale-90"
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Restart game",
+          "w": 36,
+          "h": 36,
+          "cls": "daily-icon-button flex h-9 w-9 items-center justify-center rounded-stub-pill text-xl text-"
+        }
+      ],
+      "overflow": [],
+      "noLabel": [],
+      "contrast": [
+        {
+          "t": "daily",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 9,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(31,58,82)",
+          "cls": "mt-1 font-stub-label text-[9px] font-bold uppercase tracking-[0.16em] "
+        },
+        {
+          "t": "FLIP FOR CREDITS",
+          "ratio": 2.4,
+          "need": 4.5,
+          "px": 6.5,
+          "color": "rgb(143, 166, 188)",
+          "bg": "rgb(252,249,248)",
+          "cls": "flex flex-none items-center justify-center whitespace-nowrap font-stub"
+        },
+        {
+          "t": "⇄",
+          "ratio": 2.4,
+          "need": 4.5,
+          "px": 8.5,
+          "color": "rgb(143, 166, 188)",
+          "bg": "rgb(252,249,248)",
+          "cls": ""
+        }
+      ]
+    },
+    {
+      "screen": "solo-help",
+      "vp": "v375",
+      "small": [
+        {
+          "tag": "BUTTON",
+          "name": "How to play",
+          "w": 32,
+          "h": 32,
+          "cls": "app-help-button daily-icon-button text-[12px] font-extrabold active:scale-90"
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Restart game",
+          "w": 36,
+          "h": 36,
+          "cls": "daily-icon-button flex h-9 w-9 items-center justify-center rounded-stub-pill text-xl text-"
+        }
+      ],
+      "overflow": [],
+      "noLabel": [],
+      "contrast": [
+        {
+          "t": "daily",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 9,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(31,58,82)",
+          "cls": "mt-1 font-stub-label text-[9px] font-bold uppercase tracking-[0.16em] "
+        },
+        {
+          "t": "FLIP FOR CREDITS",
+          "ratio": 2.4,
+          "need": 4.5,
+          "px": 6.5,
+          "color": "rgb(143, 166, 188)",
+          "bg": "rgb(252,249,248)",
+          "cls": "flex flex-none items-center justify-center whitespace-nowrap font-stub"
+        },
+        {
+          "t": "⇄",
+          "ratio": 2.4,
+          "need": 4.5,
+          "px": 8.5,
+          "color": "rgb(143, 166, 188)",
+          "bg": "rgb(252,249,248)",
+          "cls": ""
+        },
+        {
+          "t": "Match Cut",
+          "ratio": 2.2,
+          "need": 4.5,
+          "px": 10,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(240,235,216)",
+          "cls": "font-stub-label text-[10px] font-bold uppercase tracking-[0.16em] text"
+        },
+        {
+          "t": "Got it — keep playing",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 15,
+          "color": "rgb(31, 58, 82)",
+          "bg": "rgb(207,149,42)",
+          "cls": "min-h-12 w-full rounded-stub-pill bg-stub-amber px-7 py-3 font-stub-ui"
+        }
+      ]
+    },
+    {
+      "screen": "solo-invalid",
+      "vp": "v375",
+      "small": [
+        {
+          "tag": "BUTTON",
+          "name": "How to play",
+          "w": 32,
+          "h": 32,
+          "cls": "app-help-button daily-icon-button text-[12px] font-extrabold active:scale-90"
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Restart game",
+          "w": 36,
+          "h": 36,
+          "cls": "daily-icon-button flex h-9 w-9 items-center justify-center rounded-stub-pill text-xl text-"
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Flip card",
+          "w": 27,
+          "h": 27,
+          "cls": "absolute -bottom-3 -right-3 z-10 flex h-12 w-12 items-center justify-center rounded-full b"
+        }
+      ],
+      "overflow": [
+        {
+          "kind": "CLIPPED",
+          "tag": "DIV",
+          "t": "No valid shared credit. Two-stroke penalty.",
+          "sw": 309,
+          "cw": 1,
+          "cls": "sr-only"
+        }
+      ],
+      "noLabel": [],
+      "contrast": [
+        {
+          "t": "daily",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 9,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(31,58,82)",
+          "cls": "mt-1 font-stub-label text-[9px] font-bold uppercase tracking-[0.16em] "
+        },
+        {
+          "t": "FLIP FOR CREDITS",
+          "ratio": 2.4,
+          "need": 4.5,
+          "px": 6.5,
+          "color": "rgb(143, 166, 188)",
+          "bg": "rgb(252,249,248)",
+          "cls": "flex flex-none items-center justify-center whitespace-nowrap font-stub"
+        },
+        {
+          "t": "⇄",
+          "ratio": 2.4,
+          "need": 4.5,
+          "px": 8.5,
+          "color": "rgb(143, 166, 188)",
+          "bg": "rgb(252,249,248)",
+          "cls": ""
+        },
+        {
+          "t": "FLIP FOR CREDITS",
+          "ratio": 2.4,
+          "need": 4.5,
+          "px": 8.5,
+          "color": "rgb(143, 166, 188)",
+          "bg": "rgb(252,249,248)",
+          "cls": "flex flex-none items-center justify-center whitespace-nowrap font-stub"
+        },
+        {
+          "t": "⇄",
+          "ratio": 2.4,
+          "need": 4.5,
+          "px": 10.5,
+          "color": "rgb(143, 166, 188)",
+          "bg": "rgb(252,249,248)",
+          "cls": ""
+        }
+      ]
+    },
+    {
+      "screen": "solo-invalid-text",
+      "vp": "v375",
+      "text": "No shared credit · +2"
+    },
+    {
+      "screen": "solo-results",
+      "vp": "v375",
+      "small": [
+        {
+          "tag": "BUTTON",
+          "name": "How to play",
+          "w": 32,
+          "h": 32,
+          "cls": "app-help-button daily-icon-button text-[12px] font-extrabold active:scale-90"
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Restart game",
+          "w": 36,
+          "h": 36,
+          "cls": "daily-icon-button flex h-9 w-9 items-center justify-center rounded-stub-pill text-xl text-"
+        }
+      ],
+      "overflow": [
+        {
+          "kind": "CLIPPED",
+          "tag": "DIV",
+          "t": "Connected via Tom Hanks (Actor)",
+          "sw": 244,
+          "cw": 1,
+          "cls": "sr-only"
+        }
+      ],
+      "noLabel": [],
+      "contrast": [
+        {
+          "t": "daily",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 9,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(31,58,82)",
+          "cls": "mt-1 font-stub-label text-[9px] font-bold uppercase tracking-[0.16em] "
+        },
+        {
+          "t": "FLIP FOR CREDITS",
+          "ratio": 2.4,
+          "need": 4.5,
+          "px": 6.5,
+          "color": "rgb(143, 166, 188)",
+          "bg": "rgb(252,249,248)",
+          "cls": "flex flex-none items-center justify-center whitespace-nowrap font-stub"
+        },
+        {
+          "t": "⇄",
+          "ratio": 2.4,
+          "need": 4.5,
+          "px": 8.5,
+          "color": "rgb(143, 166, 188)",
+          "bg": "rgb(252,249,248)",
+          "cls": ""
+        },
+        {
+          "t": "Replay today's hand",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 15,
+          "color": "rgb(31, 58, 82)",
+          "bg": "rgb(207,149,42)",
+          "cls": "app-result-action app-result-action--primary active:scale-[0.98]"
+        }
+      ]
+    },
+    {
+      "screen": "solo-results-text",
+      "vp": "v375",
+      "text": "Solved! | Solved in -1, par 9 (10 under par) | LOWER IS BETTER | Score -1 vs par 9 | 2 flips · 1 invalid play · combo −3 | DAY 62 · STREAK 1 · BEST -1 | 🎬🟩🟩🟩🟩🟩🟩🟩 | copy result | Replay today's hand | Menu"
+    },
+    {
+      "screen": "solo-share",
+      "vp": "v375",
+      "text": "Match Cut · Daily Puzzle\nscore -1, par 9 (10 under par)\n🎬🟩🟩🟩🟩🟩🟩🟩"
+    },
+    {
+      "screen": "menu-after-solo",
+      "vp": "v375",
+      "small": [
+        {
+          "tag": "BUTTON",
+          "name": "How to play",
+          "w": 32,
+          "h": 32,
+          "cls": "app-help-button daily-icon-button text-[13px] font-extrabold active:scale-90"
+        }
+      ],
+      "overflow": [],
+      "noLabel": [],
+      "contrast": [
+        {
+          "t": "Tonight's program",
+          "ratio": 2.2,
+          "need": 4.5,
+          "px": 11,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(240,235,216)",
+          "cls": "font-stub-label text-[11px] font-bold uppercase tracking-[0.16em] text"
+        },
+        {
+          "t": "Start here · daily",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 11,
+          "color": "rgb(31, 58, 82)",
+          "bg": "rgb(207,149,42)",
+          "cls": "menu-card-kicker mb-2 inline-flex rounded-stub-pill bg-stub-amber px-2"
+        },
+        {
+          "t": "✓ streak 1",
+          "ratio": 2.51,
+          "need": 4.5,
+          "px": 10,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(252,249,248)",
+          "cls": "rounded-stub-pill bg-stub-amber/15 px-2 py-0.5 font-stub-label text-[1"
+        },
+        {
+          "t": "Matinee",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 10,
+          "color": "rgb(31, 58, 82)",
+          "bg": "rgb(207,149,42)",
+          "cls": "min-h-11 flex-1 whitespace-nowrap rounded-stub-pill px-2 py-2 font-stu"
+        }
+      ]
+    },
+    {
+      "screen": "chrono-board",
+      "vp": "v375",
+      "small": [
+        {
+          "tag": "BUTTON",
+          "name": "How to play",
+          "w": 32,
+          "h": 32,
+          "cls": "app-help-button daily-icon-button daily-icon-md text-[12px] font-extrabold active:scale-90"
+        }
+      ],
+      "overflow": [
+        {
+          "kind": "CLIPPED",
+          "tag": "SPAN",
+          "t": "The Little Mermaid (Live-Action), movie 1 of 1",
+          "sw": 327,
+          "cw": 1,
+          "cls": "sr-only"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "DIV",
+          "t": "2023 The Little Mermaid (Live-Action)",
+          "sw": 63,
+          "cw": 60,
+          "cls": "absolute inset-0 flex flex-col items-center justify-center overflow-hidden text-"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "DEADPOOL",
+          "sw": 182,
+          "cw": 176,
+          "cls": "chrono-choice-ticket relative flex min-h-11 min-w-0 items-center justify-center "
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "TOMBSTONE",
+          "sw": 182,
+          "cw": 176,
+          "cls": "chrono-choice-ticket relative flex min-h-11 min-w-0 items-center justify-center "
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "HARRY POTTER AND THE DEATHLY HALLOWS – PART 2",
+          "sw": 182,
+          "cw": 176,
+          "cls": "chrono-choice-ticket relative flex min-h-11 min-w-0 items-center justify-center "
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "UP",
+          "sw": 182,
+          "cw": 176,
+          "cls": "chrono-choice-ticket relative flex min-h-11 min-w-0 items-center justify-center "
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "WRECK-IT RALPH",
+          "sw": 182,
+          "cw": 176,
+          "cls": "chrono-choice-ticket relative flex min-h-11 min-w-0 items-center justify-center "
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "JUMANJI",
+          "sw": 182,
+          "cw": 176,
+          "cls": "chrono-choice-ticket relative flex min-h-11 min-w-0 items-center justify-center "
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "LINCOLN",
+          "sw": 182,
+          "cw": 176,
+          "cls": "chrono-choice-ticket relative flex min-h-11 min-w-0 items-center justify-center "
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "MRS. DOUBTFIRE",
+          "sw": 182,
+          "cw": 176,
+          "cls": "chrono-choice-ticket relative flex min-h-11 min-w-0 items-center justify-center "
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "BLACK PANTHER",
+          "sw": 182,
+          "cw": 176,
+          "cls": "chrono-choice-ticket relative flex min-h-11 min-w-0 items-center justify-center "
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "GONE GIRL",
+          "sw": 182,
+          "cw": 176,
+          "cls": "chrono-choice-ticket relative flex min-h-11 min-w-0 items-center justify-center "
+        }
+      ],
+      "noLabel": [],
+      "contrast": [
+        {
+          "t": "daily",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 9,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(31,58,82)",
+          "cls": "mt-1 font-stub-label text-[9px] font-bold uppercase tracking-[0.16em] "
+        }
+      ]
+    },
+    {
+      "screen": "chrono-help",
+      "vp": "v375",
+      "small": [
+        {
+          "tag": "BUTTON",
+          "name": "How to play",
+          "w": 32,
+          "h": 32,
+          "cls": "app-help-button daily-icon-button daily-icon-md text-[12px] font-extrabold active:scale-90"
+        }
+      ],
+      "overflow": [
+        {
+          "kind": "CLIPPED",
+          "tag": "SPAN",
+          "t": "The Little Mermaid (Live-Action), movie 1 of 1",
+          "sw": 327,
+          "cw": 1,
+          "cls": "sr-only"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "DIV",
+          "t": "2023 The Little Mermaid (Live-Action)",
+          "sw": 63,
+          "cw": 60,
+          "cls": "absolute inset-0 flex flex-col items-center justify-center overflow-hidden text-"
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "DEADPOOL",
+          "sw": 182,
+          "cw": 176,
+          "cls": "chrono-choice-ticket relative flex min-h-11 min-w-0 items-center justify-center "
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "TOMBSTONE",
+          "sw": 182,
+          "cw": 176,
+          "cls": "chrono-choice-ticket relative flex min-h-11 min-w-0 items-center justify-center "
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "HARRY POTTER AND THE DEATHLY HALLOWS – PART 2",
+          "sw": 182,
+          "cw": 176,
+          "cls": "chrono-choice-ticket relative flex min-h-11 min-w-0 items-center justify-center "
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "UP",
+          "sw": 182,
+          "cw": 176,
+          "cls": "chrono-choice-ticket relative flex min-h-11 min-w-0 items-center justify-center "
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "WRECK-IT RALPH",
+          "sw": 182,
+          "cw": 176,
+          "cls": "chrono-choice-ticket relative flex min-h-11 min-w-0 items-center justify-center "
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "JUMANJI",
+          "sw": 182,
+          "cw": 176,
+          "cls": "chrono-choice-ticket relative flex min-h-11 min-w-0 items-center justify-center "
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "LINCOLN",
+          "sw": 182,
+          "cw": 176,
+          "cls": "chrono-choice-ticket relative flex min-h-11 min-w-0 items-center justify-center "
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "MRS. DOUBTFIRE",
+          "sw": 182,
+          "cw": 176,
+          "cls": "chrono-choice-ticket relative flex min-h-11 min-w-0 items-center justify-center "
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "BLACK PANTHER",
+          "sw": 182,
+          "cw": 176,
+          "cls": "chrono-choice-ticket relative flex min-h-11 min-w-0 items-center justify-center "
+        },
+        {
+          "kind": "CLIPPED",
+          "tag": "BUTTON",
+          "t": "GONE GIRL",
+          "sw": 182,
+          "cw": 176,
+          "cls": "chrono-choice-ticket relative flex min-h-11 min-w-0 items-center justify-center "
+        }
+      ],
+      "noLabel": [],
+      "contrast": [
+        {
+          "t": "daily",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 9,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(31,58,82)",
+          "cls": "mt-1 font-stub-label text-[9px] font-bold uppercase tracking-[0.16em] "
+        },
+        {
+          "t": "Match Cut",
+          "ratio": 2.2,
+          "need": 4.5,
+          "px": 10,
+          "color": "rgb(207, 149, 42)",
+          "bg": "rgb(240,235,216)",
+          "cls": "font-stub-label text-[10px] font-bold uppercase tracking-[0.16em] text"
+        },
+        {
+          "t": "Got it — keep playing",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 15,
+          "color": "rgb(31, 58, 82)",
+          "bg": "rgb(207,149,42)",
+          "cls": "min-h-12 w-full rounded-stub-pill bg-stub-amber px-7 py-3 font-stub-ui"
+        }
+      ]
+    }
+  ],
+  "consoleLog": []
+}

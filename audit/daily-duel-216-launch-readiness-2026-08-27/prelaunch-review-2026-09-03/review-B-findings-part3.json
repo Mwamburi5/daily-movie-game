@@ -1,0 +1,1293 @@
+{
+  "findings": [
+    {
+      "screen": "duel-board",
+      "vp": "v390",
+      "contrast": [
+        {
+          "t": "YOU",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 9,
+          "fg": "rgb(207,149,42)",
+          "bg": "rgb(31,58,82)",
+          "css": "rgb(207, 149, 42)",
+          "cls": "font-stub-label text-[9px] font-semibold uppercase tracking-[0.16em] t"
+        },
+        {
+          "t": "Your turn",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 8.5,
+          "fg": "rgb(31,58,82)",
+          "bg": "rgb(207,149,42)",
+          "css": "rgb(31, 58, 82)",
+          "cls": "mb-1 rounded-stub-pill bg-stub-amber px-3.5 py-1.5 font-stub-label tex"
+        },
+        {
+          "t": "Show ends at 20",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 9,
+          "fg": "rgb(207,149,42)",
+          "bg": "rgb(31,58,82)",
+          "css": "rgb(207, 149, 42)",
+          "cls": "mt-1 block font-stub-label text-[9px] font-semibold uppercase tracking"
+        },
+        {
+          "t": "C",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 18,
+          "fg": "rgb(207,149,42)",
+          "bg": "rgb(31,58,82)",
+          "css": "rgb(207, 149, 42)",
+          "cls": "flex h-[38px] w-[38px] shrink-0 items-center justify-center rounded-fu"
+        },
+        {
+          "t": "FLIP FOR CREDITS",
+          "ratio": 2.4,
+          "need": 4.5,
+          "px": 6.5,
+          "fg": "rgb(143,166,188)",
+          "bg": "rgb(252,249,248)",
+          "css": "rgb(143, 166, 188)",
+          "cls": "flex flex-none items-center justify-center whitespace-nowrap font-stub"
+        },
+        {
+          "t": "⇄",
+          "ratio": 2.4,
+          "need": 4.5,
+          "px": 8.5,
+          "fg": "rgb(143,166,188)",
+          "bg": "rgb(252,249,248)",
+          "css": "rgb(143, 166, 188)",
+          "cls": ""
+        },
+        {
+          "t": "first turn — choose a hand card or draw",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 10,
+          "fg": "rgb(207,149,42)",
+          "bg": "rgb(31,58,82)",
+          "css": "rgb(207, 149, 42)",
+          "cls": "rounded-stub-pill border-2 border-stub-amber bg-stub-navy px-3 py-1 fo"
+        },
+        {
+          "t": "Hint ·3",
+          "ratio": 3.38,
+          "need": 4.5,
+          "px": 12,
+          "fg": "rgb(240,235,216)",
+          "bg": "rgb(44,137,161)",
+          "css": "rgb(240, 235, 216)",
+          "cls": "duel-tool-button flex items-center gap-1 rounded-stub-pill px-2.5 font"
+        }
+      ],
+      "small": [
+        {
+          "name": "How to play",
+          "w": 32,
+          "h": 32,
+          "cls": "app-help-button daily-icon-button ml-2 active:scale-90"
+        }
+      ]
+    },
+    {
+      "screen": "duel-help",
+      "vp": "v390",
+      "contrast": [
+        {
+          "t": "YOU",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 9,
+          "fg": "rgb(207,149,42)",
+          "bg": "rgb(31,58,82)",
+          "css": "rgb(207, 149, 42)",
+          "cls": "font-stub-label text-[9px] font-semibold uppercase tracking-[0.16em] t"
+        },
+        {
+          "t": "Your turn",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 8.5,
+          "fg": "rgb(31,58,82)",
+          "bg": "rgb(207,149,42)",
+          "css": "rgb(31, 58, 82)",
+          "cls": "mb-1 rounded-stub-pill bg-stub-amber px-3.5 py-1.5 font-stub-label tex"
+        },
+        {
+          "t": "Show ends at 20",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 9,
+          "fg": "rgb(207,149,42)",
+          "bg": "rgb(31,58,82)",
+          "css": "rgb(207, 149, 42)",
+          "cls": "mt-1 block font-stub-label text-[9px] font-semibold uppercase tracking"
+        },
+        {
+          "t": "C",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 18,
+          "fg": "rgb(207,149,42)",
+          "bg": "rgb(31,58,82)",
+          "css": "rgb(207, 149, 42)",
+          "cls": "flex h-[38px] w-[38px] shrink-0 items-center justify-center rounded-fu"
+        },
+        {
+          "t": "FLIP FOR CREDITS",
+          "ratio": 2.4,
+          "need": 4.5,
+          "px": 6.5,
+          "fg": "rgb(143,166,188)",
+          "bg": "rgb(252,249,248)",
+          "css": "rgb(143, 166, 188)",
+          "cls": "flex flex-none items-center justify-center whitespace-nowrap font-stub"
+        },
+        {
+          "t": "⇄",
+          "ratio": 2.4,
+          "need": 4.5,
+          "px": 8.5,
+          "fg": "rgb(143,166,188)",
+          "bg": "rgb(252,249,248)",
+          "css": "rgb(143, 166, 188)",
+          "cls": ""
+        },
+        {
+          "t": "first turn — choose a hand card or draw",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 10,
+          "fg": "rgb(207,149,42)",
+          "bg": "rgb(31,58,82)",
+          "css": "rgb(207, 149, 42)",
+          "cls": "rounded-stub-pill border-2 border-stub-amber bg-stub-navy px-3 py-1 fo"
+        },
+        {
+          "t": "Hint ·3",
+          "ratio": 3.38,
+          "need": 4.5,
+          "px": 12,
+          "fg": "rgb(240,235,216)",
+          "bg": "rgb(44,137,161)",
+          "css": "rgb(240, 235, 216)",
+          "cls": "duel-tool-button flex items-center gap-1 rounded-stub-pill px-2.5 font"
+        },
+        {
+          "t": "Match Cut",
+          "ratio": 2.2,
+          "need": 4.5,
+          "px": 10,
+          "fg": "rgb(207,149,42)",
+          "bg": "rgb(240,235,216)",
+          "css": "rgb(207, 149, 42)",
+          "cls": "font-stub-label text-[10px] font-bold uppercase tracking-[0.16em] text"
+        },
+        {
+          "t": "Got it — keep playing",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 15,
+          "fg": "rgb(31,58,82)",
+          "bg": "rgb(207,149,42)",
+          "css": "rgb(31, 58, 82)",
+          "cls": "min-h-12 w-full rounded-stub-pill bg-stub-amber px-7 py-3 font-stub-ui"
+        }
+      ],
+      "small": [
+        {
+          "name": "How to play",
+          "w": 32,
+          "h": 32,
+          "cls": "app-help-button daily-icon-button ml-2 active:scale-90"
+        }
+      ]
+    },
+    {
+      "screen": "duel-illegal",
+      "vp": "v390",
+      "contrast": [
+        {
+          "t": "YOU",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 9,
+          "fg": "rgb(207,149,42)",
+          "bg": "rgb(31,58,82)",
+          "css": "rgb(207, 149, 42)",
+          "cls": "font-stub-label text-[9px] font-semibold uppercase tracking-[0.16em] t"
+        },
+        {
+          "t": "Your turn",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 8.5,
+          "fg": "rgb(31,58,82)",
+          "bg": "rgb(207,149,42)",
+          "css": "rgb(31, 58, 82)",
+          "cls": "mb-1 rounded-stub-pill bg-stub-amber px-3.5 py-1.5 font-stub-label tex"
+        },
+        {
+          "t": "Show ends at 20",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 9,
+          "fg": "rgb(207,149,42)",
+          "bg": "rgb(31,58,82)",
+          "css": "rgb(207, 149, 42)",
+          "cls": "mt-1 block font-stub-label text-[9px] font-semibold uppercase tracking"
+        },
+        {
+          "t": "C",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 18,
+          "fg": "rgb(207,149,42)",
+          "bg": "rgb(31,58,82)",
+          "css": "rgb(207, 149, 42)",
+          "cls": "flex h-[38px] w-[38px] shrink-0 items-center justify-center rounded-fu"
+        },
+        {
+          "t": "FLIP FOR CREDITS",
+          "ratio": 2.4,
+          "need": 4.5,
+          "px": 6.5,
+          "fg": "rgb(143,166,188)",
+          "bg": "rgb(252,249,248)",
+          "css": "rgb(143, 166, 188)",
+          "cls": "flex flex-none items-center justify-center whitespace-nowrap font-stub"
+        },
+        {
+          "t": "⇄",
+          "ratio": 2.4,
+          "need": 4.5,
+          "px": 8.5,
+          "fg": "rgb(143,166,188)",
+          "bg": "rgb(252,249,248)",
+          "css": "rgb(143, 166, 188)",
+          "cls": ""
+        },
+        {
+          "t": "first turn — choose a hand card or draw",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 10,
+          "fg": "rgb(207,149,42)",
+          "bg": "rgb(31,58,82)",
+          "css": "rgb(207, 149, 42)",
+          "cls": "rounded-stub-pill border-2 border-stub-amber bg-stub-navy px-3 py-1 fo"
+        },
+        {
+          "t": "Hint ·3",
+          "ratio": 3.38,
+          "need": 4.5,
+          "px": 12,
+          "fg": "rgb(240,235,216)",
+          "bg": "rgb(44,137,161)",
+          "css": "rgb(240, 235, 216)",
+          "cls": "duel-tool-button flex items-center gap-1 rounded-stub-pill px-2.5 font"
+        }
+      ],
+      "small": [
+        {
+          "name": "How to play",
+          "w": 32,
+          "h": 32,
+          "cls": "app-help-button daily-icon-button ml-2 active:scale-90"
+        }
+      ]
+    },
+    {
+      "screen": "duel-say",
+      "vp": "v390",
+      "text": ""
+    },
+    {
+      "screen": "duel-draw3",
+      "vp": "v390",
+      "contrast": [
+        {
+          "t": "YOU",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 9,
+          "fg": "rgb(207,149,42)",
+          "bg": "rgb(31,58,82)",
+          "css": "rgb(207, 149, 42)",
+          "cls": "font-stub-label text-[9px] font-semibold uppercase tracking-[0.16em] t"
+        },
+        {
+          "t": "Your turn",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 8.5,
+          "fg": "rgb(31,58,82)",
+          "bg": "rgb(207,149,42)",
+          "css": "rgb(31, 58, 82)",
+          "cls": "mb-1 rounded-stub-pill bg-stub-amber px-3.5 py-1.5 font-stub-label tex"
+        },
+        {
+          "t": "Show ends at 20",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 9,
+          "fg": "rgb(207,149,42)",
+          "bg": "rgb(31,58,82)",
+          "css": "rgb(207, 149, 42)",
+          "cls": "mt-1 block font-stub-label text-[9px] font-semibold uppercase tracking"
+        },
+        {
+          "t": "C",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 18,
+          "fg": "rgb(207,149,42)",
+          "bg": "rgb(31,58,82)",
+          "css": "rgb(207, 149, 42)",
+          "cls": "flex h-[38px] w-[38px] shrink-0 items-center justify-center rounded-fu"
+        },
+        {
+          "t": "FLIP FOR CREDITS",
+          "ratio": 2.4,
+          "need": 4.5,
+          "px": 6.5,
+          "fg": "rgb(143,166,188)",
+          "bg": "rgb(252,249,248)",
+          "css": "rgb(143, 166, 188)",
+          "cls": "flex flex-none items-center justify-center whitespace-nowrap font-stub"
+        },
+        {
+          "t": "⇄",
+          "ratio": 2.4,
+          "need": 4.5,
+          "px": 8.5,
+          "fg": "rgb(143,166,188)",
+          "bg": "rgb(252,249,248)",
+          "css": "rgb(143, 166, 188)",
+          "cls": ""
+        },
+        {
+          "t": "You",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 8.5,
+          "fg": "rgb(31,58,82)",
+          "bg": "rgb(207,149,42)",
+          "css": "rgb(31, 58, 82)",
+          "cls": "rounded-stub-pill px-2 py-1 text-[8.5px] font-bold uppercase tracking-"
+        },
+        {
+          "t": "Hint ·3",
+          "ratio": 3.38,
+          "need": 4.5,
+          "px": 12,
+          "fg": "rgb(240,235,216)",
+          "bg": "rgb(44,137,161)",
+          "css": "rgb(240, 235, 216)",
+          "cls": "duel-tool-button flex items-center gap-1 rounded-stub-pill px-2.5 font"
+        },
+        {
+          "t": "Draw 3 — keep one",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 9,
+          "fg": "rgb(207,149,42)",
+          "bg": "rgb(31,58,82)",
+          "css": "rgb(207, 149, 42)",
+          "cls": "rounded-stub-pill bg-stub-navy px-3.5 py-1.5 font-stub-label text-[9px"
+        },
+        {
+          "t": "Connects",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 8.5,
+          "fg": "rgb(31,58,82)",
+          "bg": "rgb(207,149,42)",
+          "css": "rgb(31, 58, 82)",
+          "cls": "absolute -top-2.5 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rou"
+        }
+      ],
+      "small": [
+        {
+          "name": "How to play",
+          "w": 32,
+          "h": 32,
+          "cls": "app-help-button daily-icon-button ml-2 active:scale-90"
+        }
+      ]
+    },
+    {
+      "screen": "duel-results",
+      "vp": "v390",
+      "contrast": [
+        {
+          "t": "YOU",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 9,
+          "fg": "rgb(207,149,42)",
+          "bg": "rgb(31,58,82)",
+          "css": "rgb(207, 149, 42)",
+          "cls": "font-stub-label text-[9px] font-semibold uppercase tracking-[0.16em] t"
+        },
+        {
+          "t": "C",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 18,
+          "fg": "rgb(207,149,42)",
+          "bg": "rgb(31,58,82)",
+          "css": "rgb(207, 149, 42)",
+          "cls": "flex h-[38px] w-[38px] shrink-0 items-center justify-center rounded-fu"
+        },
+        {
+          "t": "FLIP FOR CREDITS",
+          "ratio": 2.4,
+          "need": 4.5,
+          "px": 6.5,
+          "fg": "rgb(143,166,188)",
+          "bg": "rgb(252,249,248)",
+          "css": "rgb(143, 166, 188)",
+          "cls": "flex flex-none items-center justify-center whitespace-nowrap font-stub"
+        },
+        {
+          "t": "⇄",
+          "ratio": 2.4,
+          "need": 4.5,
+          "px": 8.5,
+          "fg": "rgb(143,166,188)",
+          "bg": "rgb(252,249,248)",
+          "css": "rgb(143, 166, 188)",
+          "cls": ""
+        },
+        {
+          "t": "★",
+          "ratio": 2.2,
+          "need": 3,
+          "px": 40,
+          "fg": "rgb(207,149,42)",
+          "bg": "rgb(240,235,216)",
+          "css": "rgb(207, 149, 42)",
+          "cls": "flex-none font-stub-display"
+        },
+        {
+          "t": "★",
+          "ratio": 2.17,
+          "need": 4.5,
+          "px": 13,
+          "fg": "rgb(252,249,248)",
+          "bg": "rgb(214,164,73)",
+          "css": "rgb(252, 249, 248)",
+          "cls": "flex h-10 w-[30px] shrink-0 items-center justify-center rounded-stub-t"
+        },
+        {
+          "t": "Hint ·3",
+          "ratio": 3.38,
+          "need": 4.5,
+          "px": 12,
+          "fg": "rgb(240,235,216)",
+          "bg": "rgb(44,137,161)",
+          "css": "rgb(240, 235, 216)",
+          "cls": "duel-tool-button flex items-center gap-1 rounded-stub-pill px-2.5 font"
+        },
+        {
+          "t": "Deal again",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 15,
+          "fg": "rgb(31,58,82)",
+          "bg": "rgb(207,149,42)",
+          "css": "rgb(31, 58, 82)",
+          "cls": "app-result-action app-result-action--primary active:scale-[0.98]"
+        }
+      ],
+      "small": [
+        {
+          "name": "How to play",
+          "w": 32,
+          "h": 32,
+          "cls": "app-help-button daily-icon-button ml-2 active:scale-90"
+        }
+      ]
+    },
+    {
+      "screen": "duel-results-text",
+      "vp": "v390",
+      "text": "CPU wins. | CPU hit 20 — the show goes to the higher net. | HIGHER IS BETTER | Net -1 vs 18 · played − held | You | 3 played − 4 held | -1 | CPU | 21 played − 3 held | 18 | The CPU had your number. You banked 0 melds. | CPU | banked 3-film Quentin Tarantino meld | +6 | CPU | banked 3-film Bruce Willis meld | +4 | FEATURE RECORD · 1 PLAYED · 0 WON | copy result | Deal again | Menu"
+    },
+    {
+      "screen": "duel-share",
+      "vp": "v390",
+      "text": "Match Cut · Duel\nlost vs Feature · net -1 to 18\n🎬🟥🟥"
+    },
+    {
+      "screen": "duel-board",
+      "vp": "v375",
+      "contrast": [
+        {
+          "t": "C",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 12,
+          "fg": "rgb(207,149,42)",
+          "bg": "rgb(31,58,82)",
+          "css": "rgb(207, 149, 42)",
+          "cls": "flex h-6 w-6 items-center justify-center rounded-full bg-stub-navy fon"
+        },
+        {
+          "t": "FLIP FOR CREDITS",
+          "ratio": 2.4,
+          "need": 4.5,
+          "px": 6.5,
+          "fg": "rgb(143,166,188)",
+          "bg": "rgb(252,249,248)",
+          "css": "rgb(143, 166, 188)",
+          "cls": "flex flex-none items-center justify-center whitespace-nowrap font-stub"
+        },
+        {
+          "t": "⇄",
+          "ratio": 2.4,
+          "need": 4.5,
+          "px": 8.5,
+          "fg": "rgb(143,166,188)",
+          "bg": "rgb(252,249,248)",
+          "css": "rgb(143, 166, 188)",
+          "cls": ""
+        },
+        {
+          "t": "B",
+          "ratio": 2.11,
+          "need": 3,
+          "px": 40,
+          "fg": "rgb(143,166,188)",
+          "bg": "rgb(240,235,216)",
+          "css": "rgb(143, 166, 188)",
+          "cls": "flex-none font-stub-display"
+        },
+        {
+          "t": "DEEP CUT",
+          "ratio": 2.11,
+          "need": 4.5,
+          "px": 6,
+          "fg": "rgb(240,235,216)",
+          "bg": "rgb(143,166,188)",
+          "css": "rgb(240, 235, 216)",
+          "cls": "text-center font-stub-label"
+        },
+        {
+          "t": "Hint ·3",
+          "ratio": 3.38,
+          "need": 4.5,
+          "px": 12,
+          "fg": "rgb(240,235,216)",
+          "bg": "rgb(44,137,161)",
+          "css": "rgb(240, 235, 216)",
+          "cls": "duel-tool-button flex items-center gap-1 rounded-stub-pill px-2.5 font"
+        },
+        {
+          "t": "B",
+          "ratio": 2.11,
+          "need": 3,
+          "px": 26,
+          "fg": "rgb(143,166,188)",
+          "bg": "rgb(240,235,216)",
+          "css": "rgb(143, 166, 188)",
+          "cls": "flex-none font-stub-display"
+        },
+        {
+          "t": "DEEP CUT",
+          "ratio": 2.11,
+          "need": 4.5,
+          "px": 4.4,
+          "fg": "rgb(240,235,216)",
+          "bg": "rgb(143,166,188)",
+          "css": "rgb(240, 235, 216)",
+          "cls": "text-center font-stub-label"
+        }
+      ],
+      "small": [
+        {
+          "name": "How to play",
+          "w": 32,
+          "h": 32,
+          "cls": "app-help-button daily-icon-button ml-2 active:scale-90"
+        },
+        {
+          "name": "↑ TAKE FOR MELD",
+          "w": 122,
+          "h": 23,
+          "cls": "absolute -bottom-7 inset-x-0 z-[var(--z-traveling)] mx-auto w-max rounded-full b"
+        }
+      ]
+    },
+    {
+      "screen": "duel-help",
+      "vp": "v375",
+      "contrast": [
+        {
+          "t": "C",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 12,
+          "fg": "rgb(207,149,42)",
+          "bg": "rgb(31,58,82)",
+          "css": "rgb(207, 149, 42)",
+          "cls": "flex h-6 w-6 items-center justify-center rounded-full bg-stub-navy fon"
+        },
+        {
+          "t": "FLIP FOR CREDITS",
+          "ratio": 2.4,
+          "need": 4.5,
+          "px": 6.5,
+          "fg": "rgb(143,166,188)",
+          "bg": "rgb(252,249,248)",
+          "css": "rgb(143, 166, 188)",
+          "cls": "flex flex-none items-center justify-center whitespace-nowrap font-stub"
+        },
+        {
+          "t": "⇄",
+          "ratio": 2.4,
+          "need": 4.5,
+          "px": 8.5,
+          "fg": "rgb(143,166,188)",
+          "bg": "rgb(252,249,248)",
+          "css": "rgb(143, 166, 188)",
+          "cls": ""
+        },
+        {
+          "t": "B",
+          "ratio": 2.11,
+          "need": 3,
+          "px": 40,
+          "fg": "rgb(143,166,188)",
+          "bg": "rgb(240,235,216)",
+          "css": "rgb(143, 166, 188)",
+          "cls": "flex-none font-stub-display"
+        },
+        {
+          "t": "DEEP CUT",
+          "ratio": 2.11,
+          "need": 4.5,
+          "px": 6,
+          "fg": "rgb(240,235,216)",
+          "bg": "rgb(143,166,188)",
+          "css": "rgb(240, 235, 216)",
+          "cls": "text-center font-stub-label"
+        },
+        {
+          "t": "Hint ·3",
+          "ratio": 3.38,
+          "need": 4.5,
+          "px": 12,
+          "fg": "rgb(240,235,216)",
+          "bg": "rgb(44,137,161)",
+          "css": "rgb(240, 235, 216)",
+          "cls": "duel-tool-button flex items-center gap-1 rounded-stub-pill px-2.5 font"
+        },
+        {
+          "t": "B",
+          "ratio": 2.11,
+          "need": 3,
+          "px": 26,
+          "fg": "rgb(143,166,188)",
+          "bg": "rgb(240,235,216)",
+          "css": "rgb(143, 166, 188)",
+          "cls": "flex-none font-stub-display"
+        },
+        {
+          "t": "DEEP CUT",
+          "ratio": 2.11,
+          "need": 4.5,
+          "px": 4.4,
+          "fg": "rgb(240,235,216)",
+          "bg": "rgb(143,166,188)",
+          "css": "rgb(240, 235, 216)",
+          "cls": "text-center font-stub-label"
+        },
+        {
+          "t": "Match Cut",
+          "ratio": 2.2,
+          "need": 4.5,
+          "px": 10,
+          "fg": "rgb(207,149,42)",
+          "bg": "rgb(240,235,216)",
+          "css": "rgb(207, 149, 42)",
+          "cls": "font-stub-label text-[10px] font-bold uppercase tracking-[0.16em] text"
+        },
+        {
+          "t": "Got it — keep playing",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 15,
+          "fg": "rgb(31,58,82)",
+          "bg": "rgb(207,149,42)",
+          "css": "rgb(31, 58, 82)",
+          "cls": "min-h-12 w-full rounded-stub-pill bg-stub-amber px-7 py-3 font-stub-ui"
+        }
+      ],
+      "small": [
+        {
+          "name": "How to play",
+          "w": 32,
+          "h": 32,
+          "cls": "app-help-button daily-icon-button ml-2 active:scale-90"
+        },
+        {
+          "name": "↑ TAKE FOR MELD",
+          "w": 122,
+          "h": 23,
+          "cls": "absolute -bottom-7 inset-x-0 z-[var(--z-traveling)] mx-auto w-max rounded-full b"
+        }
+      ]
+    },
+    {
+      "screen": "duel-illegal",
+      "vp": "v375",
+      "contrast": [
+        {
+          "t": "C",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 12,
+          "fg": "rgb(207,149,42)",
+          "bg": "rgb(31,58,82)",
+          "css": "rgb(207, 149, 42)",
+          "cls": "flex h-6 w-6 items-center justify-center rounded-full bg-stub-navy fon"
+        },
+        {
+          "t": "FLIP FOR CREDITS",
+          "ratio": 2.4,
+          "need": 4.5,
+          "px": 6.5,
+          "fg": "rgb(143,166,188)",
+          "bg": "rgb(252,249,248)",
+          "css": "rgb(143, 166, 188)",
+          "cls": "flex flex-none items-center justify-center whitespace-nowrap font-stub"
+        },
+        {
+          "t": "⇄",
+          "ratio": 2.4,
+          "need": 4.5,
+          "px": 8.5,
+          "fg": "rgb(143,166,188)",
+          "bg": "rgb(252,249,248)",
+          "css": "rgb(143, 166, 188)",
+          "cls": ""
+        },
+        {
+          "t": "B",
+          "ratio": 2.11,
+          "need": 3,
+          "px": 40,
+          "fg": "rgb(143,166,188)",
+          "bg": "rgb(240,235,216)",
+          "css": "rgb(143, 166, 188)",
+          "cls": "flex-none font-stub-display"
+        },
+        {
+          "t": "DEEP CUT",
+          "ratio": 2.11,
+          "need": 4.5,
+          "px": 6,
+          "fg": "rgb(240,235,216)",
+          "bg": "rgb(143,166,188)",
+          "css": "rgb(240, 235, 216)",
+          "cls": "text-center font-stub-label"
+        },
+        {
+          "t": "Hint ·3",
+          "ratio": 3.38,
+          "need": 4.5,
+          "px": 12,
+          "fg": "rgb(240,235,216)",
+          "bg": "rgb(44,137,161)",
+          "css": "rgb(240, 235, 216)",
+          "cls": "duel-tool-button flex items-center gap-1 rounded-stub-pill px-2.5 font"
+        },
+        {
+          "t": "B",
+          "ratio": 2.11,
+          "need": 3,
+          "px": 26,
+          "fg": "rgb(143,166,188)",
+          "bg": "rgb(240,235,216)",
+          "css": "rgb(143, 166, 188)",
+          "cls": "flex-none font-stub-display"
+        },
+        {
+          "t": "DEEP CUT",
+          "ratio": 2.11,
+          "need": 4.5,
+          "px": 4.4,
+          "fg": "rgb(240,235,216)",
+          "bg": "rgb(143,166,188)",
+          "css": "rgb(240, 235, 216)",
+          "cls": "text-center font-stub-label"
+        }
+      ],
+      "small": [
+        {
+          "name": "How to play",
+          "w": 32,
+          "h": 32,
+          "cls": "app-help-button daily-icon-button ml-2 active:scale-90"
+        },
+        {
+          "name": "↑ TAKE FOR MELD",
+          "w": 122,
+          "h": 23,
+          "cls": "absolute -bottom-7 inset-x-0 z-[var(--z-traveling)] mx-auto w-max rounded-full b"
+        }
+      ]
+    },
+    {
+      "screen": "duel-say",
+      "vp": "v375",
+      "text": ""
+    },
+    {
+      "screen": "duel-draw3",
+      "vp": "v375",
+      "contrast": [
+        {
+          "t": "C",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 12,
+          "fg": "rgb(207,149,42)",
+          "bg": "rgb(31,58,82)",
+          "css": "rgb(207, 149, 42)",
+          "cls": "flex h-6 w-6 items-center justify-center rounded-full bg-stub-navy fon"
+        },
+        {
+          "t": "FLIP FOR CREDITS",
+          "ratio": 2.4,
+          "need": 4.5,
+          "px": 6.5,
+          "fg": "rgb(143,166,188)",
+          "bg": "rgb(252,249,248)",
+          "css": "rgb(143, 166, 188)",
+          "cls": "flex flex-none items-center justify-center whitespace-nowrap font-stub"
+        },
+        {
+          "t": "⇄",
+          "ratio": 2.4,
+          "need": 4.5,
+          "px": 8.5,
+          "fg": "rgb(143,166,188)",
+          "bg": "rgb(252,249,248)",
+          "css": "rgb(143, 166, 188)",
+          "cls": ""
+        },
+        {
+          "t": "B",
+          "ratio": 2.11,
+          "need": 3,
+          "px": 40,
+          "fg": "rgb(143,166,188)",
+          "bg": "rgb(240,235,216)",
+          "css": "rgb(143, 166, 188)",
+          "cls": "flex-none font-stub-display"
+        },
+        {
+          "t": "DEEP CUT",
+          "ratio": 2.11,
+          "need": 4.5,
+          "px": 6,
+          "fg": "rgb(240,235,216)",
+          "bg": "rgb(143,166,188)",
+          "css": "rgb(240, 235, 216)",
+          "cls": "text-center font-stub-label"
+        },
+        {
+          "t": "You",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 8.5,
+          "fg": "rgb(31,58,82)",
+          "bg": "rgb(207,149,42)",
+          "css": "rgb(31, 58, 82)",
+          "cls": "rounded-stub-pill px-2 py-1 text-[8.5px] font-bold uppercase tracking-"
+        },
+        {
+          "t": "Hint ·3",
+          "ratio": 3.38,
+          "need": 4.5,
+          "px": 12,
+          "fg": "rgb(240,235,216)",
+          "bg": "rgb(44,137,161)",
+          "css": "rgb(240, 235, 216)",
+          "cls": "duel-tool-button flex items-center gap-1 rounded-stub-pill px-2.5 font"
+        },
+        {
+          "t": "B",
+          "ratio": 2.11,
+          "need": 3,
+          "px": 26,
+          "fg": "rgb(143,166,188)",
+          "bg": "rgb(240,235,216)",
+          "css": "rgb(143, 166, 188)",
+          "cls": "flex-none font-stub-display"
+        },
+        {
+          "t": "DEEP CUT",
+          "ratio": 2.11,
+          "need": 4.5,
+          "px": 4.4,
+          "fg": "rgb(240,235,216)",
+          "bg": "rgb(143,166,188)",
+          "css": "rgb(240, 235, 216)",
+          "cls": "text-center font-stub-label"
+        },
+        {
+          "t": "Draw 3 — keep one",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 9,
+          "fg": "rgb(207,149,42)",
+          "bg": "rgb(31,58,82)",
+          "css": "rgb(207, 149, 42)",
+          "cls": "rounded-stub-pill bg-stub-navy px-3.5 py-1.5 font-stub-label text-[9px"
+        }
+      ],
+      "small": [
+        {
+          "name": "How to play",
+          "w": 32,
+          "h": 32,
+          "cls": "app-help-button daily-icon-button ml-2 active:scale-90"
+        }
+      ]
+    },
+    {
+      "screen": "duel-results",
+      "vp": "v375",
+      "contrast": [
+        {
+          "t": "C",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 12,
+          "fg": "rgb(207,149,42)",
+          "bg": "rgb(31,58,82)",
+          "css": "rgb(207, 149, 42)",
+          "cls": "flex h-6 w-6 items-center justify-center rounded-full bg-stub-navy fon"
+        },
+        {
+          "t": "FC",
+          "ratio": 2.4,
+          "need": 4.5,
+          "px": 7,
+          "fg": "rgb(154,165,173)",
+          "bg": "rgb(252,249,248)",
+          "css": "rgb(154, 165, 173)",
+          "cls": "px-1.5 py-0.5 text-[7px] rounded-stub-pill font-stub-label font-bold t"
+        },
+        {
+          "t": "FLIP FOR CREDITS",
+          "ratio": 2.4,
+          "need": 4.5,
+          "px": 6.5,
+          "fg": "rgb(143,166,188)",
+          "bg": "rgb(252,249,248)",
+          "css": "rgb(143, 166, 188)",
+          "cls": "flex flex-none items-center justify-center whitespace-nowrap font-stub"
+        },
+        {
+          "t": "⇄",
+          "ratio": 2.4,
+          "need": 4.5,
+          "px": 8.5,
+          "fg": "rgb(143,166,188)",
+          "bg": "rgb(252,249,248)",
+          "css": "rgb(143, 166, 188)",
+          "cls": ""
+        },
+        {
+          "t": "★",
+          "ratio": 2.17,
+          "need": 4.5,
+          "px": 13,
+          "fg": "rgb(252,249,248)",
+          "bg": "rgb(214,164,73)",
+          "css": "rgb(252, 249, 248)",
+          "cls": "flex h-10 w-[30px] shrink-0 items-center justify-center rounded-stub-t"
+        },
+        {
+          "t": "Hint ·3",
+          "ratio": 3.38,
+          "need": 4.5,
+          "px": 12,
+          "fg": "rgb(240,235,216)",
+          "bg": "rgb(44,137,161)",
+          "css": "rgb(240, 235, 216)",
+          "cls": "duel-tool-button flex items-center gap-1 rounded-stub-pill px-2.5 font"
+        },
+        {
+          "t": "B",
+          "ratio": 2.11,
+          "need": 3,
+          "px": 26,
+          "fg": "rgb(143,166,188)",
+          "bg": "rgb(240,235,216)",
+          "css": "rgb(143, 166, 188)",
+          "cls": "flex-none font-stub-display"
+        },
+        {
+          "t": "DEEP CUT",
+          "ratio": 2.11,
+          "need": 4.5,
+          "px": 4.4,
+          "fg": "rgb(240,235,216)",
+          "bg": "rgb(143,166,188)",
+          "css": "rgb(240, 235, 216)",
+          "cls": "text-center font-stub-label"
+        },
+        {
+          "t": "Deal again",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 15,
+          "fg": "rgb(31,58,82)",
+          "bg": "rgb(207,149,42)",
+          "css": "rgb(31, 58, 82)",
+          "cls": "app-result-action app-result-action--primary active:scale-[0.98]"
+        }
+      ],
+      "small": [
+        {
+          "name": "How to play",
+          "w": 32,
+          "h": 32,
+          "cls": "app-help-button daily-icon-button ml-2 active:scale-90"
+        }
+      ]
+    },
+    {
+      "screen": "duel-results-text",
+      "vp": "v375",
+      "text": "CPU wins. | CPU emptied its hand. | HIGHER IS BETTER | Net 0 vs 18 · played − held | You | 4 played − 4 held | 0 | CPU | 18 played − 0 held | 18 | The CPU had your number. You banked 0 melds. | CPU | banked 3-film Harrison Ford meld | +4 | CPU | super link: Interstellar via Anne Hathaway & Christopher Nolan | +4 | CPU | Final Cut: Skyfall — no link needed | +1 | FEATURE RECORD · 1 PLAYED · 0 WON | copy result | Deal again | Menu"
+    },
+    {
+      "screen": "duel-share",
+      "vp": "v375",
+      "text": "Match Cut · Duel\nlost vs Feature · net 0 to 18\n🎬🟥🟥🟥"
+    },
+    {
+      "screen": "solo-practice",
+      "vp": "v375",
+      "contrast": [
+        {
+          "t": "practice",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 9,
+          "fg": "rgb(207,149,42)",
+          "bg": "rgb(31,58,82)",
+          "css": "rgb(207, 149, 42)",
+          "cls": "mt-1 font-stub-label text-[9px] font-bold uppercase tracking-[0.16em] "
+        },
+        {
+          "t": "FLIP FOR CREDITS",
+          "ratio": 2.4,
+          "need": 4.5,
+          "px": 6.5,
+          "fg": "rgb(143,166,188)",
+          "bg": "rgb(252,249,248)",
+          "css": "rgb(143, 166, 188)",
+          "cls": "flex flex-none items-center justify-center whitespace-nowrap font-stub"
+        },
+        {
+          "t": "⇄",
+          "ratio": 2.4,
+          "need": 4.5,
+          "px": 8.5,
+          "fg": "rgb(143,166,188)",
+          "bg": "rgb(252,249,248)",
+          "css": "rgb(143, 166, 188)",
+          "cls": ""
+        }
+      ],
+      "small": [
+        {
+          "name": "How to play",
+          "w": 32,
+          "h": 32,
+          "cls": "app-help-button daily-icon-button text-[12px] font-extrabold active:scale-90"
+        },
+        {
+          "name": "Restart game",
+          "w": 36,
+          "h": 36,
+          "cls": "daily-icon-button flex h-9 w-9 items-center justify-center rounded-stub-pill tex"
+        }
+      ]
+    },
+    {
+      "screen": "solo-practice-header",
+      "vp": "v375",
+      "text": "Daily Puzzle / PRACTICE / 0 / FLIP / 0 / SCORE / 9 / PAR"
+    },
+    {
+      "screen": "chrono-wide",
+      "vp": "v375",
+      "contrast": [
+        {
+          "t": "practice · wide",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 9,
+          "fg": "rgb(207,149,42)",
+          "bg": "rgb(31,58,82)",
+          "css": "rgb(207, 149, 42)",
+          "cls": "mt-1 font-stub-label text-[9px] font-bold uppercase tracking-[0.16em] "
+        },
+        {
+          "t": "older",
+          "ratio": 1,
+          "need": 4.5,
+          "px": 8,
+          "fg": "rgb(240,235,217)",
+          "bg": "rgb(240,235,216)",
+          "css": "oklab(0.938879 -0.00208431 0.0256565 / 0.65)",
+          "cls": "absolute bottom-1 font-stub-label text-[8px] font-bold uppercase track"
+        },
+        {
+          "t": "newer",
+          "ratio": 1,
+          "need": 4.5,
+          "px": 8,
+          "fg": "rgb(240,235,217)",
+          "bg": "rgb(240,235,216)",
+          "css": "oklab(0.938879 -0.00208431 0.0256565 / 0.65)",
+          "cls": "absolute bottom-1 font-stub-label text-[8px] font-bold uppercase track"
+        }
+      ],
+      "small": [
+        {
+          "name": "New round",
+          "w": 36,
+          "h": 44,
+          "cls": "daily-icon-button daily-icon-md flex h-11 w-9 items-center justify-center text-s"
+        },
+        {
+          "name": "How to play",
+          "w": 32,
+          "h": 32,
+          "cls": "app-help-button daily-icon-button daily-icon-md text-[12px] font-extrabold activ"
+        }
+      ]
+    },
+    {
+      "screen": "chrono-wide-header",
+      "vp": "v375",
+      "text": "Chronology / PRACTICE · WIDE / STROKES 0"
+    },
+    {
+      "screen": "chrono-tight",
+      "vp": "v375",
+      "contrast": [
+        {
+          "t": "practice · tight",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 9,
+          "fg": "rgb(207,149,42)",
+          "bg": "rgb(31,58,82)",
+          "css": "rgb(207, 149, 42)",
+          "cls": "mt-1 font-stub-label text-[9px] font-bold uppercase tracking-[0.16em] "
+        },
+        {
+          "t": "older",
+          "ratio": 1,
+          "need": 4.5,
+          "px": 8,
+          "fg": "rgb(240,235,217)",
+          "bg": "rgb(240,235,216)",
+          "css": "oklab(0.938879 -0.00208431 0.0256565 / 0.65)",
+          "cls": "absolute bottom-1 font-stub-label text-[8px] font-bold uppercase track"
+        },
+        {
+          "t": "newer",
+          "ratio": 1,
+          "need": 4.5,
+          "px": 8,
+          "fg": "rgb(240,235,217)",
+          "bg": "rgb(240,235,216)",
+          "css": "oklab(0.938879 -0.00208431 0.0256565 / 0.65)",
+          "cls": "absolute bottom-1 font-stub-label text-[8px] font-bold uppercase track"
+        }
+      ],
+      "small": [
+        {
+          "name": "New round",
+          "w": 36,
+          "h": 44,
+          "cls": "daily-icon-button daily-icon-md flex h-11 w-9 items-center justify-center text-s"
+        },
+        {
+          "name": "How to play",
+          "w": 32,
+          "h": 32,
+          "cls": "app-help-button daily-icon-button daily-icon-md text-[12px] font-extrabold activ"
+        }
+      ]
+    },
+    {
+      "screen": "chrono-tight-header",
+      "vp": "v375",
+      "text": "Chronology / PRACTICE · TIGHT / STROKES 0"
+    },
+    {
+      "screen": "conn-practice",
+      "vp": "v375",
+      "contrast": [
+        {
+          "t": "practice",
+          "ratio": 4.47,
+          "need": 4.5,
+          "px": 9,
+          "fg": "rgb(207,149,42)",
+          "bg": "rgb(31,58,82)",
+          "css": "rgb(207, 149, 42)",
+          "cls": "mt-1 font-stub-label text-[9px] font-bold uppercase tracking-[0.16em] "
+        },
+        {
+          "t": "Today's bill",
+          "ratio": 2.2,
+          "need": 4.5,
+          "px": 9,
+          "fg": "rgb(207,149,42)",
+          "bg": "rgb(240,235,216)",
+          "css": "rgb(207, 149, 42)",
+          "cls": "font-stub-label text-[9px] font-bold uppercase tracking-[0.16em] text-"
+        }
+      ],
+      "small": [
+        {
+          "name": "New round",
+          "w": 36,
+          "h": 44,
+          "cls": "daily-icon-button daily-icon-md flex h-11 w-9 items-center justify-center text-s"
+        },
+        {
+          "name": "How to play",
+          "w": 32,
+          "h": 32,
+          "cls": "app-help-button daily-icon-button daily-icon-md text-[12px] font-extrabold activ"
+        }
+      ]
+    },
+    {
+      "screen": "conn-practice-header",
+      "vp": "v375",
+      "text": "Connections / PRACTICE / MISTAKES LEFT"
+    }
+  ],
+  "consoleLog": []
+}
