@@ -1,0 +1,8 @@
+$ npm run smoke:prod -- --base=https://marquee-gnny8yrc7-mwamburi5s-projects.vercel.app --cookie-jar=<jar> --seed=2026-09-27 --out=audit/daily-duel-216-launch-readiness-2026-08-27/production-deploy-2026-09-04/preview --tag=preview-0927   # 2026-09-05T21:23:11Z
+
+> matchcut@0.1.0 smoke:prod
+> node scripts/prod-smoke.mjs --base=https://marquee-gnny8yrc7-mwamburi5s-projects.vercel.app --cookie-jar=/private/tmp/claude-501/-Users-mwamburi-Projects-Daily-Movie-Game/***/scratchpad/preview-bypass.cookies.txt --seed=2026-09-27 --out=audit/daily-duel-216-launch-readiness-2026-08-27/production-deploy-2026-09-04/preview --tag=preview-0927
+
+PASS — https://marquee-gnny8yrc7-mwamburi5s-projects.vercel.app seed 2026-09-27 (216-film expanded pool): 4/4 modes, 0 FAIL, 0 NOT-VERIFIED, 0 faults
+wrote /Users/mwamburi/Projects/Daily Movie Game/audit/daily-duel-216-launch-readiness-2026-08-27/production-deploy-2026-09-04/preview/matrix-preview-0927.json + /Users/mwamburi/Projects/Daily Movie Game/audit/daily-duel-216-launch-readiness-2026-08-27/production-deploy-2026-09-04/preview/matrix-preview-0927.md
+exit: 0

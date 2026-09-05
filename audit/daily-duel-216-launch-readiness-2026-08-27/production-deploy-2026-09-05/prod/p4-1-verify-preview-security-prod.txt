@@ -1,0 +1,11 @@
+$ PATH=/usr/local/bin:$PATH npm run verify:preview-security -- --url=https://matchcutdaily.com   # 2026-09-05T21:26:44Z — no jar; fires ONE real analytics event 'goal4_security_preview' into production = the release checklist's documented non-user-impacting test event
+
+> matchcut@0.1.0 verify:preview-security
+> node scripts/verify-preview-security.mjs --url=https://matchcutdaily.com
+
+Preview security verified: https://matchcutdaily.com
+- 9/9 required headers match
+- CSP violations: 0; console warnings/errors: 0
+- analytics loader: 200; browser event: 200
+- production test seams, secret names, and source map: absent
+exit: 0

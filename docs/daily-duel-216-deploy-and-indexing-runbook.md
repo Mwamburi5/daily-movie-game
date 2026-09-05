@@ -78,14 +78,16 @@ you tested.
 1. Preview receipt green: `docs/daily-duel-216-preview-verification-receipt.md`
    reports `verify:preview-security` verbatim-pass + a four-mode matrix pass on
    a Preview provably serving the candidate SHA.
-2. **A candidate SHA that is on `main`, audit-clean, and CI-green.** As of
-   2026-09-03 no single SHA is all three: `14a546e` is the Preview-verified
-   tree but carries the pre-`npm audit fix` lockfile (browserslist
-   GHSA-c83g-rgw3-j3cx / GHSA-73wf-gq98-2v4g, published 2026-09-01T16:42Z), and
-   the fix `6b758b0` sits unmerged on `codex/preview-gate-skip-toolbar`.
-   Resolve this **before** step 2.2 — the recommended resolution is to merge
-   that branch and deploy the merge SHA, re-confirming byte-parity in §2.3
-   against the `.vercelignore`-filtered rebuild rather than the local one.
+2. **A candidate SHA that is on `main`, audit-clean, and CI-green.** (As
+   written on 2026-09-03 no single SHA was all three; PR #9 merged the audit
+   fix and #10–#13 landed on top, so from 2026-09-04 `9a5fdbb` satisfied it —
+   exact-SHA CI run 33829755130 went green after a re-run of the `npm audit`
+   step that had hit an npm-registry 503.) Because `main` gained player-facing
+   code after the Approval-3 Preview gate, the Approval-4 procedure re-ran the
+   Preview gate on the deploy SHA itself (protected Preview + gate + both
+   smokes) before `--prod`; keep doing that whenever the deploy SHA differs
+   from the last Preview-verified one. Re-confirm byte-parity in §2.3 against
+   the `.vercelignore`-filtered rebuild rather than the local one.
 3. §1's Hobby verdict acknowledged (no journey events will appear).
 4. Buri's explicit "deploy" for this gate. **This runbook is not that.**
 5. Timing rules in §2.6 satisfied.
@@ -98,10 +100,12 @@ curl -sI https://matchcutdaily.com | head -1
 curl -s  https://matchcutdaily.com | grep -o 'assets/index-[^"]*\.js' | head -1
 ```
 
-Write down the current asset name (today: `index-Ch7qjnS-.js`) and the current
-production deployment id (today `dpl_8SighytERqgygRYvbf1eMyLis6SL`, the
-`c063f26` build). The asset name is how you will tell, in one command, whether
-a later rollback actually took effect.
+Write down the current asset name (since 2026-09-05: `index-DAtVcX_d.js`; the
+pre-Approval-4 build served `index-Ch7qjnS-.js`) and the current production
+deployment id (since 2026-09-05T21:25Z: `dpl_HWeNAMnK2eLernz47PCG9RAmgCu6`, the
+`9a5fdbb` build; before it `dpl_8SighytERqgygRYvbf1eMyLis6SL`, the `c063f26`
+build). The asset name is how you will tell, in one command, whether a later
+rollback actually took effect.
 
 ### 2.2 Deploy from a CLEAN CLONE, never the working tree
 
@@ -210,23 +214,34 @@ npx --yes vercel@59.11.1 rollback dpl_8SighytERqgygRYvbf1eMyLis6SL --yes
 # then, within 60s:
 curl -sI https://matchcutdaily.com | head -1                       # HTTP/2 200
 curl -s  https://matchcutdaily.com | grep -o 'assets/index-[^"]*\.js' | head -1
-#   must be the PRE-deploy asset name recorded in §2.1 (today index-Ch7qjnS-.js)
+#   must be the PREVIOUS build's asset name recorded in §2.1 (index-Ch7qjnS-.js)
+# to return to the current build afterwards:
+npx --yes vercel@59.11.1 promote dpl_HWeNAMnK2eLernz47PCG9RAmgCu6 --yes
+#   → served asset back to index-DAtVcX_d.js
 ```
 
-- **The target above is the CURRENT production deployment**
-  (`dpl_8SighytERqgygRYvbf1eMyLis6SL` = the live `c063f26` build), correct as of
-  2026-09-03. The release checklist's older `dpl_7Mk27AwKQ8vcN3CUPj666kfCPNx9`
-  is that deployment's *predecessor* and is wrong to roll back to.
-- **Update this id after every deploy** — the moment Approval 4 lands, the
-  correct target becomes the deployment you just replaced. Update it here *and*
-  in `docs/production-release-checklist.md` as the last step of the deploy.
+- **Ids as of 2026-09-05 (Approval 4 landed):** production is
+  **`dpl_HWeNAMnK2eLernz47PCG9RAmgCu6`** (`9a5fdbb`, aliased matchcutdaily.com
+  since 2026-09-05T21:25:29Z). The rollback target — the deployment to fall back
+  to if the current production must be reverted — is its predecessor
+  **`dpl_8SighytERqgygRYvbf1eMyLis6SL`** (`c063f26`, the pre-cutover build: no
+  216 pool, no error boundary, `/social-preview.png` 404 — acceptable as an
+  emergency fallback, not as a place to stay). The older
+  `dpl_7Mk27AwKQ8vcN3CUPj666kfCPNx9` is two deployments back and wrong to use.
+- **Update these ids after every deploy** — the moment the next production
+  deploy (Approval 5) lands, the rollback target becomes `dpl_HWeNAMnK2eLernz47PCG9RAmgCu6`
+  and the new deployment id goes above. Update here *and* in
+  `docs/production-release-checklist.md` as the last step of the deploy.
 - CLI, not dashboard: the dashboard path is fine as a fallback but is not
   the documented one-command rollback.
-- **Drill it before you need it.** Either roll back and forward on the
-  Approval-3-era deployment before Approval 4, or immediately after the prod
-  deploy while nobody is watching, and record both wall-clock durations in the
-  release checklist. Until that number exists, "one-command rollback" is a
-  claim, not a capability.
+- **Drilled 2026-09-05T21:32Z, immediately after the Approval-4 deploy with
+  production quiet (noindex on):** `rollback dpl_8Sighyt…` → CLI returned in
+  7 s and the apex served `index-Ch7qjnS-.js` 7 s after `t0`; `promote
+  dpl_HWeN…` → CLI returned in 18 s and `index-DAtVcX_d.js` was back 19 s after
+  `t1`; served JS sha256 and the three aliases re-verified on the new build;
+  the production security gate re-ran green afterwards. Record:
+  `docs/daily-duel-216-production-deploy-receipt.md` §P5. Re-drill after any
+  Vercel CLI major bump or before Approval 5.
 
 ### 2.6 Timing rules
 

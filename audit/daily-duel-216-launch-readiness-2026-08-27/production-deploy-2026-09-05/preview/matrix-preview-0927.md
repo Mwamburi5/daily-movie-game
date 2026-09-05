@@ -1,0 +1,113 @@
+# Match Cut — four-mode smoke matrix (`preview-0927`)
+
+- **Target** — https://marquee-gnny8yrc7-mwamburi5s-projects.vercel.app
+- **Daily seed exercised** — `2026-09-27` (pinned clock (--seed)); every daily deal
+  below was independently recomputed in Node from the same `src/lib` functions
+  the bundle ships, then cross-checked against the DOM before play.
+- **Duel pool for this seed** — 216 films (expanded; cutover 2026-09-27)
+- **Run window (UTC)** — 2026-09-05T21:23:12.815Z → 2026-09-05T21:24:13.601Z
+- **Harness** — `scripts/prod-smoke.mjs` (Playwright Chromium, 390×844, request
+  header `x-vercel-skip-toolbar: 1`, clipboard permissions granted)
+- **Verdict** — **PASS** · 0 FAIL cells · 0 NOT-VERIFIED · 0 faults
+
+## Matrix
+
+| Mode | Load | Successful action | Error recovery | Terminal | Share copy |
+|---|---|---|---|---|---|
+| Daily Puzzle | PASS | PASS | PASS | PASS | PASS |
+| Chronology | PASS | PASS | PASS | PASS | PASS |
+| Connections | PASS | PASS | PASS | PASS | PASS |
+| Duel | PASS | PASS | PASS | PASS | PASS |
+| Sanitized progress (A + B) | PASS | n/a | n/a | n/a | n/a |
+
+## Fault counts
+
+Collected per browser context: `console` (error + warning), `pageerror`,
+`securitypolicyviolation`, `requestfailed` on the target origin, and any
+same-origin response ≥ 400.
+
+**Whole run: 0 faults.**
+
+Zero in every phase — the four mode runs and both sanitized-progress loads.
+
+## Per-mode notes
+
+### Daily Puzzle
+
+- **Load** — PASS — mode stage rendered; pile top = mission-impossible-dead-reckoning-part-one (matches the seed-derived deal for 2026-09-27 from the 216-film expanded pool)
+- **Successful action** — PASS — played Mission: Impossible — Ghost Protocol onto Mission: Impossible — Dead Reckoning Part One; pile top advanced and the hand dropped to 6 tickets
+- **Error recovery** — PASS — played Batman onto Mission: Impossible — Dead Reckoning Part One (no shared credit): rejected with the banner "No shared credit · +2", card returned to hand (6 tickets, was 7), penalty applied (Flips 2, score 2, par 9); play continued normally afterwards
+- **Terminal** — PASS — Solved (won). Result dialog "Solved — results": Solved! | Score -1 · par 9 (10 under par) | LOWER IS BETTER | Score -1 vs par 9 | 2 flips · 1 invalid play · combo −3 | DAY 86 · STREAK 1 · BEST -1
+- **Share copy** — button read `copied ✓`, captured via clipboard. Exact text:
+
+```
+Match Cut · Daily Puzzle
+score -1, par 9 (10 under par)
+🎬🟩🟩🟩🟩🟩🟩🟩
+```
+- **Faults during this mode** — 0 console errors · 0 console warnings · 0 pageerrors · 0 CSP violations · 0 failed same-origin requests
+
+### Chronology
+
+- **Load** — PASS — mode stage rendered; anchor = La La Land (2016-12-09), matching the seed-derived deal
+- **Successful action** — PASS — raised Memento (2001) and dropped it into the correct gap 1: accepted clean ("clean"), reel grew to 3 cards
+- **Error recovery** — PASS — placed Wayne's World (1992) in gap 1 when gap 0 was correct: the UI revealed the year ("actually 1992"), charged a stroke (Strokes 1) and re-slotted the card to its true position (index 0); the round continued
+- **Terminal** — PASS — Cleared. Result dialog "Cleared — results": Cleared! | Final score -2 | LOWER IS BETTER | Score -2 = 1 stroke − 3 credits | 1 stroke · 3 streak credits | DAY 86 · STREAK 1 · BEST -2
+- **Share copy** — button read `copied ✓`, captured via clipboard. Exact text:
+
+```
+Match Cut · Chronology
+score -2 (1 stroke, 3 back)
+🎬🟥🟩🟩🟩🟩🟩🟩🟩🟩🟩
+```
+- **Faults during this mode** — 0 console errors · 0 console warnings · 0 pageerrors · 0 CSP violations · 0 failed same-origin requests
+
+### Connections
+
+- **Load** — PASS — mode stage rendered; the 16 tiles match the baked daily grid for 2026-09-27
+- **Successful action** — PASS — selected the four director films and submitted: accepted, the group locked to the solved rail
+- **Error recovery** — PASS — submitted a deliberate one-away set (3 from group 1 + 1 from group 2): rejected with "one away — swap one ticket", mistake counted (4 mistakes left → 3 mistakes left), board stayed playable
+- **Terminal** — PASS — Solved (won, 1 mistake). Result dialog "Solved — results": MATCH CUT · CONNECTIONS | Solved! | 1 mistake on the way. | FEWER MISTAKES IS BETTER | 1 of 4 used | DAY 86 · STREAK 1 · BEST 1
+- **Share copy** — button read `copied ✓`, captured via clipboard. Exact text:
+
+```
+Match Cut · Connections
+solved · 1 mistake
+🟦🟦🟦🟪
+🟦🟦🟦🟦
+🟪🟪🟪🟪
+🟥🟥🟥🟥
+🟩🟩🟩🟩
+```
+- **Faults during this mode** — 0 console errors · 0 console warnings · 0 pageerrors · 0 CSP violations · 0 failed same-origin requests
+
+### Duel
+
+- **Load** — PASS — duel board rendered; hand 7 cards, marquee tops Panic Room / Catch Me If You Can, score 0-0, turn playerTurn
+- **Successful action** — PASS — played Taxi Driver onto the Panic Room marquee via Jodie Foster: accepted (score 0-0 → 1-2, hand 7 → 6, "CPU: Connected via Steven Spielberg (Director)")
+- **Error recovery** — PASS — dropped Spider-Man: No Way Home on the Panic Room marquee with no shared credit and no Final Cut: refused (hand still 7, score still 0-0, turn still playerTurn — the turn was not consumed); play continued
+- **Terminal** — PASS — game reached its terminal screen after 84 driven steps. Dialog "Game over — results": CPU wins. | CPU hit 20 — the show goes to the higher net. | HIGHER IS BETTER | Net -5 vs 16 · played − held | You | 1 played − 6 held | -5 | CPU
+- **Share copy** — button read `copied ✓`, captured via clipboard. Exact text:
+
+```
+Match Cut · Duel
+lost vs Matinee · net -5 to 16
+🎬🟥🟥🟥
+```
+- **Faults during this mode** — 0 console errors · 0 console warnings · 0 pageerrors · 0 CSP violations · 0 failed same-origin requests
+
+## Sanitized-progress loads
+
+### Variant a-structured
+
+- Blob installed before first paint on `localStorage['matchcut:v1']`.
+- Menu rendered 4 mode cards; onboarding not shown.
+- Repaired chips — solo: "✓ streak 5" · chronology: null · connections: "✓ streak 1" · duel record: "3/3 won" · difficulty pressed: ["matinee"].
+- Faults: 0 console errors · 0 console warnings · 0 pageerrors · 0 CSP violations · 0 failed same-origin requests.
+
+### Variant b-garbage
+
+- Blob installed before first paint on `localStorage['matchcut:v1']`.
+- Menu rendered 4 mode cards; onboarding shown and dismissed.
+- Repaired chips — solo: null · chronology: null · connections: null · duel record: null · difficulty pressed: ["matinee"].
+- Faults: 0 console errors · 0 console warnings · 0 pageerrors · 0 CSP violations · 0 failed same-origin requests.

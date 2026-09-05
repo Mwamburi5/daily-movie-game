@@ -5,12 +5,11 @@ name: prod-canary
 # outage, a detached alias, a TLS failure, and a deploy that lost its entry
 # script. It does NOT catch a broken daily deal — prod-smoke.yml does that.
 #
-# Manual-only for now; the 30-minute cron is deliberately commented out.
-# ENABLE AFTER APPROVAL 4 (the production deploy) — uncomment the schedule.
+# Cron ENABLED 2026-09-05 (Approval 4): production serves `9a5fdbb`.
 on:
   workflow_dispatch:
-  # schedule:
-  #   - cron: '*/30 * * * *' # every 30 minutes — enable after Approval 4
+  schedule:
+    - cron: '*/30 * * * *' # every 30 minutes — enabled after Approval 4 (2026-09-05)
 
 permissions:
   contents: read
