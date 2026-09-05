@@ -4,14 +4,15 @@ name: prod-smoke
 # daily deal from src/lib and cross-checking it against the DOM before play —
 # the assertion that catches a broken daily, not just a blank page.
 #
-# Manual-only for now. The daily cron below is deliberately commented out:
-# production still serves the pre-cutover build, so the deal cross-check would
-# fail every night and train everyone to ignore the alert.
-# ENABLE AFTER APPROVAL 4 (the production deploy) — uncomment the schedule.
+# Cron ENABLED 2026-09-05 (Approval 4): production now serves the cutover build
+# `9a5fdbb`, so the nightly deal cross-check is meaningful and a failure is a
+# real alert (it opens an issue). 04:20 UTC = 00:20 America/New_York in EDT
+# (23:20 the previous evening once EST returns) — either way the harness reads
+# the date in America/New_York, so it plays whatever a New York player sees.
 on:
   workflow_dispatch:
-  # schedule:
-  #   - cron: '20 4 * * *' # 00:20 America/New_York — enable after Approval 4
+  schedule:
+    - cron: '20 4 * * *' # 04:20 UTC — enabled after Approval 4 (2026-09-05)
 
 permissions:
   contents: read

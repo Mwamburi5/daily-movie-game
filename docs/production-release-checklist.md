@@ -108,17 +108,22 @@ apex redirects, Vercel nameservers, public DNS answers, and TLS coverage were
 confirmed. No DS delegation was observed, so DNSSEC remains an attended
 decision. The previous Ready deployment
 `dpl_7Mk27AwKQ8vcN3CUPj666kfCPNx9` was recorded here on 2026-08-19, but that is
-the **predecessor** of the deployment now serving production and is the wrong
-thing to roll back to. **Corrected 2026-09-03: the rollback target is
-`dpl_8SighytERqgygRYvbf1eMyLis6SL`** — the live `c063f26` build aliased to
-matchcutdaily.com. The documented command is
-`npx --yes vercel@59.11.1 rollback dpl_8SighytERqgygRYvbf1eMyLis6SL --yes`
-(run `vercel whoami` first; the stored token expires). **This id must be
-updated as the last step of every production deploy** — see
+two deployments back and the wrong thing to roll back to. **Updated
+2026-09-05 (Approval 4 executed):** production is now
+**`dpl_HWeNAMnK2eLernz47PCG9RAmgCu6`** (`9a5fdbb`, aliased to matchcutdaily.com
+since 2026-09-05T21:25:29Z, serving `index-DAtVcX_d.js`). The rollback target
+is its predecessor **`dpl_8SighytERqgygRYvbf1eMyLis6SL`** (the `c063f26`
+build): `npx --yes vercel@59.11.1 rollback dpl_8SighytERqgygRYvbf1eMyLis6SL --yes`
+(run `vercel whoami` first; the stored token expires), and
+`npx --yes vercel@59.11.1 promote dpl_HWeNAMnK2eLernz47PCG9RAmgCu6 --yes`
+returns to the current build. **These ids must be updated as the last step of
+every production deploy** — see
 `docs/daily-duel-216-deploy-and-indexing-runbook.md` §2.5, which carries the
-same target and the verification commands. No rollback has been executed and no
-drill has been run. Dashboard analytics/Web Vitals, alerts, spend controls,
-account MFA/access, and the rollback drill remain open.
+same ids and the verification commands. **The rollback drill was executed
+2026-09-05T21:32Z: 7 s back to `index-Ch7qjnS-.js`, 19 s forward to
+`index-DAtVcX_d.js`, security gate green afterwards** (receipt §P5). Dashboard
+analytics/Web Vitals, alerts, spend controls, and account MFA/access remain
+open.
 
 ## Source-control and CI gates
 
@@ -132,19 +137,42 @@ account MFA/access, and the rollback drill remain open.
 
 ## Quiet production release
 
-- [ ] Receive explicit approval to deploy the exact green SHA.
-- [ ] Confirm the Vercel project and custom domain target before deployment.
-- [ ] Deploy production explicitly; a Git push alone is not deployment proof.
-- [ ] Verify `https://matchcutdaily.com` returns HTTP 200 and references the new
-  hashed assets.
-- [ ] Verify the required production headers and CSP match the tested Preview
-  receipt; do not infer edge configuration from the local build.
-- [ ] Run one real production interaction in every changed mode and check the
-  browser console/network for failures.
-- [ ] Confirm `noindex, nofollow` remains present.
-- [ ] Confirm share output remains URL-free.
-- [ ] Confirm TMDB attribution remains visible.
-- [ ] Record deploy URL, alias, SHA, time, verification, and rollback target.
+Executed 2026-09-05 (Approval 4) for `main@9a5fdbb`; full record in
+`docs/daily-duel-216-production-deploy-receipt.md`.
+
+- [x] Receive explicit approval to deploy the exact green SHA. — Buri's
+  `/goal` block of 2026-09-04 (kickoff prompt) for `9a5fdbb`; D6 ruled "keep"
+  in-session before P1.
+- [x] Confirm the Vercel project and custom domain target before deployment. —
+  `.vercel/project.json` → `marquee` / `team_yyOr5zARz3GhouJJyMunDA4x`;
+  `vercel inspect https://matchcutdaily.com` resolved to the live production
+  deployment before and after (receipt §P0, §P3).
+- [x] Deploy production explicitly; a Git push alone is not deployment proof. —
+  `npx --yes vercel@59.11.1 deploy --prod --yes` from a clean clone at
+  2026-09-05T21:25:10Z → `dpl_HWeNAMnK2eLernz47PCG9RAmgCu6` (receipt §P2).
+- [x] Verify `https://matchcutdaily.com` returns HTTP 200 and references the new
+  hashed assets. — 200; `index-DAtVcX_d.js` + `index-CoBkmvh_.css`, sha256
+  byte-identical to the `.vercelignore`-filtered rebuild, and the deployment's
+  `meta.githubCommitSha` reads back `9a5fdbb` (receipt §P3).
+- [x] Verify the required production headers and CSP match the tested Preview
+  receipt; do not infer edge configuration from the local build. —
+  `verify:preview-security --url=https://matchcutdaily.com` verbatim green
+  (9/9 headers, 0 CSP, 0 faults) at 21:26:44Z and again post-drill at
+  21:34:06Z (receipt §P4.1, §P5).
+- [x] Run one real production interaction in every changed mode and check the
+  browser console/network for failures. — `smoke:prod` on production: seed
+  2026-09-05 PASS 4/4 · 0 faults, and `--seed=2026-09-27` (216 pool) PASS 4/4
+  · 0 faults (receipt §P4.2).
+- [x] Confirm `noindex, nofollow` remains present. — `grep -c 'name="robots"'`
+  = 1 on the served shell (receipt §P4.4).
+- [x] Confirm share output remains URL-free. — every share text captured by
+  both production smokes is the three-line family format with no URL
+  (receipt §P4.2).
+- [x] Confirm TMDB attribution remains visible. — rules sheet on production
+  shows the TMDB attribution (screenshot `p4-tmdb-attribution-prod.png`,
+  receipt §P4.4).
+- [x] Record deploy URL, alias, SHA, time, verification, and rollback target. —
+  receipt §P2/§P3/§P5 and the "Existing production baseline" paragraph above.
 
 ## Operational launch gate
 
@@ -153,7 +181,9 @@ account MFA/access, and the rollback drill remain open.
 - [ ] Web Vitals arrive in the production dashboard.
 - [ ] `mode_start`, `mode_finish`, and `share` are verified as received—not merely queued.
 - [ ] Monthly spend alert and hard ceiling are configured and tested.
-- [ ] One-command rollback is documented and a rollback drill succeeds.
+- [x] One-command rollback is documented and a rollback drill succeeds. —
+  drilled 2026-09-05T21:32Z: 7 s back / 19 s forward, gate green after
+  (receipt §P5).
 - [ ] Privacy/retention language and credits are published.
 - [ ] TMDB commercial-use terms are resolved before monetization.
 - [ ] Cold-4G and warm-repeat budgets pass on the final asset graph.
