@@ -1,0 +1,16 @@
+# Buri ran scratchpad/mint.sh by hand in the Terminal tab (2026-09-05 17:21 EDT); transcribed from the panel, nothing secret printed
+== step 1/3: refresh the Vercel CLI token (expect: mwamburi5)
+Vercel CLI 59.11.1 (Node.js 24.14.0)
+> Logged in as mwamburi5
+> Active team: mwamburi5s-projects (mwamburi5's projects)
+== step 2/3: mint the jar for the Preview
+bypass entries: [ { scope: 'automation-bypass', createdAt: '2026-08-08T00:45:45.126Z' } ]
+bypass GET status: 307 location: /
+set-cookie names: [ '_vercel_jwt' ]
+jar written: <scratchpad>/preview-bypass.cookies.txt jwt length: 289 expires: 2026-09-05T22:21:25.000Z
+cookie GET status: 200 x-vercel-id: iad1::zkrsq-1788643285470-c4c530e3fa65
+served asset refs: [ '/assets/index-DAtVcX_d.js', '/assets/index-CoBkmvh_.css' ]
+robots meta: <meta name="robots" content="noindex, nofollow" />
+== step 3/3: the jar file must be listed below
+-rw-------@ 1 mwamburi  wheel  529 Sep  5 17:21 preview-bypass.cookies.txt
+== DONE

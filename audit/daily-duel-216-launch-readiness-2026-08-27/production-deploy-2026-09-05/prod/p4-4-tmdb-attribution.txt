@@ -1,0 +1,6 @@
+$ node audit/daily-duel-216-launch-readiness-2026-08-27/production-deploy-2026-09-05/p4-tmdb-check.mjs   # 2026-09-05T21:42:00Z read-only against production
+menu buttons: ["How to play","Daily PuzzleToday’s hand — same for ever","Learn the linksfixed warm-up hand","ChronologyToday’s lineup. Place the movi","Widetrain range","Tighttrain close calls","ConnectionsToday’s sixteen. Find four gr","Train groupingfresh random grid","Duel vs ComputerReaching 20 ends the sho","Matinee","Feature","Director's Cut","Skip","Next"]
+onboarding dismissed via Skip
+TMDB attribution visible: true | logo imgs: 1 | link: null | faults: 0
+text: "About the dataThis product uses TMDB and the TMDB APIs but is not endorsed, certified, or otherwise approved by TMDB."
+exit: 0

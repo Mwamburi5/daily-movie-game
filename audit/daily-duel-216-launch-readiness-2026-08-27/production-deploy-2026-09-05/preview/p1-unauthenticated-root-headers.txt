@@ -1,0 +1,21 @@
+# unauthenticated GET / on the new Preview (2026-09-04T13:08:57Z); nonces redacted
+HTTP/2 302 
+cache-control: no-store, max-age=0
+content-type: text/plain
+date: Fri, 04 Sep 2026 13:08:57 GMT
+location: https://vercel.com/sso-api?url=https%3A%2F%2Fmarquee-gnny8yrc7-mwamburi5s-projects.vercel.app%2F&nonce=<redacted>
+server: Vercel
+set-cookie: _vercel_sso_nonce=<redacted>; Path=/; Secure; HttpOnly; SameSite=Lax
+strict-transport-security: max-age=63072000; includeSubDomains; preload
+x-frame-options: DENY
+x-robots-tag: noindex
+x-vercel-id: iad1::dntcw-1788527337327-5718e5e689e8
+
+
+# unauthenticated GET /assets/index-placeholder.js
+HTTP/2 302 
+cache-control: no-store, max-age=0
+content-type: text/plain
+date: Fri, 04 Sep 2026 13:08:57 GMT
+location: https://vercel.com/sso-api?url=https%3A%2F%2Fmarquee-gnny8yrc7-mwamburi5s-projects.vercel.app%2Fassets%2Findex-placeholder.js&nonce=<redacted>
+server: Vercel

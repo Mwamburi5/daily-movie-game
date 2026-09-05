@@ -1,0 +1,28 @@
+{
+  "id": "dpl_3XYcXVGb3gpnZCmygW1yo7HtqMMb",
+  "url": "marquee-gnny8yrc7-mwamburi5s-projects.vercel.app",
+  "name": "marquee",
+  "target": null,
+  "readyState": "READY",
+  "createdAt": "2026-09-04T13:07:45.796Z",
+  "readyAt": "2026-09-04T13:08:01.573Z",
+  "source": "cli",
+  "public": false,
+  "projectId": "prj_pulSUCbmLIthysHhzWGGtVIajIgm",
+  "meta": {
+    "githubCommitAuthorName": "Mwamburi5",
+    "githubCommitAuthorEmail": "45295393+Mwamburi5@users.noreply.github.com",
+    "githubCommitMessage": "Merge pull request #13 from Mwamburi5/codex/prelaunch-receipt",
+    "githubCommitOrg": "Mwamburi5",
+    "githubCommitRef": "main",
+    "githubCommitRepo": "daily-movie-game",
+    "githubCommitSha": "9a5fdbbc3976490aa941e4936b064c7416c1d0bc",
+    "githubDeployment": "1",
+    "githubOrg": "Mwamburi5",
+    "githubRepo": "daily-movie-game",
+    "gitRootDirectory": "",
+    "actor": "claude-code_2-1-260_agent"
+  },
+  "alias": [],
+  "creator": "mwamburi5"
+}

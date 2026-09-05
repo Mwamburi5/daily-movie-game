@@ -1,0 +1,11 @@
+$ PATH=/usr/local/bin:$PATH npm run verify:preview-security -- --url=https://marquee-gnny8yrc7-mwamburi5s-projects.vercel.app --cookie-jar=<scratchpad>/preview-bypass.cookies.txt   # 2026-09-05T21:21:53Z
+
+> matchcut@0.1.0 verify:preview-security
+> node scripts/verify-preview-security.mjs --url=https://marquee-gnny8yrc7-mwamburi5s-projects.vercel.app --cookie-jar=/private/tmp/claude-501/-Users-mwamburi-Projects-Daily-Movie-Game/***/scratchpad/preview-bypass.cookies.txt
+
+Preview security verified: https://marquee-gnny8yrc7-mwamburi5s-projects.vercel.app
+- 9/9 required headers match
+- CSP violations: 0; console warnings/errors: 0
+- analytics loader: 200; browser event: 200
+- production test seams, secret names, and source map: absent
+exit: 0

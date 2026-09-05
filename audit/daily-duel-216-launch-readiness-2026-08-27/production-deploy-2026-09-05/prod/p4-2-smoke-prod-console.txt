@@ -1,0 +1,8 @@
+$ npm run smoke:prod -- --base=https://matchcutdaily.com --out=audit/daily-duel-216-launch-readiness-2026-08-27/production-deploy-2026-09-04/prod --tag=prod   # 2026-09-05T21:26:59Z
+
+> matchcut@0.1.0 smoke:prod
+> node scripts/prod-smoke.mjs --base=https://matchcutdaily.com --out=audit/daily-duel-216-launch-readiness-2026-08-27/production-deploy-2026-09-04/prod --tag=prod
+
+PASS — https://matchcutdaily.com seed 2026-09-05 (89-film legacy pool): 4/4 modes, 0 FAIL, 0 NOT-VERIFIED, 0 faults
+wrote /Users/mwamburi/Projects/Daily Movie Game/audit/daily-duel-216-launch-readiness-2026-08-27/production-deploy-2026-09-04/prod/matrix-prod.json + /Users/mwamburi/Projects/Daily Movie Game/audit/daily-duel-216-launch-readiness-2026-08-27/production-deploy-2026-09-04/prod/matrix-prod.md
+exit: 0

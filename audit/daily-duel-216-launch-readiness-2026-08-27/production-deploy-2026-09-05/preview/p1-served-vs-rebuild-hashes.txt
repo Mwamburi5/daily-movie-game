@@ -1,0 +1,8 @@
+# served (Preview dpl_3XYcXVGb3gpnZCmygW1yo7HtqMMb) vs filtered-rebuild sha256 (2026-09-05T21:21:48Z)
+served  assets/index-DAtVcX_d.js  2269b97173854792b66f4290954591b5bbf28d82273cb5275a818a80e288e1d4
+served  assets/index-CoBkmvh_.css  5ccbcb613ce91e4c5006a995a04544681fd955a15887f7023e6e84daf5651468
+--- filtered rebuild (clean clone minus .vercelignore paths, npm ci, npm run build):
+b1a2aacd489fdda0967e2713a2e9a8b6cc38a991e7eb9500b37c36a9cf028752  dist/index.html
+2269b97173854792b66f4290954591b5bbf28d82273cb5275a818a80e288e1d4  dist/assets/index-DAtVcX_d.js
+5ccbcb613ce91e4c5006a995a04544681fd955a15887f7023e6e84daf5651468  dist/assets/index-CoBkmvh_.css
+--- served Preview index.html sha256: b1a2aacd489fdda0967e2713a2e9a8b6cc38a991e7eb9500b37c36a9cf028752

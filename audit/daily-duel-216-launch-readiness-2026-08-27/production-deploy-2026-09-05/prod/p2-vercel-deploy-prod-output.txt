@@ -1,0 +1,60 @@
+<claude-code-hint v="1" type="plugin" value="vercel@claude-plugins-official" />
+Vercel CLI 59.11.1 (Node.js 24.14.0)
+Deploying marquee
+  Inspect         https://vercel.com/mwamburi5s-projects/marquee/HWeNAMnK2eLernz47PCG9RAmgCu6
+  Production      https://marquee-a9w1nt9c4-mwamburi5s-projects.vercel.app
+Building…
+Building…
+Running build in Washington, D.C., USA (East) – iad1
+Build machine configuration: 2 cores, 8 GB
+Retrieving list of deployment files...
+Downloading 108 deployment files...
+Restored build cache from previous deployment (8SighytERqgygRYvbf1eMyLis6SL)
+Running "vercel build"
+Vercel CLI 59.11.7
+Installing dependencies...
+changed 6 packages in 1s
+13 packages are looking for funding
+run `npm fund` for details
+npm warn allow-scripts 1 package has install scripts not yet covered by allowScripts:
+npm warn allow-scripts   esbuild@0.25.12 (postinstall: node install.js)
+npm warn allow-scripts
+npm warn allow-scripts Run `npm approve-scripts --allow-scripts-pending` to review, or `npm approve-scripts <pkg>` to allow.
+Running "npm run build"
+> matchcut@0.1.0 build
+> tsc --noEmit && vite build
+vite v6.4.3 building for production...
+transforming...
+[2K[1A[2K[G  Production      https://marquee-a9w1nt9c4-mwamburi5s-projects.vercel.app
+Completing…
+▲ Aliased         https://matchcutdaily.com
+{
+  "status": "ok",
+  "deployment": {
+    "id": "dpl_HWeNAMnK2eLernz47PCG9RAmgCu6",
+    "url": "https://marquee-a9w1nt9c4-mwamburi5s-projects.vercel.app",
+    "inspectorUrl": "https://vercel.com/mwamburi5s-projects/marquee/HWeNAMnK2eLernz47PCG9RAmgCu6",
+    "readyState": "READY",
+    "target": "production",
+    "deploymentApiUrl": "https://api.vercel.com/v13/deployments/dpl_HWeNAMnK2eLernz47PCG9RAmgCu6"
+  },
+  "message": "Deployment marquee-a9w1nt9c4-mwamburi5s-projects.vercel.app ready.",
+  "next": [
+    {
+      "command": "vercel git connect",
+      "when": "Automatically deploy changes on every push"
+    },
+    {
+      "command": "vercel curl https://marquee-a9w1nt9c4-mwamburi5s-projects.vercel.app",
+      "when": "Verify deployment, including when Deployment Protection is enabled"
+    },
+    {
+      "command": "vercel inspect marquee-a9w1nt9c4-mwamburi5s-projects.vercel.app",
+      "when": "Inspect deployment"
+    },
+    {
+      "command": "vercel deploy --prod",
+      "when": "Promote to production"
+    }
+  ]
+}

@@ -1,0 +1,107 @@
+{
+  "tag": "preview",
+  "base": "https://marquee-gnny8yrc7-mwamburi5s-projects.vercel.app",
+  "seed": "2026-09-05",
+  "seedSource": "harness local date",
+  "pool": {
+    "size": 89,
+    "effectiveDate": "2026-09-27",
+    "era": "legacy"
+  },
+  "root": "/Users/mwamburi/Projects/Daily Movie Game",
+  "startedAt": "2026-09-05T21:22:01.028Z",
+  "finishedAt": "2026-09-05T21:23:09.301Z",
+  "ok": true,
+  "fatal": null,
+  "counts": {
+    "modes": 4,
+    "fail": 0,
+    "notVerified": 0,
+    "faults": 0
+  },
+  "modes": [
+    {
+      "mode": "Daily Puzzle",
+      "load": "PASS — mode stage rendered; pile top = toy-story-2 (matches the seed-derived deal for 2026-09-05 from the 89-film legacy pool)",
+      "action": "PASS — played Catch Me If You Can onto Toy Story 2; pile top advanced and the hand dropped to 6 tickets",
+      "error": "PASS — played Schindler's List onto Toy Story 2 (no shared credit): rejected with the banner \"No shared credit · +2\", card returned to hand (6 tickets, was 7), penalty applied (Flips 2, score 2, par 9); play continued normally afterwards",
+      "terminal": "PASS — Solved (won). Result dialog \"Solved — results\": Solved! | Score 0 · par 9 (9 under par) | LOWER IS BETTER | Score 0 vs par 9 | 2 flips · 1 invalid play · combo −2 | DAY 64 · STREAK 1 · BEST 0",
+      "share": {
+        "label": "copied ✓",
+        "route": "clipboard",
+        "text": "Match Cut · Daily Puzzle\nscore 0, par 9 (9 under par)\n🎬🟩🟩🟩🟩🟩🟩🟩"
+      }
+    },
+    {
+      "mode": "Chronology",
+      "load": "PASS — mode stage rendered; anchor = Braveheart (1995-05-24), matching the seed-derived deal",
+      "action": "PASS — raised Inception (2010) and dropped it into the correct gap 2: accepted clean (\"clean\"), reel grew to 3 cards",
+      "error": "PASS — placed Zodiac (2007) in gap 0 when gap 1 was correct: the UI revealed the year (\"actually 2007\"), charged a stroke (Strokes 1) and re-slotted the card to its true position (index 1); the round continued",
+      "terminal": "PASS — Cleared. Result dialog \"Cleared — results\": Cleared! | Final score -2 | LOWER IS BETTER | Score -2 = 1 stroke − 3 credits | 1 stroke · 3 streak credits | DAY 64 · STREAK 1 · BEST -2",
+      "share": {
+        "label": "copied ✓",
+        "route": "clipboard",
+        "text": "Match Cut · Chronology\nscore -2 (1 stroke, 3 back)\n🎬🟥🟩🟩🟩🟩🟩🟩🟩🟩🟩"
+      }
+    },
+    {
+      "mode": "Connections",
+      "load": "PASS — mode stage rendered; the 16 tiles match the baked daily grid for 2026-09-05",
+      "action": "PASS — selected the four director films and submitted: accepted, the group locked to the solved rail",
+      "error": "PASS — submitted a deliberate one-away set (3 from group 1 + 1 from group 2): rejected with \"one away — swap one ticket\", mistake counted (4 mistakes left → 3 mistakes left), board stayed playable",
+      "terminal": "PASS — Solved (won, 1 mistake). Result dialog \"Solved — results\": MATCH CUT · CONNECTIONS | Solved! | 1 mistake on the way. | FEWER MISTAKES IS BETTER | 1 of 4 used | DAY 64 · STREAK 1 · BEST 1",
+      "share": {
+        "label": "copied ✓",
+        "route": "clipboard",
+        "text": "Match Cut · Connections\nsolved · 1 mistake\n🟦🟦🟦🟪\n🟦🟦🟦🟦\n🟪🟪🟪🟪\n🟥🟥🟥🟥\n🟩🟩🟩🟩"
+      }
+    },
+    {
+      "mode": "Duel",
+      "load": "PASS — duel board rendered; hand 7 cards, marquee tops Oppenheimer / Boogie Nights, score 0-0, turn playerTurn",
+      "action": "PASS — played Dune: Part Two onto the Oppenheimer marquee via Florence Pugh: accepted (score 0-0 → 1-3, hand 7 → 6, \"CPU: banked 3 films via Drama\")",
+      "error": "PASS — dropped The Matrix Revolutions on the Oppenheimer marquee with no shared credit and no Final Cut: refused (hand still 7, score still 0-0, turn still playerTurn — the turn was not consumed); play continued",
+      "terminal": "PASS — game reached its terminal screen after 91 driven steps. Dialog \"Game over — results\": CPU wins. | CPU hit 20 — the show goes to the higher net. | HIGHER IS BETTER | Net -5 vs 21 · played − held | You | 1 played − 6 held | -5 | CPU",
+      "share": {
+        "label": "copied ✓",
+        "route": "clipboard",
+        "text": "Match Cut · Duel\nlost vs Matinee · net -5 to 21\n🎬🟥🟥🟥🟥"
+      }
+    }
+  ],
+  "sanitized": [
+    {
+      "variant": "a-structured",
+      "sawOnboarding": false,
+      "chips": {
+        "solo": "✓ streak 5",
+        "chronology": null,
+        "connections": "✓ streak 1",
+        "duel": "3/3 won",
+        "passport": "Daily passport2/3 stamped",
+        "difficultyPressed": [
+          "matinee"
+        ],
+        "menuCards": 4
+      },
+      "faults": []
+    },
+    {
+      "variant": "b-garbage",
+      "sawOnboarding": true,
+      "chips": {
+        "solo": null,
+        "chronology": null,
+        "connections": null,
+        "duel": null,
+        "passport": "Daily passport0/3 stamped",
+        "difficultyPressed": [
+          "matinee"
+        ],
+        "menuCards": 4
+      },
+      "faults": []
+    }
+  ],
+  "faults": []
+}

@@ -1,0 +1,25 @@
+# P4.3 static surfaces + P4.4 quiet-phase switches (2026-09-05T21:30:28Z)
+hashed JS  cache-control: cache-control: public, max-age=31536000, immutable  status 200
+hashed CSS cache-control: cache-control: public, max-age=31536000, immutable  status 200
+shell cache-control: cache-control: public, max-age=0, must-revalidate
+/.well-known/security.txt: 200
+  # Match Cut — RFC 9116 security contact.|# There is no private support mailbox for this project, so the public issue|# tracker is the only route: open an issue WITHOUT exploit detail and ask for a|# private channel in the first message.|
+/social-preview.png: 200 image/png 98515B
+/apple-touch-icon.png: 200
+/favicon-32.png: 200
+/favicon.svg: 200
+og:image meta: <meta property="og:image" content="https://matchcutdaily.com/social-preview.png" />
+robots meta count (must be 1): 1  → <meta name="robots" content="noindex, nofollow" />
+apple-mobile-web-app-title: <meta name="apple-mobile-web-app-title" content="Match Cut" />
+inline <script> count in served shell (must be 0): 0
+9 security headers on apex:
+  content-security-policy: default-src 'none'; base-uri 'none'; connect-src 'self'; font-src
+  cross-origin-opener-policy: same-origin
+  cross-origin-resource-policy: same-origin
+  permissions-policy: accelerometer=(), autoplay=(), camera=(), display-capture=(), encrypte
+  referrer-policy: strict-origin-when-cross-origin
+  strict-transport-security: max-age=63072000
+  x-content-type-options: nosniff
+  x-dns-prefetch-control: off
+  x-frame-options: DENY
+  x-xss-protection: 0

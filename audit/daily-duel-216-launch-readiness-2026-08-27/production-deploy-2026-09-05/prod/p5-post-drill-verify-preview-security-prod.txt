@@ -1,0 +1,12 @@
+$ PATH=/usr/local/bin:$PATH npm run verify:preview-security -- --url=https://matchcutdaily.com   # 2026-09-05T21:34:06Z — POST-DRILL re-run of P4 step 1 (fires a second documented test event)
+
+> matchcut@0.1.0 verify:preview-security
+> node scripts/verify-preview-security.mjs --url=https://matchcutdaily.com
+
+Preview security verified: https://matchcutdaily.com
+- 9/9 required headers match
+- CSP violations: 0; console warnings/errors: 0
+- analytics loader: 200; browser event: 200
+- production test seams, secret names, and source map: absent
+exit: 0
+served asset after drill: assets/index-DAtVcX_d.js

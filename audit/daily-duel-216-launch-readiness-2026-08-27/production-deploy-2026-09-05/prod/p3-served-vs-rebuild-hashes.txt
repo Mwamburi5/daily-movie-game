@@ -1,0 +1,15 @@
+# P3b content — production served bytes vs P1 filtered rebuild (re-recorded 2026-09-05T21:31:06Z; first pass at 21:26:17Z had one garbled loop line from a shell word-split, verdicts unchanged)
+apex GET / status: 200
+served  assets/index-DAtVcX_d.js  2269b97173854792b66f4290954591b5bbf28d82273cb5275a818a80e288e1d4
+served  assets/index-CoBkmvh_.css  5ccbcb613ce91e4c5006a995a04544681fd955a15887f7023e6e84daf5651468
+served  index.html  b1a2aacd489fdda0967e2713a2e9a8b6cc38a991e7eb9500b37c36a9cf028752
+--- expected (P1 filtered rebuild of the clean 9a5fdbb clone minus .vercelignore paths):
+b1a2aacd489fdda0967e2713a2e9a8b6cc38a991e7eb9500b37c36a9cf028752  dist/index.html
+2269b97173854792b66f4290954591b5bbf28d82273cb5275a818a80e288e1d4  dist/assets/index-DAtVcX_d.js
+5ccbcb613ce91e4c5006a995a04544681fd955a15887f7023e6e84daf5651468  dist/assets/index-CoBkmvh_.css
+--- verdict: JS ✔ CSS ✔ HTML ✔ byte-identical (all three sha256 equal)
+--- alias checks:
+apex: HTTP/2 200 
+www:  HTTP/2 307  → location: https://matchcutdaily.com/
+http: HTTP/1.0 308 Permanent Redirect → Location: https://matchcutdaily.com/
+old asset index-Ch7qjnS-.js now: 404 (stale tabs hit the vite:preloadError one-shot reload path)

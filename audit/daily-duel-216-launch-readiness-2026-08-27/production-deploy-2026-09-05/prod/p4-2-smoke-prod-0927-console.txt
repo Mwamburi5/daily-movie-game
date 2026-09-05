@@ -1,0 +1,8 @@
+$ npm run smoke:prod -- --base=https://matchcutdaily.com --seed=2026-09-27 --out=audit/daily-duel-216-launch-readiness-2026-08-27/production-deploy-2026-09-04/prod --tag=prod-0927   # 2026-09-05T21:28:33Z — first time the 216 cutover deal is played on real production bytes
+
+> matchcut@0.1.0 smoke:prod
+> node scripts/prod-smoke.mjs --base=https://matchcutdaily.com --seed=2026-09-27 --out=audit/daily-duel-216-launch-readiness-2026-08-27/production-deploy-2026-09-04/prod --tag=prod-0927
+
+PASS — https://matchcutdaily.com seed 2026-09-27 (216-film expanded pool): 4/4 modes, 0 FAIL, 0 NOT-VERIFIED, 0 faults
+wrote /Users/mwamburi/Projects/Daily Movie Game/audit/daily-duel-216-launch-readiness-2026-08-27/production-deploy-2026-09-04/prod/matrix-prod-0927.json + /Users/mwamburi/Projects/Daily Movie Game/audit/daily-duel-216-launch-readiness-2026-08-27/production-deploy-2026-09-04/prod/matrix-prod-0927.md
+exit: 0
