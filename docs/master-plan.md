@@ -25,6 +25,10 @@
 > the interview session reads it); build tracks = P2 Stage B strikes → LOCK
 > docket (§7·4b) + post-SEND fix backlog (§7·7b) + personas (§7·6) +
 > UI-overhaul intake (§7·8). Deploys ride the window FREEZE policy (§2.11).
+> **Updated 2026-09-08:** the launch build `main@9a5fdbb` is in production
+> (Approval 4, 2026-09-05); the project is in the launch runway to the
+> 2026-09-27 premiere — current state, owners, and calendar:
+> `docs/launch-status-review-2026-09-06.md`; newcomer entry: `HANDOFF/SUMMARY.md`.
 
 All four modes — **Solo, Duel, Chronology, Connections** — playable on the Stub UI ·
 one unified TMDB-audited movie pool feeding all modes · per-mode sims/verifies
@@ -84,7 +88,7 @@ remains 482. Daily/Duel's current 216 and legacy 89 are explicit ordered
 versions. TMDB tooling, standing rulings, name/date audits, attribution, and the
 Connections dealer/baked-runtime lock are all live.
 
-**Current facts:** DuelGame is 2,309/41 · gates are 64/64 (not 60/60) ·
+**Current facts:** DuelGame is 2,445/41 · gates are 64/64 (not 60/60) ·
 RULEBOOK covers all four modes · the Wave-D "double-tap Allow It guard" exists
 (`resolvingOffer`, DuelGame.tsx:295) · `tsc` is not a separate gate (build runs it).
 
@@ -1018,6 +1022,84 @@ what's ready-to-review per sitting.
       receipt remain open in `docs/security-launch-checklist.md`. The Preview is
       an uncommitted working-tree receipt, not a production candidate; no
       production, account, domain, push, or merge mutation was performed.
+- [x] **LAUNCH · Approvals 1–2 ship pass — SHIPPED 2026-09-01:** the 216+16
+      launch-readiness tree was staged, committed, pushed, and merged. Release
+      commit `bdaa3f5` ("Ship the 216+16 Daily/Duel cutover with launch
+      readiness", never amended) carries 98 paths — 74 explicit classified
+      paths plus 24 files force-added from the two approved audit dirs (≈1.6 MB);
+      promo and `output/` stayed excluded. Merge `14a546e` landed via PR #2;
+      exact-SHA CI green on the release commit (run 33501320800) and on the
+      final head (33503913820 push + 33503909712 pull_request). Deviations,
+      all in-flight: `origin/main` had moved, so an AGENTS.md add/add conflict
+      was resolved by merging main into the branch (`23c592a`), and the existing
+      open PR #2 was retitled/rebodied rather than recreated (one open PR per
+      branch pair). Evidence: `docs/daily-duel-216-ship-receipt.md`.
+- [x] **LAUNCH · Approval 3 protected Preview — PASS 2026-09-03:** a clean
+      `git clone` of `main@14a546e` deployed to protected Preview
+      `dpl_FTnTRXPKr4V1Hyz8Fu68AfPymr75` (no `--prod`, no alias); SSO protection
+      held on both the shell and hashed assets, and the served bytes proved
+      byte-identical to a `.vercelignore`-filtered rebuild. The gate went red
+      once on the injected Vercel Toolbar → Buri approved a one-line harness
+      opt-out (`x-vercel-skip-toolbar`, `0dd6c8d`) plus an `npm audit` lockfile
+      bump (`6b758b0`) → PR #9 → `2be26f4`, CI green. The four-mode Preview
+      matrix then passed with zero faults (Opus sub-agent driver). Two side
+      findings recorded: the team plan is **Hobby**, so custom analytics events
+      do not record, and the Vercel project has **no git integration** — pushes
+      never deploy. Evidence:
+      `docs/daily-duel-216-preview-verification-receipt.md`.
+- [x] **LAUNCH · pre-launch review + polish batches — MERGED 2026-09-03:** a
+      five-agent review (`docs/prelaunch-review-2026-09-03.md`, decisions D1–D11,
+      risks R1–R7) produced three polish batches, each its own PR from an
+      isolated worktree: **#10 Q-safety** (`bd60af9` — `ErrorBoundary`, one-shot
+      `vite:preloadError` reload, CI `verify:analytics` + `verify:progress`,
+      menu gzip budget 100 → 104 KiB), **#11 Q-ops** (`03dfab3` — runbook §2
+      rewrite, `scripts/prod-smoke.mjs`, `prod-smoke.yml` + `prod-canary.yml`
+      with cron commented, immutable `/assets` cache, `security.txt`; `bf2453c`
+      = 36 evidence files, 1.1 MB), and **#12 Q-copy** (`d27b682` — c1–c12
+      copy/a11y, c6 dropped as stale) → combined `main@b08d8db`, CI 33826836354
+      green on all six jobs; PR #13 appended the receipt → `9a5fdbb`. No rule,
+      scoring, seed, pool, or dealer change; `sim/` and `src/DuelGame.tsx`
+      untouched. Buri's rulings from the review: **D1** stay on Hobby · **D5**
+      budget 104 KiB · **D6** `DAILY_EPOCH` stays `2026-07-04` (ruled 2026-09-04)
+      · **D8** accept the franchise groups · **D10** snooze Dependabot.
+- [x] **LAUNCH · Approval 4 production deploy + watchers — LIVE 2026-09-05:**
+      a clean-clone Preview of `9a5fdbb` (`dpl_3XYcXVGb3gpnZCmygW1yo7HtqMMb`)
+      passed its gates, then `deploy --prod` at 2026-09-05T21:25:10Z produced
+      `dpl_HWeNAMnK2eLernz47PCG9RAmgCu6`, aliased `matchcutdaily.com`. Provenance
+      and bytes are proven, not asserted: served bytes sha256-identical to the
+      `.vercelignore`-filtered rebuild, deployment `meta.githubCommitSha =
+      9a5fdbb`, `verify:preview-security` green against production twice, and
+      `smoke:prod` PASS 4/4 on the 2026-09-05 seed **and** at `--seed=2026-09-27`
+      (216 pool, day 86) on production bytes. Rollback was drilled at 7 s back /
+      19 s forward; the rollback **target** stays the previous deployment
+      `dpl_8SighytERqgygRYvbf1eMyLis6SL` (= `c063f26`). PR #14 → `main d22a2553`
+      enabled the crons: `prod-smoke` nightly 04:20 UTC and `prod-canary` every
+      30 min, both opening an issue on failure; manual runs 33994763911 +
+      33994765483 green and the first scheduled runs green 2026-09-06. Observed:
+      GitHub throttles the schedules — the canary actually fires every ~4–5 h.
+      Quiet phase unchanged (`noindex, nofollow`, URL-free shares, no Vercel
+      setting/domain/plan touched). Evidence:
+      `docs/daily-duel-216-production-deploy-receipt.md`.
+- [x] **LAUNCH · campaign plan + status review + handoff docs tracked
+      2026-09-05→09-08:** `docs/launch-campaign-plan.md` ("Tonight's Program",
+      the launch/promo calendar), `docs/launch-status-review-2026-09-06.md`
+      (plain-English state of the whole project, owners and deadlines per item,
+      calendar 09-06 → 10-25), and `HANDOFF/` (the cold-start project handoff,
+      last verified at `d22a255`) were written and are now tracked on this
+      branch. **`HANDOFF/SUMMARY.md` is the newcomer entry point; the status
+      review is the current-state document** — this plan stays the constitution
+      and roadmap.
+- [ ] **LAUNCH · runway to 2026-09-27** — attended lanes A–E on production
+      (real iPhone, real Android, TalkBack have never been run on any build;
+      D3 booking is Buri's) · account MFA + a `main` ruleset · D7
+      `playmatchcut.com` (bare 404 today) · **Approval 5** ~09-19/20, last day
+      09-23 (remove the `noindex` meta `index.html:14` **and** its smoke pin,
+      add the URL to `src/lib/share.ts:7` and flip the `prod-smoke.mjs` URL-free
+      assertion in the same commit, then update both rollback ids and re-drill)
+      · cert auto-renew check (notAfter 2026-10-03) · 72-h freeze 09-24 → 09-27
+      · premiere-day watch Sun **2026-09-27** (first 216 Daily, day 86). Each
+      remains its own Buri approval; deploys are still Buri's button. Owners,
+      deadlines, and blockers: `docs/launch-status-review-2026-09-06.md` §2.
 - [ ] **PRE-LAUNCH POLISH · card-art pilot (§9·P5)** — 18–24 original,
       posterless cards across eras/genres/title lengths; approve the system and
       production pipeline before generating the 482-card pool.
@@ -1300,13 +1382,16 @@ localStorage = meta only. Content merges go through /tmdb-check arbitration.
 Wind-down on long sessions: finish the in-flight wave to its gate,
 commit+push, tick Ledger, update memory, tell Buri to restart fresh.
 
-POST-SEND (since 2026-07-10, live at matchcutdaily.com): build tracks are
-§0's list — P2 Stage B strikes → LOCK docket (§7·4b), fix backlog (§7·7b),
-personas (§7·6), UI-overhaul intake (§7·8). Pushes NEVER auto-deploy
-(npx vercel deploy --prod, Buri's button). The window deploy-FREEZE policy
-(§2.11) applies until interviews close (~2026-07-24): fixes build+commit+
-push freely, deploys batch to window close. Circle feedback lands in
-docs/feedback-log.md as it arrives.
+LAUNCH RUNWAY (since 2026-09-05): production serves main@9a5fdbb
+(dpl_HWeNAMnK2eLernz47PCG9RAmgCu6, aliased matchcutdaily.com); the rollback
+target is the previous dpl_8Sighyt…; the prod-smoke + prod-canary crons are
+live. noindex and URL-free shares HOLD until Approval 5 (~09-19/20 — its own
+commit, its own Preview gate, its own deploy); freeze 09-24→09-27; first 216
+Daily 09-27. Deploys are ALWAYS Buri's and pushes never deploy (no git
+integration): npx --yes vercel@59.11.1 from a clean clone, `whoami` first.
+Read docs/launch-status-review-2026-09-06.md for the current table of what's
+open and who owns it, and HANDOFF/ to orient. Interviews at D+14
+(2026-10-11) pick the front door. Sub-agents run on Opus.
 ```
 
 ## 9. Pre-launch polish and scale plan (2026-08-07)
@@ -1609,3 +1694,29 @@ after the pilot is approved, but further movie additions should not.
   `main` (priority directive 2026-08-31), then Preview / deploy / indexing as
   separate gates. First 216 Daily stays pinned to 2026-09-27 — 27-day runway
   at writing.
+- v6 (2026-09-08): the plan of record catches up — **Approvals 1–4 executed and
+  the game is in production.** 09-01 ship pass: release commit `bdaa3f5`
+  (98 paths, 24 force-added audit files) → merge `14a546e` via PR #2, CI green
+  on both SHAs. 09-01→09-03 Approval 3: protected Preview
+  `dpl_FTnTRXPKr4V1Hyz8Fu68AfPymr75`, red once on the Vercel Toolbar → harness
+  opt-out `0dd6c8d` + audit bump `6b758b0` (PR #9 → `2be26f4`) → four-mode
+  matrix PASS; it also established that the team plan is **Hobby (custom
+  analytics events do not record)** and that the project has no git integration.
+  09-03 five-agent review (D1–D11 / R1–R7) → three polish batches, PRs #10
+  Q-safety / #11 Q-ops / #12 Q-copy → `b08d8db`, receipt PR #13 → `9a5fdbb`.
+  09-04/05 Approval 4: `deploy --prod` → `dpl_HWeNAMnK2eLernz47PCG9RAmgCu6`
+  aliased matchcutdaily.com, bytes + provenance proven, the 09-27 cutover deal
+  smoked on production bytes, rollback drilled 7 s / 19 s (target stays the
+  previous `dpl_8Sighyt…`); PR #14 → `d22a2553` turned the prod-smoke and
+  prod-canary crons on (GitHub throttles them to ~4–5 h). §0 gains the dated
+  launch-runway line · §1's DuelGame count refreshed to 2,445 · §6 gains five
+  ticked LAUNCH rows plus the open runway row · §8's stale POST-SEND paragraph
+  is replaced by LAUNCH RUNWAY. `docs/launch-campaign-plan.md`,
+  `docs/launch-status-review-2026-09-06.md`, and `HANDOFF/` are now tracked:
+  **`HANDOFF/SUMMARY.md` is the newcomer entry point and the status review is
+  the current-state document**, while this file stays the constitution and
+  roadmap. Still open before 09-27, each its own Buri approval: attended lanes
+  A–E · MFA + `main` ruleset · D7 `playmatchcut.com` · **Approval 5** (noindex
+  removal + URL-in-share, ~09-19/20) · cert check · the 09-24 freeze. §9's P5
+  card-art, P6 tracking (built, inert on Hobby), and P7 leaderboard remain
+  post-launch; P8 was mostly executed as Approvals 1–4.

@@ -1,6 +1,6 @@
 # 02 — Architecture
 
-**Last verified:** 2026-09-07 at d22a255 (manifest, entry points, tree, and gate
+**Last verified:** 2026-09-08 on `codex/handoff-and-stale-docs` (from d22a255) (manifest, entry points, tree, and gate
 commands read or run directly; anything not checked is marked UNVERIFIED)
 
 The repo already has an accurate architecture narrative in `README.md`

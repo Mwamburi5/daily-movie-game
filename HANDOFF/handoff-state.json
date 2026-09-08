@@ -7,10 +7,18 @@
       "mode": "create",
       "sessions_mined": 35,
       "docs_indexed": 167
+    },
+    {
+      "date": "2026-09-08",
+      "sha": "codex/handoff-and-stale-docs",
+      "mode": "update",
+      "sessions_mined": 35,
+      "docs_indexed": 168,
+      "note": "docs-only branch: tracked local-only docs, stale-docs pass, master-plan v6, handoff refreshed"
     }
   ],
   "last_sha": "d22a255",
-  "last_date": "2026-09-07",
+  "last_date": "2026-09-08",
   "plan_of_record": "docs/master-plan.md",
   "current_state_doc": "docs/launch-status-review-2026-09-06.md",
   "transcripts_dir": "/Users/mwamburi/.claude/projects/-Users-mwamburi-Projects-Daily-Movie-Game",
@@ -58,7 +66,7 @@
     "10-file-index.md: docs/card-redesign-proposal.html provenance/relevance"
   ],
   "open_questions": [
-    "Commit the six untracked docs + HANDOFF/?",
+    "Merge the docs-only PR from codex/handoff-and-stale-docs?",
     "D3 attended lanes: who, hardware, dates",
     "D4 practice rows stay for launch?",
     "D9 Approval 5 date; URL on practice shares?",
@@ -66,7 +74,7 @@
     "Vercel plan: stay Hobby through 09-27?",
     "TMDB non-commercial position at launch",
     "Promo: brand-sheet red pen, amber pick, platforms, Product Hunt",
-    "master-plan v6 now or after launch?",
+    "Refresh docs/launch-status-review-2026-09-06.md in place when its dated table expires, or write a new dated review?",
     "D7 playmatchcut.com + MFA/rulesets: self-serve or walkthrough session?"
   ]
 }

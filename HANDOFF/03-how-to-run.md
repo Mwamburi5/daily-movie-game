@@ -1,6 +1,6 @@
 # 03 — How to run
 
-**Last verified:** 2026-09-07 at d22a255 (every command below was run on this
+**Last verified:** 2026-09-08 on `codex/handoff-and-stale-docs` (from d22a255) (every command below was run on this
 machine today unless marked UNVERIFIED)
 
 ## Prerequisites

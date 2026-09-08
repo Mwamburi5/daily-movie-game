@@ -1,8 +1,9 @@
 # Match Cut handoff
 
-**Last verified:** 2026-09-07 at d22a255 on main · 105 commits (2026-07-03 →
-2026-09-05) · repo: https://github.com/Mwamburi5/daily-movie-game · six
-untracked local-only files present (listed in [09-open-work.md](09-open-work.md))
+**Last verified:** 2026-09-08 on branch `codex/handoff-and-stale-docs` (from main
+d22a255) · 105 commits on main (2026-07-03 → 2026-09-05) · repo:
+https://github.com/Mwamburi5/daily-movie-game · the formerly untracked docs,
+`promo/`, and this folder are tracked on that branch
 
 Start with [SUMMARY.md](SUMMARY.md). Then read in this order:
 
@@ -23,7 +24,7 @@ Start with [SUMMARY.md](SUMMARY.md). Then read in this order:
 | Product | Match Cut, four daily movie games at https://matchcutdaily.com (quiet phase: `noindex`, URL-free shares) |
 | Last commit | `d22a255` 2026-09-05 "Merge pull request #14" (crons live) |
 | Production | `main@9a5fdbb` = `dpl_HWeNAMnK2eLernz47PCG9RAmgCu6`, live since 2026-09-05T21:25Z; rollback target `dpl_8SighytERqgygRYvbf1eMyLis6SL` |
-| Plan of record | `docs/master-plan.md` (v5, stale past 2026-08-31); current state in `docs/launch-status-review-2026-09-06.md` (untracked) |
+| Plan of record | `docs/master-plan.md` (v6, 2026-09-08: constitution + roadmap, Ledger current through Approval 4); current state in `docs/launch-status-review-2026-09-06.md` |
 | Rules contract | `sim/RULESET.md`; player guide `RULEBOOK.md` |
 | Gates (run 2026-09-07, Node 24.14.0) | build clean · verify **64/64** · verify:solo **8/8** · verify:chronology **42/42** · verify:connections **14/14** · verify:analytics PASS · verify:progress PASS · check:bundle PASS · check:security PASS (370/27) |
 | Browser smoke | 39/39 per the polish receipt; not re-run locally (CI green on every merge) |
@@ -61,3 +62,4 @@ another machine will not have those files.
 ## Handoff changelog
 
 - 2026-09-07 — initial handoff (d22a255)
+- 2026-09-08 — docs-only branch `codex/handoff-and-stale-docs`: handoff + launch-window docs + promo tracked; stale-docs pass (10 files date-bannered/ticked); master-plan v6; handoff refreshed to match

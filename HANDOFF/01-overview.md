@@ -1,6 +1,6 @@
 # 01 — Overview
 
-**Last verified:** 2026-09-07 at d22a255
+**Last verified:** 2026-09-08 on `codex/handoff-and-stale-docs` (from d22a255)
 
 ## What it is
 

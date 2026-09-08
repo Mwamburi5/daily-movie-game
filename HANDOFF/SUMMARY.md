@@ -1,6 +1,6 @@
 # Match Cut — handoff summary
 
-**Last verified:** 2026-09-07 at d22a255 · **Handoff folder:** [HANDOFF/README.md](README.md)
+**Last verified:** 2026-09-08 on `codex/handoff-and-stale-docs` (from d22a255) · **Handoff folder:** [HANDOFF/README.md](README.md)
 
 ## What it is
 
@@ -24,7 +24,7 @@ played since 2026-07-10 (27 feedback entries logged). What still decides
 whether 09-27 is a good day: real-device/screen-reader lanes that have never
 been run, Approval 5 landing on time, and an unmeasured "hidden credit"
 difficulty in launch week. Plan of record: [`docs/master-plan.md`](../docs/master-plan.md)
-(constitution + roadmap, stale past 08-31); current state:
+(constitution + roadmap, v6 amended 2026-09-08 through Approval 4); current state:
 [`docs/launch-status-review-2026-09-06.md`](../docs/launch-status-review-2026-09-06.md).
 
 ## Run it in five minutes
@@ -77,12 +77,11 @@ difficulty in launch week. Plan of record: [`docs/master-plan.md`](../docs/maste
 2. Five-minute account chores before Approval 5: MFA on Vercel/GitHub/Name.com,
    a `main` ruleset, the analytics dashboard look, fix `playmatchcut.com`.
 3. Prepare Approval 5 as one commit with its own Preview gate and deploy
-   (09-19/20), append a premiere watch card to the runbook, then write
-   master-plan v6.
+   (09-19/20) and append a premiere watch card to the runbook.
 
 ## Ask Buri about
 
-Whether to commit the six untracked docs and this folder · D3 lanes (who,
+Merge the docs-only PR that tracks this folder · D3 lanes (who,
 hardware, dates) · D4 practice rows stay? · D9 Approval 5 date and URL on
 practice shares · D11 small-phone pass or skip · Vercel plan · TMDB
 non-commercial position · promo red-pen, amber pick, platforms, Product Hunt ·

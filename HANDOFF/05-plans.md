@@ -1,10 +1,10 @@
 # 05 — Plans
 
-**Last verified:** 2026-09-07 at d22a255
+**Last verified:** 2026-09-08 on `codex/handoff-and-stale-docs` (from d22a255)
 
 ## Plan of record
 
-**`docs/master-plan.md`** (v1 2026-07-06, amended to v5 2026-08-31). The
+**`docs/master-plan.md`** (v1 2026-07-06, amended to v6 2026-09-08). The
 sentence that proves it is its first line: *"This is the only live plan. It
 supersedes `PLAN.md`, `docs/orchestration-plan.md`, and `docs/ui-tasks.md`."*
 CLAUDE.md and AGENTS.md both point at it, and every session boot prompt since
@@ -19,13 +19,14 @@ amendment log.
 
 How far along: W0–W6 closed; §9 P0–P3 done; P4 personas moot; **P5 card-art
 pilot, P6 tracking, P7 leaderboard remain post-launch**; P8 launch gate mostly
-executed as Approvals 1–4. **The plan is stale past 2026-08-31**: it does not
-record Approvals 1–4, the three polish PRs, or the crons. The 2026-09-06 status
-review asked for a "v6" amendment; nobody has written it. Until then, the most
-current state lives in three places, in this order:
+executed as Approvals 1–4. **v6 (2026-09-08)** brought the Ledger current
+through Approval 4 and the crons, replaced the §8 post-SEND paragraph with the
+launch-runway one, and named the two companion documents. The division of
+labor, in this order:
 
-1. `docs/launch-status-review-2026-09-06.md` (untracked) — plain-English status
-   with owners, deadlines, and a calendar to 10-25.
+1. `docs/launch-status-review-2026-09-06.md` — plain-English status with
+   owners, deadlines, and a calendar to 10-25 (its dated table expires within
+   days; refresh or banner it when the calendar runs out).
 2. `docs/daily-duel-216-production-deploy-receipt.md` — what is in production.
 3. Project memory `marquee-next-session-queue` — the next-session pointer.
 
@@ -59,9 +60,9 @@ current state lives in three places, in this order:
 
 | Path | Status | Superseded by | One line |
 |---|---|---|---|
-| `docs/master-plan.md` | **live** | — | The only live plan; stale past 08-31, needs v6 |
+| `docs/master-plan.md` | **live** | — | The only live plan; v6 2026-09-08 current through Approval 4 |
 | `docs/launch-status-review-2026-09-06.md` | live (status, not a plan) | — | Current state, owners, deadlines, calendar |
-| `docs/launch-campaign-plan.md` | live | — | "Tonight's Program" go-to-market brief, assumptions flagged |
+| `docs/launch-campaign-plan.md` | live | — | "Tonight's Program" go-to-market brief, assumptions flagged (tracked since 2026-09-08) |
 | `docs/daily-duel-216-deploy-and-indexing-runbook.md` | live | — | §2 executed; §3 holds the Approval 5 diffs |
 | `docs/production-release-checklist.md` | live | — | Quiet release done; public switches unticked |
 | `docs/security-launch-checklist.md` | live | — | Account boxes (MFA, rulesets, registrar) unticked |
@@ -77,7 +78,7 @@ current state lives in three places, in this order:
 | `docs/production-polish-requirements.md` | done | Phases 5–6 absorbed by the launch gates | Polish contract |
 | `docs/pool-expansion-wave3-slate.md` | done | — | Wave 3, paused after |
 | `docs/tmdb-plan.md` | reference | — | Content-pipeline rules |
-| `BACKLOG.md` | live but stale | — | Items 1–3 shipped; 4–5 remain |
+| `BACKLOG.md` | live | — | Items 1–3 struck as shipped 2026-09-08; 4–5 remain |
 
 ## How planning works here
 

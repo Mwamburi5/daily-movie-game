@@ -1,6 +1,6 @@
 # 04 — Decisions
 
-**Last verified:** 2026-09-07 at d22a255
+**Last verified:** 2026-09-08 on `codex/handoff-and-stale-docs` (from d22a255)
 
 A decision is logged here when a newcomer would otherwise re-litigate it: a
 technology choice, a rule that was locked, a direction rejected, a scope cut, or

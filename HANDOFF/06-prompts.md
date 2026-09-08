@@ -1,8 +1,8 @@
 # 06 — Prompt library
 
-**Last verified:** 2026-09-07 at d22a255 · 35 sessions mined from
+**Last verified:** 2026-09-08 on `codex/handoff-and-stale-docs` (from d22a255) · 35 sessions mined from
 `~/.claude/projects/-Users-mwamburi-Projects-Daily-Movie-Game` (2026-06-28 →
-2026-09-08); 33 long prompts; 24 prompt files in the repo.
+2026-09-08); 33 long prompts; 25 prompt files in the repo.
 
 ## How prompts are written here
 
@@ -88,6 +88,7 @@ condition is the completion gate text; and the **wind-down clause**.
 | 2026-09-03 | Pre-launch polish kickoff (three batches) | Q-copy / Q-safety / Q-ops | PRs #10–#13 | `docs/prelaunch-polish-kickoff-prompt.md` |
 | 2026-09-04 | Production deploy kickoff (Approval 4) | One production deploy of 9a5fdbb + gates + drill + crons PR | receipt | `docs/daily-duel-216-production-deploy-kickoff-prompt.md` (untracked) |
 | 2026-09-06 | Launch status review kickoff | Read-only plain-English review, nine sections | `docs/launch-status-review-2026-09-06.md` | `docs/launch-status-review-kickoff-prompt.md` (untracked) |
+| 2026-09-08 | Process retrospective kickoff | Read-only analysis of how the project was built (throughput, gates, docs, prompts, alternatives) | **not run** | `docs/process-retrospective-kickoff-prompt.md` |
 
 ## Reusable templates
 

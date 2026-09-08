@@ -1,6 +1,6 @@
 # 10 — File index
 
-**Last verified:** 2026-09-07 at d22a255
+**Last verified:** 2026-09-08 on `codex/handoff-and-stale-docs` (from d22a255)
 
 Every document in the repo, classified and given one status. Generated from the
 handoff inventory script and then corrected by reading the files. Skipped:
@@ -17,9 +17,8 @@ Counts (text documents): plans 11 · prompts 24 · specs 9 · design 10 · decis
 · reports 15 · audits 65 · runbooks 4 · agent config 4 · readmes 2 · other 20.
 Binary assets: 443 (listed per folder at the end).
 
-Six files are **untracked** in git as of d22a255 (marked ⚠ untracked below). They
-are deliberate local-only kickoff/receipt/promo files, but they will not survive a
-fresh clone. See [09-open-work.md](09-open-work.md).
+Files marked ⚠ untracked were local-only as of d22a255; they are tracked on
+`codex/handoff-and-stale-docs` since 2026-09-08 (see [09-open-work.md](09-open-work.md)).
 
 ## Root and agent config
 
@@ -29,7 +28,7 @@ fresh clone. See [09-open-work.md](09-open-work.md).
 | `CLAUDE.md` | live | 2026-07-10 | 49 | Claude's working rules: think-before-coding, surgical changes, project guardrails (live plan pointer, sim contract + gate counts, locked deps, persistence rule, RULEBOOK sync) |
 | `AGENTS.md` | live | 2026-08-21 | 26 | Pointer file for non-Claude agents (Codex): read CLAUDE.md; feature-branch policy ("never push directly to main") |
 | `RULEBOOK.md` | live | 2026-09-03 | 449 | Plain-English player rulebook for all four modes, "What's new" log. Header date says 08-27; last edited 09-03 |
-| `BACKLOG.md` | live (stale) | 2026-08-21 | 28 | Five small items. Items 1–3 have shipped (How-to-Play, personal bests, share button) but are not struck |
+| `BACKLOG.md` | live | 2026-09-08 (branch) | 35 | Five small items; 1–3 struck as shipped 2026-09-08 |
 | `PLAN.md` | superseded | 2026-07-06 | 173 | Launch-ramp build plan (WS1–WS5, 2026-07-04). Bannered; replaced by `docs/master-plan.md` 2026-07-06 |
 | `design-qa.md` | done | 2026-08-09 | 42 | Production-polish Phase 4 design QA verdict (gitignored, local) |
 | `.agents/skills/tmdb-check/SKILL.md` | live | 2026-08-07 | 104 | The `/tmdb-check` skill (Codex copy) |
@@ -46,7 +45,7 @@ fresh clone. See [09-open-work.md](09-open-work.md).
 
 | Path | Status | Last commit | Lines | What it is |
 |---|---|---|---|---|
-| `docs/master-plan.md` | **live — plan of record** | 2026-09-01 | 1612 | "This is the only live plan." §2 constitution · §6 Ledger (resume sheet) · §7 user-input queue · §8 boot prompt · §9 polish/scale plan · §10 amendment log (v1–v5). Last amendment 2026-08-31: it does not yet record Approvals 1–4 or the crons |
+| `docs/master-plan.md` | **live — plan of record** | 2026-09-08 (branch) | ~1720 | "This is the only live plan." §2 constitution · §6 Ledger (resume sheet) · §7 user-input queue · §8 boot prompt · §9 polish/scale plan · §10 amendment log (v1–v6). v6 2026-09-08 records Approvals 1–4 and the crons |
 | `docs/orchestration-plan.md` | superseded | 2026-07-06 | 222 | Orchestration Plan v2 (2026-07-05). Bannered; replaced by master-plan |
 | `docs/ui-tasks.md` | superseded | 2026-07-06 | 148 | UI wave/task checklist snapshot (2026-07-05). Bannered; replaced by master-plan |
 | `docs/chronology-tasks.md` | done | 2026-07-03 | 245 | Chronology 6-phase build checklist; all phases complete 2026-06-30 |
@@ -121,6 +120,7 @@ fresh clone. See [09-open-work.md](09-open-work.md).
 | `docs/prelaunch-polish-kickoff-prompt.md` | done (with receipt) | 2026-09-03 | 215 | Three polish batches Q-copy/Q-safety/Q-ops; receipt appended (PRs #10–#12) |
 | `docs/daily-duel-216-production-deploy-kickoff-prompt.md` ⚠ untracked | done | 2026-09-04 | 216 | Approval 4 production deploy kickoff (executed 2026-09-04/05) |
 | `docs/launch-status-review-kickoff-prompt.md` ⚠ untracked | done | 2026-09-06 | 147 | Read-only status review kickoff → `docs/launch-status-review-2026-09-06.md` |
+| `docs/process-retrospective-kickoff-prompt.md` ⚠ untracked | **live — not yet run** | 2026-09-08 | 155 | Build-process retrospective (sections A–G, ten-section report); evidence staged in `audit/process-retro-2026-09-08/` (gitignored) |
 | `docs/promo-execution-prompts.md` ⚠ untracked | live | 2026-09-01 | 265 | Four promo phase prompts with shared §0 guardrails. Phase 0-docs done; 0-captures is next |
 | `promo/canva-mockups-kickoff-prompt.md` ⚠ untracked | done | 2026-09-01 | 78 | Canva mockup sprint kickoff (executed 2026-09-01) |
 

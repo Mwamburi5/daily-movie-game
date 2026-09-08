@@ -1,6 +1,6 @@
 # 08 — AI workflow
 
-**Last verified:** 2026-09-07 at d22a255
+**Last verified:** 2026-09-08 on `codex/handoff-and-stale-docs` (from d22a255)
 
 This project is built almost entirely through AI coding sessions: Claude Code
 (desktop app, Fable/Opus/Sonnet tiers) as orchestrator and, since August, Codex

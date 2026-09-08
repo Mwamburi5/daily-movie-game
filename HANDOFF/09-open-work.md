@@ -1,6 +1,6 @@
 # 09 — Open work
 
-**Last verified:** 2026-09-07 at d22a255. Primary source:
+**Last verified:** 2026-09-08 on `codex/handoff-and-stale-docs` (from d22a255). Primary source:
 `docs/launch-status-review-2026-09-06.md` (yesterday's read-only review),
 cross-checked against the receipts, the prelaunch review, and memory.
 
@@ -81,20 +81,21 @@ Post-launch tracks from `docs/master-plan.md` §9 and the campaign plan:
 
 Found during this handoff (most also listed in the status review §6b):
 
-- **Plan of record vs reality.** `docs/master-plan.md` is the only live plan by
-  rule but stops at v5 (2026-08-31); it does not know about Approvals 1–4, the
-  polish PRs, or the crons. Resolution used here: master-plan = constitution and
-  roadmap; `docs/launch-status-review-2026-09-06.md` = current state. A "v6"
-  amendment is owed (review Q-o6).
+- **Plan of record vs reality — resolved 2026-09-08.** master-plan v6 brought the
+  Ledger current through Approval 4; the split stands: master-plan = constitution
+  and roadmap, `docs/launch-status-review-2026-09-06.md` = current state,
+  `HANDOFF/` = newcomer entry. Three files can now drift; the status review's
+  dated table is the one that expires first.
 - `AGENTS.md` says "never push directly to main"; the July protocol pushed
   waves straight to main. Since August all work is PR-based, so treat AGENTS.md
   as current.
-- `docs/daily-duel-216-launch-readiness-checkpoint.md` §14/§15, the runbook's
-  line 12, the release checklist's source-control boxes, the deploy receipt's
-  "appended below" line, `docs/daily-duel-216-attended-acceptance.md` header,
-  `docs/goal-5-public-launch-acceptance.md` rollback id, `docs/feedback-log.md`
-  header dates, `RULEBOOK.md` header date — all read as older than they are.
-  None changes a decision.
+- The stale records (launch-readiness checkpoint §14/§15, runbook line 12,
+  release-checklist source-control boxes, deploy receipt's "appended below",
+  attended-acceptance header, Goal 5 rollback id, feedback-log dates, RULEBOOK
+  header date, BACKLOG 1–3, README status) were date-bannered or corrected in
+  the 2026-09-08 stale-docs pass on this branch. Left as dated history on
+  purpose: the prelaunch review §0 and the deploy kickoff line 27 ("prod is
+  c063f26"), the Goal 5 body, the checkpoint rows themselves.
 - Memory says lanes "have NEVER been run on any build"; the Goal 5 doc shows
   desktop Safari and VoiceOver were run once on the 08-19 candidate. The
   acceptance doc refuses to carry those forward, so both statements are true
@@ -107,18 +108,17 @@ Found during this handoff (most also listed in the status review §6b):
   duplicates the polish design-QA verdict.
 - The `.agents` and `.claude` copies of the tmdb-check skill differ in commit
   date (08-07 vs 07-06) but are byte-identical (diffed 2026-09-07).
-- **Six local-only files are untracked** and would be lost in a fresh clone:
-  `docs/daily-duel-216-production-deploy-kickoff-prompt.md`,
+- The formerly local-only files (`docs/daily-duel-216-production-deploy-kickoff-prompt.md`,
   `docs/launch-campaign-plan.md`, `docs/launch-status-review-2026-09-06.md`,
   `docs/launch-status-review-kickoff-prompt.md`, `docs/promo-execution-prompts.md`,
-  `promo/`. Buri has deliberately kept the promo family and kickoffs untracked
-  ("LOCAL-ONLY by design"); a docs-only commit was offered and not taken.
-  This `HANDOFF/` folder is also untracked until Buri commits it.
+  `docs/process-retrospective-kickoff-prompt.md`, `promo/`, and `HANDOFF/`) are
+  tracked on `codex/handoff-and-stale-docs` (2026-09-08). Until that PR merges,
+  a clone of `main` still lacks them.
 
 ## Questions for the owner
 
-1. Do you want the six untracked docs (and this `HANDOFF/` folder) committed,
-   so a fresh clone carries the current state?
+1. Merge the docs-only PR from `codex/handoff-and-stale-docs` (handoff +
+   launch-window docs + promo tracked, stale-docs pass, master-plan v6)?
 2. D3: who runs the five attended lanes, on which hardware, on which days?
 3. D4: do the four menu practice rows stay for launch? (Never formally ruled;
    it also gates six of nine promo shots.)
@@ -129,8 +129,8 @@ Found during this handoff (most also listed in the status review §6b):
    so attribution alone satisfies the free tier? One line in the release checklist.
 8. Promo: red-pen the brand sheet (Q1–Q5), sign the shot list, pick the amber
    (`#CF952A` vs `#DDA321`), choose two social platforms, Product Hunt in or out.
-9. Should `docs/master-plan.md` get its v6 amendment now, or is the status review
-   the plan's successor for the launch window?
+9. When the status review's dated table expires (its first deadlines are 09-08
+   and 09-13), do you want it refreshed in place, or a new dated review?
 10. Will you fix `playmatchcut.com` (D7) and attest MFA/rulesets yourself, or
     do you want a checklist session that walks you through the dashboards?
 
@@ -146,4 +146,4 @@ Found during this handoff (most also listed in the status review §6b):
    paired with the one-line HowToPlay copy fix and the `npm audit` retry, and
    append a premiere watch card to the runbook (rollback commands with the
    `whoami` step, first-hour checks, abort criteria, who is watching 09-27 and
-   09-29). Then write master-plan v6 so the plan of record catches up.
+   09-29).
