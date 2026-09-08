@@ -300,6 +300,15 @@ Vercel, unchanged from the release checklist.
 
 ## 14. Publication states
 
+> **Updated 2026-09-08.** The rows below are the 2026-08-31 snapshot and are
+> kept as the dated record of that boundary. Approvals 1–4 have since executed:
+> the release commit merged to `main` (receipt
+> `docs/daily-duel-216-ship-receipt.md`), the protected Preview gate passed
+> (`docs/daily-duel-216-preview-verification-receipt.md`), and production has
+> served `main@9a5fdbb` since 2026-09-05
+> (`docs/daily-duel-216-production-deploy-receipt.md`). For current state read
+> `docs/launch-status-review-2026-09-06.md`.
+
 | gate | state |
 |---|---|
 | stage / commit of this candidate | **NOT RUN** |
@@ -313,6 +322,15 @@ Vercel, unchanged from the release checklist.
 | indexing / `noindex` removal / URL-in-share / front door | **NOT AUTHORIZED** |
 
 ## 15. Next approval required
+
+> **Updated 2026-09-08.** This section is the 2026-08-31 snapshot. Approvals
+> 1–4 have since executed — see the three receipts
+> (`docs/daily-duel-216-ship-receipt.md`,
+> `docs/daily-duel-216-preview-verification-receipt.md`,
+> `docs/daily-duel-216-production-deploy-receipt.md`). The next approval is now
+> **Approval 5** (indexing/launch switches), still unauthorized; the five
+> attended lanes remain open and now target production. Current state:
+> `docs/launch-status-review-2026-09-06.md`.
 
 **Approval 1 of §12: stage the classified A+B+C paths, create the single
 release commit, and push for exact-SHA CI** — asked as its own question, with

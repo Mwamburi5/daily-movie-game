@@ -2,6 +2,13 @@
 
 Candidate: `codex/daily-mode-polish` at `ce398376d0c03be5356d64000557817c2f0150c3`
 plus the launch-readiness dirty worktree (Goal 0–5 state of 2026-08-31).
+
+**Updated 2026-09-05:** that candidate has shipped, so the candidate for lanes
+A–E is now **production `main@9a5fdbb`**
+(`dpl_HWeNAMnK2eLernz47PCG9RAmgCu6`) at `https://matchcutdaily.com`. The
+surface list and continuation scripts below apply unchanged; lanes 4–8 remain
+**ATTENDED NOT RUN**.
+
 Evidence rule: an attended lane closes only with the named hardware, a present
 human, and this exact candidate. Automation, simulators, old receipts, or a
 different SHA never close an attended lane. The prior attended receipts in

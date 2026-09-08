@@ -52,8 +52,11 @@ npm run dev
 - `docs/` — supporting design/reference docs
 - `RULEBOOK.md` — living plain-English rules guide for players
 - `docs/master-plan.md` — the live build plan (PLAN.md is bannered history)
+- `HANDOFF/` — project handoff for newcomers (start at `HANDOFF/SUMMARY.md`)
 
 ## Status
 
-Live and actively developed. All four modes are shipped with daily deals;
-Chronology's film pool is still growing ahead of a wider content push.
+Live at [matchcutdaily.com](https://matchcutdaily.com) in a quiet phase
+(`noindex`, URL-free shares), with all four modes shipped and dealing daily.
+The first expanded 216-film Daily Puzzle / Duel deal lands 2026-09-27; further
+movie-pool growth is paused behind the launch gate.

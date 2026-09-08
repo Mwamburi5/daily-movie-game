@@ -172,6 +172,11 @@ this receipt · evidence force-added (≤ 6 PNGs). No source, dependency, or
 Vercel change. After merge: `gh workflow run prod-smoke.yml` once by hand
 (result appended below), then memory.
 
+**Appended 2026-09-08 — cron results.** Manual `workflow_dispatch` after the
+PR #14 merge, 2026-09-05T22:04Z: `prod-smoke` run `33994763911` **GREEN** ·
+`prod-canary` run `33994765483` **GREEN**. First scheduled runs 2026-09-06 both
+green: `34022673652` (smoke, 04:20 UTC) · `34034882862` (canary).
+
 ## Still NOT approved / NOT run
 
 `noindex` removal · URL-in-share · robots/sitemap · front door (Approval 5,

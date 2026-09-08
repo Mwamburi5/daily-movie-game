@@ -9,8 +9,10 @@ Revised 2026-09-03 (pre-launch review batch Q-ops, from `review-D-ops.md` §2)
 and **committed** from that revision on: §1's plan verdict is now decided
 rather than open, and §2 was rewritten because executing the original six
 steps literally would have deployed the wrong bytes and had no way to prove
-which bytes were served. Production still serves `c063f26`; nothing in this
-document has been executed.
+which bytes were served. **Updated 2026-09-08:** §2 was executed 2026-09-04/05
+for `main@9a5fdbb` (receipt
+`docs/daily-duel-216-production-deploy-receipt.md`); §2.1 and §2.5 carry the
+current deployment ids and rollback target; §3 (Approval 5) remains held.
 
 ## 1. Provider property-cap verdict (checkpoint §6 — docs half, DECIDED)
 
