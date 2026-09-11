@@ -9,6 +9,12 @@ A–E is now **production `main@9a5fdbb`**
 surface list and continuation scripts below apply unchanged; lanes 4–8 remain
 **ATTENDED NOT RUN**.
 
+**Updated 2026-09-10:** the lane pack now exists — one run-sheet per lane under
+`docs/attended-lanes/` (transcribed from the list and scripts below), the booking
+grid and outreach drafts in `docs/attended-lanes/schedule.md`, and the gitignored
+evidence scaffold at `audit/daily-duel-216-launch-readiness-2026-08-27/attended/`.
+No sitting has happened; rows 4–8 are still **ATTENDED NOT RUN**.
+
 Evidence rule: an attended lane closes only with the named hardware, a present
 human, and this exact candidate. Automation, simulators, old receipts, or a
 different SHA never close an attended lane. The prior attended receipts in
@@ -22,11 +28,11 @@ candidate and are explicitly **not** carried forward here.
 | 1 | Chromium keyboard/focus/Escape/touch/drag/reduced-motion suite | automated | **PASS 10/10** | manifest Goal 5; suite run on Node 24, includes the Goal 1 support/privacy and Goal 3 malformed-progress surfaces |
 | 2 | WebKit smoke, four-mode real action → terminal → share | automated | **PASS 4/4, zero faults** | `output/playwright/launch-readiness/webkit-smoke-receipt.json` (WebKit 26.5 via installed `webkit-2336`) |
 | 3 | 200 percent zoom / text enlargement | automated | **PASS 9/9 captures, zero horizontal overflow** | `output/playwright/launch-readiness/zoom200-*.png` + `zoom200-receipt.json` (720×450 @2× = 200 percent of 1440×900; includes help/support/privacy, sanitized-progress menu, long-title board) |
-| 4 | Attended desktop Safari, all four modes | attended | **ATTENDED NOT RUN** | continuation script A |
-| 5 | Real iPhone Safari | attended | **ATTENDED NOT RUN** | continuation script B |
-| 6 | Real Android Chrome | attended | **ATTENDED NOT RUN** | continuation script C |
-| 7 | VoiceOver end-to-end | attended | **ATTENDED NOT RUN** | continuation script D |
-| 8 | TalkBack end-to-end | attended | **ATTENDED NOT RUN** | continuation script E |
+| 4 | Attended desktop Safari, all four modes | attended | **ATTENDED NOT RUN** | continuation script A · run-sheet `docs/attended-lanes/lane-A.md` |
+| 5 | Real iPhone Safari | attended | **ATTENDED NOT RUN** | continuation script B · run-sheet `docs/attended-lanes/lane-B.md` |
+| 6 | Real Android Chrome | attended | **ATTENDED NOT RUN** | continuation script C · run-sheet `docs/attended-lanes/lane-C.md` |
+| 7 | VoiceOver end-to-end | attended | **ATTENDED NOT RUN** | continuation script D · run-sheet `docs/attended-lanes/lane-D.md` |
+| 8 | TalkBack end-to-end | attended | **ATTENDED NOT RUN** | continuation script E · run-sheet `docs/attended-lanes/lane-E.md` |
 
 No human tester or physical device was present in the 2026-08-31 resume
 session; lanes 4–8 remain honestly open. They are the launch-readiness pass's

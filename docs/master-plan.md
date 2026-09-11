@@ -1100,6 +1100,10 @@ what's ready-to-review per sitting.
       · premiere-day watch Sun **2026-09-27** (first 216 Daily, day 86). Each
       remains its own Buri approval; deploys are still Buri's button. Owners,
       deadlines, and blockers: `docs/launch-status-review-2026-09-06.md` §2.
+      **2026-09-10:** lane pack built (`docs/attended-lanes/` — run-sheets
+      A–E, schedule + outreach drafts, owner checklist); cert renewed to
+      2026-12-05; Approval 5 is a three-file diff (no smoke asserts a
+      URL-free share); rows re-dated in the status review's 09-10 addendum.
 - [ ] **PRE-LAUNCH POLISH · card-art pilot (§9·P5)** — 18–24 original,
       posterless cards across eras/genres/title lengths; approve the system and
       production pipeline before generating the 482-card pool.

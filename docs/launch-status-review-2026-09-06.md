@@ -533,3 +533,111 @@ One line per dated item. Dates are America/New_York unless marked.
 - *(Outside the window, for the record: 11-01 DST ends → cron drift; 2027-01-05
   TMDB re-audit; 2027-07-05 domains expire and Connections bake ends;
   2027-09-01 `security.txt` expires.)*
+
+---
+
+## Addendum 2026-09-10 (Thursday, ~23:00 MDT) — the dated table, re-run
+
+Appended by the soak-week-1 pass (`docs/launch-runway-kickoff-prompt.md` §4,
+steps S0–S4). Same rules as the review: read-only live checks, every claim
+points at its source. The §2 table above is left as written on 09-06; this
+section is what changed since, and what was wrong.
+
+### Live checks re-run (read-only, 2026-09-10 22:00–23:00 MDT)
+
+| check | 09-06 | 09-10 |
+|---|---|---|
+| production | `main@9a5fdbb`, `index-DAtVcX_d.js`, `noindex` | unchanged: 200, `index-DAtVcX_d.js` / `index-CoBkmvh_.css`, `noindex, nofollow` |
+| `origin/main` | `d22a255` | `d22a255`; PR #16 open, both CI runs green, mergeable |
+| prod-smoke / prod-canary | green | green — smoke 09-09 09:01Z and 09-10 09:00Z; canary last 20 runs green, firing every ~2–5 h |
+| TLS certificate | notAfter 2026-10-03 | **renewed 09-06** — notBefore 2026-09-06 22:53Z, notAfter **2026-12-05** |
+| `playmatchcut.com` | 404 | 404 (resolves to Vercel, not attached to the project); `www` the same |
+| rulesets on `main` | none | none; secret scanning, push protection and Dependabot security updates all **disabled**; Actions token read-only |
+| Dependabot | 5 PRs | 6 PRs (#15 `actions/upload-artifact` added 09-07) |
+| `docs/attended-lanes/` | absent | **present** (built this pass) |
+| quick gates | — | build green · verify 64/64 · verify:solo 8/8 · verify:chronology 42/42 · verify:connections 14/14 |
+
+### §2 rows — closed, missed, re-dated, corrected
+
+- **Row 6 cert — CLOSED.** Vercel renewed it automatically on 09-06; expiry
+  is now 2026-12-05. The 09-20 / 09-23 cert checks and the §8 "10-03
+  notAfter" line are dropped.
+- **Row 1 lane pack (due 09-08) — MISSED, then DONE 09-10.** Five run-sheets,
+  the booking grid with outreach drafts, the hardware list, and the gitignored
+  evidence scaffold now exist under `docs/attended-lanes/`; the acceptance
+  doc's rows 4–8 point at the sheets and stay **ATTENDED NOT RUN**.
+  **Sittings (due 09-13) — NOT BOOKED.** Re-dated: Sitting 1 (Mac, lanes A+D)
+  Fri 09-11; Sitting 2 (iPhone, B) and Sitting 3 (Android, C+E) Sat 09-12 /
+  Sun 09-13; backstop Wed 09-16; hard stop Sat 09-19. The runway math is in
+  `docs/attended-lanes/schedule.md` §3: lanes done by 09-13 leave six days
+  of fix margin, by 09-16 three, on 09-19 none.
+- **Row 2 dashboard look (due 09-08) — MISSED**; re-dated **Sun 09-13**, click
+  path in `docs/attended-lanes/owner-checklist.md` chore 3. **Correction:**
+  the app ships only the Web Analytics script (`/_vercel/insights/script.js`,
+  `src/lib/analytics.ts`); there is no Speed Insights script, and Speed
+  Insights is where Vercel reports Web Vitals. So Web Vitals will **not**
+  arrive, and "page views + Web Vitals arriving" in row 2 above, in
+  `HANDOFF/09-open-work.md` row 2, in the deploy receipt §P4.5 and in the
+  runbook §2.4 step 4 over-promises. The release checklist's "Web Vitals
+  arrive in the production dashboard" row cannot close on this build: either
+  strike it for launch or schedule the script (a code + CSP change, own
+  approval) post-launch — Buri's call.
+- **Rows 3, 4, the `main` ruleset, the Dependabot snooze — unchanged**, now
+  one page with exact click paths and the security-checklist rows each one
+  closes: `docs/attended-lanes/owner-checklist.md`. Deadlines hold (D7 by
+  09-20 with the DNS export first; MFA and the ruleset by 09-19; D10 by 09-18).
+- **Row 5 Approval 5 — correction to the held diff.** Neither smoke asserts a
+  URL-free share: `scripts/prod-smoke.mjs` `shareVerdict` (line 649) checks
+  only `/^Match Cut · /`, and `tests/browser/delivery-smoke.spec.ts`
+  `verifyShareAndReturn` (line 544) checks only the prefix. There is no
+  "URL-free assertion in `prod-smoke.mjs`" to flip. The Approval 5 commit is
+  therefore **three files** — `index.html:14`, the `noindex` pin at
+  `tests/browser/delivery-smoke.spec.ts:76`, and `src/lib/share.ts:7` — plus,
+  recommended but not required, a **new** assertion in both smokes that the
+  share text contains `matchcutdaily.com`, so the gate proves the switch
+  instead of ignoring it. Row 5 above, `HANDOFF/09-open-work.md` row 6, the
+  master-plan §6 runway row and the kickoff all inherit the four-file wording;
+  the S3 pass corrects them in its own commit. **D9 is still unruled**, so
+  `codex/approval-5` was **not** created (S3 deferred, per the kickoff).
+- **D11 375×667** — its start-by (~09-12) has effectively passed with nothing
+  started. Recommendation: **skip** for launch; first post-launch train.
+- **D4 practice rows** — still unruled; six of nine promo shots wait on it.
+
+### New today
+
+- `docs/attended-lanes/` (README, `lane-A` … `lane-E`, `schedule.md`,
+  `owner-checklist.md`) and this addendum, committed docs-only on
+  `codex/handoff-and-stale-docs` (PR #16 grows by these commits).
+- `docs/process-retrospective-2026-09-08.md` and
+  `docs/launch-runway-kickoff-prompt.md` tracked on the same branch.
+- Nothing deployed; no alias, DNS or Vercel settings change; no source edit;
+  the six Dependabot PRs untouched; no message sent to anyone.
+
+### Asks for Buri (batched; none block the lanes)
+
+1. Merge PR #16 (docs-only, CI green)?
+2. **D3** — people, hardware, dates for the three sittings (`schedule.md` §1);
+   send the drafts in §4.
+3. **D9** — Approval 5 on Sat 09-19 or Sun 09-20, and do `practice ·` shares
+   carry the URL? (Also: add the "share contains the URL" assertion to both
+   smokes in the same commit — yes / no.)
+4. **D11** — skip the 375×667 pass? (recommended)
+5. **D10** — snooze the six Dependabot PRs as `owner-checklist.md` chore 5
+   describes?
+6. **Row 2 wording** — strike "Web Vitals" for launch, or schedule Speed
+   Insights post-launch?
+7. The retro's twelve questions (`docs/process-retrospective-2026-09-08.md`
+   §10), whenever.
+
+### Calendar deltas against §8
+
+- **Fri 09-11** — Sitting 1 (Mac: lanes A + D; Buri can run it alone).
+- **Sat 09-12 / Sun 09-13** — Sittings 2 (iPhone) and 3 (Android + TalkBack);
+  the dashboard look by 09-13.
+- **Wed 09-16** — lanes backstop.
+- **Sat 09-19** — lanes hard stop; MFA + ruleset; Approval 5 (three-file
+  commit, own Preview, own deploy).
+- **Sun 09-20** — D7 redirect (DNS export first); Approval 5 retry.
+  *Cert check #1 — dropped.*
+- **Wed 09-23** — last deploy day; go/no-go. *Cert check #2 — dropped.*
+- **Sat 10-03** — *cert notAfter line — moot (now 2026-12-05).*
