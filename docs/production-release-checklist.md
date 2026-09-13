@@ -45,7 +45,7 @@ own reviewed commit, push approval, and exact-SHA CI receipt.
 - [x] `npm run verify:solo` — 8/8
 - [x] `npm run verify:chronology` — 42/42
 - [x] `npm run verify:connections` — 14/14
-- [x] `npm run test:smoke` — 24/24
+- [x] `npm run test:smoke` — 24/24 (39/39 since PR #10, 2026-09-03)
 - [x] `git diff --check`
 - [x] Inspect the production manifest and confirm menu/mode lazy-loading budgets.
 
@@ -127,13 +127,25 @@ open.
 
 ## Source-control and CI gates
 
-- [ ] Receive explicit approval to commit.
-- [ ] Commit only the reviewed scope on the intended branch.
-- [ ] Receive explicit approval to push.
-- [ ] Push and wait for GitHub Actions to finish; do not infer success from local gates.
-- [ ] Require green build/budgets, Duel, daily, Connections, and browser jobs.
-- [ ] Open/merge a PR only if explicitly requested. Never merge `main` by default.
-- [ ] Record the green run URL and exact SHA in the delivery report.
+- [x] Receive explicit approval to commit.
+- [x] Commit only the reviewed scope on the intended branch.
+- [x] Receive explicit approval to push.
+- [x] Push and wait for GitHub Actions to finish; do not infer success from local gates.
+- [x] Require green build/budgets, Duel, daily, Connections, and browser jobs.
+- [x] Open/merge a PR only if explicitly requested. Never merge `main` by default.
+- [x] Record the green run URL and exact SHA in the delivery report.
+
+Evidence (2026-09-01 → 2026-09-05): the release commit `bdaa3f5` merged via
+PR #2 as `14a546e`; PR #9 (Preview-gate fixes) and the polish batches PR #10,
+#11, #12, #13 landed on `main` at `9a5fdbb`; PR #14 enabled the production
+crons. Green exact-SHA runs: `33501320800` (release commit), `33699865177`
+(PR #9 merge), `33826836354` (combined polish batches), `33829755130`
+(`9a5fdbb`, after an npm-registry flake re-run). "Never merge `main` by
+default" was honored — every merge above was Buri-approved in-session, none
+was taken on the agent's own initiative. Receipts:
+`docs/daily-duel-216-ship-receipt.md`,
+`docs/daily-duel-216-preview-verification-receipt.md`,
+`docs/daily-duel-216-production-deploy-receipt.md`.
 
 ## Quiet production release
 
@@ -187,6 +199,15 @@ Executed 2026-09-05 (Approval 4) for `main@9a5fdbb`; full record in
 - [ ] Privacy/retention language and credits are published.
 - [ ] TMDB commercial-use terms are resolved before monetization.
 - [ ] Cold-4G and warm-repeat budgets pass on the final asset graph.
+
+**Note 2026-09-08.** The `mode_start` / `mode_finish` / `share` row cannot be
+met on the current Vercel plan: the project is on Hobby, which has no custom
+events at all — page views and Web Vitals record, the nine journey events do
+not (see `docs/daily-duel-216-deploy-and-indexing-runbook.md` §1). Meeting it
+requires a plan change, which is Buri's decision. The privacy/retention
+language and credits row is satisfied in-app: the disclosure ships in
+`src/components/HowToPlay.tsx` under "What this site saves and measures", with
+TMDB attribution on the rules sheet.
 
 ## Public-launch switches — separate approval required
 

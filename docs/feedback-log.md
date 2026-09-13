@@ -16,6 +16,11 @@ Tags: **bug** (it broke) · **feel** (works, but the experience) · **confusion*
 (didn't understand a rule/affordance). Add `!` for anything blocking someone
 from playing — §2.11 exception (a): blockers may deploy mid-window.
 
+**Updated 2026-09-08:** the interview session is now planned for D+14 after the
+2026-09-27 premiere (≈2026-10-11), not ~2026-07-24. The Vercel plan is Hobby,
+so the custom share/outcome events do not record — the cross-check for that
+session is page views + Web Vitals, this log, and the GitHub support issues.
+
 ---
 
 <!-- entries below; do not edit or reorder earlier lines -->

@@ -1,5 +1,18 @@
 # Goal 5 — Public-launch acceptance
 
+> **Updated 2026-09-08 — dated record, not current state.** This file records
+> the 2026-08-19 Goal 5 candidate as it stood that day. For where the project
+> actually is now, read
+> `docs/daily-duel-216-launch-readiness-checkpoint.md`, the three receipts
+> (`docs/daily-duel-216-ship-receipt.md`,
+> `docs/daily-duel-216-preview-verification-receipt.md`,
+> `docs/daily-duel-216-production-deploy-receipt.md`), and
+> `docs/launch-status-review-2026-09-06.md`. One fact below is actively stale:
+> the rollback target named here, `dpl_7Mk27AwKQ8vcN3CUPj666kfCPNx9`, is two
+> deployments back and wrong to use — the current target is
+> `dpl_8SighytERqgygRYvbf1eMyLis6SL` (see
+> `docs/daily-duel-216-deploy-and-indexing-runbook.md` §2.5).
+
 Date opened: 2026-08-19
 
 Status: local automation and screenshot checkpoint green; attended and

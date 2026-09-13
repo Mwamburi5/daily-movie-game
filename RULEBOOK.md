@@ -4,7 +4,7 @@
 > now*. Update it whenever a rule or mode changes, so the words here always match
 > the game. Written so anyone 12 and up can follow it.
 >
-> **Last updated:** 2026-08-27 — **Daily / Duel pool cutover:** Daily uses the
+> **Last updated:** 2026-09-03 — **Daily / Duel pool cutover:** Daily uses the
 > original 89-film pool through 2026-09-26 and the approved 216-film pool from
 > 2026-09-27 forward; Duel uses 216 films and 16 Hall-of-Fame wilds. Previous:
 > keyboard play + housekeeping (2026-07-17), The Stub card redesign (2026-07-10),

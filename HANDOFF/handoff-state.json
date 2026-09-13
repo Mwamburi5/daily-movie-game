@@ -1,0 +1,80 @@
+{
+  "skill": "project-handoff",
+  "runs": [
+    {
+      "date": "2026-09-07",
+      "sha": "d22a255",
+      "mode": "create",
+      "sessions_mined": 35,
+      "docs_indexed": 167
+    },
+    {
+      "date": "2026-09-08",
+      "sha": "codex/handoff-and-stale-docs",
+      "mode": "update",
+      "sessions_mined": 35,
+      "docs_indexed": 168,
+      "note": "docs-only branch: tracked local-only docs, stale-docs pass, master-plan v6, handoff refreshed"
+    }
+  ],
+  "last_sha": "d22a255",
+  "last_date": "2026-09-08",
+  "plan_of_record": "docs/master-plan.md",
+  "current_state_doc": "docs/launch-status-review-2026-09-06.md",
+  "transcripts_dir": "/Users/mwamburi/.claude/projects/-Users-mwamburi-Projects-Daily-Movie-Game",
+  "transcripts": {
+    "6e82d36d-3bd5-4233-8f0d-5beebbd1b845": 4679898,
+    "855cc779-4fe7-4cc8-a82c-0876c53ccbb2": 288768,
+    "320546cc-55b0-4105-b5c7-331144697407": 1798744,
+    "5c21940b-a9b6-4a22-92b4-7a1d53d62c55": 1112612,
+    "76419469-fb5f-40c5-856c-b9023c0d6a97": 1226545,
+    "f3f59ecf-e01d-4f2f-af91-6a72fc1bfa8d": 5258445,
+    "1198de1e-4908-430e-bf48-84ceda9d3b94": 478472,
+    "d489c4a2-d96d-4c58-9d3a-eae8cd78deed": 662657,
+    "5c62ada1-1e65-4ca4-b54e-fbdfe9c9e03e": 1120893,
+    "3aeebadf-dc07-4b20-af00-3fb7a9f29fe3": 3343086,
+    "b42c40c2-1d6d-4f27-ba75-c6067d2ba385": 513072,
+    "4de0b2cd-065f-4995-a0e3-11c6a3dc32c7": 2826900,
+    "f43225a3-55e8-488e-b984-4c6d373b061a": 2333072,
+    "20cedd93-8db4-45e4-869b-921917f6538f": 2061935,
+    "2faf775c-d8f1-4836-8a2b-0e1e9ced8dda": 7461058,
+    "736dfca4-2554-43b4-93f9-ee51124a3ee3": 3215758,
+    "2bbeed14-80a1-4ca5-8812-52baf3f6bfef": 544602,
+    "e970e455-b1c7-4b4c-92be-0d470b6ea833": 3942310,
+    "3df5245c-50da-4759-a68e-5a24113adeef": 221065,
+    "ea8a2717-d42d-4e48-89bb-b6d70ac4fbe9": 1931386,
+    "01ea3df5-8ba7-4bdf-a10d-3a9fb92c0a0a": 396375,
+    "2da3c5fc-d8b2-4a4b-822f-a1c3c364cf52": 13666696,
+    "83c6d87f-39a0-424b-ae05-ecad9e9cce07": 867262,
+    "c99087a0-2a61-4bb5-b50f-97a5100c957b": 1526584,
+    "4694b8ff-44da-4299-aa37-76b3bcd45dae": 5324910,
+    "e9809b98-bc1d-42b0-bf16-21bfba0a88e0": 4728181,
+    "d6139e52-96f2-4573-bbb0-24e300f70d51": 8453923,
+    "290b5289-7bbe-4edf-b836-e068c3be6df2": 687257,
+    "9e1e9643-93b0-4fcd-9882-f943cc6869ab": 314580,
+    "ab4d5447-aed8-4f2c-abac-af8ec932d638": 2941164,
+    "32b518b6-e6d4-4617-8387-4a0d41b5c7c8": 98875,
+    "1cba6766-5c08-45a9-b41c-2b31f48758c9": 7139414,
+    "7f37d2a1-d7e0-4b0d-9fd9-d5b4507cc0e8": 646837,
+    "56bff76e-7cf1-4883-b705-23fbb9d605ba": 5092848,
+    "11aec86b-92e4-4d15-8121-9c60dab16860": 1433281
+  },
+  "unverified": [
+    "02-architecture.md / 03-how-to-run.md: npm run test:smoke not re-run locally (39/39 per receipts, CI green)",
+    "03-how-to-run.md: eval tune 65.9/50.3/41.4 not re-run (long)",
+    "07-ui-and-design.md: which file holds the 2026-08-07 Chronology concept images",
+    "10-file-index.md: docs/card-redesign-proposal.html provenance/relevance"
+  ],
+  "open_questions": [
+    "Merge the docs-only PR from codex/handoff-and-stale-docs?",
+    "D3 attended lanes: who, hardware, dates",
+    "D4 practice rows stay for launch?",
+    "D9 Approval 5 date; URL on practice shares?",
+    "D11 375x667 layout pass before launch?",
+    "Vercel plan: stay Hobby through 09-27?",
+    "TMDB non-commercial position at launch",
+    "Promo: brand-sheet red pen, amber pick, platforms, Product Hunt",
+    "Refresh docs/launch-status-review-2026-09-06.md in place when its dated table expires, or write a new dated review?",
+    "D7 playmatchcut.com + MFA/rulesets: self-serve or walkthrough session?"
+  ]
+}
