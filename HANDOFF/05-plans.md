@@ -1,6 +1,6 @@
 # 05 — Plans
 
-**Last verified:** 2026-09-08 on `codex/handoff-and-stale-docs` (from d22a255)
+**Last verified:** 2026-09-13 on `codex/handoff-refresh-2026-09-13` (from main 8100e29)
 
 ## Plan of record
 
@@ -25,8 +25,9 @@ launch-runway one, and named the two companion documents. The division of
 labor, in this order:
 
 1. `docs/launch-status-review-2026-09-06.md` — plain-English status with
-   owners, deadlines, and a calendar to 10-25 (its dated table expires within
-   days; refresh or banner it when the calendar runs out).
+   owners, deadlines, and a calendar to 10-25, kept current by dated addenda
+   appended in place (2026-09-10: the table re-run; 2026-09-13: the rulings and
+   the lane booking). Read the addenda first.
 2. `docs/daily-duel-216-production-deploy-receipt.md` — what is in production.
 3. Project memory `marquee-next-session-queue` — the next-session pointer.
 
@@ -52,8 +53,11 @@ labor, in this order:
 | 2026-09-01 → 09-03 | Approval 3 protected Preview | Green after Toolbar opt-out + audit fix (PR #9) | `docs/daily-duel-216-preview-verification-receipt.md` |
 | 2026-09-03 | Five-agent pre-launch review → three polish batches | PRs #10–#13 → `9a5fdbb` | `docs/prelaunch-review-2026-09-03.md`; polish kickoff receipt |
 | 2026-09-04 → 09-05 | **Approval 4 production deploy** | `dpl_HWeNAMnK2eLernz47PCG9RAmgCu6` live; rollback drilled; crons on (PR #14 → `d22a255`) | `docs/daily-duel-216-production-deploy-receipt.md` |
-| 2026-09-05 → 09-06 | Campaign plan + plain-English status review | Both written, untracked | `docs/launch-campaign-plan.md`, `docs/launch-status-review-2026-09-06.md` |
-| **Next** 2026-09-08 → 09-27 | Soak: attended lanes A–E, Approval 5 (~09-19/20), D7 domain, MFA, freeze 09-24, **premiere 09-27** | — | status review §2, §8 |
+| 2026-09-05 → 09-06 | Campaign plan + plain-English status review | Both written; tracked since PR #16 | `docs/launch-campaign-plan.md`, `docs/launch-status-review-2026-09-06.md` |
+| 2026-09-07 → 09-08 | Project handoff (`HANDOFF/`), stale-docs pass, master-plan v6, process retrospective | Docs-only PR #16 (merged 2026-09-13 → `8e1e3bd`); retro verdict "efficient per owner-minute, inefficient per calendar day" | `HANDOFF/`, `docs/process-retrospective-2026-09-08.md` |
+| 2026-09-10 | Launch-runway kickoff S0–S4 (baseline · lane pack · owner checklist · Approval 5 branch · status addendum) | `docs/attended-lanes/` built; S3 deferred on D9; two doc corrections (no Speed Insights; Approval 5 needs a URL assertion) | `docs/launch-runway-kickoff-prompt.md`; status review addendum 09-10 |
+| 2026-09-13 | Rulings D9 / D10 / D11 / Speed Insights, the retro answers, D3 booking; Approval 5 commit built for CI | PR #17 → `8100e29`; `codex/approval-5` = 5edaec3, CI green, **not deployed** | status review "Rulings 2026-09-13"; commit 5edaec3 |
+| **Next** 2026-09-14 → 09-27 | **Tue 09-15** lanes A–E + owner checklist (MFA, `main` ruleset, dashboard look, DNS export + D7, Dependabot) · **Sat 09-19** Approval 5 (jar at slot start → Preview gate → deploy → rollback ids + re-drill) · freeze 09-24 · **premiere 09-27** | — | `docs/attended-lanes/schedule.md`; status review §8 + addenda |
 | After | Show HN 09-29, readouts, interviews D+14 (10-11), front-door ruling (10-18), campaign check D+28 (10-25); P5/P6/P7 | — | campaign plan §5; master-plan §9 |
 
 ## All plans
@@ -67,7 +71,10 @@ labor, in this order:
 | `docs/production-release-checklist.md` | live | — | Quiet release done; public switches unticked |
 | `docs/security-launch-checklist.md` | live | — | Account boxes (MFA, rulesets, registrar) unticked |
 | `docs/promo-execution-prompts.md` + `promo/*checkpoint.md` | live | — | Promo phases; next gate Phase 0-captures |
-| `docs/daily-duel-216-attended-lanes-scheduling-goal-prompt.md` | live, not run | — | Builds the lane pack |
+| `docs/daily-duel-216-attended-lanes-scheduling-goal-prompt.md` | superseded | `docs/launch-runway-kickoff-prompt.md` S1/S2, 2026-09-10 | Its deliverables were built by the runway kickoff instead |
+| `docs/launch-runway-kickoff-prompt.md` | done | executed 2026-09-10 (S3 finished 2026-09-13) | Five-step runway pass; bannered "do not re-run as is" |
+| `docs/attended-lanes/schedule.md` + `owner-checklist.md` | **live** | — | The lane grid (booked Tue 09-15) and the five owner chores due before Approval 5 |
+| `docs/process-retrospective-2026-09-08.md` §9 | live (recommendations) | — | 90-day process plan; adopted so far: Q7 slot mint, Q8 receipts-for-Approvals, Q10 Sonnet trial; CHANGELOG / ADRs / PR template / private tracker still open |
 | `PLAN.md` | superseded | master-plan, 2026-07-06 | Launch-ramp WS1–WS5 |
 | `docs/orchestration-plan.md` | superseded | master-plan, 2026-07-06 | Orchestrated build v2 |
 | `docs/ui-tasks.md` | superseded | master-plan, 2026-07-06 | Wave 0/A checklist |
@@ -92,7 +99,8 @@ The house pattern, visible in every phase since July:
    preconditions fail, and **stops at a named checkpoint** for Buri.
 3. **A checkpoint or receipt document** records what shipped, gate results with
    exact counts, deviations, and follow-ups (`docs/*-checkpoint.md`,
-   `docs/*-receipt.md`, `audit/*/manifest.md`).
+   `docs/*-receipt.md`, `audit/*/manifest.md`). Since 2026-09-13 receipts are
+   kept for Approvals only; other passes get a CHANGELOG line plus the PR (retro Q8).
 4. **Buri rules** in-session (a "grill": one decision at a time, recommendation
    argued, ruling logged) and the ruling lands in the master plan §7 or a
    docs-only commit.
