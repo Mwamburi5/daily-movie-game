@@ -66,14 +66,16 @@ const test = base.extend<{ browserFaults: string[] }>({
   },
 })
 
-test('social discovery metadata is complete while indexing stays closed', async ({ page, request, browserFaults }) => {
+test('social discovery metadata is complete and indexing is open', async ({ page, request, browserFaults }) => {
   void browserFaults
   await page.goto('/')
 
   await expect(page).toHaveTitle('Match Cut — Four movie games, one daily ritual')
   await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', /Connect movies/)
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', 'https://matchcutdaily.com/')
-  await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'noindex, nofollow')
+  // Approval 5 (2026-09-19): the quiet-phase robots meta is gone for good — its
+  // absence is the pin now, so a stray re-add fails the smoke.
+  await expect(page.locator('meta[name="robots"]')).toHaveCount(0)
   await expect(page.locator('meta[property="og:type"]')).toHaveAttribute('content', 'website')
   await expect(page.locator('meta[property="og:url"]')).toHaveAttribute('content', 'https://matchcutdaily.com/')
   await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content', 'https://matchcutdaily.com/social-preview.png')
@@ -542,6 +544,8 @@ async function verifyShareAndReturn(page: Page, resultName: RegExp, sharePrefix:
   await share.click()
   await expect(share).toHaveText('copied ✓')
   await expect.poll(() => page.evaluate(() => navigator.clipboard.readText())).toContain(sharePrefix)
+  // The URL line is the launch switch — prove it landed, on every mode's share.
+  await expect.poll(() => page.evaluate(() => navigator.clipboard.readText())).toMatch(/\nmatchcutdaily\.com$/)
   await page.getByRole('button', { name: 'Menu', exact: true }).click()
   await expect(page.locator('[data-mode="solo"]')).toBeVisible()
 }

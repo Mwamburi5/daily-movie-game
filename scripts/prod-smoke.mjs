@@ -648,7 +648,9 @@ const verdict = (value) => {
 }
 const shareVerdict = (s) => {
   if (!s?.text) return 'NOT-VERIFIED'
-  return /^Match Cut · /.test(s.text) ? 'PASS' : 'FAIL'
+  // Prefix AND the trailing URL line (Approval 5): a share without the address
+  // is the pre-launch build still being served.
+  return /^Match Cut · /.test(s.text) && /\nmatchcutdaily\.com\s*$/.test(s.text) ? 'PASS' : 'FAIL'
 }
 
 const cells = modes.flatMap((m) => [verdict(m.load), verdict(m.action), verdict(m.error), verdict(m.terminal), shareVerdict(m.share)])
