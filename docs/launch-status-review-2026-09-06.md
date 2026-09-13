@@ -641,3 +641,12 @@ section is what changed since, and what was wrong.
   *Cert check #1 — dropped.*
 - **Wed 09-23** — last deploy day; go/no-go. *Cert check #2 — dropped.*
 - **Sat 10-03** — *cert notAfter line — moot (now 2026-12-05).*
+
+**Note 2026-09-13 (Sunday).** The pass above ran on the evening of 09-10 but
+its checkpoint reached Buri on 09-13; no sitting was booked in between. The
+grid in `docs/attended-lanes/schedule.md` is re-dated: Sitting 1 (Mac, A + D)
+Sun 09-13 or Mon 09-14; Sittings 2 (iPhone) and 3 (Android + TalkBack)
+Mon 09-14 / Tue 09-15; backstop Wed 09-16; hard stop Sat 09-19 unchanged.
+Fix margin is now four days at best. Re-verified 09-13: production unchanged
+(`index-DAtVcX_d.js`, `noindex`), prod-smoke 09-13 09:36Z and canary
+09-13 14:58Z green, PR #16 CI green on `22e9d42`.
