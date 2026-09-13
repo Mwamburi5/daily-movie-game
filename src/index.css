@@ -1066,6 +1066,16 @@ body {
   .duel-controls-panel [data-token-chips="player"] > *,
   .duel-tool-button { min-height: 44px; }
   .duel-contextual { bottom: 242px !important; }
+  /* Pending-draw keep/toss: the drawn card is raised at bottom 220 and ~245px
+     tall, so the centered bar at 242 lands behind it (the raised card paints
+     above the contextual rung). Park it beside the card's right edge instead —
+     the controls panel fades out while a draw is pending, so that column is
+     free. Mobile keeps the centered slot: there the bar sits below the card. */
+  .duel-contextual--draw {
+    left: calc(50% + 120px) !important;
+    right: 22px !important;
+    align-items: flex-start;
+  }
   .duel-hand-tray {
     height: 230px;
     background: linear-gradient(to bottom, transparent 0 18px, rgba(231, 225, 204, .88) 18px 100%);

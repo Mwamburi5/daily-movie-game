@@ -2001,9 +2001,11 @@ export default function DuelGame({
           />
         )}
 
-        {/* Keep / toss choice for the drawn card */}
+        {/* Keep / toss choice for the drawn card. --draw: on wide viewports the
+            raised drawn card sits on top of the centered slot, so CSS parks this
+            bar beside the card (see .duel-contextual--draw). */}
         {pendingDraw !== null && status === 'playerTurn' && (
-          <div className="duel-contextual absolute inset-x-0 bottom-[96px] z-[var(--z-contextual)] flex flex-col items-center gap-2">
+          <div className="duel-contextual duel-contextual--draw absolute inset-x-0 bottom-[96px] z-[var(--z-contextual)] flex flex-col items-center gap-2">
             {drawnConnects && (
               <span className="rounded-full bg-[#2c5240] px-3 py-1 text-[11px] font-bold text-white shadow-sm">
                 It connects — drag it onto the pile to play it
