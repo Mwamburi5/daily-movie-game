@@ -718,7 +718,8 @@ Things the transcripts cannot answer.
    meant. Plain version: the protected Preview needs a bypass cookie that only
    Buri can create; it blocked a pass for a day once. Options were: create it
    at the start of a fixed slot, run gates on production after deploy instead,
-   or change Vercel's protection so no cookie is ever needed. Unruled.
+   or change Vercel's protection so no cookie is ever needed. **Ruled
+   2026-09-13: create it at the start of a fixed weekly slot.**
 8. **Receipts:** agreed — Buri does not read them. From Approval 5 on, a
    CHANGELOG line plus the PR is enough; receipts stay for Approvals only.
 9. **Public issues:** Buri wants a **private tracker** for internal items,

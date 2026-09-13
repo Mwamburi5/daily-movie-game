@@ -660,3 +660,8 @@ CSP, own approval); the release-checklist row is struck for launch.
 **D3:** still open — Buri may run lanes A, B and D himself if he has the
 hardware; C and E need an Android phone. `codex/approval-5` carries the
 Approval 5 commit for CI only (three switches + the two new URL assertions).
+**D3 booked 2026-09-13:** Buri runs all five lanes himself, three sittings on
+**Tuesday 2026-09-15 evening**, and works the owner checklist the same evening;
+Wed 09-16 is the backstop. **Retro Q7 ruled:** the Preview bypass cookie is
+created by Buri at the start of a fixed weekly slot (first use: the Approval 5
+Preview on Sat 09-19).

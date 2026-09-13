@@ -1,7 +1,8 @@
 # Attended lanes A–E — schedule grid, hardware, runway math, outreach drafts
 
-Built 2026-09-10 (Thursday), re-dated 2026-09-13 (Sunday) because no sitting
-had been booked by then. Candidate = production `main@9a5fdbb` at
+Built 2026-09-10 (Thursday), re-dated 2026-09-13 (Sunday). **Booked 2026-09-13:
+Buri runs all three sittings himself on Tuesday 2026-09-15 evening** (D3), and
+does the owner checklist the same evening; Wed 09-16 stays the backstop. Candidate = production `main@9a5fdbb` at
 `https://matchcutdaily.com`. Nothing here has been booked or sent; Buri fills
 the *Who* and *Booked* columns and sends the drafts himself.
 
@@ -12,11 +13,11 @@ Android phone; B is the iPhone.
 
 | lane | sitting | who | hardware needed | earliest | candidate dates | booked date | status |
 |---|---|---|---|---|---|---|---|
-| A — desktop Safari | **1 · Mac** (~45 min for A + D) | ________ (Buri can run this one alone) | a Mac on current macOS with current Safari; the JavaScript console | Sun 09-13 | Sun 09-13 · Mon 09-14 · Tue 09-15 | | not booked |
-| D — VoiceOver | **1 · Mac** | ________ (same person as A) | the same Mac, VoiceOver (built in) | Sun 09-13 | same sitting as A | | not booked |
-| B — iPhone Safari | **2 · iPhone** (~30 min) | ________ | a physical iPhone on current iOS (a small-class phone — SE / mini — is the more valuable one; one phone is acceptable); a cable + a Mac if surface 6 is to be run on-device | Mon 09-14 | Mon 09-14 · Tue 09-15 · backstop Wed 09-16 | | not booked |
-| C — Android Chrome | **3 · Android** (~45 min for C + E) | ________ | a physical Android phone on current Chrome (a 360-wide screen is the one that matters); a USB cable + any computer with Chrome if surface 6 is to be run on-device | Mon 09-14 | Mon 09-14 · Tue 09-15 · backstop Wed 09-16 | | not booked |
-| E — TalkBack | **3 · Android** | ________ (same person as C) | the same Android, TalkBack (built in on stock Android and Samsung) | Mon 09-14 | same sitting as C | | not booked |
+| A — desktop Safari | **1 · Mac** (~45 min for A + D) | ________ (Buri can run this one alone) | a Mac on current macOS with current Safari; the JavaScript console | Sun 09-13 | Sun 09-13 · Mon 09-14 · Tue 09-15 | **Tue 09-15, evening** | booked (Buri) |
+| D — VoiceOver | **1 · Mac** | ________ (same person as A) | the same Mac, VoiceOver (built in) | Sun 09-13 | same sitting as A | **Tue 09-15, evening** | booked (Buri) |
+| B — iPhone Safari | **2 · iPhone** (~30 min) | ________ | a physical iPhone on current iOS (a small-class phone — SE / mini — is the more valuable one; one phone is acceptable); a cable + a Mac if surface 6 is to be run on-device | Mon 09-14 | Mon 09-14 · Tue 09-15 · backstop Wed 09-16 | **Tue 09-15, evening** | booked (Buri) |
+| C — Android Chrome | **3 · Android** (~45 min for C + E) | ________ | a physical Android phone on current Chrome (a 360-wide screen is the one that matters); a USB cable + any computer with Chrome if surface 6 is to be run on-device | Mon 09-14 | Mon 09-14 · Tue 09-15 · backstop Wed 09-16 | **Tue 09-15, evening** | booked (Buri) |
+| E — TalkBack | **3 · Android** | ________ (same person as C) | the same Android, TalkBack (built in on stock Android and Samsung) | Mon 09-14 | same sitting as C | **Tue 09-15, evening** | booked (Buri) |
 
 Hard stop for all five: **Sat 09-19** (the day Approval 5 is targeted). A
 lane finished on 09-19 leaves no room for a fix.
