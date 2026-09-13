@@ -650,3 +650,18 @@ Mon 09-14 / Tue 09-15; backstop Wed 09-16; hard stop Sat 09-19 unchanged.
 Fix margin is now four days at best. Re-verified 09-13: production unchanged
 (`index-DAtVcX_d.js`, `noindex`), prod-smoke 09-13 09:36Z and canary
 09-13 14:58Z green, PR #16 CI green on `22e9d42`.
+
+**Rulings 2026-09-13 (Buri, in session).** PR #16 merged → `main = 8e1e3bd`.
+**D9:** Approval 5 on **Saturday 09-19**; `practice ·` shares carry the URL too
+(every share is an invitation back). **D11:** skip the 375×667 pass for launch.
+**D10:** snooze Dependabot as `docs/attended-lanes/owner-checklist.md` chore 5
+describes. **Row 2 / Web Vitals:** schedule Speed Insights post-launch (code +
+CSP, own approval); the release-checklist row is struck for launch.
+**D3:** still open — Buri may run lanes A, B and D himself if he has the
+hardware; C and E need an Android phone. `codex/approval-5` carries the
+Approval 5 commit for CI only (three switches + the two new URL assertions).
+**D3 booked 2026-09-13:** Buri runs all five lanes himself, three sittings on
+**Tuesday 2026-09-15 evening**, and works the owner checklist the same evening;
+Wed 09-16 is the backstop. **Retro Q7 ruled:** the Preview bypass cookie is
+created by Buri at the start of a fixed weekly slot (first use: the Approval 5
+Preview on Sat 09-19).

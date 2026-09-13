@@ -117,6 +117,10 @@ Found during this handoff (most also listed in the status review §6b):
 
 ## Questions for the owner
 
+*Answered 2026-09-13:* 1 merged (PR #16 → `8e1e3bd`) · 4 D9 = Sat 09-19, practice
+shares carry the URL · 5 D11 = skip · Dependabot = snooze (D10) · Speed Insights
+scheduled post-launch. Still open: 2 (D3), 3 (D4), 6, 7, 8, 9, 10.
+
 1. Merge the docs-only PR from `codex/handoff-and-stale-docs` (handoff +
    launch-window docs + promo tracked, stale-docs pass, master-plan v6)?
 2. D3: who runs the five attended lanes, on which hardware, on which days?
