@@ -703,6 +703,33 @@ Things the transcripts cannot answer.
 
 ---
 
+### Buri's answers (2026-09-13, in session)
+
+1. **Hours:** about 20 hours total. Twenty minutes a day post-launch is fine.
+2. **What felt slow:** the initial UI. Also the movie work — the per-movie
+   illustrations were given up on, and Buri would love to get that back
+   (the parked P5 card-art pilot is the vehicle).
+3. **What you would not give up:** not answered directly; see 8.
+4. **Codex vs Claude:** Buri will try Codex going forward.
+5. **The July freeze:** not answered.
+6. **Review fleets:** find a more efficient shape than the four fleets used
+   so far (open task for the next retro-sized pass).
+7. **Jar mints / human-only steps:** Buri did not know what the question
+   meant. Plain version: the protected Preview needs a bypass cookie that only
+   Buri can create; it blocked a pass for a day once. Options were: create it
+   at the start of a fixed slot, run gates on production after deploy instead,
+   or change Vercel's protection so no cookie is ever needed. Unruled.
+8. **Receipts:** agreed — Buri does not read them. From Approval 5 on, a
+   CHANGELOG line plus the PR is enough; receipts stay for Approvals only.
+9. **Public issues:** Buri wants a **private tracker** for internal items,
+   not `blocked-on-buri` issues on the public repo.
+10. **The Opus rule:** try **Sonnet** on genuinely simple, fully specified
+    sub-agent tasks and measure whether it holds up; Opus stays the default
+    for judgment-dense work.
+11. **What efficient means:** not answered directly (see 1: twenty minutes a
+    day is the budget).
+12. **The retro that died:** nothing named as missing.
+
 ## Method and confidence
 
 - Sections A–G were produced by seven Opus sub-agents given the kickoff's
