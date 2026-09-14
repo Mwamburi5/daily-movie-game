@@ -342,6 +342,11 @@ body {
   border-color: rgba(91, 107, 122, .28);
 }
 .daily-solo-hand[data-hand-layout="rack"] {
+  /* 320px is load-bearing: Hand.tsx lays the two rack rows out at FIXED px
+     offsets (8 / 140 + the 0.9 card scale) and the shelf art is stretched to
+     100% of this box, so its two gold ledges only meet the card bottoms at
+     this height. Breakpoints must resize the rack via `scale` (cards and
+     ledges grow together) — a taller box slides the ledges off the rows. */
   height: 320px;
   background: center / 100% 100% no-repeat url('./assets/solo-ticket-rack.webp');
   transform-origin: bottom center;
@@ -542,7 +547,7 @@ body {
   .solo-stage-instruction { top: 318px; }
   .solo-feedback { top: 342px; }
   .daily-solo-hand[data-hand-layout="rack"] {
-    height: 300px;
+    height: 320px; /* see base rule — vary scale, not height */
     scale: 1.08;
     transform-origin: bottom center;
   }
@@ -653,7 +658,7 @@ body {
     bottom: 72px;
     left: auto;
     width: 58%;
-    height: 390px;
+    height: 320px; /* see base rule — vary scale, not height */
     scale: 1.2;
   }
   [data-mode-stage="solo"] .daily-solo-raised {
@@ -710,7 +715,7 @@ body {
   [data-mode-stage="solo"] .solo-hand-label { top: 112px; }
   [data-mode-stage="solo"] .daily-solo-hand[data-hand-layout="rack"] {
     bottom: 14px;
-    height: 350px;
+    height: 320px; /* see base rule — vary scale, not height */
     scale: 1.08;
   }
   [data-mode-stage="solo"] .daily-solo-raised {
@@ -1061,6 +1066,16 @@ body {
   .duel-controls-panel [data-token-chips="player"] > *,
   .duel-tool-button { min-height: 44px; }
   .duel-contextual { bottom: 242px !important; }
+  /* Pending-draw keep/toss: the drawn card is raised at bottom 220 and ~245px
+     tall, so the centered bar at 242 lands behind it (the raised card paints
+     above the contextual rung). Park it beside the card's right edge instead —
+     the controls panel fades out while a draw is pending, so that column is
+     free. Mobile keeps the centered slot: there the bar sits below the card. */
+  .duel-contextual--draw {
+    left: calc(50% + 120px) !important;
+    right: 22px !important;
+    align-items: flex-start;
+  }
   .duel-hand-tray {
     height: 230px;
     background: linear-gradient(to bottom, transparent 0 18px, rgba(231, 225, 204, .88) 18px 100%);
