@@ -1,6 +1,6 @@
 # 01 — Overview
 
-**Last verified:** 2026-09-08 on `codex/handoff-and-stale-docs` (from d22a255)
+**Last verified:** 2026-09-13 on `codex/handoff-refresh-2026-09-13` (from main 8100e29)
 
 ## What it is
 
@@ -40,7 +40,7 @@ physical card game later (Duel translates directly to a table).
 | **Taz** | Duel CPU persona, `TazCorner` component | The CPU opponent. Player-facing label was swept to "CPU" on 2026-07-09; taunts kept |
 | **The Stub** | `design_handoff_the_stub/`, `StubCard`, `stub-*` CSS tokens | The locked visual language (cream/navy/amber ticket-stub design), ruled 2026-07-05 |
 | **216 + 16** | Everything from late August on | The launch content: 216 curated films for Daily/Duel plus 16 wild cards; first deals 2026-09-27 |
-| **Approvals 1–5** | September docs and memory | Buri's sequenced go/no-go gates: 1–2 commit/merge (done 09-01), 3 protected Preview (done 09-03), 4 production deploy (done 09-05), 5 the go-public switches (planned ~09-19/20) |
+| **Approvals 1–5** | September docs and memory | Buri's sequenced go/no-go gates: 1–2 commit/merge (done 09-01), 3 protected Preview (done 09-03), 4 production deploy (done 09-05), 5 the go-public switches (ruled 2026-09-13: **Saturday 09-19**; the commit is `5edaec3` on `codex/approval-5`, CI green, not deployed) |
 | **W0–W6, P1/P2, M4a** | `docs/master-plan.md` | The July build waves (W6 = "SEND", the quiet launch) and parallel lanes |
 | **codex/** | Branch names | Buri also drives this repo with Codex (`/goal` prompts); branches are named `codex/…` regardless of which agent ran them |
 
@@ -75,7 +75,11 @@ physical card game later (Duel translates directly to a table).
 10. **2026-09-01 → 09-05** — Approvals 1–4: merged (PR #2), Preview-verified,
     three polish batches (PRs #10–#13), **production deploy of `9a5fdbb`
     2026-09-05**, rollback drilled, nightly smoke + canary crons live (PR #14).
-    Next: attended device lanes, Approval 5 (~09-19/20), freeze 09-24,
+    **2026-09-07 → 09-13, docs only:** handoff folder, stale-docs pass,
+    master-plan v6 (PR #16), process retrospective run, the attended-lanes
+    pack + owner checklist built (09-10), Buri's rulings (09-13, PR #17):
+    lanes A–E booked for **Tue 09-15**, Approval 5 = **Sat 09-19** with the
+    URL on every share, small-phone pass skipped. Then freeze 09-24,
     **premiere 2026-09-27**.
 
 ## Vocabulary
@@ -101,10 +105,14 @@ physical card game later (Duel translates directly to a table).
 - **Checkpoint** — a stop point where Buri reviews before anything continues.
 - **Quiet phase** — live but `noindex` and URL-free shares; flips at Approval 5.
 - **Attended lanes A–E** — real-hardware acceptance: desktop Safari, real iPhone,
-  real Android, VoiceOver, TalkBack. Never closable by automation.
+  real Android, VoiceOver, TalkBack. Never closable by automation. Run-sheets
+  live in `docs/attended-lanes/`; all five are booked for Tuesday 2026-09-15
+  (Buri runs them himself).
 - **Freeze** — 72 hours before the premiere: no deploys, DNS, or Vercel changes.
 - **Practice rows** — the four menu entries that deal a non-daily round.
 - **Front door** — which mode the public landing leads with; undecided, leaning
   Chronology, ruled after D+14 interviews.
 - **Jar** — the SSO-bypass cookie jar needed to reach a protected Vercel
-  Preview. Minted by Buri by hand; agents must never read the Vercel token.
+  Preview. Minted by Buri by hand at the start of a fixed weekly slot (ruled
+  2026-09-13; first use the Approval 5 Preview on 09-19); agents must never
+  read the Vercel token.

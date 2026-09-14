@@ -1,6 +1,6 @@
 # 08 — AI workflow
 
-**Last verified:** 2026-09-08 on `codex/handoff-and-stale-docs` (from d22a255)
+**Last verified:** 2026-09-13 on `codex/handoff-refresh-2026-09-13` (from main 8100e29)
 
 This project is built almost entirely through AI coding sessions: Claude Code
 (desktop app, Fable/Opus/Sonnet tiers) as orchestrator and, since August, Codex
@@ -27,9 +27,12 @@ every subjective or external-facing call, and the only person who deploys.
   Karpathy guidelines (adapted into CLAUDE.md, plugin install pending since 2026-06-22).
 - **Sub-agents:** heavy use of the Agent tool for parallel read-only reviews
   (six-auditor recon 2026-07-06; 18-area review fleet 2026-07-09/10; five-agent
-  pre-launch review 2026-09-03) and for isolated build lanes in git worktrees
+  pre-launch review 2026-09-03; seven-analyst process retrospective 2026-09-08)
+  and for isolated build lanes in git worktrees
   (three polish batches 2026-09-03, one PR each). **Rule since 2026-09-02:
-  sub-agents run on Opus with full self-contained briefs.**
+  sub-agents run on Opus with full self-contained briefs.** Since 2026-09-13
+  Sonnet may be tried on simple, fully specified tasks and measured; Opus stays
+  the default (retro Q10). Buri also intends to try Codex for upcoming work (Q4).
 - **Connectors:** Canva (mockups, 2026-09-01); Vercel via `npx vercel`; GitHub via `gh`.
 - **Browser tooling:** the desktop app's browser pane (`mcp__Claude_Browser__*`)
   and earlier `Claude_Preview` tools for screenshots at contract sizes; Playwright
@@ -61,7 +64,7 @@ status review carry the same facts.
 
 ## Session patterns
 
-35 sessions were mined (2026-06-28 → 2026-09-08). A typical one:
+42 sessions were mined (2026-06-28 → 2026-09-13). A typical one:
 
 1. **Boot** with a kickoff prompt (often written by the previous session and
    saved as a file), or "where are we?" / "resume".
@@ -79,6 +82,21 @@ mid-flight; the file-based kickoff/receipt pattern exists precisely so that a
 cold restart loses nothing. Buri's stated preference: stop cleanly rather than
 push on with thin context.
 
+## The process retrospective (2026-09-08)
+
+`docs/process-retrospective-2026-09-08.md` measured the build: 6,245 recorded
+turns and 1.76 B tokens across the mined sessions (26% in sub-agents), about
+20 owner-hours (Buri's own figure), 27 defects caught by gates, and a verdict
+of "efficient per owner-minute, inefficient per calendar day" (a 20-day
+undeployed window, a day lost to one jar mint, a 25-day PR). Its §9 recommends
+fixed weekly owner slots, one gated pass per session (≤5 gated steps, wind down
+by ~300 turns), fan-out of ≤5 agents with synthesis first, a `CHANGELOG.md`,
+issues in a tracker, ADRs for rulings, and a PR template. **Adopted on
+2026-09-13:** the slot-minted jar (Q7), receipts for Approvals only (Q8), a
+private tracker rather than public internal issues (Q9), the Sonnet trial
+(Q10). Still open: the CHANGELOG, ADRs, the PR template, the master-plan trim,
+and which tracker.
+
 ## Guardrails (consolidated)
 
 - Read the governing file first; stop read-only if preconditions fail.
@@ -93,6 +111,10 @@ push on with thin context.
 - Never `git add .`/`clean`/`reset`/`checkout`/`stash`; preserve the promo family.
 - Deploy from a clean clone; `vercel whoami` first; agents never read the
   Vercel token or mint the jar (Buri runs `scratchpad/mint.sh` in the Terminal tab).
+  Since 2026-09-13 the jar is minted at the start of a fixed weekly slot, never
+  ad hoc (retro Q7).
+- Receipts for Approvals only (deploys, front-door change, pool cutover); every
+  other pass is a CHANGELOG line plus the PR (2026-09-13, retro Q8).
 - Sub-agents on Opus; self-contained briefs; no git or concurrent builds in
   sub-agents; unique dev-server ports.
 - Freeze file edits while capturing browser evidence (the preview pane reloads
@@ -107,20 +129,23 @@ Paste this (fill the bracket after reading the status review):
 ```text
 You are the orchestrator for Match Cut (~/Projects/Daily Movie Game).
 Read HANDOFF/SUMMARY.md, then docs/launch-status-review-2026-09-06.md (the
-current state, owners, deadlines, calendar), then docs/master-plan.md §2
+current state; read its 09-10 and 09-13 addenda first), then docs/master-plan.md §2
 (constitution) and §7 (Buri's open queue). Verify ground truth before
 anything: PATH=/usr/local/bin:$PATH npm run build · verify:solo ·
 verify:chronology · verify:connections, plus git status (expect main at
-d22a255 or later, six untracked local-only docs/promo files — leave them).
+8100e29 or later and a clean tree; codex/approval-5 holds the Approval 5
+commit 5edaec3, CI green, NOT deployed).
 
 Expected state: PRODUCTION = main@9a5fdbb (dpl_HWeNAMnK2eLernz47PCG9RAmgCu6)
 since 2026-09-05; rollback target dpl_8SighytERqgygRYvbf1eMyLis6SL; crons
-live; noindex ON and shares URL-free until Approval 5 (~09-19/20); first
+live; noindex ON and shares URL-free until Approval 5 (Sat 09-19; Buri mints
+the jar at the start of the slot, then Preview gate, then his deploy); first
 216 Daily = 2026-09-27 (day 86); 72-h freeze from 09-24.
 
-THIS SESSION: [the next item from the status review §2 — e.g. build the
-attended-lanes pack per docs/daily-duel-216-attended-lanes-scheduling-goal-
-prompt.md, read-only otherwise]. Stop at [the named checkpoint].
+THIS SESSION: [the next item from the status review's latest addendum — e.g.
+record the Tue 09-15 lane results in docs/daily-duel-216-attended-acceptance.md
+and open a fix branch if a lane failed; or on 09-19 run the Approval 5 Preview
+gate from a clean clone once the jar exists]. Stop at [the named checkpoint].
 
 APPROVED: [exactly what]. NOT approved: production deploy, alias/DNS/Vercel
 settings, indexing switches, any rule/scoring/seed/pool/dealer change, new
