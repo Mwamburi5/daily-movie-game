@@ -1,23 +1,27 @@
-import { lazy, Suspense, useMemo, useRef, useState } from 'react'
+import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import type { SoloStart } from './SoloGame.tsx'
 import type { ChronoStart } from './ChronologyGame.tsx'
 import type { ConnectionsStart } from './ConnectionsGame.tsx'
 import HowToPlay from './components/HowToPlay.tsx'
 import Icon from './components/Icon.tsx'
+import ProgressNotice from './components/ProgressNotice.tsx'
 import Onboarding from './components/Onboarding.tsx'
 import { type Difficulty, DIFFICULTIES, DIFFICULTY_META } from './lib/difficulty.ts'
-import { localDateSeed } from './lib/daily.ts'
+import { useLocalDateSeed } from './lib/useLocalDateSeed.ts'
 import { MOTION } from './lib/motion.ts'
 import { track } from './lib/analytics.ts'
 import {
   dailyStatus,
+  dailyProgram,
+  DAILY_MODE_LABEL,
   duelRecord,
   hasSeenOnboarding,
   markOnboardingSeen,
   lastDifficulty,
   recordDifficultyPick,
   type DailyStatus,
+  type DailyMode,
 } from './lib/progress.ts'
 
 type Mode = 'menu' | 'solo' | 'duel' | 'chronology' | 'connections'
@@ -60,6 +64,7 @@ export default function App() {
   const [chronoStart, setChronoStart] = useState<ChronoStart>({ kind: 'daily' })
   const [connStart, setConnStart] = useState<ConnectionsStart>({ kind: 'daily' })
   const [soloStart, setSoloStart] = useState<SoloStart>({ kind: 'daily' })
+  const [entryKey, setEntryKey] = useState(0)
   const [showRules, setShowRules] = useState(false)
   const rulesButtonRef = useRef<HTMLButtonElement>(null)
   // First-run onboarding: the four static screens, shown once per device before
@@ -76,41 +81,66 @@ export default function App() {
   }
 
   const startChronology = (start: ChronoStart) => {
+    setEntryKey((key) => key + 1)
     setChronoStart(start)
     setMode('chronology')
   }
 
   const startConnections = (start: ConnectionsStart) => {
+    setEntryKey((key) => key + 1)
     setConnStart(start)
     setMode('connections')
   }
 
   const startSolo = (start: SoloStart) => {
+    setEntryKey((key) => key + 1)
     setSoloStart(start)
     setMode('solo')
+  }
+
+  const startDaily = (next: DailyMode) => {
+    if (next === 'solo') startSolo({ kind: 'daily' })
+    else if (next === 'chronology') startChronology({ kind: 'daily' })
+    else startConnections({ kind: 'daily' })
   }
 
   // Meta-state for the menu chips, re-read whenever we land back on the menu
   // (mode flips) so a just-finished run shows up without a reload. Display
   // only — deals never touch it (persistence guardrail).
-  const todaySeed = localDateSeed()
-  const soloChip = useMemo(() => dailyStatus('solo', todaySeed), [mode, todaySeed])
-  const chronoChip = useMemo(() => dailyStatus('chronology', todaySeed), [mode, todaySeed])
-  const connChip = useMemo(() => dailyStatus('connections', todaySeed), [mode, todaySeed])
-  const duelChip = useMemo(() => duelRecord(difficulty), [mode, difficulty])
+  const todaySeed = useLocalDateSeed()
+  const [progressRevision, setProgressRevision] = useState(0)
+  useEffect(() => {
+    const refresh = () => setProgressRevision((value) => value + 1)
+    const storage = (event: StorageEvent) => {
+      if (event.key === 'matchcut:v1' || event.key === null) refresh()
+    }
+    window.addEventListener('storage', storage)
+    window.addEventListener('focus', refresh)
+    window.addEventListener('matchcut:progress-change', refresh)
+    return () => {
+      window.removeEventListener('storage', storage)
+      window.removeEventListener('focus', refresh)
+      window.removeEventListener('matchcut:progress-change', refresh)
+    }
+  }, [])
+  const soloChip = useMemo(() => dailyStatus('solo', todaySeed), [mode, todaySeed, progressRevision])
+  const chronoChip = useMemo(() => dailyStatus('chronology', todaySeed), [mode, todaySeed, progressRevision])
+  const connChip = useMemo(() => dailyStatus('connections', todaySeed), [mode, todaySeed, progressRevision])
+  const duelChip = useMemo(() => duelRecord(difficulty), [mode, difficulty, progressRevision])
+  const program = dailyProgram(todaySeed)
   const dailyPassport = [
-    { mode: 'solo', label: 'Puzzle', status: soloChip },
     { mode: 'chronology', label: 'Chronology', status: chronoChip },
     { mode: 'connections', label: 'Connections', status: connChip },
+    { mode: 'solo', label: 'Puzzle', status: soloChip },
   ] as const
 
   if (mode !== 'menu') {
     return (
       <Suspense fallback={<ModeLoading />}>
-        {mode === 'solo' && <SoloGame onExit={() => setMode('menu')} start={soloStart} />}
+        {mode === 'solo' && <SoloGame key={entryKey} onExit={() => setMode('menu')} start={soloStart} onDailyNavigate={startDaily} />}
         {mode === 'duel' && <DuelGame onExit={() => setMode('menu')} difficulty={difficulty} />}
-        {mode === 'chronology' && <ChronologyGame onExit={() => setMode('menu')} start={chronoStart} />}
-        {mode === 'connections' && <ConnectionsGame onExit={() => setMode('menu')} start={connStart} />}
+        {mode === 'chronology' && <ChronologyGame key={entryKey} onExit={() => setMode('menu')} start={chronoStart} onDailyNavigate={startDaily} />}
+        {mode === 'connections' && <ConnectionsGame key={entryKey} onExit={() => setMode('menu')} start={connStart} onDailyNavigate={startDaily} />}
       </Suspense>
     )
   }
@@ -155,69 +185,30 @@ export default function App() {
       <div className="menu-scroll flex min-h-0 w-full flex-1 flex-col items-center overflow-y-auto px-8">
         <main className="menu-workspace my-auto flex w-full flex-col items-center gap-6 py-5">
         <section className="menu-intro text-center" aria-labelledby="menu-program-title">
-          <p className="font-stub-label text-[11px] font-bold uppercase tracking-[0.16em] text-stub-amber">
-            Tonight’s program
+          <p className="font-stub-label text-[11px] font-bold uppercase tracking-[0.16em] text-stub-ink-amber">
+            Today’s movie puzzles
           </p>
           <h2 id="menu-program-title" className="mt-2 font-stub-display text-3xl font-bold text-stub-navy">
-            Pick your feature.
+            A little movie knowledge.
           </h2>
           <p className="mt-3 font-stub-ui text-[15px] leading-relaxed text-stub-slate">
-            Connect movies by the people who made them. Three fresh dailies, plus the head-to-head cut.
+            Place films in time with Chronology. Find what they share in Connections. One good puzzle is enough for today.
           </p>
-          <DailyPassport entries={dailyPassport} />
+          <ProgressNotice />
           <p className="menu-recommendation mt-4 rounded-stub-panel border border-stub-amber/60 bg-stub-amber/10 px-4 py-3 font-stub-ui text-[14px] leading-snug text-stub-navy">
-            <span className="block font-stub-label text-[11px] font-bold uppercase tracking-[0.12em] text-stub-amber">
-              Recommended start
+            <span className="block font-stub-label text-[11px] font-bold uppercase tracking-[0.12em] text-stub-ink-amber">
+              {program.next ? program.completed ? 'Another puzzle, if you like' : 'Suggested start' : 'Triple Feature complete'}
             </span>
-            Daily Puzzle — a quick hand to learn the links.
+            {program.next
+              ? `${DAILY_MODE_LABEL[program.next]} — ${program.completed ? 'optional — or come back tomorrow.' : 'place ten films from older to newer.'}`
+              : 'All three dailies are stamped. Try practice or Duel, or return tomorrow.'}
           </p>
         </section>
         <div className="menu-mode-grid flex w-full max-w-[300px] flex-col gap-3">
-          {/* Card order (Buri, 2026-08-07): dailies lead, Duel demoted to LAST —
-              batch-1 feedback had duel comprehension failing across 3 sources and
-              zero would-return votes; the deepest mode can't be the front door.
-              The old navy hero fill went with it (see the Duel card below) — no
-              card is "the" primary now. W5d punched notches stay on every card. */}
-          <article className="menu-card menu-card--recommended relative rounded-stub-panel border-2 border-stub-navy bg-stub-paper px-6 py-4 shadow-stub-card-resting">
+          {/* Historical player enthusiasm puts Chronology/Connections first. */}
+          <article className={`menu-card menu-card--featured ${program.next === 'chronology' ? 'menu-card--recommended' : ''} relative rounded-stub-panel border-2 border-stub-navy bg-stub-paper px-6 py-4 shadow-stub-card-resting`}>
             <MenuNotches />
-            <span data-menu-recommended className="menu-card-kicker mb-2 inline-flex rounded-stub-pill bg-stub-amber px-2.5 py-1 font-stub-label text-[11px] font-bold uppercase tracking-[0.1em] text-stub-navy">
-              Start here · daily
-            </span>
-            <button
-              type="button"
-              data-mode="solo"
-              onClick={() => startSolo({ kind: 'daily' })}
-              className="block w-full text-left active:scale-[0.98]"
-            >
-              <span className="flex items-baseline justify-between">
-                <span className="font-stub-display text-[17px] font-bold text-stub-navy">
-                  Daily Puzzle
-                </span>
-                <StreakChip mode="solo" status={soloChip} />
-              </span>
-              <span className="mt-0.5 block font-stub-ui text-[12px] text-stub-slate">
-                Today’s hand — same for everyone. Play out every card. Golf — low score wins.
-              </span>
-            </button>
-            {/* The daily is the button above; the original hand-designed puzzle
-                stays on as a fixed practice round. */}
-            <div className="menu-practice-row mt-3 flex items-center gap-2 border-t border-dashed border-stub-navy/20 pt-3">
-              <span className="font-stub-label text-[12px] font-semibold uppercase tracking-[0.08em] text-stub-slate">
-                practice
-              </span>
-              <button
-                type="button"
-                data-solo-practice
-                onClick={() => startSolo({ kind: 'practice' })}
-                className="min-h-11 flex-1 rounded-stub-pill border-2 border-stub-navy bg-stub-paper px-3 py-2 font-stub-label text-[11px] font-bold uppercase tracking-[0.08em] text-stub-navy transition-colors active:bg-stub-navy/10"
-              >
-                <span className="block">Learn the links</span>
-                <span className="menu-practice-purpose">fixed warm-up hand</span>
-              </button>
-            </div>
-          </article>
-          <article className="menu-card relative rounded-stub-panel border-2 border-stub-navy bg-stub-paper px-6 py-4 shadow-stub-card-resting">
-            <MenuNotches />
+            {program.next === 'chronology' && <MenuRecommendation first={program.completed === 0} />}
             <button
               type="button"
               data-mode="chronology"
@@ -231,7 +222,7 @@ export default function App() {
                 <StreakChip mode="chronology" status={chronoChip} />
               </span>
               <span className="mt-0.5 block font-stub-ui text-[12px] text-stub-slate">
-                Today’s lineup. Place the movies in release order. Golf — low score wins.
+                Ten films, older to newer. Dates appear as you place them. Lower score wins.
               </span>
             </button>
             {/* The daily is the button above; practice is its own affordance —
@@ -258,10 +249,9 @@ export default function App() {
               </div>
             </div>
           </article>
-          {/* Connections (Mode 4) — EXTRAPOLATED, composed from the same paper
-              panel as the other daily cards (cohesion ruling). */}
-          <article className="menu-card relative rounded-stub-panel border-2 border-stub-navy bg-stub-paper px-6 py-4 shadow-stub-card-resting">
+          <article className="menu-card menu-card--featured relative rounded-stub-panel border-2 border-stub-navy bg-stub-paper px-6 py-4 shadow-stub-card-resting">
             <MenuNotches />
+            {program.next === 'connections' && <MenuRecommendation />}
             <button
               type="button"
               data-mode="connections"
@@ -275,7 +265,7 @@ export default function App() {
                 <StreakChip mode="connections" status={connChip} />
               </span>
               <span className="mt-0.5 block font-stub-ui text-[12px] text-stub-slate">
-                Today’s sixteen. Find four groups of four — same director, actor, series, or genre.
+                Sixteen films, four shared connections. Find the groups; learn why they fit.
               </span>
             </button>
             {/* The daily is the button above; practice deals a fresh verified grid. */}
@@ -291,6 +281,42 @@ export default function App() {
               >
                 <span className="block">Train grouping</span>
                 <span className="menu-practice-purpose">fresh random grid</span>
+              </button>
+            </div>
+          </article>
+          <article className={`menu-card ${program.next === 'solo' ? 'menu-card--recommended' : ''} relative rounded-stub-panel border-2 border-stub-navy bg-stub-paper px-6 py-4 shadow-stub-card-resting`}>
+            <MenuNotches />
+            {program.next === 'solo' && <MenuRecommendation first={program.completed === 0} />}
+            <button
+              type="button"
+              data-mode="solo"
+              onClick={() => startSolo({ kind: 'daily' })}
+              className="block w-full text-left active:scale-[0.98]"
+            >
+              <span className="flex items-baseline justify-between">
+                <span className="font-stub-display text-[17px] font-bold text-stub-navy">
+                  Daily Puzzle
+                </span>
+                <StreakChip mode="solo" status={soloChip} />
+              </span>
+              <span className="mt-0.5 block font-stub-ui text-[12px] text-stub-slate">
+                A deeper linking challenge. Play out seven tickets; inspections add strokes.
+              </span>
+            </button>
+            {/* The daily is the button above; the original hand-designed puzzle
+                stays on as a fixed practice round. */}
+            <div className="menu-practice-row mt-3 flex items-center gap-2 border-t border-dashed border-stub-navy/20 pt-3">
+              <span className="font-stub-label text-[12px] font-semibold uppercase tracking-[0.08em] text-stub-slate">
+                practice
+              </span>
+              <button
+                type="button"
+                data-solo-practice
+                onClick={() => startSolo({ kind: 'practice' })}
+                className="min-h-11 flex-1 rounded-stub-pill border-2 border-stub-navy bg-stub-paper px-3 py-2 font-stub-label text-[11px] font-bold uppercase tracking-[0.08em] text-stub-navy transition-colors active:bg-stub-navy/10"
+              >
+                <span className="block">Learn the links</span>
+                <span className="menu-practice-purpose">fixed warm-up hand</span>
               </button>
             </div>
           </article>
@@ -337,8 +363,8 @@ export default function App() {
                   }}
                   className={`min-h-11 flex-1 whitespace-nowrap rounded-stub-pill px-2 py-2 font-stub-label text-[10px] font-bold uppercase tracking-[0.04em] transition-colors ${
                     difficulty === d
-                      ? 'bg-stub-amber text-stub-navy shadow-sm'
-                      : 'text-stub-slate active:text-stub-navy'
+                      ? 'bg-stub-amber text-stub-ink shadow-sm'
+                      : 'text-stub-navy active:text-stub-navy'
                   }`}
                 >
                   {DIFFICULTY_META[d].label}
@@ -350,6 +376,7 @@ export default function App() {
             </p>
           </article>
         </div>
+        <DailyPassport entries={dailyPassport} />
         </main>
       </div>
       <AnimatePresence>
@@ -366,6 +393,14 @@ export default function App() {
         {showOnboarding && <Onboarding onDismiss={dismissOnboarding} />}
       </AnimatePresence>
     </div>
+  )
+}
+
+function MenuRecommendation({ first = false }: { first?: boolean }) {
+  return (
+    <span data-menu-recommended className="menu-card-kicker mb-2 inline-flex rounded-stub-pill bg-stub-amber px-2.5 py-1 font-stub-label text-[11px] font-bold uppercase tracking-[0.1em] text-stub-ink">
+      {first ? 'Start here' : 'Optional next'} · daily
+    </span>
   )
 }
 
@@ -404,8 +439,8 @@ function DailyPassport({
       </div>
       <p>
         {complete
-          ? 'Tonight’s program complete. Come back tomorrow for three fresh stubs.'
-          : 'Stored on this device only. Practice never stamps the card.'}
+          ? 'Today’s movie puzzles complete. Come back tomorrow for three fresh stubs.'
+          : 'One puzzle is enough. Stamps stay in this browser; practice never stamps.'}
       </p>
     </section>
   )

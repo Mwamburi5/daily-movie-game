@@ -25,6 +25,8 @@ interface ResultsProps {
   solution: SolutionStep[]
   daily: DailyFinish | null // streak readout — null on practice rounds
   practice: boolean // practice hand: marks the share line, relabels replay
+  dailySeed?: string
+  onDailyNavigate?: (mode: import('../lib/progress.ts').DailyMode) => void
   analytics: ModeIdentity // mode identity for the share event (SoloGame owns kind)
   onReset: () => void
   onMenu: () => void // back to the mode menu (W5d: every end screen routes home)
@@ -42,6 +44,8 @@ export default function Results({
   solution,
   daily,
   practice,
+  dailySeed,
+  onDailyNavigate,
   analytics,
   onReset,
   onMenu,
@@ -154,6 +158,7 @@ export default function Results({
         )}
 
         <ResultActions
+          dailyNavigation={!practice && dailySeed && onDailyNavigate ? { mode: 'solo', seed: dailySeed, onNavigate: onDailyNavigate } : undefined}
           primaryLabel={practice ? 'Replay this hand' : 'Replay today’s hand'}
           onPrimary={onReset}
           onMenu={onMenu}

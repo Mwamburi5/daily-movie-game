@@ -35,8 +35,8 @@ export default class ErrorBoundary extends Component<{ children: ReactNode }, { 
         <div className="w-full max-w-[380px] rounded-stub-panel border-2 border-stub-navy bg-stub-paper p-5 shadow-stub-card-resting">
           <h1 className="font-stub-display text-[20px] font-bold text-stub-navy">The reel jammed.</h1>
           <p className="mt-2 font-stub-ui text-[14px] leading-relaxed text-stub-slate">
-            Something broke while this screen was loading. Reloading almost always brings today’s
-            games straight back — nothing you have played is lost.
+            Something broke while this screen was loading. Reconnect if you are offline, then reload. An unfinished round starts again.
+            Completed records remain in this browser when storage is available.
           </p>
           <button
             type="button"

@@ -10,3 +10,14 @@ docs/
 sim/
 scripts/
 *.md
+
+# Deploy the app source only; local builds, tests and tools are not release inputs.
+output/
+node_modules/
+dist/
+dist-e2e/
+tests/
+tools/
+.github/
+design/
+.claude/

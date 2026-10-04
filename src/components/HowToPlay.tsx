@@ -61,7 +61,8 @@ const MODE_HELP: Record<Exclude<HelpContext, 'overview'>, ModeHelp> = {
         items: [
           'Cards connect through shared actors, directors, or writers. The pile’s top card is the only card your next play must connect to.',
           'A same-person chain keeps narrowing to the names shared by consecutive plays; each extra card after the first link earns one stroke back.',
-          'A daily replay deals the same board. A practice result is labelled practice, and share output stays URL-free.',
+          'Daily par = 8 first flips + 4 strokes of misplay allowance − the deal’s best combo. The fixed practice hand keeps its own par of 9.',
+          'After a daily, the optional Next offers the first unfinished game in Chronology → Connections → Puzzle order. Replay keeps the same board and original daily record. A new local day changes the recommendation without interrupting your current game.',
         ],
       },
     ],
@@ -205,9 +206,9 @@ const MODE_HELP: Record<Exclude<HelpContext, 'overview'>, ModeHelp> = {
 }
 
 const OVERVIEW = [
-  ['Daily Puzzle', 'Connect one hand to the pile. Golf scoring: low wins.'],
   ['Chronology', 'Place ten hidden-year titles from older to newer.'],
   ['Connections', 'Sort sixteen titles into four clean groups of four.'],
+  ['Daily Puzzle', 'A deeper linking challenge. Golf scoring: low wins.'],
   ['Duel vs Computer', 'Reaching 20 ends the show; highest net score wins.'],
 ] as const
 

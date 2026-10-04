@@ -27,6 +27,7 @@ import {
   streakCredit,
 } from './lib/chronology.ts'
 import { CHRONOLOGY_POOL } from './data/chronologyPool.ts'
+import { chronologyDateLabel, chronologyTitle } from './lib/chronologyPresentation.ts'
 import { ChronoCardView } from './components/ChronoCard.tsx'
 import { matchCutShare } from './lib/share.ts'
 // localDateSeed debuted here; it now lives in lib/daily.ts so Solo's daily
@@ -109,7 +110,7 @@ function reelVisualStyle(offset: number) {
   return { transform: `translateY(9px) scale(.82) rotate(${direction * 7}deg)`, opacity: 0.62 }
 }
 
-export default function ChronologyGame({ onExit, start }: { onExit: () => void; start: ChronoStart }) {
+export default function ChronologyGame({ onExit, start, onDailyNavigate }: { onExit: () => void; start: ChronoStart; onDailyNavigate?: (mode: import('./lib/progress.ts').DailyMode) => void }) {
   const journey = useJourneyAnalytics({ mode: 'chronology', kind: start.kind })
   const reduce = useReducedMotion()
 
@@ -731,8 +732,11 @@ export default function ChronologyGame({ onExit, start }: { onExit: () => void; 
               strokes={strokes}
               credits={credits}
               log={playLog}
+              line={line}
               daily={start.kind === 'daily' ? finishMeta : null}
               practice={start.kind === 'practice'}
+              dailySeed={dailySeed}
+              onDailyNavigate={onDailyNavigate}
               analytics={{ mode: 'chronology', kind: start.kind }}
               onReset={resetGame}
               onMenu={onExit}
@@ -1001,8 +1005,11 @@ function ChronoResults({
   strokes,
   credits,
   log,
+  line,
   daily,
   practice,
+  dailySeed,
+  onDailyNavigate,
   analytics,
   onReset,
   onMenu,
@@ -1011,8 +1018,11 @@ function ChronoResults({
   strokes: number
   credits: number
   log: LogEntry[]
+  line: ChronologyCard[]
   daily: DailyFinish | null // streak readout — null on practice rounds
   practice: boolean // practice round: marks the share line, relabels replay
+  dailySeed?: string
+  onDailyNavigate?: (mode: import('./lib/progress.ts').DailyMode) => void
   analytics: ModeIdentity // mode identity for the share event (parent owns kind)
   onReset: () => void
   onMenu: () => void // back to the mode menu (W5d: every end screen routes home)
@@ -1077,9 +1087,23 @@ function ChronoResults({
           {emoji}
         </div>
 
+        <details className="answer-recap mt-4 w-full max-w-[440px] rounded-stub-panel border border-stub-navy/25 bg-stub-paper p-3 text-left" data-chronology-recap>
+          <summary className="cursor-pointer font-stub-ui text-sm font-bold text-stub-navy">Your finished timeline</summary>
+          <p className="mt-2 font-stub-ui text-[12px] leading-snug text-stub-slate">First U.S. theatrical openings, including limited releases. Exact dates order films in the same year; a fixed catalogue order breaks exact-date ties.</p>
+          <ol className="mt-3 space-y-2 font-stub-ui text-[13px] text-stub-navy">
+            {line.map((card, index) => (
+              <li key={card.id} className="flex items-baseline justify-between gap-3 border-t border-stub-navy/10 pt-2">
+                <span><span className="mr-2 text-stub-slate">{index + 1}.</span>{chronologyTitle(card)}</span>
+                <time className="shrink-0 text-[12px] tabular-nums" dateTime={card.releaseDate}>{chronologyDateLabel(card)}</time>
+              </li>
+            ))}
+          </ol>
+        </details>
+
         <ShareCopy text={text} analytics={analytics} />
 
         <ResultActions
+          dailyNavigation={!practice && dailySeed && onDailyNavigate ? { mode: 'chronology', seed: dailySeed, onNavigate: onDailyNavigate } : undefined}
           primaryLabel={practice ? 'New round' : 'Replay today’s line'}
           onPrimary={onReset}
           onMenu={onMenu}

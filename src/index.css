@@ -648,9 +648,8 @@ body {
   }
   [data-mode-stage="solo"] .solo-hand-label {
     display: block;
-    right: 4%;
-    top: 150px;
-    width: 55%;
+    margin: 0;
+    line-height: 14px;
     text-align: center;
   }
   [data-mode-stage="solo"] .daily-solo-hand[data-hand-layout="rack"] {
@@ -712,7 +711,7 @@ body {
   }
   [data-mode-stage="solo"] .solo-stage-instruction { top: 350px; }
   [data-mode-stage="solo"] .solo-feedback { top: 388px; }
-  [data-mode-stage="solo"] .solo-hand-label { top: 112px; }
+
   [data-mode-stage="solo"] .daily-solo-hand[data-hand-layout="rack"] {
     bottom: 14px;
     height: 320px; /* see base rule — vary scale, not height */
@@ -1006,7 +1005,7 @@ body {
 }
 
 @media (min-width: 1024px) {
-  .duel-marquee-frame { width: min(calc(100vw - 48px), 1200px); }
+  .duel-marquee-frame { width: min(calc(100vw - 40px), var(--app-shell-desktop-max)); }
   .duel-board {
     max-width: 1180px;
     padding-bottom: 225px;
@@ -1116,3 +1115,21 @@ body {
                            the navy header for a cream-on-navy variant
                            background-size: 6px 6px
 */
+
+/* October 3: reading ink is separate from the decorative amber accent. */
+@theme { --color-stub-ink-amber: #79510E; }
+.menu-intro > p:first-child,
+.menu-recommendation > span { color: var(--color-stub-ink-amber); }
+.menu-card--featured { border-left-width: 5px; }
+.answer-recap { max-width: 440px; }
+.answer-recap summary { min-height: 28px; }
+.connections-solved-ticket [data-group-explanation] { color: var(--color-stub-cream); }
+@media (min-width: 1024px) {
+  .duel-board { width: min(calc(100vw - 40px), var(--app-shell-desktop-max)); }
+}
+
+.menu-workspace > .daily-passport { width: 100%; max-width: 580px; margin-top: 0; }
+@media (min-width: 1024px) {
+  .menu-workspace > .menu-mode-grid { grid-column: 2; grid-row: 1 / span 2; }
+  .menu-workspace > .daily-passport { grid-column: 1; grid-row: 2; align-self: start; }
+}

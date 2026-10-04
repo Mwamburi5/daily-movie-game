@@ -379,6 +379,15 @@ what's ready-to-review per sitting.
 
 ## 6. Ledger (the resume sheet — tick in the same commit as the work)
 
+- [x] **CONNECTIONS / CHRONOLOGY RELEASE: 2026-10-03:** Buri approved publishing
+      the reviewed update. Chronology and Connections lead the menu and teaching;
+      results explain groups and the finished timeline; Menu is the primary finish;
+      progress warnings and cross-tab refresh are display only. Daily rack spacing,
+      Duel framing and small reading labels are corrected. Rules, scoring, catalogue,
+      schedules, dependency lock and the v1 storage schema are preserved. Prepared
+      on a clean branch from `main@d9a4bdb`, excluding art/content pilots and other
+      drafts. Release checks and production verification are recorded separately.
+
 - [x] W0a master plan written (2026-07-06, planning session; v2 same day after
       the reference-PNG drop + 3 rulings)
 - [x] W0b banners + CLAUDE.md fixes (committed with this doc)
