@@ -61,6 +61,13 @@ export interface ProgressV1 {
 
 export type DailyMode = 'solo' | 'chronology' | 'connections'
 
+export const DAILY_MODE_ORDER: readonly DailyMode[] = ['chronology', 'connections', 'solo']
+export const DAILY_MODE_LABEL: Record<DailyMode, string> = {
+  solo: 'Daily Puzzle',
+  chronology: 'Chronology',
+  connections: 'Connections',
+}
+
 const freshDaily = (): DailyMeta => ({ lastSeed: null, streak: 0, best: null })
 
 const fresh = (): ProgressV1 => ({
@@ -156,12 +163,16 @@ export function sanitizeProgress(value: unknown): ProgressV1 {
 // localStorage can be absent or throwing (Safari private mode, storage full).
 // Meta-state is a nicety — every failure path degrades to "no memory", never
 // to a broken game.
+let storageUnavailable = false
+export const progressStorageUnavailable = () => storageUnavailable
+
 export function loadProgress(): ProgressV1 {
   try {
     const raw = window.localStorage.getItem(KEY)
     if (!raw) return fresh()
     return sanitizeProgress(JSON.parse(raw))
   } catch {
+    storageUnavailable = true
     return fresh()
   }
 }
@@ -169,9 +180,12 @@ export function loadProgress(): ProgressV1 {
 function save(p: ProgressV1): void {
   try {
     window.localStorage.setItem(KEY, JSON.stringify(p))
+    storageUnavailable = false
   } catch {
-    // storage unavailable — play on without memory
+    storageUnavailable = true
   }
+  // Display-only notification; no rules or deal state reads this signal.
+  window.dispatchEvent?.(new Event('matchcut:progress-change'))
 }
 
 // ── seed calendar arithmetic ──────────────────────────────────────────────────
@@ -251,6 +265,23 @@ export function dailyStatus(mode: DailyMode, todaySeed: string): DailyStatus {
   const playedToday = m.lastSeed === todaySeed
   const alive = playedToday || m.lastSeed === prevSeed(todaySeed)
   return { playedToday, streak: alive ? m.streak : 0 }
+}
+
+// Presentation only: the first unfinished feature follows the menu order,
+// regardless of which mode the player entered first. A visible result counts
+// even when storage is blocked; this also avoids briefly recommending the
+// just-finished mode before its recording effect has run. Losses count too.
+export function dailyProgram(
+  todaySeed: string,
+  completed?: { mode: DailyMode; seed: string },
+): { completed: number; next: DailyMode | null } {
+  const progress = loadProgress()
+  const finished = (mode: DailyMode) => progress[mode].lastSeed === todaySeed
+    || (completed?.mode === mode && completed.seed === todaySeed)
+  return {
+    completed: DAILY_MODE_ORDER.filter(finished).length,
+    next: DAILY_MODE_ORDER.find((mode) => !finished(mode)) ?? null,
+  }
 }
 
 export function duelRecord(difficulty: Difficulty): DuelMeta {

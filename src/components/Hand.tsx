@@ -60,6 +60,7 @@ interface HandProps {
   fanClassName?: string
   raisedClassName?: string
   layout?: 'fan' | 'rack'
+  rackLabel?: string
   wideFan?: boolean
   // Meld selection mode: taps toggle membership instead of raising
   selectMode?: boolean
@@ -83,6 +84,7 @@ export default function Hand({
   fanClassName = '',
   raisedClassName = '',
   layout = 'fan',
+  rackLabel,
   wideFan = false,
   selectMode = false,
   selectedIds,
@@ -207,6 +209,11 @@ export default function Hand({
         data-selection-mode={selectMode || undefined}
         className={`absolute inset-x-0 bottom-0 z-30 h-[225px] ${fanClassName}`}
       >
+        {rack && rackLabel && (
+          <p className="solo-hand-label pointer-events-none absolute inset-x-0 hidden text-center font-stub-label text-[12px] font-bold text-stub-navy" style={{ top: (n <= 4 ? RACK_ROW_GAP : 8) - 26 }}>
+            {rackLabel}
+          </p>
+        )}
         {cards.map((m, i) => {
           if (m.id === raisedId) return null
           const off = i - (n - 1) / 2

@@ -103,6 +103,17 @@ A quiet brain-teaser. No computer, no clock. Just you and one hand of cards.
   **Reveal one solution** to see an order that would have worked.
 - You get a little emoji row to share how you did.
 
+### Your three-daily program
+- **Next** on a daily result offers the first unfinished game in this order:
+  **Chronology → Connections → Daily Puzzle**, whichever one you entered first.
+- Finishing counts: a **Stuck** Puzzle or lost Connections still stamps the passport.
+  Practice never stamps it. Replays keep your original daily record and best.
+- At **3/3**, your **Triple Feature** is complete. Replay, try practice or Duel from
+  Menu, or return tomorrow. Your local midnight starts a new program without replacing
+  the game or result already open; **Next** then opens today's daily when you choose it.
+- **Replay** repeats the open board, even after midnight. **Menu** leaves the round;
+  returning to its mode deals again. Progress stores completions, not unfinished games.
+
 ---
 
 ## Mode 2 — Duel vs Computer · LIVE
@@ -446,3 +457,11 @@ player wins about **65 / 50 / 41 %** vs Matinee / Feature / Director's.
 
 *Parked (decision **D1**):* the two un-kept draw cards stay **hidden** for now. We may add a
 visible discard area later — to be revisited after a play-and-feel pass.
+
+## October 3 presentation update
+
+Start with Chronology or Connections; one puzzle is enough for a visit. Daily Puzzle and Duel are deeper optional games. The passport still celebrates all three completed dailies, but completing all three is optional. The optional next-game order is Chronology, Connections, then Daily Puzzle; it skips games already completed on your local calendar date. Fresh dailies arrive at your local midnight.
+
+After a Connections answer, expand “Why these films fit” to see each film's cast, director, series or catalogue-genre membership. These explanations appear only after that group is solved or revealed. After Chronology, “Your finished timeline” shows the actual ordered films and stored U.S. theatrical dates. Neither recap changes a rule or score.
+
+Completed records stay in this browser when storage works. If storage is unavailable, a notice explains that they may not be saved. Reloading restarts an unfinished round; the game does not save an active hand.

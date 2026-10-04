@@ -65,9 +65,9 @@ function MiniStub({ title, year, spine }: { title: string; year?: string; spine:
 // Connections spends mistakes. A blanket "golf" footer under all three would
 // teach a rule Connections does not have.
 const DAILIES = [
-  ['Daily Puzzle', 'Play out your hand.', true],
-  ['Chronology', 'Place movies in release order.', true],
-  ['Connections', 'Find four groups of four.', false],
+  ['Chronology', 'Choose a movie, then place it in the reel.', true],
+  ['Connections', 'Select four movies, then Submit.', false],
+  ['Daily Puzzle', 'A deeper challenge: connect tickets to the pile.', true],
 ] as const
 
 const STAMPS = [
@@ -155,7 +155,7 @@ const SCREENS: Screen[] = [
   },
   {
     key: 'ritual',
-    sentence: 'Tear all three stubs in one night — that’s a Triple Feature.',
+    sentence: 'One puzzle is a good visit. A Triple Feature is optional.',
     sliceLabel: 'Three torn stubs — Puzzle, Chronology, Connections — stamped as a Triple Feature',
     slice: (
       <span className="block">
@@ -167,7 +167,7 @@ const SCREENS: Screen[] = [
             >
               <span className="w-1.5 flex-none" style={{ background: spine }} />
               <span className="flex min-w-0 flex-1 items-center gap-1 py-2 pl-1 pr-1.5">
-                <span className="font-stub-label text-[10px] font-bold text-stub-amber" aria-hidden="true">
+                <span className="font-stub-label text-[10px] font-bold text-stub-ink-amber" aria-hidden="true">
                   ✓
                 </span>
                 <span className="min-w-0 flex-1 truncate font-stub-label text-[8px] font-bold uppercase tracking-[0.03em] text-stub-navy">
@@ -177,7 +177,7 @@ const SCREENS: Screen[] = [
             </span>
           ))}
         </span>
-        <span className="mt-3 block border-t border-dashed border-stub-navy/25 pt-2 text-center font-stub-label text-[10px] font-bold uppercase tracking-[0.12em] text-stub-amber">
+        <span className="mt-3 block border-t border-dashed border-stub-navy/25 pt-2 text-center font-stub-label text-[10px] font-bold uppercase tracking-[0.12em] text-stub-ink-amber">
           Triple Feature
         </span>
       </span>

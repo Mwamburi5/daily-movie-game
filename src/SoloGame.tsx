@@ -47,7 +47,7 @@ interface Connection {
   seq: number
 }
 
-export default function SoloGame({ onExit, start }: { onExit: () => void; start: SoloStart }) {
+export default function SoloGame({ onExit, start, onDailyNavigate }: { onExit: () => void; start: SoloStart; onDailyNavigate?: (mode: import('./lib/progress.ts').DailyMode) => void }) {
   const reduce = useReducedMotion()
   const journey = useJourneyAnalytics({ mode: 'solo', kind: start.kind })
   // Today's seed, fixed at mount (same pattern as Chronology's dailySeed ref) —
@@ -518,10 +518,6 @@ export default function SoloGame({ onExit, start }: { onExit: () => void; start:
           <div className="absolute inset-0 z-20" onPointerDown={() => setRaisedId(null)} />
         )}
 
-        <p className="solo-hand-label pointer-events-none absolute z-10 hidden font-stub-label text-[12px] font-bold uppercase tracking-[0.14em] text-stub-navy/70">
-          Your hand · {hand.length} tickets
-        </p>
-
         <Hand
           cards={hand.map((id) => movieById.get(id)!)}
           raisedId={raisedId}
@@ -538,6 +534,7 @@ export default function SoloGame({ onExit, start }: { onExit: () => void; start:
           fanClassName="daily-solo-hand"
           raisedClassName="daily-solo-raised"
           layout="rack"
+          rackLabel={`Your hand · ${hand.length} tickets`}
         />
 
         {/* Test-only terminal seam. Vite replaces the flag at build time, so
@@ -576,6 +573,8 @@ export default function SoloGame({ onExit, start }: { onExit: () => void; start:
               solution={solutionSteps}
               daily={start.kind === 'daily' ? finishMeta : null}
               practice={start.kind === 'practice'}
+              dailySeed={dailySeed}
+              onDailyNavigate={onDailyNavigate}
               analytics={{ mode: 'solo', kind: start.kind }}
               onReset={resetGame}
               onMenu={onExit}

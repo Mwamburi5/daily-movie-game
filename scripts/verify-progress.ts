@@ -1,6 +1,8 @@
 import assert from 'node:assert/strict'
 import {
   loadProgress,
+  dailyProgram,
+  DAILY_MODE_ORDER,
   recordDailyFinish,
   sanitizeProgress,
   type ProgressV1,
@@ -91,6 +93,30 @@ assert.deepEqual(loadProgress(), valid)
 stored = '{malformed json'
 assert.deepEqual(loadProgress(), sanitizeProgress(null))
 
+// All eight passport combinations keep one deterministic order, including
+// entering in Connections or Chronology first. No new storage is needed.
+const today = '2026-09-13'
+for (let mask = 0; mask < 8; mask += 1) {
+  const progress = sanitizeProgress(null)
+  DAILY_MODE_ORDER.forEach((mode, index) => {
+    if (mask & (1 << index)) progress[mode] = { lastSeed: today, streak: 1, best: null }
+  })
+  stored = JSON.stringify(progress)
+  const unfinished = DAILY_MODE_ORDER.filter((_, index) => !(mask & (1 << index)))
+  assert.deepEqual(dailyProgram(today), { completed: 3 - unfinished.length, next: unfinished[0] ?? null })
+  assert.deepEqual(dailyProgram('2026-09-14'), { completed: 0, next: 'chronology' })
+}
+
+stored = JSON.stringify(sanitizeProgress(null))
+assert.deepEqual(dailyProgram(today, { mode: 'connections', seed: today }), { completed: 1, next: 'chronology' })
+assert.deepEqual(dailyProgram(today, { mode: 'solo', seed: '2026-09-12' }), { completed: 0, next: 'chronology' })
+recordDailyFinish('solo', today, null) // a stuck daily stamps without a best
+recordDailyFinish('connections', today, null) // a lost daily stamps too
+assert.deepEqual(dailyProgram(today), { completed: 2, next: 'chronology' })
+const beforeReplay = stored
+assert.equal(recordDailyFinish('solo', today, -5).repeat, true)
+assert.equal(stored, beforeReplay, 'replays must not change the original completion or best')
+
 stored = JSON.stringify(valid)
 fakeWindow.localStorage.setItem = () => { throw new Error('storage blocked') }
 assert.doesNotThrow(() => recordDailyFinish('solo', '2026-08-29', 1))
@@ -103,5 +129,6 @@ assert.deepEqual(recordDailyFinish('solo', '2026-08-29', 1), {
 
 fakeWindow.localStorage.getItem = () => { throw new Error('private mode') }
 assert.deepEqual(loadProgress(), sanitizeProgress(null))
+assert.deepEqual(dailyProgram(today, { mode: 'solo', seed: today }), { completed: 1, next: 'chronology' })
 
-console.log('progress verifier: malformed, version, nested type, bounds, additive v1, round-trip, and storage isolation PASS')
+console.log('progress verifier: malformed, version, nested type, bounds, additive v1, round-trip, storage isolation, all 8 passport states, loss/replay semantics, and daily rollover PASS')

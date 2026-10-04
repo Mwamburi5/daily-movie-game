@@ -140,7 +140,7 @@ function shuffle<T>(arr: T[], rng: () => number): T[] {
   return out
 }
 
-export default function ConnectionsGame({ onExit, start }: { onExit: () => void; start: ConnectionsStart }) {
+export default function ConnectionsGame({ onExit, start, onDailyNavigate }: { onExit: () => void; start: ConnectionsStart; onDailyNavigate?: (mode: import('./lib/progress.ts').DailyMode) => void }) {
   const reduce = useReducedMotion()
   const journey = useJourneyAnalytics({ mode: 'connections', kind: start.kind })
 
@@ -212,6 +212,7 @@ export default function ConnectionsGame({ onExit, start }: { onExit: () => void;
   // semantics for `best`), null on a loss (no comparable score).
   useEffect(() => {
     if (status === 'playing') return
+    setToast(null)
     track('mode_finish', { mode: 'connections', kind: start.kind, result: status })
     if (start.kind !== 'daily') return
     setFinishMeta(recordDailyFinish('connections', dailySeed, status === 'won' ? mistakes : null))
@@ -475,6 +476,7 @@ export default function ConnectionsGame({ onExit, start }: { onExit: () => void;
                           <span className="mt-1 block font-stub-ui text-[9px] font-semibold leading-tight text-stub-cream/82">
                             {g.films.map(titleOf).join(' · ')}
                           </span>
+                          <GroupExplanation group={g} />
                         </div>
                       </motion.div>
                     )
@@ -693,8 +695,11 @@ export default function ConnectionsGame({ onExit, start }: { onExit: () => void;
               mistakes={mistakes}
               guesses={guesses}
               groupOf={groupOf}
+              groups={grid.groups}
               daily={start.kind === 'daily' ? finishMeta : null}
               practice={start.kind === 'practice'}
+              dailySeed={dailySeed}
+              onDailyNavigate={onDailyNavigate}
               analytics={{ mode: 'connections', kind: start.kind }}
               onReset={resetGame}
               onMenu={onExit}
@@ -743,8 +748,11 @@ function ConnectionsResults({
   mistakes,
   guesses,
   groupOf,
+  groups,
   daily,
   practice,
+  dailySeed,
+  onDailyNavigate,
   analytics,
   onReset,
   onMenu,
@@ -754,8 +762,11 @@ function ConnectionsResults({
   mistakes: number
   guesses: string[][]
   groupOf: Map<string, number>
+  groups: Grid['groups']
   daily: DailyFinish | null
   practice: boolean // practice grid: marks the share line, relabels replay
+  dailySeed?: string
+  onDailyNavigate?: (mode: import('./lib/progress.ts').DailyMode) => void
   analytics: ModeIdentity // mode identity for the share event (parent owns kind)
   onReset: () => void
   onMenu: () => void // back to the mode menu (W5d: every end screen routes home)
@@ -818,6 +829,16 @@ function ConnectionsResults({
                   : `${mistakes} mistake${mistakes === 1 ? '' : 's'} on the way.`
                 : 'The remaining groups are waiting on the board.'}
             </p>
+            <details className="answer-recap mt-4 w-full rounded-stub-panel border border-stub-navy/25 bg-stub-paper p-3 text-left" data-connections-recap>
+              <summary className="cursor-pointer font-stub-ui text-sm font-bold text-stub-navy">Why these four groups fit</summary>
+              {groups.map((group, index) => (
+                <section key={index} className="mt-3 border-t border-stub-navy/15 pt-2">
+                  <h3 className="font-stub-display text-sm font-bold text-stub-navy">{CAT_LABEL[group.cat]} · {prettyKey(group.cat, group.key)}</h3>
+                  <GroupExplanation group={group} />
+                </section>
+              ))}
+            </details>
+
             <ResultMeaning
               direction="Fewer mistakes is better"
               detail={won ? `${mistakes} of ${MAX_MISTAKES} used` : `${MAX_MISTAKES} of ${MAX_MISTAKES} used`}
@@ -861,6 +882,7 @@ function ConnectionsResults({
             )}
 
             <ResultActions
+              dailyNavigation={!practice && dailySeed && onDailyNavigate ? { mode: 'connections', seed: dailySeed, onNavigate: onDailyNavigate } : undefined}
               primaryLabel={practice ? 'New grid' : 'Replay today’s grid'}
               onPrimary={onReset}
               onMenu={onMenu}
@@ -869,5 +891,24 @@ function ConnectionsResults({
         </div>
       </motion.div>
     </motion.div>
+  )
+}
+
+// Post-answer information only: no title-to-category mapping before a group is found.
+function GroupExplanation({ group }: { group: Grid['groups'][number] }) {
+  const explanation = (id: string) => {
+    const movie = movieById.get(id)
+    if (group.cat === 'actor') return `${group.key} is in the cast${movie?.deepCast?.includes(group.key) && !movie.topCast.includes(group.key) ? ' (deep credit)' : ''}.`
+    if (group.cat === 'director') return `Directed by ${group.key}.`
+    if (group.cat === 'series') return `Part of ${prettyKey(group.cat, group.key)}.`
+    return `Catalogued as ${group.key}; genre labels can overlap.`
+  }
+  return (
+    <details className="mt-2 font-stub-ui text-[12px] leading-snug" data-group-explanation>
+      <summary className="cursor-pointer py-1 font-semibold">Why these films fit</summary>
+      <ul className="mt-1 space-y-2">
+        {group.films.map((id) => <li key={id}><strong>{titleOf(id)}</strong><br />{explanation(id)}</li>)}
+      </ul>
+    </details>
   )
 }
