@@ -1,6 +1,6 @@
 # 04 — Decisions
 
-**Last verified:** 2026-09-08 on `codex/handoff-and-stale-docs` (from d22a255)
+**Last verified:** 2026-09-13 on `codex/handoff-refresh-2026-09-13` (from main 8100e29)
 
 A decision is logged here when a newcomer would otherwise re-litigate it: a
 technology choice, a rule that was locked, a direction rejected, a scope cut, or
@@ -80,6 +80,16 @@ that. Dates are when Buri ruled, not when the code landed.
 | 2026-09-04 | Deploy SHA gets its own protected Preview pass first, and the 09-27 seed is replayed on real production bytes | main gained player-facing code after Approval 3 | trust the earlier Preview | deploy kickoff prompt |
 | 2026-09-05 | Rollback target stays the **previous** deployment, not the new one (kickoff wording corrected as deviation 4) | "Update to the new dpl" would make rollback a no-op | — | deploy receipt §Deviations |
 | 2026-09-05 | Crons enabled: nightly prod-smoke + 30-min canary, issue-on-failure | Production serves the cutover build so a failure is a real alert | — | PR #14 |
+| 2026-09-08 | **Three-document split**: `docs/master-plan.md` = constitution + roadmap (v6), `docs/launch-status-review-2026-09-06.md` = current state (dated addenda appended in place), `HANDOFF/` = newcomer entry; the formerly local-only docs and `promo/` tracked via a docs-only PR | Buri: the handoff itself was untracked and the doc conflicts were only mentioned | leave them local; rewrite the dated records | PR #16 (merged 2026-09-13 → `8e1e3bd`); master-plan §10 v6 |
+| 2026-09-10 | Corrections from the runway check: only `@vercel/analytics` is wired, **no Speed Insights** → Web Vitals will not arrive; Approval 5 must **add** a "share ends with matchcutdaily.com" assertion because neither smoke asserted a URL-free share | Read-only S0 baseline | keep the "page views + Web Vitals" wording | status review addendum 09-10; `docs/launch-runway-kickoff-prompt.md` |
+| 2026-09-13 | **D9: Approval 5 on Saturday 2026-09-19**; `practice ·` shares carry the URL too ("every share is an invitation back") | Buri | 09-20; URL on daily shares only | status review "Rulings 2026-09-13"; commit 5edaec3 on `codex/approval-5` |
+| 2026-09-13 | **D11: skip the 375×667 small-phone pass for launch** (the 375×667 checkpoint size stays the rule for future UI waves) | Start-by date 09-12 passed; the four deferred items are polish | run it inside the fix window | status review "Rulings 2026-09-13" |
+| 2026-09-13 | **D10: snooze Dependabot** (PRs #4–#8, #15) per owner-checklist chore 5; **Speed Insights scheduled post-launch** (code + CSP, own approval); the release-checklist Web Vitals row is struck for launch | No dependency or script change inside the runway | merge or close the bumps now | `docs/attended-lanes/owner-checklist.md` §5; status review |
+| 2026-09-13 | **D3 booked: Buri runs all five attended lanes himself**, three sittings Tue 2026-09-15 evening, the owner checklist the same evening; Wed 09-16 backstop; hard stop Sat 09-19 | Hardware in hand; the outreach drafts stay unsent | borrow phones from the circle | `docs/attended-lanes/schedule.md`; PR #17 |
+| 2026-09-13 | Retro Q7: the Preview bypass cookie (jar) is minted by Buri **at the start of a fixed weekly slot**; first use = the Approval 5 Preview on 09-19 | A mint blocked a pass for a day on 09-01 | gates on production after deploy; change the protection model | retro §10 answers |
+| 2026-09-13 | Retro Q8: **receipts only for Approvals** (deploys, front-door change, pool cutover); every other pass gets a CHANGELOG line plus the PR | Buri does not read receipts | keep a receipt per pass | retro §10 answers |
+| 2026-09-13 | Retro Q9: internal items go to a **private tracker**, not `blocked-on-buri` issues on the public repo (tool not chosen yet) | The issue templates are player-facing | labelled public issues | retro §10 answers |
+| 2026-09-13 | Retro Q10: **try Sonnet on genuinely simple, fully specified sub-agent tasks** and measure; Opus stays the default for judgment-dense work. Q4: Buri will try Codex for upcoming work. Q6: find a smaller review-fleet shape than the four used so far | Sub-agents were 26% of all tokens | Opus always | retro §10 answers |
 
 ## Locked rules (the "do not relitigate" list)
 
@@ -125,7 +135,9 @@ blocks of the September prompts. Each with its source.
     particular). *(launch-readiness prompts)*
 18. **Promo: nothing posts, Buri posts; look-and-feel is Buri's gate; never
     today's or an upcoming deal in an asset.** *(`docs/promo-execution-prompts.md` §0)*
-19. **Sub-agents on Opus with full briefs.** *(memory feedback)*
+19. **Sub-agents on Opus with full briefs** for judgment-dense work; Sonnet may be
+    tried on simple, fully specified tasks and measured (2026-09-13). *(memory
+    feedback; retro §10 Q10)*
 20. **Wind-down on a long session:** finish the in-flight wave to its gate,
     commit+push, tick the Ledger, update memory, restart fresh. *(master-plan §8)*
 
@@ -144,3 +156,7 @@ blocks of the September prompts. Each with its source.
 | 2026-08-07: pause movie expansion at 438 | 2026-08-08 | One controlled exception (Wave 3 → 482); pause otherwise stands |
 | 2026-08-31: evidence commit excluded from the release commit | 2026-09-01 | Two `audit/` directories force-added (~1.6 MB); 22 MB of review shots stay local |
 | 2026-09-01: analytics journey dictionary expected to record | 2026-09-03 | Discovered Hobby plan records no custom events; accepted (D1), code left in place |
+| 2026-09-01: a receipt document for every gated pass | 2026-09-13 | Receipts for Approvals only; CHANGELOG line + PR otherwise (retro Q8) |
+| 2026-09-02: sub-agents always on Opus | 2026-09-13 (softened) | Sonnet trial allowed on simple, fully specified tasks; Opus stays the default |
+| 2026-09-06: launch-critical row 2 expects "page views + Web Vitals" | 2026-09-10 / 09-13 | No Speed Insights script exists; Web Vitals struck for launch, scheduled post-launch |
+| 2026-09-01: the attended-lanes scheduling `/goal` prompt would build the pack | 2026-09-10 | The launch-runway kickoff (S1/S2) built `docs/attended-lanes/` instead; the goal prompt never ran as such |

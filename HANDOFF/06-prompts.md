@@ -1,8 +1,8 @@
 # 06 — Prompt library
 
-**Last verified:** 2026-09-08 on `codex/handoff-and-stale-docs` (from d22a255) · 35 sessions mined from
+**Last verified:** 2026-09-13 on `codex/handoff-refresh-2026-09-13` (from main 8100e29) · 42 sessions mined from
 `~/.claude/projects/-Users-mwamburi-Projects-Daily-Movie-Game` (2026-06-28 →
-2026-09-08); 33 long prompts; 25 prompt files in the repo.
+2026-09-13); 42 long prompts; 26 prompt files in the repo.
 
 ## How prompts are written here
 
@@ -84,11 +84,14 @@ condition is the completion gate text; and the **wind-down clause**.
 | 2026-09-01 | Canva mockup sprint kickoff | Mockups A–D | 9 exports, mark ruling | `promo/canva-mockups-kickoff-prompt.md` |
 | 2026-09-01 | Ship pass `/goal` (Approvals 1–2) | stage → commit → push → CI → PR → merge | 14a546e | `docs/daily-duel-216-ship-pass-goal-prompt.md` |
 | 2026-09-01 | Preview verification `/goal` (Approval 3) | Protected Preview gate + matrix | receipt | `docs/daily-duel-216-preview-verification-goal-prompt.md` |
-| 2026-09-01 | Attended lanes scheduling `/goal` | Build the lane pack | **not run** | `docs/daily-duel-216-attended-lanes-scheduling-goal-prompt.md` |
+| 2026-09-01 | Attended lanes scheduling `/goal` | Build the lane pack | superseded: the runway kickoff built the pack on 2026-09-10 | `docs/daily-duel-216-attended-lanes-scheduling-goal-prompt.md` |
 | 2026-09-03 | Pre-launch polish kickoff (three batches) | Q-copy / Q-safety / Q-ops | PRs #10–#13 | `docs/prelaunch-polish-kickoff-prompt.md` |
-| 2026-09-04 | Production deploy kickoff (Approval 4) | One production deploy of 9a5fdbb + gates + drill + crons PR | receipt | `docs/daily-duel-216-production-deploy-kickoff-prompt.md` (untracked) |
-| 2026-09-06 | Launch status review kickoff | Read-only plain-English review, nine sections | `docs/launch-status-review-2026-09-06.md` | `docs/launch-status-review-kickoff-prompt.md` (untracked) |
-| 2026-09-08 | Process retrospective kickoff | Read-only analysis of how the project was built (throughput, gates, docs, prompts, alternatives) | **not run** | `docs/process-retrospective-kickoff-prompt.md` |
+| 2026-09-04 | Production deploy kickoff (Approval 4) | One production deploy of 9a5fdbb + gates + drill + crons PR | receipt | `docs/daily-duel-216-production-deploy-kickoff-prompt.md` |
+| 2026-09-06 | Launch status review kickoff | Read-only plain-English review, nine sections | `docs/launch-status-review-2026-09-06.md` | `docs/launch-status-review-kickoff-prompt.md` |
+| 2026-09-08 | Process retrospective kickoff | Read-only analysis of how the project was built (throughput, gates, docs, prompts, alternatives) | `docs/process-retrospective-2026-09-08.md` (run 2026-09-08 with seven Opus analysts; Buri's §10 answers added 09-13) | `docs/process-retrospective-kickoff-prompt.md` |
+| 2026-09-08 | `/project-handoff` skill + "do the docs-only pass on a branch as a PR, in three parts" | Write `HANDOFF/`, track the local-only docs, stale-docs pass, master-plan v6 | PR #16 | session 20cedd93 (session-only) |
+| 2026-09-10 | **Launch-runway kickoff** (S0 baseline · S1 lane pack · S2 owner checklist · S3 Approval 5 branch · S4 status addendum) | Turn the soak week into five gated steps after the 09-08 → 09-10 gap | `docs/attended-lanes/` (8 files); the 09-10 addendum; S3 deferred, then `codex/approval-5` 5edaec3 on 09-13 | `docs/launch-runway-kickoff-prompt.md`; session 88ea269b |
+| 2026-09-13 | Rulings session ("Yep, merge PR. Can you explain D3 and D9? …" + the retro answers + "schedule D3 for Tuesday night") | In-session grill on the batched asks | PR #17; `codex/approval-5`; a calendar .ics for Tue 09-15 | session 88ea269b (long-prompts) |
 
 ## Reusable templates
 

@@ -1,6 +1,6 @@
 # 03 — How to run
 
-**Last verified:** 2026-09-08 on `codex/handoff-and-stale-docs` (from d22a255) (every command below was run on this
+**Last verified:** 2026-09-13 on `codex/handoff-refresh-2026-09-13` (from main 8100e29) (every command below was run on this
 machine today unless marked UNVERIFIED)
 
 ## Prerequisites
@@ -66,17 +66,17 @@ The numbers that must hold (CLAUDE.md, AGENTS.md, and every checkpoint since
 2026-07-09): **verify 64/64 · verify:solo 8/8 · verify:chronology 42/42 ·
 verify:connections 14/14.** Results from this handoff run:
 
-| Gate | Result 2026-09-07 |
+| Gate | Result 2026-09-07 · re-run 2026-09-13 (Node 24.14.0) |
 |---|---|
-| build | clean |
-| verify:solo | 8 passed, 0 failed |
-| verify:chronology | 42 passed, 0 failed |
+| build | clean · ✓ 09-13 clean (`index-fq7RRZS5.js` 102.92 kB gzip) |
+| verify:solo | 8 passed, 0 failed · ✓ 09-13 8/8 |
+| verify:chronology | 42 passed, 0 failed · ✓ 09-13 42/42 |
 | verify:analytics | PASS |
 | verify:progress | PASS |
 | check:bundle | PASS |
 | check:security | PASS (370 repository files, 27 production files) |
-| verify (Duel) | 64 passed, 0 failed |
-| verify:connections | 14 passed, 0 failed |
+| verify (Duel) | 64 passed, 0 failed · ✓ 09-13 64/64 |
+| verify:connections | 14 passed, 0 failed · not re-run 09-13 (takes >10 min; green in CI on 5edaec3) |
 | test:smoke | UNVERIFIED locally this run; green in CI run 33826836354 on the polish merge and on every merge since |
 
 Difficulty tune (only after content or mechanic changes; long):

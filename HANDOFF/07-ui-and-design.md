@@ -1,6 +1,6 @@
 # 07 — UI and design
 
-**Last verified:** 2026-09-08 on `codex/handoff-and-stale-docs` (from d22a255)
+**Last verified:** 2026-09-13 on `codex/handoff-refresh-2026-09-13` (from main 8100e29)
 
 ## Design system: "The Stub"
 
@@ -74,7 +74,9 @@ Chronology / Connections / Duel. The **amber pick** for promo (`#CF952A` game vs
 
 Contract sizes: every UI checkpoint captures **390×844** and **375×667** (iPhone
 SE floor). Polish added 768×1024, 1280×720, 1440×900 and 200% zoom. Touch
-targets ≥44 px.
+targets ≥44 px. The dedicated 375×667 layout pass proposed for launch (D11)
+was skipped on 2026-09-13; the size stays a checkpoint requirement for any
+future UI wave.
 
 ## Design sources
 
@@ -88,7 +90,7 @@ targets ≥44 px.
 | Chronology design spec | `design/chronology.md` | locked design of record for Mode 3 |
 | UI PRD | `design/UI-PRD.md` | §4 desktop layout + §5 gaps still briefing sources; §10 A–D superseded |
 | 2026-08-07 concept set (three Chronology compositions) | referenced in master-plan §9; `docs/card-redesign-proposal.html` may be related | UNVERIFIED which file holds the images |
-| Promo brand sheet + shot list | `promo/brand-sheet.md`, `promo/shot-list.md` | untracked; awaiting Buri's red pen |
+| Promo brand sheet + shot list | `promo/brand-sheet.md`, `promo/shot-list.md` | tracked since PR #16; awaiting Buri's red pen |
 | Canva mockups | `promo/canva-mockups/` (9 PNG) + `canva-mockups-manifest.md` | Canva folder "Match Cut Promo" `FAHT85UIB58`; design IDs in the manifest and memory `marquee-promo-track` |
 | Figma | none | no Figma files exist for this project |
 
@@ -104,7 +106,7 @@ targets ≥44 px.
 | 2026-08-18 | Goal 2 shared UI, Goal 3 mode-specific onboarding | approved | `docs/goal-2-shared-ui-qa.md`, `goal-3-mode-specific-qa.md` |
 | 2026-08-19 | Goal 5 public-launch acceptance (viewport matrix, social card, Safari, VoiceOver spot-check) | approved for that candidate | `docs/goal-5-public-launch-acceptance.md` |
 | 2026-08-26/27 | 216+16 full review (50 shots) + now-fix pass | fixes accepted | `docs/daily-duel-216-full-review-report.md`; `audit/daily-duel-216-*` |
-| 2026-09-03 | Pre-launch review B (player-facing polish sweep, 90 shots) | 12 copy/a11y one-liners → PR #12; four 375×667 items deferred (D11) | `audit/…/prelaunch-review-2026-09-03/review-B-polish.md` |
+| 2026-09-03 | Pre-launch review B (player-facing polish sweep, 90 shots) | 12 copy/a11y one-liners → PR #12; four 375×667 items deferred (D11; ruled 2026-09-13: skipped for launch) | `audit/…/prelaunch-review-2026-09-03/review-B-polish.md` |
 
 ## Screenshots and verification
 

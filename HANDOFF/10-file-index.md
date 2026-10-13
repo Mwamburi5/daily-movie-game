@@ -1,6 +1,6 @@
 # 10 — File index
 
-**Last verified:** 2026-09-08 on `codex/handoff-and-stale-docs` (from d22a255)
+**Last verified:** 2026-09-13 on `codex/handoff-refresh-2026-09-13` (from main 8100e29)
 
 Every document in the repo, classified and given one status. Generated from the
 handoff inventory script and then corrected by reading the files. Skipped:
@@ -13,12 +13,15 @@ Status meanings: **live** = current source of truth for its topic · **supersede
 = replaced, by what and when · **done** = a record of completed work · **reference**
 = timeless · **unclear** = could not tell.
 
-Counts (text documents): plans 11 · prompts 24 · specs 9 · design 10 · decisions 3
-· reports 15 · audits 65 · runbooks 4 · agent config 4 · readmes 2 · other 20.
+Counts (text documents): plans 11 · prompts 25 · specs 9 · design 10 · decisions 3
+· reports 16 · audits 65 · runbooks 5 · agent config 4 · readmes 3 · other 26.
 Binary assets: 443 (listed per folder at the end).
 
-Files marked ⚠ untracked were local-only as of d22a255; they are tracked on
-`codex/handoff-and-stale-docs` since 2026-09-08 (see [09-open-work.md](09-open-work.md)).
+Everything that was local-only at d22a255 (the campaign plan, the status
+review, the September kickoff prompts, `promo/`, this folder) has been tracked
+on `main` since PR #16 merged on 2026-09-13; the earlier ⚠ untracked markers
+are gone. A clone of `main` now has every document listed here except the
+gitignored evidence folders.
 
 ## Root and agent config
 
@@ -28,7 +31,7 @@ Files marked ⚠ untracked were local-only as of d22a255; they are tracked on
 | `CLAUDE.md` | live | 2026-07-10 | 49 | Claude's working rules: think-before-coding, surgical changes, project guardrails (live plan pointer, sim contract + gate counts, locked deps, persistence rule, RULEBOOK sync) |
 | `AGENTS.md` | live | 2026-08-21 | 26 | Pointer file for non-Claude agents (Codex): read CLAUDE.md; feature-branch policy ("never push directly to main") |
 | `RULEBOOK.md` | live | 2026-09-03 | 449 | Plain-English player rulebook for all four modes, "What's new" log. Header date says 08-27; last edited 09-03 |
-| `BACKLOG.md` | live | 2026-09-08 (branch) | 35 | Five small items; 1–3 struck as shipped 2026-09-08 |
+| `BACKLOG.md` | live | 2026-09-08 | 35 | Five small items; 1–3 struck as shipped 2026-09-08 |
 | `PLAN.md` | superseded | 2026-07-06 | 173 | Launch-ramp build plan (WS1–WS5, 2026-07-04). Bannered; replaced by `docs/master-plan.md` 2026-07-06 |
 | `design-qa.md` | done | 2026-08-09 | 42 | Production-polish Phase 4 design QA verdict (gitignored, local) |
 | `.agents/skills/tmdb-check/SKILL.md` | live | 2026-08-07 | 104 | The `/tmdb-check` skill (Codex copy) |
@@ -45,16 +48,16 @@ Files marked ⚠ untracked were local-only as of d22a255; they are tracked on
 
 | Path | Status | Last commit | Lines | What it is |
 |---|---|---|---|---|
-| `docs/master-plan.md` | **live — plan of record** | 2026-09-08 (branch) | ~1720 | "This is the only live plan." §2 constitution · §6 Ledger (resume sheet) · §7 user-input queue · §8 boot prompt · §9 polish/scale plan · §10 amendment log (v1–v6). v6 2026-09-08 records Approvals 1–4 and the crons |
+| `docs/master-plan.md` | **live — plan of record** | 2026-09-10 | 1727 | "This is the only live plan." §2 constitution · §6 Ledger (resume sheet) · §7 user-input queue · §8 boot prompt · §9 polish/scale plan · §10 amendment log (v1–v6). v6 2026-09-08 records Approvals 1–4 and the crons; §6 gained the dated runway line on 09-10 |
 | `docs/orchestration-plan.md` | superseded | 2026-07-06 | 222 | Orchestration Plan v2 (2026-07-05). Bannered; replaced by master-plan |
 | `docs/ui-tasks.md` | superseded | 2026-07-06 | 148 | UI wave/task checklist snapshot (2026-07-05). Bannered; replaced by master-plan |
 | `docs/chronology-tasks.md` | done | 2026-07-03 | 245 | Chronology 6-phase build checklist; all phases complete 2026-06-30 |
 | `docs/feedback-batch1-plan.md` | done | 2026-07-16 | 223 | Circle feedback batch-1 fix docket; executed 2026-07-16/17 |
 | `docs/stage-b-plan.md` | done | 2026-07-05 | 52 | Chronology Stage B pool-growth plan; executed 2026-07-12 (pool 162→438) |
 | `docs/tmdb-plan.md` | reference | 2026-07-06 | 102 | TMDB integration rules and tooling ("author-time only; witness not judge") |
-| `docs/launch-campaign-plan.md` ⚠ untracked | live | 2026-09-05 (mtime) | 216 | "Tonight's Program" public-launch campaign brief, 09-07 → 10-25 |
-| `promo/phase0-docs-checkpoint.md` ⚠ untracked | live | 2026-09-01 | 93 | Promo Phase 0 stop point; five open questions for Buri |
-| `promo/phase1-mockups-checkpoint.md` ⚠ untracked | live | 2026-09-01 | 141 | Canva mockup sprint stop point; Buri's mark ruling recorded |
+| `docs/launch-campaign-plan.md` | live | 2026-09-08 | 216 | "Tonight's Program" public-launch campaign brief, 09-07 → 10-25 |
+| `promo/phase0-docs-checkpoint.md` | live | 2026-09-01 | 93 | Promo Phase 0 stop point; five open questions for Buri |
+| `promo/phase1-mockups-checkpoint.md` | live | 2026-09-01 | 141 | Canva mockup sprint stop point; Buri's mark ruling recorded |
 
 ## Specs and contracts
 
@@ -83,10 +86,10 @@ Files marked ⚠ untracked were local-only as of d22a255; they are tracked on
 | `design/pilot-batch-01-A.md`, `-C.md` | reference (parked) | 2026-07-03 | 1209 / 1149 | Generated card-art prompt batches for the pilot |
 | `design/reference/*.png` (4) | reference | 2026-07-03 | — | Card-art reference renders (A/C × Jurassic/Titanic) |
 | `docs/card-redesign-proposal.html` | unclear | — | — | HTML proposal for a card redesign; not referenced by the live plan. Probably a 2026-08-07 concept artifact |
-| `promo/brand-sheet.md` ⚠ untracked | live (awaiting red pen) | 2026-09-01 | 151 | Promo brand sheet transcribed from repo canon |
-| `promo/shot-list.md` ⚠ untracked | live (awaiting sign-off) | 2026-09-01 | 153 | Nine-shot gameplay capture list for promo |
-| `promo/canva-mockups-manifest.md` ⚠ untracked | done | 2026-09-01 | 120 | Canva design IDs and export manifest |
-| `promo/canva-mockups/*.png` (9) ⚠ untracked | done | 2026-09-01 | — | Approved mockup exports (mark ×2 ambers, carousel, share showcase, device frames) |
+| `promo/brand-sheet.md` | live (awaiting red pen) | 2026-09-01 | 151 | Promo brand sheet transcribed from repo canon |
+| `promo/shot-list.md` | live (awaiting sign-off) | 2026-09-01 | 153 | Nine-shot gameplay capture list for promo |
+| `promo/canva-mockups-manifest.md` | done | 2026-09-01 | 120 | Canva design IDs and export manifest |
+| `promo/canva-mockups/*.png` (9) | done | 2026-09-01 | — | Approved mockup exports (mark ×2 ambers, carousel, share showcase, device frames) |
 | `.github/ISSUE_TEMPLATE/*` | (listed above) | | | |
 
 ## Decision ledgers
@@ -94,7 +97,7 @@ Files marked ⚠ untracked were local-only as of d22a255; they are tracked on
 | Path | Status | Last commit | Lines | What it is |
 |---|---|---|---|---|
 | `docs/tmdb-rulings.md` | live (append-only) | 2026-07-12 | 62 | "Ours-correct" content arbitration ledger + standing policies. Six-month re-audit due 2027-01-05 |
-| `docs/feedback-log.md` | live (append-only) | 2026-07-16 | 52 | Circle feedback ledger, 27 entries from 2026-07-10/16. Header dates are stale (interviews now D+14 = 2026-10-11) |
+| `docs/feedback-log.md` | live (append-only) | 2026-09-08 | 57 | Circle feedback ledger, 27 entries from 2026-07-10/16; a 2026-09-08 note redirects the interview date to D+14 = 2026-10-11 |
 | `BACKLOG.md` | (listed above) | | | |
 
 ## Prompts (kickoff / goal prompts)
@@ -116,28 +119,30 @@ Files marked ⚠ untracked were local-only as of d22a255; they are tracked on
 | `docs/daily-duel-216-launch-readiness-resume-goal-prompt.md` | done | 2026-09-01 | 301 | Resume prompt for Goals 4–8 → checkpoint 2026-08-31 |
 | `docs/daily-duel-216-ship-pass-goal-prompt.md` | done | 2026-09-01 | 153 | Approval 1–2: stage → commit → push → CI → PR → merge (executed 2026-09-01, PR #2) |
 | `docs/daily-duel-216-preview-verification-goal-prompt.md` | done | 2026-09-03 | 126 | Approval 3: protected Preview verification (executed 2026-09-01 → 09-03) |
-| `docs/daily-duel-216-attended-lanes-scheduling-goal-prompt.md` | **live — not yet run** | 2026-09-03 | 91 | Builds the attended-lanes pack (run-sheets A–E, schedule, outreach). None of its deliverables exist |
+| `docs/daily-duel-216-attended-lanes-scheduling-goal-prompt.md` | superseded | 2026-09-03 | 91 | Meant to build the lane pack; the launch-runway kickoff built it instead on 2026-09-10 (`docs/attended-lanes/`) |
+| `docs/launch-runway-kickoff-prompt.md` | done (bannered "do not re-run as is") | 2026-09-10 | 156 | Five-step launch-runway pass S0–S4, executed 2026-09-10; S3 (the Approval 5 branch) finished 2026-09-13 as `codex/approval-5` 5edaec3 |
 | `docs/prelaunch-polish-kickoff-prompt.md` | done (with receipt) | 2026-09-03 | 215 | Three polish batches Q-copy/Q-safety/Q-ops; receipt appended (PRs #10–#12) |
-| `docs/daily-duel-216-production-deploy-kickoff-prompt.md` ⚠ untracked | done | 2026-09-04 | 216 | Approval 4 production deploy kickoff (executed 2026-09-04/05) |
-| `docs/launch-status-review-kickoff-prompt.md` ⚠ untracked | done | 2026-09-06 | 147 | Read-only status review kickoff → `docs/launch-status-review-2026-09-06.md` |
-| `docs/process-retrospective-kickoff-prompt.md` ⚠ untracked | **live — not yet run** | 2026-09-08 | 155 | Build-process retrospective (sections A–G, ten-section report); evidence staged in `audit/process-retro-2026-09-08/` (gitignored) |
-| `docs/promo-execution-prompts.md` ⚠ untracked | live | 2026-09-01 | 265 | Four promo phase prompts with shared §0 guardrails. Phase 0-docs done; 0-captures is next |
-| `promo/canva-mockups-kickoff-prompt.md` ⚠ untracked | done | 2026-09-01 | 78 | Canva mockup sprint kickoff (executed 2026-09-01) |
+| `docs/daily-duel-216-production-deploy-kickoff-prompt.md` | done | 2026-09-04 | 216 | Approval 4 production deploy kickoff (executed 2026-09-04/05) |
+| `docs/launch-status-review-kickoff-prompt.md` | done | 2026-09-06 | 147 | Read-only status review kickoff → `docs/launch-status-review-2026-09-06.md` |
+| `docs/process-retrospective-kickoff-prompt.md` | done | 2026-09-08 | 155 | Build-process retrospective kickoff; run 2026-09-08 → `docs/process-retrospective-2026-09-08.md`; evidence in `audit/process-retro-2026-09-08/` (gitignored) |
+| `docs/promo-execution-prompts.md` | live | 2026-09-01 | 265 | Four promo phase prompts with shared §0 guardrails. Phase 0-docs done; 0-captures is next |
+| `promo/canva-mockups-kickoff-prompt.md` | done | 2026-09-01 | 78 | Canva mockup sprint kickoff (executed 2026-09-01) |
 
 ## Reports, checkpoints, receipts
 
 | Path | Status | Last commit | Lines | What it is |
 |---|---|---|---|---|
-| `docs/launch-status-review-2026-09-06.md` ⚠ untracked | **live — most recent status** | 2026-09-06 | 536 | Plain-English launch status: TL;DR, shipped history, launch-critical table with owners/deadlines, roadmap, campaign status, doc audit, decisions Buri owes, calendar 09-06 → 10-25 |
-| `docs/daily-duel-216-production-deploy-receipt.md` | done | 2026-09-05 | 182 | Approval 4 receipt: deploy ids, hashes, gates, rollback drill, deviations |
+| `docs/launch-status-review-2026-09-06.md` | **live — most recent status** | 2026-09-13 | 668 | Plain-English launch status: TL;DR, shipped history, launch-critical table with owners/deadlines, roadmap, campaign status, doc audit, decisions Buri owes, calendar 09-06 → 10-25; **addenda 2026-09-10** (table re-run, corrections) and **2026-09-13** (rulings D9/D10/D11, D3 booking) |
+| `docs/process-retrospective-2026-09-08.md` | done (§9 recommendations live) | 2026-09-13 | 761 | Build-process retrospective: measured throughput, tokens, gates, docs, prompts; verdict; 90-day recommendation; Buri's §10 answers (2026-09-13) |
+| `docs/daily-duel-216-production-deploy-receipt.md` | done | 2026-09-08 | 187 | Approval 4 receipt: deploy ids, hashes, gates, rollback drill, deviations |
 | `docs/daily-duel-216-preview-verification-receipt.md` | done | 2026-09-03 | 241 | Approval 3 receipt |
 | `docs/daily-duel-216-ship-receipt.md` | done | 2026-09-03 | 82 | Approvals 1–2 receipt (release commit bdaa3f5 → merge 14a546e) |
-| `docs/daily-duel-216-launch-readiness-checkpoint.md` | done (§14/§15 stale) | 2026-09-01 | 322 | Launch-readiness checkpoint 2026-08-31; its publication rows still read NOT RUN |
+| `docs/daily-duel-216-launch-readiness-checkpoint.md` | done (bannered) | 2026-09-08 | 340 | Launch-readiness checkpoint 2026-08-31; §14/§15 carry a dated banner pointing at the deploy receipt |
 | `docs/daily-duel-216-release-checkpoint.md` | done | 2026-09-01 | 113 | 216+16 release checkpoint 2026-08-26 |
 | `docs/daily-duel-216-cutover-checkpoint.md` | done | 2026-09-01 | 208 | 216 cutover checkpoint |
 | `docs/daily-duel-216-now-fix-pass-checkpoint.md` | done | 2026-09-01 | 175 | Now-fix checkpoint 2026-08-27 |
 | `docs/daily-duel-216-full-review-report.md` | done | 2026-09-01 | 485 | Full product review 2026-08-26/27 (findings F01–F12) |
-| `docs/daily-duel-216-attended-acceptance.md` | live (header stale) | 2026-09-01 | 75 | Attended lanes A–E scripts; lanes 4–8 `ATTENDED NOT RUN`. Header pins the 08-31 candidate, should record production 9a5fdbb |
+| `docs/daily-duel-216-attended-acceptance.md` | live | 2026-09-10 | 88 | Attended lanes A–E scripts; header updated 09-05/09-10 to production 9a5fdbb and the run-sheets; rows 4–8 still `ATTENDED NOT RUN` until the Tue 09-15 sittings are recorded here |
 | `docs/daily-duel-216-selection.md` | done | 2026-09-01 | 87 | The 216 Keep / 6 Strike picker receipt |
 | `docs/daily-duel-pool-model-report.md` (+ `-data.json`) | done | 2026-09-01 | 385 | 200-film construction model |
 | `docs/daily-duel-wild-simulation-report.md`, `docs/daily-duel-16-wild-simulation-report.md` (+ data json) | done | 2026-09-01 | 90 / 96 | Wild-card simulation readouts |
@@ -145,17 +150,26 @@ Files marked ⚠ untracked were local-only as of d22a255; they are tracked on
 | `docs/movie-pool-health-report-2026-08-24.md` (+ data json) | done | 2026-09-01 | 512 | Pool health audit: "no launch-blocking volume problem" |
 | `docs/prelaunch-review-2026-09-03.md` | live (decisions list) | 2026-09-03 | 105 | Five-agent pre-launch review brief: §1 decisions D1–D11, §2 quick wins, §4 risks R1–R7. Still the best list of open decisions |
 | `docs/goal-2-shared-ui-qa.md`, `docs/goal-3-mode-specific-qa.md` | done | 2026-08-18 | 76 / 81 | Polish Goal 2/3 QA records |
-| `docs/goal-5-public-launch-acceptance.md` | done (misleading if read as current) | 2026-08-19 | 223 | Goal 5 acceptance for the 08-19 candidate; "Final result: pending" and an old rollback id |
+| `docs/goal-5-public-launch-acceptance.md` | done (bannered) | 2026-09-08 | 236 | Goal 5 acceptance for the 08-19 candidate; a dated banner (2026-09-08) says what shipped since |
 | `docs/production-polish-audit-2026-08-08.md` | done | 2026-08-09 | 361 | The audit that opened the polish program |
 | `docs/production-polish-design-qa.md` | done | 2026-08-09 | 182 | Polish design QA with screenshot links |
 | `docs/production-polish-release-candidate.md` | done | 2026-08-09 | 211 | Polish Phase 4 release candidate |
 | `docs/delivery-foundations-report.md` | done | 2026-08-09 | 209 | P1 delivery foundations (code split, budgets, CI) measurements |
 | `docs/mode-readouts.md` | done | 2026-07-10 | 144 | W5a hard-data readouts per mode (tune 65.5/49.7/41.8 at the time; tilt A 53.6/B 44.1) |
 | `docs/wave3-report.md` | done | 2026-08-08 | 164 | Wave 3 pool expansion completion (dated pool 438→482) |
-| `docs/production-release-checklist.md` | live (source-control boxes stale) | 2026-09-05 | 221 | Release + launch checklist; quiet-release section executed; public-launch switches unticked |
+| `docs/production-release-checklist.md` | live | 2026-09-08 | 242 | Release + launch checklist; quiet-release and source-control boxes ticked 09-08; public-launch switches unticked; the Web Vitals row is struck for launch (Speed Insights post-launch, 09-13) |
 | `docs/security-launch-checklist.md` | live | 2026-09-03 | 191 | Goal 4 security contract + owner-attended account checks (all account boxes unticked) |
-| `docs/daily-duel-216-deploy-and-indexing-runbook.md` | live | 2026-09-05 | 327 | §2 deploy runbook (executed) · §2.5 rollback ids (current) · §3 Approval 5 held diffs. Line 12 stale |
+| `docs/daily-duel-216-deploy-and-indexing-runbook.md` | live | 2026-09-08 | 329 | §2 deploy runbook (executed) · §2.5 rollback ids (current) · §3 Approval 5 held diffs, now realised as `codex/approval-5` 5edaec3 (four files: `index.html`, `src/lib/share.ts`, `tests/browser/delivery-smoke.spec.ts`, `scripts/prod-smoke.mjs`) |
 | `output/playwright/goal-5/voiceover-attended-receipt.md` | done | 2026-08-19 | 24 | VoiceOver spot-check receipt (gitignored) |
+
+## Launch-runway pack (`docs/attended-lanes/`, built 2026-09-10)
+
+| Path | Status | Last commit | Lines | What it is |
+|---|---|---|---|---|
+| `docs/attended-lanes/README.md` | live | 2026-09-10 | 38 | What the pack is, how a sitting is recorded, where evidence goes |
+| `docs/attended-lanes/lane-A.md` … `lane-E.md` (5) | live | 2026-09-10 | 61–75 | One run-sheet per attended lane (desktop Safari, iPhone Safari, Android Chrome, VoiceOver, TalkBack) against production `main@9a5fdbb`; each maps to a row of the acceptance record |
+| `docs/attended-lanes/schedule.md` | live | 2026-09-13 | 108 | Grid, hardware, runway math, unsent outreach drafts; **booked: all five lanes Tue 2026-09-15 evening (Buri), backstop Wed 09-16** |
+| `docs/attended-lanes/owner-checklist.md` | live | 2026-09-10 | 237 | The five owner-only chores before Approval 5: MFA ×3, a `main` ruleset, the Vercel dashboard look, DNS export + D7 redirect, Dependabot snooze |
 
 ## Content pipeline documents (`docs/`)
 
@@ -183,6 +197,8 @@ Files marked ⚠ untracked were local-only as of d22a255; they are tracked on
 | `audit/status-review-2026-08-07*/` (3 folders) | 33 | 2026-08-07 status review AUDIT.md + screenshots |
 | `audit/design-qa-*-2026-08-07/` (2) | 17 | Chronology reel + Connections design QA shots |
 | `audit/live-review-2026-07-12/` | 19 | Live UX/visual/a11y review of matchcutdaily.com |
+| `audit/process-retro-2026-09-08/` | 4 | Retrospective evidence: inventory, sessions digest, session table, long prompts (gitignored) |
+| `audit/daily-duel-216-launch-readiness-2026-08-27/attended/` | 1 | README with the naming convention for lane A–E evidence files (gitignored; fills on 09-15) |
 | `Feedback Screenshots /` | 6 | Circle feedback screenshots (2026-07-16), gitignored |
 | `output/playwright/` | 274 | Playwright reports/videos (gitignored) |
 

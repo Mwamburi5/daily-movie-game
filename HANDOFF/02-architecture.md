@@ -1,6 +1,6 @@
 # 02 — Architecture
 
-**Last verified:** 2026-09-08 on `codex/handoff-and-stale-docs` (from d22a255) (manifest, entry points, tree, and gate
+**Last verified:** 2026-09-13 on `codex/handoff-refresh-2026-09-13` (from main 8100e29; no file under `src/`, `sim/`, `scripts/`, `tests/`, or `.github/` has changed since d22a255) (manifest, entry points, tree, and gate
 commands read or run directly; anything not checked is marked UNVERIFIED)
 
 The repo already has an accurate architecture narrative in `README.md`
@@ -78,11 +78,11 @@ public/                 favicons, social-preview.png (OG card), tmdb-logo.svg, 3
                         .well-known/security.txt
 security-headers.ts     the exact header/CSP set, mirrored into vercel.json and Vite preview
 vercel.json             headers (CSP etc.) + immutable cache for /assets/
-docs/                   ~90 files: plans, prompts, receipts, audits (see 10-file-index.md)
+docs/                   ~100 files: plans, prompts, receipts, audits, the attended-lanes pack (see 10-file-index.md)
 design/                 card-art specs (parked track) + Chronology design spec + UI PRD
 design_handoff_the_stub/  the visual source of truth (README tokens + 6 reference PNGs)
 audit/                  gitignored evidence (screenshots, receipts); some force-added
-promo/                  untracked promo assets (brand sheet, shot list, Canva exports)
+promo/                  promo assets (brand sheet, shot list, Canva exports); tracked since PR #16
 tools/daily-duel-pool-picker/   static HTML picker Buri used to choose the 216
 .github/workflows/      ci.yml · prod-smoke.yml · prod-canary.yml
 ```
@@ -166,7 +166,7 @@ tools/daily-duel-pool-picker/   static HTML picker Buri used to choose the 216
 | `npm run verify:progress` | localStorage sanitizer | PASS | ✅ |
 | `npm run check:bundle` | gzip budgets | PASS | ✅ |
 | `npm run check:security` | repo security contract | PASS | ✅ (370/27) |
-| `npm run test:smoke` | Playwright against a production build on :4273 (+ dev server :5273) | 39/39 (docs) · file has 42 `test()` calls incl. skips/describes | UNVERIFIED this run (needs Chromium; CI green on d22a255's parent) |
+| `npm run test:smoke` | Playwright against a production build on :4273 (+ dev server :5273) | 39/39 (docs) · file has 42 `test()` calls incl. skips/describes | UNVERIFIED locally; CI green on every merge since and on `codex/approval-5` 5edaec3 (2026-09-13) |
 | `npm run eval tune 8000 --seed=<n> --assert` | Duel difficulty tune | 65.9 / 50.3 / 41.4 vs targets 65 / 50 / 41 | UNVERIFIED this run (long) |
 | `npm run smoke:prod -- --base=https://matchcutdaily.com` | live four-mode production matrix | PASS 4/4, 0 faults | ran green nightly via cron |
 
